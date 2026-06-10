@@ -34,7 +34,7 @@ const siteContent = {
       ],
     },
     {
-      name: "Battery Kit",
+      name: "Battery Kit (With Caster)",
       slug: "battery-kit",
       category: "battery-kit",
       description:
@@ -66,6 +66,20 @@ const siteContent = {
         "Industry-leading energy density",
         "Advanced thermal management system",
         "CAN / RS485 communication interface",
+      ],
+      image: "",
+    },
+    {
+      name: "6U Battery Kit",
+      slug: "6u-battery-kit",
+      category: "battery-kit",
+      description:
+        "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity, intelligent BMS, LCD display, and CAN/RS485 communication. Fits standard 19-inch cabinets.",
+      features: [
+        "6U rack-mount — fits 19-inch cabinets",
+        "15KWh LFP — 6000+ cycle life",
+        "Intelligent BMS with active balancing",
+        "4.3\" LCD + CAN/RS485 communication",
       ],
     },
   ],

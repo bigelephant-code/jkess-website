@@ -57,10 +57,10 @@ export const products: Product[] = [
   },
   {
     slug: 'battery-kit',
-    name: 'Battery Kit',
+    name: 'Battery Kit (With Caster)',
     category: 'battery-kit',
-    categoryLabel: 'Battery Kit',
-    tagline: 'Complete energy storage solution, ready to deploy',
+    categoryLabel: 'Battery Kit (With Caster)',
+    tagline: 'Complete energy storage solution on wheels, ready to deploy',
     description:
       'Complete battery kits compatible with both 15KWh and 16KWh cells, offering plug-and-play installation for residential and commercial energy storage systems.',
     features: [
@@ -144,6 +144,45 @@ export const products: Product[] = [
       '/images/hv-kit-2.webp',
     ],
     type: 'inquiry',
+  },
+  {
+    slug: '6u-battery-kit',
+    name: '6U Battery Kit',
+    category: 'battery-kit',
+    categoryLabel: '6U Battery Kit',
+    tagline: 'Rack-mount energy storage for professional installations',
+    description:
+      'The JKESS 6U Battery Kit (JKLU015) is a professional-grade energy storage system designed for standard 19-inch rack-mount installations. It features high-energy-density LFP cells, an intelligent BMS with active balancing, and a 4.3-inch LCD display for real-time monitoring. Suitable for residential solar backup, commercial peak shaving, telecom backup, and off-grid applications.',
+    features: [
+      '6U rack-mount form factor — fits standard 19-inch cabinets for easy integration',
+      'High energy density LFP (LiFePO4) cells — safe, stable, long cycle life',
+      'Intelligent BMS with active cell balancing — extends battery life up to 20%',
+      '4.3-inch LCD display — real-time voltage, current, temperature & SOC monitoring',
+      'CAN / RS485 communication — seamless integration with inverters and monitoring systems',
+      'Modular parallel design — expandable up to 30KWh or more for larger capacity',
+      'Compatible with leading inverters — works with Victron, Growatt, Deye, Sofar, and more',
+      '5-year warranty — backed by Shenzhen Nengyi quality assurance',
+    ],
+    specs: [
+      { key: 'Model', value: 'JKLU015' },
+      { key: 'Nominal Capacity', value: '15KWh' },
+      { key: 'Nominal Voltage', value: '51.2V' },
+      { key: 'Form Factor', value: '6U Rack-mount (19-inch)' },
+      { key: 'Cell Chemistry', value: 'LiFePO4 (LFP)' },
+      { key: 'Cycle Life', value: '6000+ cycles @ 80% DOD' },
+      { key: 'Communication', value: 'CAN 2.0 / RS485' },
+      { key: 'Display', value: '4.3-inch LCD Touch' },
+      { key: 'Operating Temp', value: '-20°C ~ 60°C' },
+      { key: 'Protection Rating', value: 'IP20 (indoor)' },
+      { key: 'Weight', value: '~45 kg' },
+      { key: 'Warranty', value: '5 years' },
+    ],
+    images: [],
+    type: 'shop',
+    variants: [
+      { label: 'JKLU015 15KWh', price: '$1,899.00' },
+      { label: 'JKLU015 30KWh (x2 Parallel)', price: '$3,599.00' },
+    ],
   },
 ]
 

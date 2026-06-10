@@ -52,7 +52,13 @@ export default function Navbar() {
                 href="/products/battery-kit"
                 className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
               >
-                🔋 Battery Kit
+                🔋 Battery Kit (With Caster)
+              </a>
+              <a
+                href="/products/6u-battery-kit"
+                className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                🔋 6U Battery Kit
               </a>
               <a
                 href="/products/high-voltage-kit"
@@ -120,7 +126,14 @@ export default function Navbar() {
               className="block text-gray-300 hover:text-white"
               onClick={() => setIsOpen(false)}
             >
-              🔋 Battery Kit
+              🔋 Battery Kit (With Caster)
+            </a>
+            <a
+              href="/products/6u-battery-kit"
+              className="block text-gray-300 hover:text-white"
+              onClick={() => setIsOpen(false)}
+            >
+              🔋 6U Battery Kit
             </a>
             <a
               href="/products/high-voltage-kit"

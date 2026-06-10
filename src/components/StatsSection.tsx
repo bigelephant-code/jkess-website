@@ -1,19 +1,19 @@
 'use client'
 
-import { Factory, Globe, Zap, Building2 } from 'lucide-react'
+import { Factory, Globe, Users, Building2 } from 'lucide-react'
 
 interface StatsData {
   yearsEstablished?: number
   manufacturingBase?: string
   countriesCovered?: number
-  annualOutput?: string
+  employees?: string
 }
 
 const iconMap: Record<string, React.ReactNode> = {
   years: <Building2 size={28} />,
   base: <Factory size={28} />,
   countries: <Globe size={28} />,
-  output: <Zap size={28} />,
+  employees: <Users size={28} />,
 }
 
 export default function StatsSection({ data }: { data?: StatsData }) {
@@ -35,10 +35,9 @@ export default function StatsSection({ data }: { data?: StatsData }) {
       label: 'Countries & Regions',
     },
     {
-      icon: iconMap.output,
-      value: data?.annualOutput || '2.1',
-      suffix: 'GWh',
-      label: 'Annual Output',
+      icon: iconMap.employees,
+      value: data?.employees || '100+',
+      label: 'Employees',
     },
   ]
 

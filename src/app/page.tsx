@@ -17,7 +17,7 @@ const siteContent = {
     yearsEstablished: 10,
     manufacturingBase: "30,000",
     countriesCovered: 30,
-    annualOutput: "2.1",
+    employees: "100+",
   },
   products: [
     {

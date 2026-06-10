@@ -14,7 +14,7 @@ const siteContent = {
     ctaLink: "#products",
   },
   stats: {
-    yearsEstablished: 4,
+    yearsEstablished: 10,
     manufacturingBase: "30,000",
     countriesCovered: 30,
     annualOutput: "2.1",

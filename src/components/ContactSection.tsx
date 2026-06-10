@@ -42,7 +42,11 @@ export default function ContactSection({ data }: { data?: FooterData }) {
               </div>
               <div>
                 <p className="text-white font-semibold">Location</p>
-                <p className="text-gray-400">Shenzhen, China</p>
+                <p className="text-gray-400 leading-relaxed">
+                  Building B4, Yunzhi Science &amp; Technology Park<br />
+                  Guangming Street, Guangming District<br />
+                  Shenzhen, China
+                </p>
               </div>
             </div>
           </div>

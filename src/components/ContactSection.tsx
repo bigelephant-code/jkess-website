@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, MapPin, Send } from 'lucide-react'
+import { Mail, MapPin, Phone, Send } from 'lucide-react'
 
 interface FooterData {
   contactEmail?: string
@@ -22,6 +22,17 @@ export default function ContactSection({ data }: { data?: FooterData }) {
         <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
           {/* Contact info */}
           <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                <Phone size={20} className="text-green-400" />
+              </div>
+              <div>
+                <p className="text-white font-semibold">Phone</p>
+                <a href="tel:+8613162828868" className="text-gray-400 hover:text-green-400 transition-colors">
+                  +86 131 6282 8868
+                </a>
+              </div>
+            </div>
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
                 <Mail size={20} className="text-green-400" />

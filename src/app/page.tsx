@@ -50,6 +50,8 @@ const siteContent = {
         "/images/battery-kit-side.webp",
         "/images/battery-kit-rear.webp",
         "/images/battery-kit-display.webp",
+        "/images/battery-kit-enclosure.webp",
+        "/images/battery-kit-headon.webp",
       ],
     },
     {

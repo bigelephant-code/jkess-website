@@ -38,12 +38,12 @@ const siteContent = {
       slug: "battery-kit",
       category: "battery-kit",
       description:
-        "Complete battery kits compatible with both 15KWh and 16KWh cells, offering plug-and-play installation for residential and commercial energy storage systems.",
+        "Portable energy storage system on heavy-duty caster wheels. Sheet-metal enclosure, IP54 rated, supports 15KWh & 16KWh LFP cells with integrated BMS and LCD display.",
       features: [
-        "Dual compatibility: 15KWh & 16KWh cells",
-        "Pre-assembled and tested modules",
-        "Scalable design for flexible capacity",
-        "IP54 rated enclosure for indoor & outdoor use",
+        "Heavy-duty caster wheels for easy mobility",
+        "Sheet-metal enclosure, IP54 rated",
+        "Supports 15KWh & 16KWh LFP cells",
+        "Integrated BMS + LCD + CAN/RS485",
       ],
       image: "/images/battery-kit-hero.webp",
       images: [

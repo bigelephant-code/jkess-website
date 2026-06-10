@@ -5,8 +5,9 @@ export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }))
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug)
+export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
+  const { slug } = await props.params
+  const product = getProductBySlug(slug)
   if (!product) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">

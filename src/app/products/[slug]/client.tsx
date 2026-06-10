@@ -35,14 +35,14 @@ export function ProductDetailClient({ product }: { product: Product }) {
   }
 
   const handleInquiry = () => {
-    const subject = encodeURIComponent(`Inquiry: ${product.name}`)
+    const subject = encodeURIComponent('Inquiry: ' + product.name)
     const body = encodeURIComponent(
-      `Product: ${product.name}\n` +
-      `Model: ${product.variants?.[selectedVariant]?.label || 'Standard'}\n` +
-      `Quantity: ${quantity}\n\n` +
-      `Message:\n`
+      'Product: ' + product.name + '\n' +
+      'Model: ' + (product.variants?.[selectedVariant]?.label || 'Standard') + '\n' +
+      'Quantity: ' + quantity + '\n\n' +
+      'Message:\n'
     )
-    window.open(`mailto:chinaenergymall@163.com?subject=${subject}&body=${body}`)
+    window.open('mailto:chinaenergymall@163.com?subject=' + subject + '&body=' + body)
   }
 
   const currentPrice = product.variants?.[selectedVariant]?.price
@@ -50,7 +50,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   return (
     <div className="min-h-screen bg-black pt-20 pb-16">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* ── Breadcrumb ── */}
+        {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-6 pt-2">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
@@ -59,11 +59,9 @@ export function ProductDetailClient({ product }: { product: Product }) {
           <span className="text-white">{product.name}</span>
         </div>
 
-        {/* ═══════════════════════════════════════════════ */}
-        {/* SECTION 1: Product Info + Image Gallery        */}
-        {/* ═══════════════════════════════════════════════ */}
+        {/* ═══ SECTION 1: Product Info + Image Gallery ═══ */}
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 mb-12">
-          {/* ── Image Gallery ── */}
+          {/* Image Gallery */}
           <div>
             <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
               <Image
@@ -74,56 +72,35 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
               />
-              {/* Badge */}
               <span className="absolute top-4 left-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
                 {isShop ? 'In Stock' : 'Custom Order'}
               </span>
             </div>
-
-            {/* Thumbnail strip */}
             {product.images.length > 1 && (
               <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-xl overflow-hidden border-2 bg-[#0d0d0d] transition-all ${
-                      selectedImage === i
-                        ? 'border-green-400 ring-1 ring-green-400/50'
-                        : 'border-white/10 hover:border-white/30'
-                    }`}
+                    className={'relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-xl overflow-hidden border-2 bg-[#0d0d0d] transition-all ' + (selectedImage === i ? 'border-green-400 ring-1 ring-green-400/50' : 'border-white/10 hover:border-white/30')}
                   >
-                    <Image
-                      src={img}
-                      alt={`${product.name} view ${i + 1}`}
-                      fill
-                      className="object-contain p-1"
-                      sizes="80px"
-                    />
+                    <Image src={img} alt={product.name + ' view ' + (i + 1)} fill className="object-contain p-1" sizes="80px" />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* ── Product Info ── */}
+          {/* Product Info */}
           <div>
-            <span className="text-xs uppercase tracking-widest text-green-400 font-semibold">
-              {product.categoryLabel}
-            </span>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-1 mb-2">
-              {product.name}
-            </h1>
+            <span className="text-xs uppercase tracking-widest text-green-400 font-semibold">{product.categoryLabel}</span>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-1 mb-2">{product.name}</h1>
             <p className="text-sm text-gray-500 mb-4">{product.tagline}</p>
 
-            {/* Rating placeholder */}
+            {/* Rating */}
             <div className="flex items-center gap-2 mb-5">
               <div className="flex text-yellow-400">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <StarHalf size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
               </div>
               <span className="text-sm text-gray-400">4.8 (128 reviews)</span>
             </div>
@@ -131,13 +108,9 @@ export function ProductDetailClient({ product }: { product: Product }) {
             {/* Price */}
             {isShop && currentPrice && (
               <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-5">
-                <span className="text-3xl md:text-4xl font-bold text-green-400">
-                  {currentPrice}
-                </span>
+                <span className="text-3xl md:text-4xl font-bold text-green-400">{currentPrice}</span>
                 <span className="text-sm text-gray-500 ml-2 line-through">
-                  {product.variants && product.variants.length > 0
-                    ? `$${(parseFloat(currentPrice.replace(/[$,]/g, '')) * 1.15).toFixed(2)}`
-                    : ''}
+                  {'$' + (parseFloat(currentPrice.replace(/[$,]/g, '')) * 1.15).toFixed(2)}
                 </span>
                 <span className="ml-2 text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">-15% OFF</span>
               </div>
@@ -151,15 +124,8 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {product.variants.map((v, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSelectedVariant(i)}
-                      className={`px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
-                        selectedVariant === i
-                          ? 'border-green-500 bg-green-500/10 text-green-400'
-                          : 'border-white/10 text-gray-300 hover:border-white/30'
-                      }`}
-                    >
+                    <button key={i} onClick={() => setSelectedVariant(i)}
+                      className={'px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ' + (selectedVariant === i ? 'border-green-500 bg-green-500/10 text-green-400' : 'border-white/10 text-gray-300 hover:border-white/30')}>
                       {v.label}
                       <span className="ml-1.5 text-xs opacity-60">{v.price}</span>
                     </button>
@@ -173,25 +139,10 @@ export function ProductDetailClient({ product }: { product: Product }) {
               <p className="text-sm text-gray-400 mb-2">Quantity:</p>
               <div className="flex items-center gap-4">
                 <div className="flex items-center border border-white/10 rounded-xl bg-white/5">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2.5 text-gray-400 hover:text-white transition-colors"
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-2.5 text-gray-400 hover:text-white transition-colors"
-                  >
-                    <Plus size={16} />
-                  </button>
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2.5 text-gray-400 hover:text-white"><Minus size={16} /></button>
+                  <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2.5 text-gray-400 hover:text-white"><Plus size={16} /></button>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {product.variants?.[selectedVariant]?.label || ''}
-                </span>
               </div>
             </div>
 
@@ -200,70 +151,40 @@ export function ProductDetailClient({ product }: { product: Product }) {
               {isShop ? (
                 <>
                   <div className="grid grid-cols-2 gap-3">
-                    <button
-                      onClick={handleAddToCart}
-                      className={`flex items-center justify-center gap-2 font-semibold px-6 py-3.5 rounded-xl text-base transition-all ${
-                        addedToCart
-                          ? 'bg-green-400 text-black'
-                          : 'bg-green-500/20 border border-green-500 text-green-400 hover:bg-green-500/30'
-                      }`}
-                    >
-                      {addedToCart ? '✓ Added' : (
-                        <><ShoppingCart size={18} /> Add to Cart</>
-                      )}
+                    <button onClick={handleAddToCart}
+                      className={'flex items-center justify-center gap-2 font-semibold px-6 py-3.5 rounded-xl text-base transition-all ' + (addedToCart ? 'bg-green-400 text-black' : 'bg-green-500/20 border border-green-500 text-green-400 hover:bg-green-500/30')}>
+                      {addedToCart ? '✓ Added' : <><ShoppingCart size={18} /> Add to Cart</>}
                     </button>
-                    <button
-                      onClick={handleBuyNow}
-                      className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3.5 rounded-xl text-base transition-all"
-                    >
+                    <button onClick={handleBuyNow} className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3.5 rounded-xl text-base transition-all">
                       Buy Now
                     </button>
                   </div>
                   {itemCount > 0 && (
-                    <Link
-                      href="/cart"
-                      className="block text-center text-sm text-gray-500 hover:text-white transition-colors"
-                    >
+                    <Link href="/cart" className="block text-center text-sm text-gray-500 hover:text-white transition-colors">
                       View Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})
                     </Link>
                   )}
                 </>
               ) : (
                 <>
-                  <button
-                    onClick={handleInquiry}
-                    className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-xl text-lg transition-all"
-                  >
+                  <button onClick={handleInquiry} className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-xl text-lg transition-all">
                     <Send size={18} /> Get a Quote
                   </button>
-                  <p className="text-xs text-gray-500 text-center">
-                    This product requires a custom quote. We&apos;ll respond within 24 hours.
-                  </p>
+                  <p className="text-xs text-gray-500 text-center">This product requires a custom quote. We&apos;ll respond within 24 hours.</p>
                 </>
               )}
             </div>
 
             {/* Service badges */}
             <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
-              <div className="text-center">
-                <Truck size={18} className="mx-auto mb-1 text-green-400" />
-                <p className="text-xs text-gray-500">Free Shipping</p>
-              </div>
-              <div className="text-center">
-                <Shield size={18} className="mx-auto mb-1 text-green-400" />
-                <p className="text-xs text-gray-500">2-Year Warranty</p>
-              </div>
-              <div className="text-center">
-                <RotateCcw size={18} className="mx-auto mb-1 text-green-400" />
-                <p className="text-xs text-gray-500">30-Day Returns</p>
-              </div>
+              <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Free Shipping</p></div>
+              <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">2-Year Warranty</p></div>
+              <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">30-Day Returns</p></div>
             </div>
           </div>
         </div>
 
-        {/* ═══════════════════════════════════════════════ */}
-        {/* SECTION 2: Technical Specifications            */}
-        {/* ═══════════════════════════════════════════════ */}
+        {/* ═══ SECTION 2: Technical Specifications ═══ */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-1 h-6 bg-green-400 rounded-full" />
@@ -271,12 +192,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
           </div>
           <div className="border border-white/10 rounded-2xl overflow-hidden">
             {product.specs.map((spec, i) => (
-              <div
-                key={i}
-                className={`flex justify-between items-center px-5 md:px-8 py-4 ${
-                  i % 2 === 0 ? 'bg-white/5' : 'bg-transparent'
-                }`}
-              >
+              <div key={i} className={'flex justify-between items-center px-5 md:px-8 py-4 ' + (i % 2 === 0 ? 'bg-white/5' : 'bg-transparent')}>
                 <span className="text-gray-400 text-sm">{spec.key}</span>
                 <span className="text-white text-sm font-medium text-right">{spec.value}</span>
               </div>
@@ -284,25 +200,18 @@ export function ProductDetailClient({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* ═══════════════════════════════════════════════ */}
-        {/* SECTION 3: Customer Reviews                    */}
-        {/* ═══════════════════════════════════════════════ */}
+        {/* ═══ SECTION 3: Customer Reviews ═══ */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-1 h-6 bg-green-400 rounded-full" />
             <h2 className="text-xl md:text-2xl font-bold text-white">Customer Reviews</h2>
           </div>
 
-          {/* Rating summary */}
           <div className="flex flex-col md:flex-row gap-6 mb-8 bg-white/5 border border-white/10 rounded-2xl p-6">
             <div className="text-center md:text-left md:min-w-[160px]">
               <div className="text-4xl font-bold text-white">4.8</div>
               <div className="flex justify-center md:justify-start text-yellow-400 my-1">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <StarHalf size={16} fill="currentColor" />
+                <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
               </div>
               <p className="text-sm text-gray-500">128 Reviews</p>
             </div>
@@ -312,55 +221,37 @@ export function ProductDetailClient({ product }: { product: Product }) {
                   <span className="text-gray-400 w-4 text-right">{star}</span>
                   <Star size={12} className="text-yellow-400 fill-yellow-400" />
                   <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-yellow-400 rounded-full"
-                      style={{
-                        width: `${star === 5 ? 72 : star === 4 ? 18 : star === 3 ? 6 : 3}%`,
-                      }}
-                    />
+                    <div className="h-full bg-yellow-400 rounded-full" style={{ width: (star === 5 ? 72 : star === 4 ? 18 : star === 3 ? 6 : 3) + '%' }} />
                   </div>
-                  <span className="text-gray-500 w-10 text-xs text-right">
-                    {star === 5 ? '92' : star === 4 ? '23' : star === 3 ? '8' : '3'}
-                  </span>
+                  <span className="text-gray-500 w-10 text-xs text-right">{star === 5 ? '92' : star === 4 ? '23' : star === 3 ? '8' : '3'}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Review cards */}
           <div className="space-y-4">
             {reviews.map((review, i) => (
               <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-sm font-bold text-white">
-                      {review.name.charAt(0)}
-                    </div>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-sm font-bold text-white">{review.name.charAt(0)}</div>
                     <div>
                       <p className="text-sm font-medium text-white">{review.name}</p>
                       <p className="text-xs text-gray-500">{review.date}</p>
                     </div>
                   </div>
                   <div className="flex text-yellow-400">
-                    {Array.from({ length: review.rating }).map((_, j) => (
-                      <Star key={j} size={14} fill="currentColor" />
-                    ))}
+                    {Array.from({ length: review.rating }).map((_, j) => (<Star key={j} size={14} fill="currentColor" />))}
                   </div>
                 </div>
-                {review.variant && (
-                  <span className="inline-block text-xs text-gray-500 bg-white/5 px-2 py-1 rounded mb-2">
-                    Model: {review.variant}
-                  </span>
-                )}
+                {review.variant && <span className="inline-block text-xs text-gray-500 bg-white/5 px-2 py-1 rounded mb-2">Model: {review.variant}</span>}
                 <p className="text-sm text-gray-300 leading-relaxed">{review.content}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ═══════════════════════════════════════════════ */}
-        {/* SECTION 4: Product Details (rich description)  */}
-        {/* ═══════════════════════════════════════════════ */}
+        {/* ═══ SECTION 4: Product Details ═══ */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-1 h-6 bg-green-400 rounded-full" />
@@ -380,19 +271,21 @@ export function ProductDetailClient({ product }: { product: Product }) {
               ))}
             </div>
 
-            {/* Detail images (placeholder) */}
-            {product.images.length > 1 && (
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold mb-3">Gallery</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {product.images.slice(1, 5).map((img, i) => (
-                    <div key={i} className="relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
+            {/* Full-width detail images */}
+            {product.detailImages && product.detailImages.length > 0 && (
+              <div className="space-y-6">
+                <h3 className="text-white font-semibold mb-4">Product Gallery</h3>
+                <div className="flex flex-col gap-6">
+                  {product.detailImages.map((img, i) => (
+                    <div key={i} className="relative w-full rounded-xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
                       <Image
                         src={img}
-                        alt={`${product.name} detail ${i + 1}`}
-                        fill
-                        className="object-contain p-4"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        alt={product.name + ' detail ' + (i + 1)}
+                        width={1500}
+                        height={1500}
+                        className="w-full h-auto object-contain"
+                        sizes="(max-width: 768px) 100vw, 80vw"
+                        priority={i < 2}
                       />
                     </div>
                   ))}
@@ -413,31 +306,27 @@ const reviews = [
     date: '2026-05-28',
     rating: 5,
     variant: '16S 48V 200A',
-    content:
-      'Excellent BMS board. Installation was straightforward and the Bluetooth monitoring app works perfectly. Highly recommend for DIY battery builds.',
+    content: 'Excellent BMS board. Installation was straightforward and the Bluetooth monitoring app works perfectly. Highly recommend for DIY battery builds.',
   },
   {
     name: 'Klaus Müller',
     date: '2026-05-15',
     rating: 5,
     variant: '15KWh Kit',
-    content:
-      'The battery kit arrived well-packaged and earlier than expected. Everything was included as described. Very happy with the build quality.',
+    content: 'The battery kit arrived well-packaged and earlier than expected. Everything was included as described. Very happy with the build quality.',
   },
   {
     name: 'Jean-Pierre Dubois',
     date: '2026-04-22',
     rating: 4,
     variant: '16S 48V 300A',
-    content:
-      'Solid product for the price. The active balancing works well. Would be nice to have a longer cable for the LCD display, but otherwise great.',
+    content: 'Solid product for the price. The active balancing works well. Would be nice to have a longer cable for the LCD display, but otherwise great.',
   },
   {
     name: 'David Chen',
     date: '2026-04-10',
     rating: 5,
     variant: '16KWh Kit',
-    content:
-      'Used this for my home solar backup system. The IP54 enclosure is perfect for outdoor installation. Customer support was also very responsive.',
+    content: 'Used this for my home solar backup system. The IP54 enclosure is perfect for outdoor installation. Customer support was also very responsive.',
   },
 ]

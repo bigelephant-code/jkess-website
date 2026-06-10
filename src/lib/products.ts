@@ -15,6 +15,7 @@ export interface Product {
   images: string[]
   type: 'shop' | 'inquiry'
   variants?: { label: string; price?: string }[]
+  detailImages?: string[]
 }
 
 export const products: Product[] = [
@@ -91,6 +92,26 @@ export const products: Product[] = [
     variants: [
       { label: '15KWh Kit', price: '$1,299.00' },
       { label: '16KWh Kit', price: '$1,399.00' },
+    ],
+    detailImages: [
+      '/images/battery-kit-detail/1.webp',
+      '/images/battery-kit-detail/2.webp',
+      '/images/battery-kit-detail/3.webp',
+      '/images/battery-kit-detail/4.webp',
+      '/images/battery-kit-detail/5.webp',
+      '/images/battery-kit-detail/6.webp',
+      '/images/battery-kit-detail/7.webp',
+      '/images/battery-kit-detail/8.webp',
+      '/images/battery-kit-detail/9.webp',
+      '/images/battery-kit-detail/10.webp',
+      '/images/battery-kit-detail/11.webp',
+      '/images/battery-kit-detail/12.webp',
+      '/images/battery-kit-detail/13.webp',
+      '/images/battery-kit-detail/14.webp',
+      '/images/battery-kit-detail/15.webp',
+      '/images/battery-kit-detail/16.webp',
+      '/images/battery-kit-detail/17.webp',
+      '/images/battery-kit-detail/18.webp',
     ],
   },
   {

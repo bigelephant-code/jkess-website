@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { ArrowLeft, Lock, CheckCircle, Loader2, ExternalLink } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
-const PAYPAL_CLIENT_ID = 'AW1OBtJpmcG4965HhGo'
+const PAYPAL_CLIENT_ID = 'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
 
 declare global {
   interface Window {

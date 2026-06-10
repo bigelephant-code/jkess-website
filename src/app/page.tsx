@@ -63,7 +63,7 @@ const siteContent = {
         "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity, intelligent BMS, LCD display, and CAN/RS485 communication. Fits standard 19-inch cabinets.",
       features: [
         "6U rack-mount — fits 19-inch cabinets",
-        "15KWh LFP — 6000+ cycle life",
+        "Modular expandable — parallel up to 30KWh+",
         "Intelligent BMS with active balancing",
         "4.3\" LCD + CAN/RS485 communication",
       ],

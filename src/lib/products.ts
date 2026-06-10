@@ -161,7 +161,7 @@ export const products: Product[] = [
       'The JKESS 6U Battery Kit (JKLU015) is a professional-grade energy storage system designed for standard 19-inch rack-mount installations. It features high-energy-density LFP cells, an intelligent BMS with active balancing, and a 4.3-inch LCD display for real-time monitoring. Suitable for residential solar backup, commercial peak shaving, telecom backup, and off-grid applications.',
     features: [
       '6U rack-mount form factor — fits standard 19-inch cabinets for easy integration',
-      'High energy density LFP (LiFePO4) cells — safe, stable, long cycle life',
+      'Modular parallel design — easy to expand capacity up to 30KWh or more',
       'Intelligent BMS with active cell balancing — extends battery life up to 20%',
       '4.3-inch LCD display — real-time voltage, current, temperature & SOC monitoring',
       'CAN / RS485 communication — seamless integration with inverters and monitoring systems',

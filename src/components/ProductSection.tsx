@@ -6,6 +6,7 @@ import { Check, ArrowRight } from 'lucide-react'
 
 interface Product {
   name?: string
+  slug?: string
   category?: string
   description?: string
   features?: string[]
@@ -105,10 +106,10 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
         )}
 
         <a
-          href="#contact"
+          href={product.slug ? `/products/${product.slug}` : "#contact"}
           className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 font-semibold transition-colors"
         >
-          Get a Quote <ArrowRight size={16} />
+          View Details <ArrowRight size={16} />
         </a>
       </div>
     </div>

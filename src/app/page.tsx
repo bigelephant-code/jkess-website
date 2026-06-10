@@ -22,6 +22,7 @@ const siteContent = {
   products: [
     {
       name: "BMS Protection Board",
+      slug: "bms-protection-board",
       category: "bms",
       description:
         "Advanced battery management system designed for optimal performance, safety monitoring, and extended battery life across various energy storage applications.",
@@ -34,6 +35,7 @@ const siteContent = {
     },
     {
       name: "Battery Kit",
+      slug: "battery-kit",
       category: "battery-kit",
       description:
         "Complete battery kits compatible with both 15KWh and 16KWh cells, offering plug-and-play installation for residential and commercial energy storage systems.",
@@ -55,6 +57,7 @@ const siteContent = {
     },
     {
       name: "High Voltage Kit",
+      slug: "high-voltage-kit",
       category: "high-voltage-kit",
       description:
         "High-performance HV battery solutions engineered for large-scale energy storage, industrial backup power, and grid-support applications.",

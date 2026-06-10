@@ -177,7 +177,14 @@ export const products: Product[] = [
       { key: 'Weight', value: '~45 kg' },
       { key: 'Warranty', value: '5 years' },
     ],
-    images: [],
+    images: [
+      '/images/6u-kit/1.webp',
+      '/images/6u-kit/2.webp',
+      '/images/6u-kit/3.webp',
+      '/images/6u-kit/4.webp',
+      '/images/6u-kit/5.webp',
+      '/images/6u-kit/6.webp',
+    ],
     type: 'shop',
     variants: [
       { label: 'JKLU015 15KWh', price: '$1,899.00' },

@@ -67,6 +67,15 @@ const siteContent = {
         "Intelligent BMS with active balancing",
         "4.3\" LCD + CAN/RS485 communication",
       ],
+      image: "/images/6u-kit/1.webp",
+      images: [
+        "/images/6u-kit/1.webp",
+        "/images/6u-kit/2.webp",
+        "/images/6u-kit/3.webp",
+        "/images/6u-kit/4.webp",
+        "/images/6u-kit/5.webp",
+        "/images/6u-kit/6.webp",
+      ],
     },
     {
       name: "High Voltage Kit",

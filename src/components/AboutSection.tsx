@@ -1,8 +1,11 @@
 'use client'
 
+import Image from 'next/image'
+
 interface AboutData {
   title?: string
   content?: string
+  image?: string
 }
 
 export default function AboutSection({ data }: { data?: AboutData }) {
@@ -10,13 +13,25 @@ export default function AboutSection({ data }: { data?: AboutData }) {
     <section id="about" className="bg-black py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Image placeholder */}
-          <div className="aspect-square bg-gradient-to-br from-green-900/20 to-black border border-white/10 rounded-2xl flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-4">🏭</div>
-              <p className="text-gray-500 text-sm">Company Image</p>
+          {/* Image */}
+          {data?.image ? (
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+              <Image
+                src={data.image}
+                alt="JKESS — Shenzhen Nengyi Electronic Technology"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
-          </div>
+          ) : (
+            <div className="aspect-square bg-gradient-to-br from-green-900/20 to-black border border-white/10 rounded-2xl flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-6xl mb-4">🏭</div>
+                <p className="text-gray-500 text-sm">Company Image</p>
+              </div>
+            </div>
+          )}
 
           {/* Content */}
           <div>

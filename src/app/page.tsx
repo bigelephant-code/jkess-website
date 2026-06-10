@@ -68,6 +68,7 @@ const siteContent = {
   ],
   about: {
     title: "About JKESS",
+    image: "/images/company-building.webp",
   },
   footer: {
     contactEmail: "chinaenergymall@163.com",

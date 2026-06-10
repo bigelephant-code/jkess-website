@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState, useRef } from 'react'
 import { Factory, Globe, Users, Building2 } from 'lucide-react'
 
 interface StatsData {
@@ -7,6 +8,60 @@ interface StatsData {
   manufacturingBase?: string
   countriesCovered?: number
   employees?: string
+}
+
+function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
+  const [display, setDisplay] = useState('0')
+  const [suffixDisplay] = useState(suffix || '')
+  const ref = useRef<HTMLSpanElement>(null)
+  const animated = useRef(false)
+
+  // Parse numeric value
+  const rawNum = parseFloat(value.replace(/[+,]/g, ''))
+  const hasPlus = value.includes('+')
+
+  useEffect(() => {
+    if (animated.current) return
+    animated.current = true
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const startTime = Date.now()
+          const duration = 2000
+
+          const animate = () => {
+            const elapsed = Date.now() - startTime
+            const progress = Math.min(elapsed / duration, 1)
+            // Ease-out cubic for smooth deceleration
+            const eased = 1 - Math.pow(1 - progress, 3)
+            const current = Math.round(eased * rawNum)
+            setDisplay(current.toString())
+            if (progress < 1) {
+              requestAnimationFrame(animate)
+            } else {
+              setDisplay(hasPlus ? value : rawNum.toString())
+            }
+          }
+          requestAnimationFrame(animate)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [rawNum, hasPlus, value])
+
+  return (
+    <span ref={ref}>
+      {display}{suffixDisplay}
+    </span>
+  )
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -31,7 +86,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
     },
     {
       icon: iconMap.countries,
-      value: data?.countriesCovered ? `${data.countriesCovered}` : '30+',
+      value: data?.countriesCovered ? `${data.countriesCovered}+` : '30+',
       label: 'Countries & Regions',
     },
     {
@@ -46,14 +101,11 @@ export default function StatsSection({ data }: { data?: StatsData }) {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, idx) => (
-            <div
-              key={idx}
-              className="text-center space-y-3"
-            >
+            <div key={idx} className="text-center space-y-3">
               <div className="flex justify-center text-green-400">{stat.icon}</div>
               <div className="flex items-baseline justify-center gap-1">
                 <span className="text-4xl md:text-5xl font-bold text-white">
-                  {stat.value}
+                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                 </span>
                 {stat.suffix && (
                   <span className="text-lg text-gray-400">{stat.suffix}</span>

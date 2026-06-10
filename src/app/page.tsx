@@ -43,15 +43,14 @@ const siteContent = {
         "Scalable design for flexible capacity",
         "IP54 rated enclosure for indoor & outdoor use",
       ],
-      image: "/images/battery-kit-system.webp",
+      image: "/images/battery-kit-hero.webp",
       images: [
+        "/images/battery-kit-hero.webp",
         "/images/battery-kit-system.webp",
         "/images/battery-kit-front.webp",
         "/images/battery-kit-side.webp",
         "/images/battery-kit-rear.webp",
         "/images/battery-kit-display.webp",
-        "/images/battery-kit-enclosure.webp",
-        "/images/battery-kit-headon.webp",
       ],
     },
     {

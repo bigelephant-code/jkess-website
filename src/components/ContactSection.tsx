@@ -1,6 +1,7 @@
 'use client'
 
 import { Mail, MapPin, Phone, Send } from 'lucide-react'
+import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
 
 interface FooterData {
   contactEmail?: string
@@ -10,61 +11,69 @@ export default function ContactSection({ data }: { data?: FooterData }) {
   return (
     <section id="contact" className="bg-[#0a0a0a] py-24">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Get in Touch
-          </h2>
-          <p className="text-gray-400 max-w-lg mx-auto">
-            Ready to power your future? Contact us for a custom quote or partnership inquiry.
-          </p>
-        </div>
+        <Reveal>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              Get in Touch
+            </h2>
+            <p className="text-gray-400 max-w-lg mx-auto">
+              Ready to power your future? Contact us for a custom quote or partnership inquiry.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
           {/* Contact info */}
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                <Phone size={20} className="text-green-400" />
+          <StaggerReveal staggerDelay={0.12} className="space-y-6">
+            <StaggerItem>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Phone size={20} className="text-green-400" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold">Phone</p>
+                  <a href="tel:+8613162828868" className="text-gray-400 hover:text-green-400 transition-colors">
+                    +86 131 6282 8868
+                  </a>
+                </div>
               </div>
-              <div>
-                <p className="text-white font-semibold">Phone</p>
-                <a href="tel:+8613162828868" className="text-gray-400 hover:text-green-400 transition-colors">
-                  +86 131 6282 8868
-                </a>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Mail size={20} className="text-green-400" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold">Email</p>
+                  <a
+                    href={`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}`}
+                    className="text-gray-400 hover:text-green-400 transition-colors"
+                  >
+                    {data?.contactEmail || 'chinaenergymall@163.com'}
+                  </a>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                <Mail size={20} className="text-green-400" />
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <MapPin size={20} className="text-green-400" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold">Location</p>
+                  <p className="text-gray-400 leading-relaxed">
+                    Building B4, Yunzhi Science &amp; Technology Park<br />
+                    Guangming Street, Guangming District<br />
+                    Shenzhen, China
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-white font-semibold">Email</p>
-                <a
-                  href={`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}`}
-                  className="text-gray-400 hover:text-green-400 transition-colors"
-                >
-                  {data?.contactEmail || 'chinaenergymall@163.com'}
-                </a>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                <MapPin size={20} className="text-green-400" />
-              </div>
-              <div>
-                <p className="text-white font-semibold">Location</p>
-                <p className="text-gray-400 leading-relaxed">
-                  Building B4, Yunzhi Science &amp; Technology Park<br />
-                  Guangming Street, Guangming District<br />
-                  Shenzhen, China
-                </p>
-              </div>
-            </div>
-          </div>
+            </StaggerItem>
+          </StaggerReveal>
 
           {/* Simple contact form */}
-          <form
-            className="space-y-4"
+          <Reveal delay={0.3}>
+            <form className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault()
               const form = e.target as HTMLFormElement
@@ -106,6 +115,7 @@ export default function ContactSection({ data }: { data?: FooterData }) {
               Send Message <Send size={16} />
             </button>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>

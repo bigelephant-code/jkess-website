@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Check, ArrowRight } from 'lucide-react'
+import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
 
 interface Product {
   name?: string
@@ -124,20 +125,26 @@ export default function ProductSection({ products }: { products?: Product[] }) {
   return (
     <section id="products" className="bg-[#0a0a0a] py-24">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Our Products
-          </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
-            Comprehensive energy storage solutions engineered for reliability and performance
-          </p>
-        </div>
+        <Reveal>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              Our Products
+            </h2>
+            <p className="text-gray-400 max-w-xl mx-auto">
+              Comprehensive energy storage solutions engineered for reliability and performance
+            </p>
+          </div>
+        </Reveal>
 
-        <div className="space-y-20">
-          {products.map((product, idx) => (
-            <ProductCard key={idx} product={product} idx={idx} />
-          ))}
-        </div>
+        <StaggerReveal staggerDelay={0.2}>
+          <div className="space-y-20">
+            {products.map((product, idx) => (
+              <StaggerItem key={idx}>
+                <ProductCard product={product} idx={idx} />
+              </StaggerItem>
+            ))}
+          </div>
+        </StaggerReveal>
       </div>
     </section>
   )

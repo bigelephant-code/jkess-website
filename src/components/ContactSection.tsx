@@ -9,14 +9,14 @@ interface FooterData {
 
 export default function ContactSection({ data }: { data?: FooterData }) {
   return (
-    <section id="contact" className="bg-gray-50 py-24">
+    <section id="contact" className="bg-black py-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Get in Touch
             </h2>
-            <p className="text-gray-500 max-w-lg mx-auto">
+            <p className="text-gray-400 max-w-lg mx-auto">
               Ready to power your future? Contact us for a custom quote or partnership inquiry.
             </p>
           </div>
@@ -27,12 +27,12 @@ export default function ContactSection({ data }: { data?: FooterData }) {
           <StaggerReveal staggerDelay={0.12} className="space-y-6">
             <StaggerItem>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                  <Phone size={20} className="text-green-600" />
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Phone size={20} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="text-gray-900 font-semibold">Phone</p>
-                  <a href="tel:+8613162828868" className="text-gray-500 hover:text-green-600 transition-colors">
+                  <p className="text-white font-semibold">Phone</p>
+                  <a href="tel:+8613162828868" className="text-gray-400 hover:text-green-400 transition-colors">
                     +86 131 6282 8868
                   </a>
                 </div>
@@ -40,14 +40,14 @@ export default function ContactSection({ data }: { data?: FooterData }) {
             </StaggerItem>
             <StaggerItem>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                  <Mail size={20} className="text-green-600" />
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <Mail size={20} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="text-gray-900 font-semibold">Email</p>
+                  <p className="text-white font-semibold">Email</p>
                   <a
                     href={`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}`}
-                    className="text-gray-500 hover:text-green-600 transition-colors"
+                    className="text-gray-400 hover:text-green-400 transition-colors"
                   >
                     {data?.contactEmail || 'chinaenergymall@163.com'}
                   </a>
@@ -56,12 +56,12 @@ export default function ContactSection({ data }: { data?: FooterData }) {
             </StaggerItem>
             <StaggerItem>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                  <MapPin size={20} className="text-green-600" />
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <MapPin size={20} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="text-gray-900 font-semibold">Location</p>
-                  <p className="text-gray-500 leading-relaxed">
+                  <p className="text-white font-semibold">Location</p>
+                  <p className="text-gray-400 leading-relaxed">
                     Building B4, Yunzhi Science &amp; Technology Park<br />
                     Guangming Street, Guangming District<br />
                     Shenzhen, China
@@ -91,26 +91,26 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                   type="text"
                   name="name"
                   placeholder="Your Name"
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors"
+                  className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
                   required
                 />
                 <input
                   type="text"
                   name="company"
                   placeholder="Company"
-                  className="bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors"
+                  className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
                 />
               </div>
               <textarea
                 name="message"
                 placeholder="Your Message"
                 rows={4}
-                className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors resize-none"
                 required
               />
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-semibold px-6 py-3 rounded-lg transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3 rounded-lg transition-all"
               >
                 Send Message <Send size={16} />
               </button>

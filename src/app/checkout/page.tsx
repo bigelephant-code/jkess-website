@@ -142,17 +142,11 @@ export default function CheckoutPage() {
 
   // ── Checkout form ──
   return (
-    <div className="min-h-screen bg-black">
-      {/* ═══════ DARK TOP ═══════ */}
-      <div className="bg-black pt-24 pb-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-3xl font-bold text-white">Checkout</h1>
-        </div>
-      </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 
-      {/* ═══════ LIGHT CONTENT ═══════ */}
-      <section className="bg-gray-50 py-12">
-        <div className="max-w-5xl mx-auto px-6">
           <Reveal>
             <div className="grid lg:grid-cols-5 gap-8">
               {/* Left: Forms */}
@@ -247,7 +241,7 @@ export default function CheckoutPage() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </div>
     </div>
   )
 }

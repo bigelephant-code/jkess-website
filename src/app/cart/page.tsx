@@ -32,25 +32,20 @@ export default function CartPage() {
 
   // ── Cart with items ──
   return (
-    <div className="min-h-screen bg-black">
-      {/* ═══════ DARK TOP ═══════ */}
-      <div className="bg-black pt-24 pb-12">
+    <div className="min-h-screen bg-gray-50">
+      {/* ═══════ CONTENT ═══════ */}
+      <div className="pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-white">Shopping Cart</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
             <button
               onClick={clearCart}
-              className="text-sm text-gray-500 hover:text-red-400 transition-colors"
+              className="text-sm text-gray-500 hover:text-red-500 transition-colors"
             >
               Clear All
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* ═══════ LIGHT CONTENT ═══════ */}
-      <section className="bg-gray-50 py-12">
-        <div className="max-w-5xl mx-auto px-6">
           <Reveal>
             <div className="space-y-4 mb-8">
               {items.map((item) => (
@@ -137,7 +132,7 @@ export default function CartPage() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </div>
     </div>
   )
 }

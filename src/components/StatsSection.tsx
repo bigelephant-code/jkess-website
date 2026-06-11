@@ -15,15 +15,11 @@ function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
   const [display, setDisplay] = useState('0')
   const [suffixDisplay] = useState(suffix || '')
   const ref = useRef<HTMLSpanElement>(null)
-  const animated = useRef(false)
 
   const rawNum = parseFloat(value.replace(/[+,]/g, ''))
   const hasPlus = value.includes('+')
 
   useEffect(() => {
-    if (animated.current) return
-    animated.current = true
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

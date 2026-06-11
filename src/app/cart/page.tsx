@@ -4,10 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
+import { Reveal } from '@/components/ScrollReveal'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, itemCount, total } = useCart()
 
+  // ── Empty cart ──
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
@@ -28,103 +30,114 @@ export default function CartPage() {
     )
   }
 
+  // ── Cart with items ──
   return (
-    <div className="min-h-screen bg-black pt-24 pb-16">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-white">Shopping Cart</h1>
-          <button
-            onClick={clearCart}
-            className="text-sm text-gray-500 hover:text-red-400 transition-colors"
-          >
-            Clear All
-          </button>
-        </div>
-
-        <div className="space-y-4 mb-8">
-          {items.map((item) => (
-            <div
-              key={`${item.slug}-${item.variant}`}
-              className="flex gap-4 bg-white/5 border border-white/10 rounded-2xl p-4"
+    <div className="min-h-screen bg-black">
+      {/* ═══════ DARK TOP ═══════ */}
+      <div className="bg-black pt-24 pb-12">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-white">Shopping Cart</h1>
+            <button
+              onClick={clearCart}
+              className="text-sm text-gray-500 hover:text-red-400 transition-colors"
             >
-              {/* Image */}
-              <div className="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-black">
-                <Image
-                  src={item.image || '/placeholder.svg'}
-                  alt={item.name}
-                  fill
-                  className="object-contain p-2"
-                  sizes="96px"
-                />
-              </div>
-
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <Link
-                  href={`/products/${item.slug}`}
-                  className="text-white font-semibold hover:text-green-400 transition-colors"
-                >
-                  {item.name}
-                </Link>
-                <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
-                <p className="text-green-400 font-semibold mt-2">{item.price}</p>
-              </div>
-
-              {/* Quantity controls */}
-              <div className="flex flex-col items-end gap-3">
-                <button
-                  onClick={() => removeItem(item.slug, item.variant)}
-                  className="text-gray-500 hover:text-red-400 transition-colors"
-                >
-                  <Trash2 size={18} />
-                </button>
-                <div className="flex items-center border border-white/10 rounded-lg">
-                  <button
-                    onClick={() => updateQuantity(item.slug, item.variant, item.quantity - 1)}
-                    className="px-3 py-1.5 text-gray-400 hover:text-white"
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span className="px-4 py-1.5 text-white text-sm min-w-[2rem] text-center">
-                    {item.quantity}
-                  </span>
-                  <button
-                    onClick={() => updateQuantity(item.slug, item.variant, item.quantity + 1)}
-                    className="px-3 py-1.5 text-gray-400 hover:text-white"
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Summary */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400">
-              Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
-            </span>
-            <span className="text-white font-semibold">{total}</span>
+              Clear All
+            </button>
           </div>
-          <p className="text-xs text-gray-500 mb-6">
-            Shipping &amp; taxes calculated at checkout
-          </p>
-          <Link
-            href="/checkout"
-            className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-full text-lg transition-all"
-          >
-            Proceed to Checkout
-          </Link>
-          <Link
-            href="/"
-            className="w-full flex items-center justify-center gap-2 text-gray-400 hover:text-white font-medium px-8 py-3 mt-3 transition-colors"
-          >
-            <ArrowLeft size={16} /> Continue Shopping
-          </Link>
         </div>
       </div>
+
+      {/* ═══════ LIGHT CONTENT ═══════ */}
+      <section className="bg-gray-50 py-12">
+        <div className="max-w-5xl mx-auto px-6">
+          <Reveal>
+            <div className="space-y-4 mb-8">
+              {items.map((item) => (
+                <div
+                  key={`${item.slug}-${item.variant}`}
+                  className="flex gap-4 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm"
+                >
+                  {/* Image */}
+                  <div className="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                    <Image
+                      src={item.image || '/placeholder.svg'}
+                      alt={item.name}
+                      fill
+                      className="object-contain p-2"
+                      sizes="96px"
+                    />
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href={`/products/${item.slug}`}
+                      className="text-gray-900 font-semibold hover:text-green-600 transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                    <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
+                    <p className="text-green-600 font-semibold mt-2">{item.price}</p>
+                  </div>
+
+                  {/* Quantity controls */}
+                  <div className="flex flex-col items-end gap-3">
+                    <button
+                      onClick={() => removeItem(item.slug, item.variant)}
+                      className="text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                    <div className="flex items-center border border-gray-200 rounded-lg bg-white">
+                      <button
+                        onClick={() => updateQuantity(item.slug, item.variant, item.quantity - 1)}
+                        className="px-3 py-1.5 text-gray-500 hover:text-gray-900"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="px-4 py-1.5 text-gray-900 text-sm min-w-[2rem] text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.slug, item.variant, item.quantity + 1)}
+                        className="px-3 py-1.5 text-gray-500 hover:text-gray-900"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Summary */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-500">
+                  Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                </span>
+                <span className="text-gray-900 font-semibold">{total}</span>
+              </div>
+              <p className="text-xs text-gray-400 mb-6">
+                Shipping &amp; taxes calculated at checkout
+              </p>
+              <Link
+                href="/checkout"
+                className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-full text-lg transition-all"
+              >
+                Proceed to Checkout
+              </Link>
+              <Link
+                href="/"
+                className="w-full flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900 font-medium px-8 py-3 mt-3 transition-colors"
+              >
+                <ArrowLeft size={16} /> Continue Shopping
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </div>
   )
 }

@@ -34,7 +34,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ═══════ CONTENT ═══════ */}
-      <div className="pt-24 pb-16">
+      <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>

@@ -143,7 +143,7 @@ export default function CheckoutPage() {
   // ── Checkout form ──
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="pt-24 pb-16">
+      <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 

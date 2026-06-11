@@ -94,7 +94,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
       {/* ═══════ BOTTOM TAGLINE ═══════ */}
       <div className="pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-gray-400 text-lg md:text-xl font-light italic tracking-wide max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide whitespace-nowrap">
             Comprehensive energy storage solutions engineered for reliability and performance
           </p>
         </div>

@@ -23,11 +23,8 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
     <div className="min-h-screen bg-gray-50">
       {/* ═══════ TOP SPACER ═══════ */}
       <div className="pt-32 pb-8">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Our Products</h1>
-          <p className="text-gray-500 max-w-xl mx-auto">
-            Comprehensive energy storage solutions engineered for reliability and performance
-          </p>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="h-0" /> {/* just spacer */}
         </div>
       </div>
 
@@ -93,6 +90,15 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
           </StaggerReveal>
         </div>
       </section>
+
+      {/* ═══════ BOTTOM TAGLINE ═══════ */}
+      <div className="pb-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-gray-400 text-lg md:text-xl font-light italic tracking-wide max-w-2xl mx-auto leading-relaxed">
+            Comprehensive energy storage solutions engineered for reliability and performance
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

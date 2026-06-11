@@ -22,9 +22,10 @@ export default function TechLines() {
 
     let animId: number
     let points: Point[] = []
-    const CONNECT_DIST = 150
-    const POINT_COUNT = 60
-    const BASE_SPEED = 0.3
+    let time = 0
+    const CONNECT_DIST = 220
+    const POINT_COUNT = 130
+    const BASE_SPEED = 0.25
 
     function resize() {
       if (!canvas) return
@@ -40,7 +41,7 @@ export default function TechLines() {
           y: Math.random() * canvas!.height,
           vx: (Math.random() - 0.5) * BASE_SPEED,
           vy: (Math.random() - 0.5) * BASE_SPEED,
-          size: Math.random() * 2 + 1,
+          size: Math.random() * 2.5 + 0.8,
         })
       }
     }
@@ -49,26 +50,44 @@ export default function TechLines() {
       if (!canvas || !ctx) return
       const w = canvas.width
       const h = canvas.height
+      time += 0.005
 
       ctx.clearRect(0, 0, w, h)
 
-      // Move points
+      // ── Layer 1: subtle horizontal tech grid lines ──
+      ctx.strokeStyle = 'rgba(74, 222, 128, 0.06)'
+      ctx.lineWidth = 0.5
+      const gridStep = 60
+      const offsetY = (Math.sin(time) * 10 + Math.sin(time * 2.3) * 5) % gridStep
+      for (let y = offsetY; y < h; y += gridStep) {
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(w, y)
+        ctx.stroke()
+      }
+      for (let x = 0; x < w; x += gridStep) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, h)
+        ctx.stroke()
+      }
+
+      // ── Layer 2: moving dots ──
       for (const p of points) {
         p.x += p.vx
         p.y += p.vy
 
-        // Bounce off edges with some randomness
-        if (p.x < 0 || p.x > w) {
+        if (p.x < -50 || p.x > w + 50) {
           p.vx *= -1
-          p.x = Math.max(0, Math.min(w, p.x))
+          p.x = Math.max(-50, Math.min(w + 50, p.x))
         }
-        if (p.y < 0 || p.y > h) {
+        if (p.y < -50 || p.y > h + 50) {
           p.vy *= -1
-          p.y = Math.max(0, Math.min(h, p.y))
+          p.y = Math.max(-50, Math.min(h + 50, p.y))
         }
       }
 
-      // Draw connections + nodes in one pass
+      // ── Layer 3: connection lines ──
       for (let i = 0; i < points.length; i++) {
         for (let j = i + 1; j < points.length; j++) {
           const dx = points[i].x - points[j].x
@@ -76,28 +95,29 @@ export default function TechLines() {
           const dist = Math.sqrt(dx * dx + dy * dy)
 
           if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.5
+            const alpha = (1 - dist / CONNECT_DIST) * 0.35
             ctx.beginPath()
             ctx.moveTo(points[i].x, points[i].y)
             ctx.lineTo(points[j].x, points[j].y)
-            ctx.strokeStyle = `rgba(74, 222, 128, ${alpha})` // green-400
-            ctx.lineWidth = 0.6
+            ctx.strokeStyle = `rgba(74, 222, 128, ${alpha})`
+            ctx.lineWidth = 0.7
             ctx.stroke()
           }
         }
       }
 
-      // Draw nodes
+      // ── Layer 4: node dots with glow ──
       for (const p of points) {
+        // glow
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(74, 222, 128, 0.8)'
+        ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(74, 222, 128, 0.06)'
         ctx.fill()
 
-        // Glow effect
+        // core
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(74, 222, 128, 0.08)'
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
         ctx.fill()
       }
 
@@ -110,7 +130,6 @@ export default function TechLines() {
 
     window.addEventListener('resize', () => {
       resize()
-      // Recalculate point positions relative to new size
       for (const p of points) {
         p.x = Math.random() * canvas!.width
         p.y = Math.random() * canvas!.height

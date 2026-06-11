@@ -8,8 +8,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo */}
-          <a href="/" className="text-lg font-bold text-white">
-            <span className="text-green-400">J</span>KESS
+          <a href="/" className="flex items-center">
+            <img
+              src="/images/jkess-logo.png"
+              alt="JKESS"
+              className="h-7 w-auto brightness-0 invert"
+            />
           </a>
 
           {/* Copyright */}

@@ -19,8 +19,12 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-none">
-          <span className="text-green-400">J</span>KESS
+        <a href="/" className="flex items-center">
+          <img
+            src="/images/jkess-logo.png"
+            alt="JKESS"
+            className="h-9 md:h-11 w-auto brightness-0 invert"
+          />
         </a>
 
         {/* Desktop nav */}

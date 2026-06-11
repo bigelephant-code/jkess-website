@@ -1,6 +1,5 @@
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
-import ProductSection from "@/components/ProductSection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -11,7 +10,7 @@ const siteContent = {
     subtitle:
       "Shenzhen Nengyi Electronic Technology — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
     ctaText: "Explore Products",
-    ctaLink: "#products",
+    ctaLink: "/products",
   },
   stats: {
     yearsEstablished: 10,
@@ -106,7 +105,6 @@ export default function Home() {
     <>
       <HeroSection data={siteContent.hero} />
       <StatsSection data={siteContent.stats} />
-      <ProductSection products={siteContent.products} />
       <AboutSection data={siteContent.about} />
       <ContactSection data={siteContent.footer} />
     </>

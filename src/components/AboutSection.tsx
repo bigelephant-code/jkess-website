@@ -11,13 +11,13 @@ interface AboutData {
 
 export default function AboutSection({ data }: { data?: AboutData }) {
   return (
-    <section id="about" className="bg-black py-24">
+    <section id="about" className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <Reveal direction="left">
             {data?.image ? (
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200">
                 <Image
                   src={data.image}
                   alt="JKESS — Shenzhen Nengyi Electronic Technology"
@@ -27,10 +27,10 @@ export default function AboutSection({ data }: { data?: AboutData }) {
                 />
               </div>
             ) : (
-              <div className="aspect-square bg-gradient-to-br from-green-900/20 to-black border border-white/10 rounded-2xl flex items-center justify-center">
+              <div className="aspect-square bg-gradient-to-br from-green-100 to-gray-50 border border-gray-200 rounded-2xl flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl mb-4">🏭</div>
-                  <p className="text-gray-500 text-sm">Company Image</p>
+                  <p className="text-gray-400 text-sm">Company Image</p>
                 </div>
               </div>
             )}
@@ -39,10 +39,10 @@ export default function AboutSection({ data }: { data?: AboutData }) {
           {/* Content */}
           <Reveal direction="right" delay={0.15}>
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 {data?.title || 'About JKESS'}
               </h2>
-              <div className="text-gray-400 leading-relaxed space-y-4">
+              <div className="text-gray-600 leading-relaxed space-y-4">
                 {data?.content
                   ? data.content.split('\n\n').map((paragraph, i) => (
                       <p key={i}>{paragraph}</p>

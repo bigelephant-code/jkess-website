@@ -96,7 +96,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
   ]
 
   return (
-    <section className="bg-black py-20 border-y border-white/5">
+    <section className="bg-white py-20 border-y border-gray-100">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
           <StaggerReveal staggerDelay={0.15}>
@@ -104,9 +104,9 @@ export default function StatsSection({ data }: { data?: StatsData }) {
               {stats.map((stat, idx) => (
                 <StaggerItem key={idx}>
                   <div className="text-center space-y-3">
-                    <div className="flex justify-center text-green-400">{stat.icon}</div>
+                    <div className="flex justify-center text-green-500">{stat.icon}</div>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl md:text-5xl font-bold text-white">
+                      <span className="text-4xl md:text-5xl font-bold text-gray-900">
                         <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                       </span>
                       {stat.suffix && (

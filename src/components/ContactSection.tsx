@@ -9,10 +9,10 @@ interface FooterData {
 
 export default function ContactSection({ data }: { data?: FooterData }) {
   return (
-    <section id="contact" className="bg-black py-10 border-t border-white/5">
+    <section id="contact" className="bg-black py-8 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
               Get in Touch
             </h2>
@@ -22,9 +22,9 @@ export default function ContactSection({ data }: { data?: FooterData }) {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Contact info */}
-          <StaggerReveal staggerDelay={0.12} className="space-y-6">
+          <StaggerReveal staggerDelay={0.12} className="space-y-4">
             <StaggerItem>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">

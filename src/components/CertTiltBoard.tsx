@@ -93,50 +93,28 @@ export default function CertTiltBoard() {
             transition={{ duration: 0.1 }}
           >
             {/* Wall background — solid board */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden"
+            <div className="absolute inset-0 rounded-3xl border border-black/[0.06] overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 30%, #16213e 60%, #0f0f1a 100%)',
-                boxShadow: '0 30px 100px rgba(0,0,0,0.6), 0 0 80px rgba(91,91,255,0.06), inset 0 1px 0 rgba(255,255,255,0.06)',
+                background: 'linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.005) 50%, rgba(91,91,255,0.03) 100%)',
+                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
               }}
             >
-              {/* Wall outer glow border */}
-              <div className="absolute inset-0 rounded-3xl opacity-30"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(91,91,255,0.15), rgba(166,108,217,0.08), rgba(245,138,138,0.05), transparent)',
-                  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  maskComposite: 'exclude',
-                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  padding: '1px',
-                }} />
-
               {/* Wall inner texture — subtle grid */}
-              <div className="absolute inset-0 opacity-[0.03]"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(91,91,255,0.08) 1px, transparent 1px),
-                                   linear-gradient(90deg, rgba(91,91,255,0.08) 1px, transparent 1px)`,
-                  backgroundSize: '50px 50px',
-                }} />
-
-              {/* Wall glow center — blue-purple soft light */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.08]"
-                style={{ background: 'radial-gradient(circle, #5b5bff 0%, #a66cd9 40%, transparent 70%)' }} />
-
-              {/* Subtle pink accent at bottom */}
-              <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] opacity-30"
-                style={{ background: 'linear-gradient(90deg, transparent, #f58a8a, transparent)' }} />
-
-              {/* Glass overlay for sheen */}
               <div className="absolute inset-0 opacity-[0.02]"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.03) 100%)',
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                                   linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                  backgroundSize: '40px 40px',
                 }} />
+              {/* Wall glow center */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-[0.04]"
+                style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
             </div>
 
             {/* ── Wall Title ── */}
             <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
-                <span className="text-white">Certified</span>{' '}
+                <span className="text-black">Certified</span>{' '}
                 <span style={{
                   background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
                   WebkitBackgroundClip: 'text',
@@ -154,6 +132,7 @@ export default function CertTiltBoard() {
                 style={{
                   left: cardPositions[i].left,
                   top: cardPositions[i].top,
+                  // Small individual z-depth so they sit "on" the wall surface
                   transform: `translateZ(${i % 2 === 0 ? 8 : -8}px)`,
                 }}
                 initial={{ opacity: 0, scale: 0.8 }}

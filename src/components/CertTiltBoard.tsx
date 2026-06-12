@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
@@ -33,7 +33,6 @@ const cardPositions = [
 export default function CertTiltBoard() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [expandedIndex, setExpandedIndex] = useState(-1)
-  const [isHovering, setIsHovering] = useState(false)
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -56,11 +55,10 @@ export default function CertTiltBoard() {
   const handleMouseLeave = () => {
     mouseX.set(0)
     mouseY.set(0)
-    setIsHovering(false)
   }
 
   return (
-    <section id="certifications" className="relative bg-[#010101] py-24 overflow-hidden">
+    <section className="relative bg-white overflow-hidden py-16">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
@@ -80,7 +78,6 @@ export default function CertTiltBoard() {
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={handleMouseLeave}
           className="relative mx-auto cursor-default"
           style={{ perspective: 1200, maxWidth: 800, height: 520 }}
@@ -97,10 +94,10 @@ export default function CertTiltBoard() {
             transition={{ duration: 0.1 }}
           >
             {/* Wall background — solid board */}
-            <div className="absolute inset-0 rounded-3xl border border-white/[0.06] overflow-hidden"
+            <div className="absolute inset-0 rounded-3xl border border-black/[0.06] overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.008) 50%, rgba(91,91,255,0.02) 100%)',
-                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+                background: 'linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.005) 50%, rgba(91,91,255,0.03) 100%)',
+                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
               }}
             >
               {/* Wall inner texture — subtle grid */}
@@ -139,7 +136,7 @@ export default function CertTiltBoard() {
 
                 {/* Card */}
                 <div className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden
-                  border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01]
+                  border border-white/[0.15] bg-gradient-to-b from-[#1a1a2e] to-[#0d0d1a]
                   group-hover:border-white/[0.2] transition-all duration-300
                   shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
                   <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}88)` }} />
@@ -156,10 +153,7 @@ export default function CertTiltBoard() {
             ))}
           </motion.div>
 
-          {/* Hint */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] text-gray-600 uppercase tracking-[0.15em] pointer-events-none">
-            Move mouse to explore
-          </div>
+
         </div>
       </div>
 

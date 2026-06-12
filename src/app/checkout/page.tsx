@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
@@ -142,7 +142,7 @@ export default function CheckoutPage() {
 
   // ── Checkout form ──
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-50"><div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
       <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>

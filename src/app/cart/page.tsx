@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,7 +32,7 @@ export default function CartPage() {
 
   // ── Cart with items ──
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-50"><div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
       {/* ═══════ CONTENT ═══════ */}
       <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">

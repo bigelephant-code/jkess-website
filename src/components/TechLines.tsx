@@ -25,7 +25,7 @@ export default function TechLines() {
     let time = 0
     const CONNECT_DIST = 220
     const POINT_COUNT = 130
-    const BASE_SPEED = 0.25
+    const BASE_SPEED = 0.7
 
     function resize() {
       if (!canvas) return
@@ -50,7 +50,7 @@ export default function TechLines() {
       if (!canvas || !ctx) return
       const w = canvas.width
       const h = canvas.height
-      time += 0.005
+      time += 0.015
 
       ctx.clearRect(0, 0, w, h)
 

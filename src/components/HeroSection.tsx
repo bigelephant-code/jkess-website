@@ -54,10 +54,9 @@ export default function HeroSection({ data }: { data?: HeroData }) {
                   key={i}
                   className="inline-block"
                   variants={{
-                    rest: { y: 0, color: '#000000', transition: { duration: 0.2 } },
+                    rest: { y: 0, transition: { duration: 0.2 } },
                     hover: {
                       y: -4,
-                      color: '#22c55e',
                       transition: { duration: 0.2 }
                     }
                   }}

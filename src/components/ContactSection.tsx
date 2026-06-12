@@ -9,11 +9,11 @@ interface FooterData {
 
 export default function ContactSection({ data }: { data?: FooterData }) {
   return (
-    <section id="contact" className="bg-black py-6 border-t border-white/5">
+    <section id="contact" className="bg-black py-4 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
-          <div className="text-center mb-4">
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-3">
+          <div className="text-center mb-3">
+            <h2 className="text-xl md:text-3xl font-bold text-white mb-2">
               Get in Touch
             </h2>
             <p className="text-gray-400 max-w-lg mx-auto">
@@ -86,31 +86,31 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                 window.open(`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}?subject=${subject}&body=${body}`)
               }}
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
                   name="name"
                   placeholder="Your Name"
-                  className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
+                  className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
                   required
                 />
                 <input
                   type="text"
                   name="company"
                   placeholder="Company"
-                  className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
+                  className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors"
                 />
               </div>
               <textarea
                 name="message"
                 placeholder="Your Message"
-                rows={4}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors resize-none"
+                rows={3}
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors resize-none"
                 required
               />
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3 rounded-lg transition-all"
+                className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2.5 rounded-lg transition-all text-sm"
               >
                 Send Message <Send size={16} />
               </button>

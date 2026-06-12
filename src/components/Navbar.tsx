@@ -23,7 +23,7 @@ export default function Navbar() {
           <img
             src="/images/jkess-logo-cropped.png"
             alt="JKESS"
-            className="h-[60px] w-auto brightness-0 invert"
+            className="h-12 w-auto brightness-0 invert"
           />
         </a>
 

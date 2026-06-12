@@ -51,7 +51,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   return (
     <div className="min-h-screen bg-black">
       {/* ═══════ DARK SECTION: Hero + Product Info ═══════ */}
-      <div className="bg-black pt-24 pb-6">
+      <div className="bg-black pt-24 pb-4">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Back link */}
           <Link href="/#products" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6 pt-2">

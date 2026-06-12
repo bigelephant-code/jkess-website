@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { Factory, Globe, Users, Building2 } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
+import { motion } from 'framer-motion'
 
 interface StatsData {
   yearsEstablished?: number
@@ -11,9 +12,37 @@ interface StatsData {
   employees?: string
 }
 
+/* ─── Per-character stagger text ─── */
+function StaggerText({ text, className }: { text: string; className?: string }) {
+  return (
+    <motion.span
+      className={`flex ${className || ''}`}
+      initial="rest"
+      animate="rest"
+      variants={{
+        rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+        hover: { transition: { staggerChildren: 0.025 } }
+      }}
+      whileHover="hover"
+    >
+      {text.split('').map((char, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          variants={{
+            rest: { y: 0, color: 'inherit', transition: { duration: 0.2 } },
+            hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } }
+          }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </motion.span>
+  )
+}
+
 function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
   const [display, setDisplay] = useState('0')
-  const [suffixDisplay] = useState(suffix || '')
   const ref = useRef<HTMLSpanElement>(null)
 
   const rawNum = parseFloat(value.replace(/[+,]/g, ''))
@@ -45,48 +74,50 @@ function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
       { threshold: 0.3 }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [rawNum, hasPlus, value])
 
+  const displayText = display
+
   return (
     <span ref={ref}>
-      {display}{suffixDisplay}
+      <StaggerText text={displayText} />
     </span>
   )
 }
 
-const iconMap: Record<string, React.ReactNode> = {
-  years: <Building2 size={28} />,
-  base: <Factory size={28} />,
-  countries: <Globe size={28} />,
-  employees: <Users size={28} />,
+const iconMap: Record<string, { icon: React.ReactNode; label: string }> = {
+  years: { icon: <Building2 size={28} />, label: 'Years of Innovation' },
+  base: { icon: <Factory size={28} />, label: 'Manufacturing Base' },
+  countries: { icon: <Globe size={28} />, label: 'Countries & Regions' },
+  employees: { icon: <Users size={28} />, label: 'Employees' },
 }
 
 export default function StatsSection({ data }: { data?: StatsData }) {
   const stats = [
     {
-      icon: iconMap.years,
+      key: 'years',
       value: data?.yearsEstablished ? `${data.yearsEstablished}` : '4',
+      suffix: undefined as string | undefined,
       label: 'Years of Innovation',
     },
     {
-      icon: iconMap.base,
+      key: 'base',
       value: data?.manufacturingBase || '30,000',
-      suffix: '㎡',
+      suffix: '㎡' as string | undefined,
       label: 'Manufacturing Base',
     },
     {
-      icon: iconMap.countries,
+      key: 'countries',
       value: data?.countriesCovered ? `${data.countriesCovered}+` : '30+',
+      suffix: undefined as string | undefined,
       label: 'Countries & Regions',
     },
     {
-      icon: iconMap.employees,
+      key: 'employees',
       value: data?.employees || '100+',
+      suffix: undefined as string | undefined,
       label: 'Employees',
     },
   ]
@@ -99,8 +130,21 @@ export default function StatsSection({ data }: { data?: StatsData }) {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {stats.map((stat, idx) => (
                 <StaggerItem key={idx}>
-                  <div className="text-center space-y-3">
-                    <div className="flex justify-center text-green-500">{stat.icon}</div>
+                  <motion.div
+                    className="text-center space-y-3 group cursor-default"
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Icon */}
+                    <motion.div
+                      className="flex justify-center text-gray-400 group-hover:text-green-500 transition-colors duration-200"
+                      whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {iconMap[stat.key]?.icon || iconMap.years.icon}
+                    </motion.div>
+
+                    {/* Number */}
                     <div className="flex items-baseline justify-center gap-1">
                       <span className="text-4xl md:text-5xl font-bold text-gray-900">
                         <AnimatedNumber value={stat.value} suffix={stat.suffix} />
@@ -109,10 +153,13 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                         <span className="text-lg text-gray-400">{stat.suffix}</span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 uppercase tracking-wider">
-                      {stat.label}
-                    </p>
-                  </div>
+
+                    {/* Label */}
+                    <StaggerText
+                      text={stat.label}
+                      className="justify-center text-sm uppercase tracking-wider text-gray-500"
+                    />
+                  </motion.div>
                 </StaggerItem>
               ))}
             </div>

@@ -66,7 +66,7 @@ export default function CertTiltBoard() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className="relative mx-auto cursor-default w-full"
-          style={{ perspective: 1200, height: 600 }}
+          style={{ perspective: 1200, height: 650 }}
         >
           {/* ── The entire wall rotates as ONE solid object ── */}
           <motion.div

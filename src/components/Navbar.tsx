@@ -5,10 +5,10 @@ import { Menu, X, ShoppingCart, Package } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 const navLinks = [
-  { label: '主页', href: '/' },
-  { label: '产品', href: '/products' },
-  { label: '关于我们', href: '#about' },
-  { label: '联系我们', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navbar() {

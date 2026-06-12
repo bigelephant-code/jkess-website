@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
@@ -36,12 +36,19 @@ const cardPositions = [
   { left: '40%', top: '60%' },
   { left: '58%', top: '58%' },
   { left: '76%', top: '56%' },
-  { left: '38%', top: '16%' },
-  { left: '66%', top: '18%' },
-  { left: '15%', top: '48%' },
-  { left: '42%', top: '54%' },
-  { left: '68%', top: '50%' },
 ]
+
+/* ─── Floating particle ─── */
+function FloatParticle({ x, y, color, delay, size = 2 }: { x: number; y: number; color: string; delay: number; size?: number }) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, background: color, opacity: 0.25 }}
+      animate={{ y: [0, -12, 0], opacity: [0.15, 0.45, 0.15] }}
+      transition={{ duration: 5 + delay, repeat: Infinity, ease: 'easeInOut', delay }}
+    />
+  )
+}
 
 export default function CertTiltBoard() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -52,7 +59,6 @@ export default function CertTiltBoard() {
   const smoothX = useSpring(mouseX, { stiffness: 200, damping: 20 })
   const smoothY = useSpring(mouseY, { stiffness: 200, damping: 20 })
 
-  // The whole wall rotates as one
   const wallRotateX = useTransform(smoothY, [-1, 1], [15, -15])
   const wallRotateY = useTransform(smoothX, [-1, 1], [-15, 15])
 
@@ -65,15 +71,11 @@ export default function CertTiltBoard() {
     mouseY.set(Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2))))
   }
 
-  const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
-  }
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
 
   return (
     <section className="relative bg-white overflow-hidden py-16">
       <div className="relative z-10 mx-auto px-6 max-w-[1580px]">
-        {/* ═══════ 3D TILT WALL ═══════ */}
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
@@ -92,49 +94,66 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Wall background — solid board */}
+            {/* ★ WALL SURFACE — premium dark showcase board */}
             <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 30%, #16213e 60%, #0f0f1a 100%)',
-                boxShadow: '0 30px 100px rgba(0,0,0,0.6), 0 0 80px rgba(91,91,255,0.06), inset 0 1px 0 rgba(255,255,255,0.06)',
+                background: 'linear-gradient(135deg, #0a0a14 0%, #141428 25%, #1a1a30 50%, #12122a 75%, #08081a 100%)',
+                boxShadow: '0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(91,91,255,0.05)',
               }}
             >
-              {/* Wall outer glow border */}
-              <div className="absolute inset-0 rounded-3xl opacity-30"
+              {/* Gradient border - blue to purple to pink */}
+              <div className="absolute inset-0 rounded-3xl opacity-40" style={{
+                background: 'linear-gradient(135deg, rgba(91,91,255,0.2), rgba(166,108,217,0.1), rgba(245,138,138,0.05), rgba(91,91,255,0.15))',
+                mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                maskComposite: 'exclude',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                padding: '1.5px',
+              }} />
+
+              {/* Vignette overlay — darkens edges for depth */}
+              <div className="absolute inset-0 rounded-3xl pointer-events-none"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(91,91,255,0.15), rgba(166,108,217,0.08), rgba(245,138,138,0.05), transparent)',
-                  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  maskComposite: 'exclude',
-                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                  WebkitMaskComposite: 'xor',
-                  padding: '1px',
+                  background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%)',
                 }} />
 
-              {/* Wall inner texture — subtle grid */}
-              <div className="absolute inset-0 opacity-[0.03]"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(91,91,255,0.08) 1px, transparent 1px),
-                                   linear-gradient(90deg, rgba(91,91,255,0.08) 1px, transparent 1px)`,
-                  backgroundSize: '50px 50px',
-                }} />
-
-              {/* Wall glow center — blue-purple soft light */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.08]"
-                style={{ background: 'radial-gradient(circle, #5b5bff 0%, #a66cd9 40%, transparent 70%)' }} />
-
-              {/* Subtle pink accent at bottom */}
-              <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] opacity-30"
-                style={{ background: 'linear-gradient(90deg, transparent, #f58a8a, transparent)' }} />
-
-              {/* Glass overlay for sheen */}
+              {/* Premium subtle grid texture */}
               <div className="absolute inset-0 opacity-[0.02]"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.03) 100%)',
+                  backgroundImage: `linear-gradient(rgba(91,91,255,0.06) 1px, transparent 1px),
+                                   linear-gradient(90deg, rgba(91,91,255,0.06) 1px, transparent 1px)`,
+                  backgroundSize: '60px 60px',
+                }} />
+
+              {/* Main ambient glow — soft blue-purple center light */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
+                style={{ background: 'radial-gradient(circle, #5b5bff 0%, #a66cd9 30%, transparent 60%)' }} />
+
+              {/* Secondary glow — warm accent at bottom */}
+              <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full opacity-[0.04]"
+                style={{ background: 'radial-gradient(circle, #f58a8a, transparent)' }} />
+
+              {/* Top reflective sheen */}
+              <div className="absolute inset-x-0 top-0 h-1/3 rounded-t-3xl opacity-[0.03]"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)',
                 }} />
             </div>
 
-            {/* ── Wall Title ── */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">
+            {/* ★ FLOATING DECORATIVE PARTICLES */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <FloatParticle x={6} y={8} color="#5b5bff" delay={0} size={2.5} />
+              <FloatParticle x={94} y={6} color="#a66cd9" delay={0.8} size={2} />
+              <FloatParticle x={3} y={48} color="#f58a8a" delay={1.6} size={1.5} />
+              <FloatParticle x={97} y={55} color="#5b5bff" delay={2.4} size={2} />
+              <FloatParticle x={8} y={92} color="#a66cd9" delay={3.2} size={1.5} />
+              <FloatParticle x={92} y={94} color="#f58a8a" delay={4} size={2.5} />
+              <FloatParticle x={50} y={2} color="#22c55e" delay={1.2} size={1.5} />
+              <FloatParticle x={50} y={98} color="#06b6d4" delay={3} size={1.5} />
+            </div>
+
+            {/* ★ WALL TITLE */}
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-center z-10">
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
                 <span className="text-white">Certified</span>{' '}
                 <span style={{
@@ -144,9 +163,12 @@ export default function CertTiltBoard() {
                   backgroundClip: 'text',
                 }}>Excellence</span>
               </h2>
+              {/* Title underline accent */}
+              <div className="mx-auto mt-1.5 w-16 h-[2px] rounded-full opacity-50"
+                style={{ background: 'linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a)' }} />
             </div>
 
-            {/* ── Certificates stuck ON the wall ── */}
+            {/* ★ CERTIFICATE CARDS — glass premium style */}
             {certificates.map((cert, i) => (
               <motion.div
                 key={i}
@@ -154,44 +176,60 @@ export default function CertTiltBoard() {
                 style={{
                   left: cardPositions[i].left,
                   top: cardPositions[i].top,
-                  transform: `translateZ(${i % 2 === 0 ? 8 : -8}px)`,
+                  transform: `translateZ(${i % 2 === 0 ? 10 : -10}px)`,
                 }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ z: 30, transition: { duration: 0.3 } }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                whileHover={{ z: 40, transition: { duration: 0.3 } }}
                 onClick={() => setExpandedIndex(i)}
               >
-                {/* Card glow */}
-                <div className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"
-                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }} />
+                {/* Card ambient glow on hover */}
+                <motion.div
+                  className="absolute -inset-3 rounded-2xl opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500"
+                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
+                />
 
-                {/* Card */}
-                <div className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden
-                  border border-white/[0.15] bg-gradient-to-b from-[#1a1a2e] to-[#0d0d1a]
-                  group-hover:border-white/[0.2] transition-all duration-300
-                  shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-                  <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}88)` }} />
-                  <div className="relative w-full h-full">
-                    {/* Certificate image */}
+                {/* Card — glass effect */}
+                <motion.div
+                  className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  }}
+                  whileHover={{
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    boxShadow: `0 12px 48px rgba(0,0,0,0.4), 0 0 20px ${cert.color}15`,
+                    transition: { duration: 0.3 },
+                  }}
+                >
+                  {/* Color accent bar */}
+                  <div className="h-[2px] w-full opacity-60"
+                    style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }} />
+
+                  {/* Certificate image */}
+                  <div className="relative w-full" style={{ height: 'calc(100% - 2px)' }}>
                     <img
                       src={cert.image}
                       alt={cert.title}
-                      className="absolute inset-0 w-full h-full object-contain p-2"
+                      className="w-full h-full object-contain p-2.5 transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
-                    {/* Bottom overlay with title */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-2 px-3">
-                      <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
+                    {/* Bottom overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-6 pb-2 px-3">
+                      <h3 className="text-white text-[10px] font-semibold leading-tight truncate tracking-wide">
+                        {cert.title}
+                      </h3>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>
-
-
         </div>
       </div>
 
@@ -206,22 +244,39 @@ export default function CertTiltBoard() {
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="relative max-w-md w-full bg-[#0a0a0a] rounded-2xl border border-white/[0.06] p-8 shadow-2xl"
+            transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            className="relative max-w-lg w-full rounded-2xl p-8 shadow-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #141428, #1a1a30)',
+              border: '1px solid rgba(255,255,255,0.06)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={() => setExpandedIndex(-1)} className="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white"> <X size={16} /> </button>
+            <button onClick={() => setExpandedIndex(-1)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <X size={16} />
+            </button>
             <div className="text-center">
-              <div className="w-full max-h-[50vh] mx-auto rounded-xl overflow-hidden mb-5 border border-white/[0.06] bg-[#1a1a2e] flex items-center justify-center">
-                      <img src={certificates[expandedIndex].image} alt={certificates[expandedIndex].title} className="w-full h-auto object-contain max-h-[50vh]" />
-                    </div>
-              <h3 className="text-2xl font-bold text-white mb-1">{certificates[expandedIndex].title}</h3>
-              <span className="inline-block text-xs uppercase tracking-[0.12em] font-semibold px-3 py-0.5 rounded-full mb-4" style={{ background: `${certificates[expandedIndex].color}15`, color: certificates[expandedIndex].color }}>{certificates[expandedIndex].category}</span>
-              <p className="text-gray-400 leading-relaxed mb-6 max-w-sm mx-auto text-sm">{certificates[expandedIndex].description}</p>
-              <div className="flex items-center justify-center gap-4">
-                <button onClick={() => setExpandedIndex(((expandedIndex - 1) % certificates.length + certificates.length) % certificates.length)} className="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white"> <ChevronLeft size={16} /> </button>
+              <div className="w-full max-h-[55vh] mx-auto rounded-xl overflow-hidden mb-5 flex items-center justify-center"
+                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                <img src={certificates[expandedIndex].image} alt={certificates[expandedIndex].title}
+                  className="w-full h-auto object-contain max-h-[55vh]" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-1">{certificates[expandedIndex].title}</h3>
+              <span className="inline-block text-xs uppercase tracking-[0.12em] font-semibold px-3 py-0.5 rounded-full mb-3"
+                style={{ background: `${certificates[expandedIndex].color}15`, color: certificates[expandedIndex].color }}>
+                {certificates[expandedIndex].category}
+              </span>
+              <p className="text-gray-400 text-sm max-w-md mx-auto">{certificates[expandedIndex].description}</p>
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button onClick={() => setExpandedIndex(((expandedIndex - 1) % certificates.length + certificates.length) % certificates.length)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}> <ChevronLeft size={16} /> </button>
                 <span className="text-xs text-gray-600">{expandedIndex + 1} / {certificates.length}</span>
-                <button onClick={() => setExpandedIndex((expandedIndex + 1) % certificates.length)} className="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white"> <ChevronRight size={16} /> </button>
+                <button onClick={() => setExpandedIndex((expandedIndex + 1) % certificates.length)}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}> <ChevronRight size={16} /> </button>
               </div>
             </div>
           </motion.div>

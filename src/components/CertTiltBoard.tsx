@@ -101,7 +101,7 @@ export default function CertTiltBoard() {
             {/* ── Wall Title ── */}
             <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
-                <span className="text-white">Certified</span>{' '}
+                <span className="text-black">Certified</span>{' '}
                 <span style={{
                   background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
                   WebkitBackgroundClip: 'text',

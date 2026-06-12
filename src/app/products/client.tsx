@@ -20,9 +20,12 @@ const categoryLabels: Record<string, string> = {
 
 export function ProductsPageClient({ products }: { products: Product[] }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-50">
+      {/* ═══════ BLACK NAV BACKGROUND ═══════ */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
+
       {/* ═══════ TOP SPACER ═══════ */}
-      <div className="pt-32 pb-8">
+      <div className="relative pt-32 pb-8 z-10">
         <div className="max-w-7xl mx-auto px-6">
           <div className="h-0" /> {/* just spacer */}
         </div>

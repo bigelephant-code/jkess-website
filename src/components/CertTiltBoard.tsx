@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Certificate {
   title: string
@@ -60,20 +60,6 @@ export default function CertTiltBoard() {
   return (
     <section className="relative bg-white overflow-hidden py-16">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-gray-400 mb-4">
-            <Sparkles size={12} className="text-[#a66cd9]" />
-            <span>Certifications &amp; Compliance</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            Certified <span className="gradient-text">Excellence</span>
-          </h2>
-          <p className="text-gray-500 mt-3 max-w-lg mx-auto">
-            Move your mouse to explore our certifications on a 3D wall
-          </p>
-        </div>
-
         {/* ═══════ 3D TILT WALL ═══════ */}
         <div
           ref={containerRef}

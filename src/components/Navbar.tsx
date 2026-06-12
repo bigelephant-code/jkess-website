@@ -26,7 +26,7 @@ export default function Navbar() {
 
       if (Math.abs(currentScrollY - lastScrollY.current) < threshold) return
 
-      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+      if (currentScrollY > lastScrollY.current && currentScrollY > 10) {
         setVisible(false)
       } else {
         setVisible(true)

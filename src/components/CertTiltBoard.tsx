@@ -136,36 +136,54 @@ export default function CertTiltBoard() {
                   transform: `translateZ(${i % 2 === 0 ? 8 : -8}px)`,
                 }}
                 initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                whileInView={{ opacity: 1, scale: 1, transition: { duration: 0.5, delay: i * 0.1 } }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ z: 30, transition: { duration: 0.3 } }}
+                whileHover={{ scale: 1.08, z: 45, y: -6 }}
+                transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 onClick={() => setExpandedIndex(i)}
               >
-                {/* Card glow */}
-                <div className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500"
-                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }} />
+                {/* Card glow - stronger */}
+                <motion.div 
+                  className="absolute -inset-4 rounded-2xl opacity-0 blur-2xl pointer-events-none"
+                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
+                  whileHover={{ opacity: 0.4 }}
+                  transition={{ duration: 0.4 }}
+                />
 
                 {/* Card */}
-                <div className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden
-                  border border-white/[0.15] bg-gradient-to-b from-[#1a1a2e] to-[#0d0d1a]
-                  group-hover:border-white/[0.2] transition-all duration-300
-                  shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-                  <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}88)` }} />
-                  <div className="relative w-full h-full">
+                <motion.div 
+                  className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+                  style={{
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: 'linear-gradient(180deg, #1a1a2e, #0d0d1a)',
+                  }}
+                  whileHover={{
+                    borderColor: cert.color,
+                    boxShadow: `0 12px 48px rgba(0,0,0,0.5), 0 0 20px ${cert.color}25`,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Color accent bar - animated width */}
+                  <motion.div 
+                    className="h-1"
+                    style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }}
+                    whileHover={{ width: '100%' }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <div className="relative w-full" style={{ height: 'calc(100% - 4px)' }}>
                     {/* Certificate image */}
                     <img
                       src={cert.image}
                       alt={cert.title}
-                      className="absolute inset-0 w-full h-full object-contain p-2"
+                      className="absolute inset-0 w-full h-full object-contain p-2 transition-all duration-500 ease-out group-hover:scale-110"
                       loading="lazy"
                     />
                     {/* Bottom overlay with title */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-2 px-3">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-8 pb-2 px-3">
                       <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>

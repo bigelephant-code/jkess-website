@@ -2,6 +2,7 @@
 
 import { ArrowRight } from 'lucide-react'
 import TechLines from './TechLines'
+import { motion } from 'framer-motion'
 
 interface HeroData {
   title?: string
@@ -38,10 +39,34 @@ export default function HeroSection({ data }: { data?: HeroData }) {
           >
             <span className="absolute inset-0 bg-gradient-to-r from-green-600 via-green-300 to-green-600 animate-shimmer bg-[length:200%_100%]" />
             <span className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-300 to-emerald-600 opacity-0 group-hover:opacity-100 animate-shimmer bg-[length:200%_100%] transition-opacity duration-300" />
-            <span className="relative z-10 flex items-center gap-2">
-              {data?.ctaText || 'Explore Products'}
-              <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </span>
+            <motion.span
+              className="relative z-10 flex items-center gap-[1px]"
+              initial="rest"
+              animate="rest"
+              variants={{
+                rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+                hover: { transition: { staggerChildren: 0.025 } }
+              }}
+              whileHover="hover"
+            >
+              {(data?.ctaText || 'Explore Products').split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  variants={{
+                    rest: { y: 0, color: '#000000', transition: { duration: 0.2 } },
+                    hover: {
+                      y: -4,
+                      color: '#22c55e',
+                      transition: { duration: 0.2 }
+                    }
+                  }}
+                >
+                  {char === ' ' ? ' ' : char}
+                </motion.span>
+              ))}
+              <ArrowRight size={20} className="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
+            </motion.span>
           </a>
           <a
             href="#about"

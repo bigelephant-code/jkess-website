@@ -87,16 +87,6 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Animated gradient border ring */}
-            <motion.div
-              className="absolute -inset-[2px] rounded-3xl opacity-70"
-              style={{
-                background: 'conic-gradient(from 0deg, #5b5bff, #a66cd9, #f58a8a, #5b5bff)',
-                zIndex: -1,
-              }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-            />
             {/* Wall background — solid board */}
             <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
@@ -104,6 +94,17 @@ export default function CertTiltBoard() {
                 boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
               }}
             >
+              {/* Flowing gradient lines across the surface */}
+              <motion.div
+                className="absolute inset-0"
+                style={{
+                  background: 'repeating-linear-gradient(90deg, transparent, transparent 30%, rgba(91,91,255,0.04) 35%, rgba(166,108,217,0.04) 40%, rgba(245,138,138,0.04) 45%, transparent 50%)',
+                  backgroundSize: '200% 100%',
+                  filter: 'blur(3px)',
+                }}
+                animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+              />
               {/* Wall inner texture — subtle grid */}
               <div className="absolute inset-0 opacity-[0.02]"
                 style={{

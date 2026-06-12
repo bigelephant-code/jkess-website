@@ -91,7 +91,7 @@ export default function CertTiltBoard() {
             <motion.div
               className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #5b5bff, #7a5bff, #a66cd9, #d47ac6, #f58a8a, #f5a0a0, #f58a8a, #d47ac6, #a66cd9, #7a5bff, #5b5bff)',
+                background: 'linear-gradient(135deg, #5b5bff, #7a5bff, #a66cd9, #d47ac6, #f97316, #fb923c, #f97316, #d47ac6, #a66cd9, #7a5bff, #5b5bff)',
                 backgroundSize: '400% 400%',
                 border: '1px solid rgba(255,255,255,0.04)',
                 boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(91,91,255,0.03)',

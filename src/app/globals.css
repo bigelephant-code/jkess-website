@@ -30,6 +30,21 @@ body {
   backface-visibility: hidden;
 }
 
+/* ─── Animated gradient text ─── */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-text {
+  background: linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a, #5b5bff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+
 /* ─── Shimmer animation for buttons ─── */
 @keyframes shimmer {
   0% { background-position: 200% center; }

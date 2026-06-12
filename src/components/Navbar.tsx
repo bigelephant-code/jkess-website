@@ -33,7 +33,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-base tracking-wider text-gray-300 hover:text-white transition-colors"
+              className="text-lg tracking-wider font-medium text-gray-300 hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -76,7 +76,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="block text-base tracking-wider text-gray-300 hover:text-white transition-colors"
+              className="block text-lg tracking-wider font-medium text-gray-300 hover:text-white transition-colors"
               onClick={() => setIsOpen(false)}
             >
               {link.label}

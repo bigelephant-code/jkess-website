@@ -63,5 +63,5 @@ body {
 
 .animate-shimmer {
   background-size: 200% 100%;
-  animation: shimmer 1.5s linear infinite;
+  animation: shimmer 3s linear infinite;
 }

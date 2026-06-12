@@ -23,23 +23,19 @@ const certificates: Certificate[] = [
   { title: 'CB Scheme', description: 'IECEE global product certification.', image: '/images/certifications/cb.jpg', category: 'International', color: '#8b5cf6' },
   { title: 'WEEE Directive', description: 'Waste electrical equipment compliance.', image: '/images/certifications/weee.jpg', category: 'European', color: '#14b8a6' },
   { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/reach.jpg', category: 'European', color: '#f97316' },
-  { title: 'Battery Directive', description: 'EU battery waste management compliance.', image: '/images/certifications/battery-directive.jpg', category: 'European', color: '#3b82f6' },
-  { title: 'ISO 14001:2025', description: 'Environmental management system certification.', image: '/images/certifications/iso14001.jpg', category: 'Quality', color: '#10b981' },
 ]
 
 const cardPositions = [
-  { left: '5%', top: '18%' },
+  { left: '4%', top: '14%' },
   { left: '22%', top: '12%' },
   { left: '40%', top: '10%' },
-  { left: '58%', top: '14%' },
-  { left: '75%', top: '18%' },
-  { left: '5%', top: '42%' },
-  { left: '22%', top: '48%' },
-  { left: '40%', top: '52%' },
-  { left: '58%', top: '48%' },
-  { left: '75%', top: '42%' },
-  { left: '15%', top: '72%' },
-  { left: '60%', top: '72%' },
+  { left: '58%', top: '12%' },
+  { left: '76%', top: '14%' },
+  { left: '4%', top: '54%' },
+  { left: '22%', top: '56%' },
+  { left: '40%', top: '58%' },
+  { left: '58%', top: '56%' },
+  { left: '76%', top: '54%' },
   { left: '38%', top: '16%' },
   { left: '66%', top: '18%' },
   { left: '15%', top: '48%' },
@@ -83,7 +79,7 @@ export default function CertTiltBoard() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className="relative mx-auto cursor-default w-full"
-          style={{ perspective: 1200, height: 650 }}
+          style={{ perspective: 1200, height: 680 }}
         >
           {/* ── The entire wall rotates as ONE solid object ── */}
           <motion.div

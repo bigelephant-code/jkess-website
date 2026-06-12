@@ -1,6 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
-import Cert3DCarousel from "@/components/Cert3DCarousel";
+import CertTiltBoard from "@/components/CertTiltBoard";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -106,7 +106,7 @@ export default function Home() {
     <>
       <HeroSection data={siteContent.hero} />
       <StatsSection data={siteContent.stats} />
-      <Cert3DCarousel />
+      <CertTiltBoard />
       <AboutSection data={siteContent.about} />
       <ContactSection data={siteContent.footer} />
     </>

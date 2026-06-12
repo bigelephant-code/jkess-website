@@ -10,9 +10,9 @@ export default function Footer() {
           {/* Logo */}
           <a href="/" className="flex items-center">
             <img
-              src="/images/jkess-logo.png"
+              src="/images/jkess-logo-cropped.png"
               alt="JKESS"
-              className="h-10 w-auto brightness-0 invert"
+              className="h-[300px] w-auto brightness-0 invert"
             />
           </a>
 

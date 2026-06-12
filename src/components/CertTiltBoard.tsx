@@ -13,16 +13,16 @@ interface Certificate {
 }
 
 const certificates: Certificate[] = [
-  { title: 'CE Certification', description: 'EU health, safety, and environmental compliance.', image: '/images/certifications/ce.jpg', category: 'European', color: '#5b5bff' },
-  { title: 'RoHS Compliance', description: 'Hazardous substance restriction compliance.', image: '/images/certifications/rohs.jpg', category: 'European', color: '#a66cd9' },
-  { title: 'ISO 9001:2025', description: 'Quality management system certification.', image: '/images/certifications/iso9001.jpg', category: 'Quality', color: '#f58a8a' },
-  { title: 'UN38.3 Test Report', description: 'Lithium battery transportation safety test.', image: '/images/certifications/un383.jpg', category: 'Safety', color: '#22c55e' },
-  { title: 'FCC Certification', description: 'EMI compliance for electronic products.', image: '/images/certifications/fcc.jpg', category: 'International', color: '#06b6d4' },
-  { title: 'UL Recognition', description: 'Component safety recognition.', image: '/images/certifications/ul.jpg', category: 'Safety', color: '#eab308' },
-  { title: 'IEC 62133', description: 'Secondary cells portable safety standard.', image: '/images/certifications/iec62133.jpg', category: 'Safety', color: '#ec4899' },
-  { title: 'CB Scheme', description: 'IECEE global product certification.', image: '/images/certifications/cb.jpg', category: 'International', color: '#8b5cf6' },
-  { title: 'WEEE Directive', description: 'Waste electrical equipment compliance.', image: '/images/certifications/weee.jpg', category: 'European', color: '#14b8a6' },
-  { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/reach.jpg', category: 'European', color: '#f97316' },
+  { title: 'CE Certification', description: 'EU health, safety, and environmental compliance.', image: '/images/certifications/cert-1.jpg', category: 'European', color: '#5b5bff' },
+  { title: 'RoHS Compliance', description: 'Hazardous substance restriction compliance.', image: '/images/certifications/cert-2.jpg', category: 'European', color: '#a66cd9' },
+  { title: 'ISO 9001:2025', description: 'Quality management system certification.', image: '/images/certifications/cert-3.jpg', category: 'Quality', color: '#f58a8a' },
+  { title: 'UN38.3 Test Report', description: 'Lithium battery transportation safety test.', image: '/images/certifications/cert-4.jpg', category: 'Safety', color: '#22c55e' },
+  { title: 'FCC Certification', description: 'EMI compliance for electronic products.', image: '/images/certifications/cert-5.jpg', category: 'International', color: '#06b6d4' },
+  { title: 'UL Recognition', description: 'Component safety recognition.', image: '/images/certifications/cert-6.jpg', category: 'Safety', color: '#eab308' },
+  { title: 'IEC 62133', description: 'Secondary cells portable safety standard.', image: '/images/certifications/cert-7.jpg', category: 'Safety', color: '#ec4899' },
+  { title: 'CB Scheme', description: 'IECEE global product certification.', image: '/images/certifications/cert-8.jpg', category: 'International', color: '#8b5cf6' },
+  { title: 'WEEE Directive', description: 'Waste electrical equipment compliance.', image: '/images/certifications/cert-9.jpg', category: 'European', color: '#14b8a6' },
+  { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/cert-10.jpg', category: 'European', color: '#f97316' },
 ]
 
 const cardPositions = [
@@ -152,13 +152,18 @@ export default function CertTiltBoard() {
                   group-hover:border-white/[0.2] transition-all duration-300
                   shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
                   <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}88)` }} />
-                  <div className="flex flex-col items-center justify-center p-5 text-center h-[calc(100%-4px)]">
-                    <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-3 border border-white/[0.06] group-hover:scale-110 transition-transform duration-300"
-                      style={{ background: `${cert.color}15` }}>🏅</div>
-                    <h3 className="text-white font-semibold text-sm mb-1.5 leading-snug">{cert.title}</h3>
-                    <p className="text-gray-500 text-[10px] leading-relaxed line-clamp-2 mb-2">{cert.description}</p>
-                    <span className="text-[9px] uppercase tracking-[0.12em] font-semibold px-2 py-0.5 rounded-full"
-                      style={{ background: `${cert.color}15`, color: cert.color }}>{cert.category}</span>
+                  <div className="relative w-full h-full">
+                    {/* Certificate image */}
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="absolute inset-0 w-full h-full object-contain p-2"
+                      loading="lazy"
+                    />
+                    {/* Bottom overlay with title */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent pt-8 pb-2 px-3">
+                      <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -186,7 +191,9 @@ export default function CertTiltBoard() {
           >
             <button onClick={() => setExpandedIndex(-1)} className="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white"> <X size={16} /> </button>
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center text-4xl mb-5 border border-white/[0.06]" style={{ background: `${certificates[expandedIndex].color}15` }}>🏅</div>
+              <div className="w-full max-h-[50vh] mx-auto rounded-xl overflow-hidden mb-5 border border-white/[0.06] bg-[#1a1a2e] flex items-center justify-center">
+                      <img src={certificates[expandedIndex].image} alt={certificates[expandedIndex].title} className="w-full h-auto object-contain max-h-[50vh]" />
+                    </div>
               <h3 className="text-2xl font-bold text-white mb-1">{certificates[expandedIndex].title}</h3>
               <span className="inline-block text-xs uppercase tracking-[0.12em] font-semibold px-3 py-0.5 rounded-full mb-4" style={{ background: `${certificates[expandedIndex].color}15`, color: certificates[expandedIndex].color }}>{certificates[expandedIndex].category}</span>
               <p className="text-gray-400 leading-relaxed mb-6 max-w-sm mx-auto text-sm">{certificates[expandedIndex].description}</p>

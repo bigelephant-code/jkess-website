@@ -28,12 +28,12 @@ export default function Navbar() {
         </a>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-gray-300 hover:text-white transition-colors"
+              className="text-base tracking-wider text-gray-300 hover:text-white transition-colors"
             >
               {link.label}
             </a>
@@ -42,9 +42,9 @@ export default function Navbar() {
           {/* Cart icon */}
           <a
             href="/cart"
-            className="relative text-gray-300 hover:text-white transition-colors"
+            className="relative text-gray-300 hover:text-white transition-colors ml-4"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={22} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}
@@ -76,7 +76,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="block text-gray-300 hover:text-white transition-colors"
+              className="block text-base tracking-wider text-gray-300 hover:text-white transition-colors"
               onClick={() => setIsOpen(false)}
             >
               {link.label}
@@ -85,7 +85,7 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="block text-center bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2 rounded-full transition-all"
+            className="block text-center bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-full transition-all"
             onClick={() => setIsOpen(false)}
           >
             Get a Quote

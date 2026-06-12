@@ -34,10 +34,14 @@ export default function HeroSection({ data }: { data?: HeroData }) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href={data?.ctaLink || '#products'}
-            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full text-lg transition-all"
+            className="relative inline-flex items-center gap-2 px-8 py-3 rounded-full text-lg font-semibold text-black overflow-hidden group"
           >
-            {data?.ctaText || 'Explore Products'}
-            <ArrowRight size={20} />
+            <span className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-300 to-green-400 animate-shimmer bg-[length:200%_100%]" />
+            <span className="absolute inset-0 bg-gradient-to-r from-green-500 via-green-400 to-green-500 opacity-0 group-hover:opacity-100 animate-shimmer bg-[length:200%_100%] transition-opacity duration-300" />
+            <span className="relative z-10 flex items-center gap-2">
+              {data?.ctaText || 'Explore Products'}
+              <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
           </a>
           <a
             href="#about"

@@ -36,11 +36,6 @@ const cardPositions = [
   { left: '40%', top: '60%' },
   { left: '58%', top: '58%' },
   { left: '76%', top: '56%' },
-  { left: '38%', top: '16%' },
-  { left: '66%', top: '18%' },
-  { left: '15%', top: '48%' },
-  { left: '42%', top: '54%' },
-  { left: '68%', top: '50%' },
 ]
 
 export default function CertTiltBoard() {
@@ -92,8 +87,18 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
+            {/* Animated gradient border ring */}
+            <motion.div
+              className="absolute -inset-[2px] rounded-3xl opacity-70"
+              style={{
+                background: 'conic-gradient(from 0deg, #5b5bff, #a66cd9, #f58a8a, #5b5bff)',
+                zIndex: -1,
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
             {/* Wall background — solid board */}
-            <div className="absolute inset-0 rounded-3xl border border-black/[0.06] overflow-hidden"
+            <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
                 background: 'linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.005) 50%, rgba(91,91,255,0.03) 100%)',
                 boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',

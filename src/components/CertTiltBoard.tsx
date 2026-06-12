@@ -87,11 +87,14 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Wall background — solid board */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden"
+            {/* Wall background — glass frosted surface */}
+            <div className="absolute inset-0 rounded-3xl"
               style={{
-                background: 'linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.005) 50%, rgba(91,91,255,0.03) 100%)',
-                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.25)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.5)',
               }}
             >
               {/* Flowing gradient lines across the surface */}

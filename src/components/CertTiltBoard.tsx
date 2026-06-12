@@ -60,12 +60,6 @@ export default function CertTiltBoard() {
   return (
     <section className="relative bg-white overflow-hidden py-16">
       <div className="relative z-10 mx-auto px-6 max-w-[1580px]">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-            Certified <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5b5bff] via-[#a66cd9] to-[#f58a8a]">Excellence</span>
-          </h2>
-        </div>
-
         {/* ═══════ 3D TILT WALL ═══════ */}
         <div
           ref={containerRef}
@@ -102,6 +96,13 @@ export default function CertTiltBoard() {
               {/* Wall glow center */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-[0.04]"
                 style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
+            </div>
+
+            {/* ── Wall Title ── */}
+            <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5b5bff] via-[#a66cd9] to-[#f58a8a]">Certified Excellence</span>
+              </h2>
             </div>
 
             {/* ── Certificates stuck ON the wall ── */}

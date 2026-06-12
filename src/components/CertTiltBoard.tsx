@@ -22,12 +22,12 @@ const certificates: Certificate[] = [
 ]
 
 const cardPositions = [
-  { left: '10%', top: '15%' },
-  { left: '38%', top: '8%' },
-  { left: '66%', top: '12%' },
-  { left: '15%', top: '52%' },
-  { left: '42%', top: '58%' },
-  { left: '68%', top: '55%' },
+  { left: '10%', top: '22%' },
+  { left: '38%', top: '16%' },
+  { left: '66%', top: '18%' },
+  { left: '15%', top: '48%' },
+  { left: '42%', top: '54%' },
+  { left: '68%', top: '50%' },
 ]
 
 export default function CertTiltBoard() {
@@ -66,7 +66,7 @@ export default function CertTiltBoard() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className="relative mx-auto cursor-default w-full"
-          style={{ perspective: 1200, height: 520 }}
+          style={{ perspective: 1200, height: 600 }}
         >
           {/* ── The entire wall rotates as ONE solid object ── */}
           <motion.div

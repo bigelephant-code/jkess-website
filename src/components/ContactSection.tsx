@@ -9,11 +9,11 @@ interface FooterData {
 
 export default function ContactSection({ data }: { data?: FooterData }) {
   return (
-    <section id="contact" className="bg-black py-8 border-t border-white/5">
+    <section id="contact" className="bg-black py-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <Reveal>
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <div className="text-center mb-4">
+            <h2 className="text-2xl md:text-4xl font-bold text-white mb-3">
               Get in Touch
             </h2>
             <p className="text-gray-400 max-w-lg mx-auto">

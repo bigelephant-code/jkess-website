@@ -11,6 +11,7 @@ const navLinks = [
   { label: 'News', href: '#news' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
+  { label: 'Downloads', href: '/downloads' },
 ]
 
 export default function Navbar() {

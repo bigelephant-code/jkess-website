@@ -16,7 +16,7 @@ export default function Navbar() {
   const { itemCount } = useCart()
 
   return (
-    <nav className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-[#050505de] backdrop-blur-xl rounded-[17px] border border-white/[0.04]">
+    <nav className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/60 backdrop-blur-xl rounded-[17px] border border-white/[0.04]">
       <div className="px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center">
@@ -33,9 +33,9 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="relative text-base tracking-wider font-normal text-white/80 hover:text-[#7a7bff] transition-colors duration-200
+              className="relative text-base tracking-wider font-normal text-white/80 hover:text-green-500 transition-colors duration-200
                 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
-                before:bg-[#7a7bff] before:rounded-full before:transition-all before:duration-300
+                before:bg-green-500 before:rounded-full before:transition-all before:duration-300
                 hover:before:w-full"
             >
               {link.label}
@@ -45,11 +45,11 @@ export default function Navbar() {
           {/* Cart icon */}
           <a
             href="/cart"
-            className="relative text-white/60 hover:text-[#7a7bff] transition-colors duration-200"
+            className="relative text-white/60 hover:text-green-500 transition-colors duration-200"
           >
             <ShoppingCart size={20} />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-[#7a7bff] text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}
               </span>
             )}
@@ -61,7 +61,7 @@ export default function Navbar() {
           <a href="/cart" className="relative text-white/60">
             <ShoppingCart size={20} />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-[#7a7bff] text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}
               </span>
             )}
@@ -74,12 +74,12 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-[#050505] border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px]">
+        <div className="md:hidden bg-black/70 backdrop-blur-xl border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px]">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="block text-base tracking-wider font-normal text-white/80 hover:text-[#7a7bff] transition-colors duration-200"
+              className="block text-base tracking-wider font-normal text-white/80 hover:text-green-500 transition-colors duration-200"
               onClick={() => setIsOpen(false)}
             >
               {link.label}
@@ -88,7 +88,7 @@ export default function Navbar() {
 
           <a
             href="#contact"
-            className="block text-center border border-white/20 hover:border-[#7a7bff] text-white/80 hover:text-[#7a7bff] font-normal px-6 py-2.5 rounded-[8px] transition-all duration-200"
+            className="block text-center border border-white/20 hover:border-green-500 text-white/80 hover:text-green-500 font-normal px-6 py-2.5 rounded-[8px] transition-all duration-200"
             onClick={() => setIsOpen(false)}
           >
             Get a Quote

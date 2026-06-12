@@ -62,7 +62,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="relative text-base tracking-wider font-normal text-white/80 transition-colors duration-200
+                className="relative text-lg tracking-wider font-medium text-white/80 transition-colors duration-200
                   before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
                   before:bg-green-500 before:rounded-full before:transition-all before:duration-300
                   hover:before:w-full"
@@ -134,7 +134,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="block text-base tracking-wider font-normal text-white/80 transition-colors duration-200"
+                className="block text-lg tracking-wider font-medium text-white/80 transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 <motion.span

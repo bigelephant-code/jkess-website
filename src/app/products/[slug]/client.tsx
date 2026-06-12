@@ -71,7 +71,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-6 mb-4">
             {/* Image Gallery */}
             <div>
-              <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
                 <Image
                   src={product.images[selectedImage] || '/placeholder.svg'}
                   alt={product.name}

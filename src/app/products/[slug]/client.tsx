@@ -299,7 +299,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                   <h3 className="text-gray-900 font-semibold mb-4">Product Gallery</h3>
                   <div className="flex flex-col">
                     {product.detailImages.map((img, i) => (
-                      <div key={i} className="w-full rounded-xl overflow-hidden border border-gray-700 bg-gray-900">
+                      <div key={i} className="w-full">
                         <img
                           src={img}
                           alt={product.name + ' detail ' + (i + 1)}

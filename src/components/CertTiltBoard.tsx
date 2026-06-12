@@ -59,7 +59,7 @@ export default function CertTiltBoard() {
 
   return (
     <section className="relative bg-white overflow-hidden py-16">
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 mx-auto px-6 max-w-[1580px]">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
             Certified <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5b5bff] via-[#a66cd9] to-[#f58a8a]">Excellence</span>
@@ -71,8 +71,8 @@ export default function CertTiltBoard() {
           ref={containerRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative mx-auto cursor-default"
-          style={{ perspective: 1200, maxWidth: 800, height: 520 }}
+          className="relative mx-auto cursor-default w-full"
+          style={{ perspective: 1200, height: 520 }}
         >
           {/* ── The entire wall rotates as ONE solid object ── */}
           <motion.div

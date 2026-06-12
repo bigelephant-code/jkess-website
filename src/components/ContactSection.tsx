@@ -26,28 +26,28 @@ export default function ContactSection({ data }: { data?: FooterData }) {
           {/* Contact info */}
           <StaggerReveal staggerDelay={0.12} className="space-y-4">
             <StaggerItem>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <Phone size={20} className="text-green-400" />
+              <div className="flex items-start gap-4 group cursor-pointer transition-all duration-200 hover:-translate-x-1">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-green-500/20 group-hover:-translate-x-1">
+                  <Phone size={20} className="text-green-400 transition-all duration-200 group-hover:text-green-300" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Phone</p>
-                  <a href="tel:+8613162828868" className="text-gray-400 hover:text-green-400 transition-colors">
+                  <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">Phone</p>
+                  <a href="tel:+8613162828868" className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">
                     +86 131 6282 8868
                   </a>
                 </div>
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <Mail size={20} className="text-green-400" />
+              <div className="flex items-start gap-4 group cursor-pointer transition-all duration-200 hover:-translate-x-1">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-green-500/20 group-hover:-translate-x-1">
+                  <Mail size={20} className="text-green-400 transition-all duration-200 group-hover:text-green-300" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Email</p>
+                  <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">Email</p>
                   <a
                     href={`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}`}
-                    className="text-gray-400 hover:text-green-400 transition-colors"
+                    className="text-gray-400 transition-colors duration-200 group-hover:text-green-400"
                   >
                     {data?.contactEmail || 'chinaenergymall@163.com'}
                   </a>
@@ -55,13 +55,13 @@ export default function ContactSection({ data }: { data?: FooterData }) {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0">
-                  <MapPin size={20} className="text-green-400" />
+              <div className="flex items-start gap-4 group cursor-pointer transition-all duration-200 hover:-translate-x-1">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-green-500/20 group-hover:-translate-x-1">
+                  <MapPin size={20} className="text-green-400 transition-all duration-200 group-hover:text-green-300" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">Location</p>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">Location</p>
+                  <p className="text-gray-400 leading-relaxed transition-colors duration-200 group-hover:text-green-400/80">
                     Building B4, Yunzhi Science &amp; Technology Park<br />
                     Guangming Street, Guangming District<br />
                     Shenzhen, China

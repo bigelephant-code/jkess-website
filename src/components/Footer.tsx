@@ -12,7 +12,7 @@ export default function Footer() {
             <img
               src="/images/jkess-logo-cropped.png"
               alt="JKESS"
-              className="h-[300px] w-auto brightness-0 invert"
+              className="h-[60px] w-auto brightness-0 invert"
             />
           </a>
 

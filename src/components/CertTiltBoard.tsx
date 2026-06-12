@@ -90,7 +90,7 @@ export default function CertTiltBoard() {
             {/* Wall background — premium dark display panel */}
             <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                background: 'linear-gradient(145deg, #0d0d1a 0%, #151525 30%, #1a1a2e 50%, #12121f 70%, #0a0a15 100%)',
+                background: 'linear-gradient(135deg, #5b5bff 0%, #7a5bff 20%, #a66cd9 40%, #d47ac6 60%, #f58a8a 80%, #f5a0a0 100%)',
                 border: '1px solid rgba(255,255,255,0.04)',
                 boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(91,91,255,0.03)',
               }}

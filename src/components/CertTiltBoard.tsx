@@ -87,13 +87,17 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Wall background — premium dark display panel */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden"
+            {/* Wall background — premium animated gradient panel */}
+            <motion.div
+              className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #5b5bff 0%, #7a5bff 20%, #a66cd9 40%, #d47ac6 60%, #f58a8a 80%, #f5a0a0 100%)',
+                background: 'linear-gradient(135deg, #5b5bff, #7a5bff, #a66cd9, #d47ac6, #f58a8a, #f5a0a0, #f58a8a, #d47ac6, #a66cd9, #7a5bff, #5b5bff)',
+                backgroundSize: '400% 400%',
                 border: '1px solid rgba(255,255,255,0.04)',
                 boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(91,91,255,0.03)',
               }}
+              animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
             >
               {/* Subtle top light reflection */}
               <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-3xl opacity-[0.02]"
@@ -112,7 +116,7 @@ export default function CertTiltBoard() {
               {/* Soft center glow */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.03]"
                 style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
-            </div>
+            </motion.div>
 
             {/* ── Wall Title ── */}
             <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">

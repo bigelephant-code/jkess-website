@@ -24,7 +24,12 @@ export default function HeroSection({ data }: { data?: HeroData }) {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5b5bff] via-[#a66cd9] to-[#f58a8a]">{data?.title || 'Powering a'}</span>
+          <span style={{
+            background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>{data?.title || 'Powering a'}</span>
           <br />
           <span className="text-green-400">Cleaner Future</span>
         </h1>

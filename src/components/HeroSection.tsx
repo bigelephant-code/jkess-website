@@ -26,7 +26,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
           <span className="animate-gradient-text">{data?.title || 'Powering a'}</span>
           <br />
-          <span className="text-green-400">Cleaner Future</span>
+          <span className="animate-gradient-green">Cleaner Future</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           {data?.subtitle ||

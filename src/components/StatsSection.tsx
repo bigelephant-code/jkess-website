@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { Factory, Globe, Users, Building2 } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
+import { motion } from 'framer-motion'
 
 interface StatsData {
   yearsEstablished?: number
@@ -13,7 +14,6 @@ interface StatsData {
 
 function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
   const [display, setDisplay] = useState('0')
-  const [suffixDisplay] = useState(suffix || '')
   const ref = useRef<HTMLSpanElement>(null)
 
   const rawNum = parseFloat(value.replace(/[+,]/g, ''))
@@ -45,74 +45,80 @@ function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
       { threshold: 0.3 }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
+    if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [rawNum, hasPlus, value])
 
-  return (
-    <span ref={ref}>
-      {display}{suffixDisplay}
-    </span>
-  )
+  return <span ref={ref} className="gradient-text">{display}{suffix || ''}</span>
 }
 
 const iconMap: Record<string, React.ReactNode> = {
-  years: <Building2 size={28} />,
-  base: <Factory size={28} />,
-  countries: <Globe size={28} />,
-  employees: <Users size={28} />,
+  years: <Building2 size={24} />,
+  base: <Factory size={24} />,
+  countries: <Globe size={24} />,
+  employees: <Users size={24} />,
 }
 
 export default function StatsSection({ data }: { data?: StatsData }) {
   const stats = [
     {
-      icon: iconMap.years,
+      icon: 'years',
       value: data?.yearsEstablished ? `${data.yearsEstablished}` : '4',
       label: 'Years of Innovation',
     },
     {
-      icon: iconMap.base,
+      icon: 'base',
       value: data?.manufacturingBase || '30,000',
       suffix: '㎡',
       label: 'Manufacturing Base',
     },
     {
-      icon: iconMap.countries,
+      icon: 'countries',
       value: data?.countriesCovered ? `${data.countriesCovered}+` : '30+',
       label: 'Countries & Regions',
     },
     {
-      icon: iconMap.employees,
+      icon: 'employees',
       value: data?.employees || '100+',
       label: 'Employees',
     },
   ]
 
   return (
-    <section className="bg-white py-20 border-y border-gray-100">
-      <div className="max-w-6xl mx-auto px-6">
+    <section className="relative bg-[#010101] py-20 border-t border-white/[0.03] overflow-hidden">
+      {/* Subtle background orbs */}
+      <div className="absolute top-0 left-1/4 w-[300px] h-[300px] rounded-full opacity-[0.04]"
+        style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
+      <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] rounded-full opacity-[0.04]"
+        style={{ background: 'radial-gradient(circle, #a66cd9, transparent)' }} />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-6">
         <Reveal>
-          <StaggerReveal staggerDelay={0.15}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <StaggerReveal staggerDelay={0.12}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
               {stats.map((stat, idx) => (
                 <StaggerItem key={idx}>
-                  <div className="text-center space-y-3">
-                    <div className="flex justify-center text-green-500">{stat.icon}</div>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    className="text-center space-y-3 group"
+                  >
+                    <div className="flex justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-gray-500 group-hover:text-[#5b5bff] transition-colors duration-300">
+                        {iconMap[stat.icon]}
+                      </div>
+                    </div>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl md:text-5xl font-bold text-gray-900">
-                        <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                      <span className="text-4xl md:text-5xl font-bold text-white">
+                        <AnimatedNumber value={stat.value} />
                       </span>
                       {stat.suffix && (
-                        <span className="text-lg text-gray-400">{stat.suffix}</span>
+                        <span className="text-lg text-gray-600">{stat.suffix}</span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 uppercase tracking-wider">
+                    <p className="text-xs text-gray-600 uppercase tracking-[0.15em] font-medium">
                       {stat.label}
                     </p>
-                  </div>
+                  </motion.div>
                 </StaggerItem>
               ))}
             </div>

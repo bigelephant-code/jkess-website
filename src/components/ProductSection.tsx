@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Check, ArrowRight } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
+import { motion } from 'framer-motion'
 
 interface Product {
   name?: string
@@ -21,6 +22,14 @@ const categoryLabels: Record<string, string> = {
   'high-voltage-kit': 'High Voltage Kit',
 }
 
+function GradientChip({ label }: { label: string }) {
+  return (
+    <span className="inline-block text-[11px] uppercase tracking-[0.15em] font-semibold gradient-text">
+      {label}
+    </span>
+  )
+}
+
 function ProductCard({ product, idx }: { product: Product; idx: number }) {
   const allImages = product.images && product.images.length > 0
     ? product.images
@@ -31,28 +40,31 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
   const [selectedImage, setSelectedImage] = useState(0)
 
   return (
-    <div className="grid md:grid-cols-2 gap-10 items-center">
+    <div className="grid md:grid-cols-2 gap-12 items-center">
       {/* Left: Product Image */}
-      <div className={idx % 2 === 1 ? 'md:order-2' : ''}>
+      <motion.div
+        whileHover={{ y: -2 }}
+        className={idx % 2 === 1 ? 'md:order-2' : ''}
+      >
         {/* Main image */}
         {allImages.length > 0 ? (
-          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 group">
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden gradient-border bg-white/[0.02]">
             <Image
               src={allImages[selectedImage]}
               alt={product.name || 'Product'}
               fill
-              className="object-contain p-4 transition-opacity duration-300"
+              className="object-contain p-6 transition-all duration-500 hover:scale-105"
               sizes="(max-width: 768px) 100vw, 50vw"
               priority={idx === 0}
             />
           </div>
         ) : (
-          <div className="aspect-[4/3] bg-gradient-to-br from-green-100 to-gray-50 border border-gray-200 rounded-2xl flex items-center justify-center">
+          <div className="aspect-[4/3] bg-gradient-to-br from-white/[0.02] to-white/[0.01] rounded-2xl gradient-border flex items-center justify-center">
             <div className="text-center">
-              <div className="text-6xl mb-4">
+              <div className="text-6xl mb-4 opacity-20">
                 {product.category === 'bms' ? '⚡' : product.category === 'high-voltage-kit' ? '🔋' : '🧩'}
               </div>
-              <p className="text-gray-400 text-sm">Product Image</p>
+              <p className="text-gray-600 text-sm">Product Image</p>
             </div>
           </div>
         )}
@@ -64,34 +76,32 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
               <button
                 key={i}
                 onClick={() => setSelectedImage(i)}
-                className={`relative w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 bg-gray-50 transition-all ${
+                className={`relative w-16 h-16 shrink-0 rounded-xl overflow-hidden border transition-all duration-200 ${
                   selectedImage === i
-                    ? 'border-green-500 ring-1 ring-green-500/50'
-                    : 'border-gray-200 hover:border-gray-400'
+                    ? 'border-[#5b5bff] ring-1 ring-[#5b5bff]/30'
+                    : 'border-white/[0.06] hover:border-white/[0.15]'
                 }`}
               >
                 <Image
                   src={img}
                   alt={`${product.name} view ${i + 1}`}
                   fill
-                  className="object-contain p-1"
-                  sizes="80px"
+                  className="object-contain p-1.5"
+                  sizes="64px"
                 />
               </button>
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Right: Product info */}
       <div className={idx % 2 === 1 ? 'md:order-1' : ''}>
-        <span className="text-xs uppercase tracking-widest text-green-600 font-semibold">
-          {categoryLabels[product.category || ''] || product.category}
-        </span>
-        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2 mb-4">
+        <GradientChip label={categoryLabels[product.category || ''] || product.category || ''} />
+        <h3 className="text-2xl md:text-3xl font-bold text-white mt-3 mb-4 tracking-tight">
           {product.name}
         </h3>
-        <p className="text-gray-600 leading-relaxed mb-6">
+        <p className="text-gray-400 leading-relaxed mb-6 text-[15px]">
           {product.description}
         </p>
 
@@ -99,18 +109,22 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
           <div className="space-y-3 mb-6">
             {product.features.map((feature, i) => (
               <div key={i} className="flex items-start gap-3">
-                <Check size={18} className="text-green-500 mt-0.5 shrink-0" />
-                <span className="text-gray-700 text-sm">{feature}</span>
+                <Check size={16} className="text-[#5b5bff] mt-0.5 shrink-0" />
+                <span className="text-gray-400 text-sm">{feature}</span>
               </div>
             ))}
           </div>
         )}
 
         <a
-          href={product.slug ? `/products/${product.slug}` : "#contact"}
-          className="inline-flex items-center gap-2 text-green-600 hover:text-green-500 font-semibold transition-colors"
+          href={product.slug ? `/products/${product.slug}` : '#contact'}
+          className="relative inline-flex items-center gap-2 text-sm font-semibold text-white group"
         >
-          View Details <ArrowRight size={16} />
+          <span className="relative z-10 flex items-center gap-2">
+            View Details
+            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+          <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-[#5b5bff] to-transparent" />
         </a>
       </div>
     </div>
@@ -123,11 +137,17 @@ export default function ProductSection({ products }: { products?: Product[] }) {
   }
 
   return (
-    <section id="products" className="bg-gray-50 py-24">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="products" className="relative bg-[#010101] py-24 border-t border-white/[0.03] overflow-hidden">
+      {/* Subtle background orbs */}
+      <div className="absolute top-1/3 left-0 w-[350px] h-[350px] rounded-full opacity-[0.03]"
+        style={{ background: 'radial-gradient(circle, #f58a8a, transparent)' }} />
+      <div className="absolute bottom-1/3 right-0 w-[350px] h-[350px] rounded-full opacity-[0.03]"
+        style={{ background: 'radial-gradient(circle, #a66cd9, transparent)' }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         <Reveal>
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
               Our Products
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto">
@@ -137,9 +157,9 @@ export default function ProductSection({ products }: { products?: Product[] }) {
         </Reveal>
 
         <StaggerReveal staggerDelay={0.2}>
-          <div className="space-y-20">
+          <div className="space-y-24">
             {products.map((product, idx) => (
-              <StaggerItem key={idx}>
+              <StaggerItem key={`product-${idx}`}>
                 <ProductCard product={product} idx={idx} />
               </StaggerItem>
             ))}

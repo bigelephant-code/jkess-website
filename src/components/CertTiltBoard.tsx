@@ -87,43 +87,37 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Wall background — glass frosted surface */}
-            <div className="absolute inset-0 rounded-3xl"
+            {/* Wall background — premium dark display panel */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                background: 'rgba(255,255,255,0.25)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.5)',
+                background: 'linear-gradient(145deg, #0d0d1a 0%, #151525 30%, #1a1a2e 50%, #12121f 70%, #0a0a15 100%)',
+                border: '1px solid rgba(255,255,255,0.04)',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(91,91,255,0.03)',
               }}
             >
-              {/* Flowing gradient lines across the surface */}
-              <motion.div
-                className="absolute inset-0"
+              {/* Subtle top light reflection */}
+              <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-3xl opacity-[0.02]"
                 style={{
-                  background: 'repeating-linear-gradient(90deg, transparent, transparent 30%, rgba(91,91,255,0.04) 35%, rgba(166,108,217,0.04) 40%, rgba(245,138,138,0.04) 45%, transparent 50%)',
-                  backgroundSize: '200% 100%',
-                  filter: 'blur(3px)',
-                }}
-                animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-              />
-              {/* Wall inner texture — subtle grid */}
-              <div className="absolute inset-0 opacity-[0.02]"
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)',
+                }} />
+
+              {/* Very subtle texture micro-grid */}
+              <div className="absolute inset-0 opacity-[0.015]"
                 style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                                   linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                  backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                                   linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
                   backgroundSize: '40px 40px',
                 }} />
-              {/* Wall glow center */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-[0.04]"
+
+              {/* Soft center glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.03]"
                 style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
             </div>
 
             {/* ── Wall Title ── */}
             <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
-                <span className="text-black">Certified</span>{' '}
+                <span className="text-white">Certified</span>{' '}
                 <span style={{
                   background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
                   WebkitBackgroundClip: 'text',

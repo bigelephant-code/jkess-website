@@ -33,7 +33,7 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-lg tracking-wider font-medium text-gray-300 hover:text-white transition-colors"
+              className="relative text-lg tracking-wider font-medium text-gray-300 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-green-500 after:scale-x-0 after:origin-center after:transition-transform after:duration-[1000ms] hover:after:scale-x-100"
             >
               {link.label}
             </a>

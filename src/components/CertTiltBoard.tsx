@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import TechLines from './TechLines'
 
 interface Certificate {
   title: string
@@ -87,36 +88,15 @@ export default function CertTiltBoard() {
             }}
             transition={{ duration: 0.1 }}
           >
-            {/* Wall background — premium animated gradient panel */}
-            <motion.div
-              className="absolute inset-0 rounded-3xl overflow-hidden"
+            {/* Wall background — dark board with tech line animation */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden bg-[#0a0a14]"
               style={{
-                background: 'linear-gradient(135deg, #5b5bff, #7a5bff, #a66cd9, #d47ac6, #f97316, #fb923c, #f97316, #d47ac6, #a66cd9, #7a5bff, #5b5bff)',
-                backgroundSize: '400% 400%',
                 border: '1px solid rgba(255,255,255,0.04)',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(91,91,255,0.03)',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
               }}
-              animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
             >
-              {/* Subtle top light reflection */}
-              <div className="absolute inset-x-0 top-0 h-1/2 rounded-t-3xl opacity-[0.02]"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%)',
-                }} />
-
-              {/* Very subtle texture micro-grid */}
-              <div className="absolute inset-0 opacity-[0.015]"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                                   linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-                  backgroundSize: '40px 40px',
-                }} />
-
-              {/* Soft center glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.03]"
-                style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }} />
-            </motion.div>
+              <TechLines />
+            </div>
 
             {/* ── Wall Title ── */}
             <div className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-10">

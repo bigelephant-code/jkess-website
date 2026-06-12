@@ -5,10 +5,10 @@ import { Menu, X, ShoppingCart, Package } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Products', href: '/products' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: '主页', href: '/' },
+  { label: '产品', href: '/products' },
+  { label: '关于我们', href: '#about' },
+  { label: '联系我们', href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -38,40 +38,6 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-
-          {/* Products dropdown on desktop */}
-          <div className="relative group">
-            <button className="flex items-center gap-1 text-sm text-gray-300 hover:text-white transition-colors">
-              <Package size={16} />
-              Shop
-            </button>
-            <div className="absolute top-full right-0 mt-2 w-52 bg-black/95 border border-white/10 rounded-xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-2xl">
-              <a
-                href="/products/bms-protection-board"
-                className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                ⚡ BMS Protection Board
-              </a>
-              <a
-                href="/products/battery-kit"
-                className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                🔋 Battery Kit (With Caster)
-              </a>
-              <a
-                href="/products/6u-battery-kit"
-                className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                🔋 6U Battery Kit
-              </a>
-              <a
-                href="/products/high-voltage-kit"
-                className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-              >
-                🔌 High Voltage Kit
-              </a>
-            </div>
-          </div>
 
           {/* Cart icon */}
           <a
@@ -116,37 +82,7 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <div className="border-t border-white/10 pt-4 space-y-3">
-            <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Products</p>
-            <a
-              href="/products/bms-protection-board"
-              className="block text-gray-300 hover:text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              ⚡ BMS Protection Board
-            </a>
-            <a
-              href="/products/battery-kit"
-              className="block text-gray-300 hover:text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              🔋 Battery Kit (With Caster)
-            </a>
-            <a
-              href="/products/6u-battery-kit"
-              className="block text-gray-300 hover:text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              🔋 6U Battery Kit
-            </a>
-            <a
-              href="/products/high-voltage-kit"
-              className="block text-gray-300 hover:text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              🔌 High Voltage Kit
-            </a>
-          </div>
+
           <a
             href="#contact"
             className="block text-center bg-green-500 hover:bg-green-400 text-black font-semibold px-5 py-2 rounded-full transition-all"

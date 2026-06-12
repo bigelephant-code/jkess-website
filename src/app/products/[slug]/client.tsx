@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import Image from 'next/image'
@@ -51,7 +51,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   return (
     <div className="min-h-screen bg-black">
       {/* ═══════ DARK SECTION: Hero + Product Info ═══════ */}
-      <div className="bg-black pt-24 pb-16">
+      <div className="bg-black pt-24 pb-6">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Back link */}
           <Link href="/#products" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6 pt-2">
@@ -68,7 +68,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
           </div>
 
           {/* Product Info + Image Gallery */}
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 mb-8">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-6 mb-4">
             {/* Image Gallery */}
             <div>
               <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
@@ -155,7 +155,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               </div>
 
               {/* CTA Buttons */}
-              <div className="space-y-3 mb-6">
+              <div className="space-y-3 mb-4">
                 {isShop ? (
                   <>
                     <div className="grid grid-cols-2 gap-3">

@@ -17,12 +17,12 @@ export default function AboutSection({ data }: { data?: AboutData }) {
           {/* Image */}
           <Reveal direction="left">
             {data?.image ? (
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 group cursor-pointer">
                 <Image
                   src={data.image}
                   alt="JKESS — Shenzhen Nengyi Electronic Technology"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>

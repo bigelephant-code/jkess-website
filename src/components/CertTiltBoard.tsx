@@ -25,195 +25,258 @@ const certificates: Certificate[] = [
   { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/cert-10.jpg', category: 'European', color: '#f97316' },
 ]
 
-/* ─── Subtle 3D tilt wrapper ─── */
-function TiltContainer({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const smoothX = useSpring(mouseX, { stiffness: 200, damping: 25 })
-  const smoothY = useSpring(mouseY, { stiffness: 200, damping: 25 })
-  const tiltX = useTransform(smoothY, [-1, 1], [6, -6])
-  const tiltY = useTransform(smoothX, [-1, 1], [-6, 6])
-
-  const handleMove = (e: React.MouseEvent) => {
-    if (!ref.current) return
-    const r = ref.current.getBoundingClientRect()
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2
-    mouseX.set(Math.max(-1, Math.min(1, (e.clientX - cx) / (r.width / 2))))
-    mouseY.set(Math.max(-1, Math.min(1, (e.clientY - cy) / (r.height / 2))))
-  }
-  const handleLeave = () => { mouseX.set(0); mouseY.set(0) }
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      className={className}
-      style={{ ...style, perspective: 1200, rotateX: tiltX, rotateY: tiltY, transformStyle: 'preserve-3d' }}
-      transition={{ duration: 0.1 }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-/* ─── Certificate card ─── */
-function CertCard({ cert, index, onClick }: { cert: Certificate; index: number; onClick: () => void }) {
-  return (
-    <motion.div
-      className="group cursor-pointer"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.06 }}
-      whileHover={{ z: 20 }}
-      onClick={onClick}
-    >
-      {/* Card body — clean frame design */}
-      <div className="relative rounded-xl overflow-hidden transition-all duration-500"
-        style={{
-          background: '#ffffff',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)',
-          border: '1px solid rgba(0,0,0,0.04)',
-        }}
-      >
-        {/* Image area */}
-        <div className="relative w-full" style={{ paddingBottom: '133%' }}>
-          <img
-            src={cert.image}
-            alt={cert.title}
-            className="absolute inset-0 w-full h-full object-contain p-3 transition-all duration-500 group-hover:scale-105"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Bottom info strip */}
-        <div className="px-3 py-2 border-t border-black/[0.03]">
-          <h3 className="text-[11px] font-medium text-gray-700 leading-tight truncate tracking-wide">
-            {cert.title}
-          </h3>
-        </div>
-      </div>
-
-      {/* Hover shadow */}
-      <div className="absolute -inset-1 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
-        style={{
-          boxShadow: `0 8px 30px rgba(0,0,0,0.06), 0 0 0 1px ${cert.color}15`,
-        }} />
-    </motion.div>
-  )
-}
-
 const cardPositions = [
-  { left: '2%', top: '8%' },
-  { left: '21%', top: '6%' },
-  { left: '40%', top: '4%' },
-  { left: '59%', top: '6%' },
-  { left: '78%', top: '8%' },
-  { left: '2%', top: '52%' },
-  { left: '21%', top: '54%' },
-  { left: '40%', top: '56%' },
-  { left: '59%', top: '54%' },
-  { left: '78%', top: '52%' },
+  { left: '4%', top: '16%' },
+  { left: '22%', top: '14%' },
+  { left: '40%', top: '12%' },
+  { left: '58%', top: '14%' },
+  { left: '76%', top: '16%' },
+  { left: '4%', top: '56%' },
+  { left: '22%', top: '58%' },
+  { left: '40%', top: '60%' },
+  { left: '58%', top: '58%' },
+  { left: '76%', top: '56%' },
 ]
 
+/* ─── Floating particle ─── */
+function FloatParticle({ x, y, color, delay, size = 2 }: { x: number; y: number; color: string; delay: number; size?: number }) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, background: color, opacity: 0.25 }}
+      animate={{ y: [0, -12, 0], opacity: [0.15, 0.45, 0.15] }}
+      transition={{ duration: 5 + delay, repeat: Infinity, ease: 'easeInOut', delay }}
+    />
+  )
+}
+
 export default function CertTiltBoard() {
+  const containerRef = useRef<HTMLDivElement>(null)
   const [expandedIndex, setExpandedIndex] = useState(-1)
 
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const smoothX = useSpring(mouseX, { stiffness: 200, damping: 20 })
+  const smoothY = useSpring(mouseY, { stiffness: 200, damping: 20 })
+
+  const wallRotateX = useTransform(smoothY, [-1, 1], [15, -15])
+  const wallRotateY = useTransform(smoothX, [-1, 1], [-15, 15])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    mouseX.set(Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width / 2))))
+    mouseY.set(Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2))))
+  }
+
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0) }
+
   return (
-    <section className="relative bg-white overflow-hidden py-20">
+    <section className="relative bg-white overflow-hidden py-16">
       <div className="relative z-10 mx-auto px-6 max-w-[1580px]">
-        {/* Title */}
-        <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-            <span className="text-gray-900">Certified</span>{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>Excellence</span>
-          </h2>
-          <div className="mx-auto mt-3 w-12 h-[2px] rounded-full"
-            style={{ background: 'linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a)' }} />
-          <p className="text-gray-400 text-sm mt-3 max-w-md mx-auto">
-            International certifications &amp; compliance standards
-          </p>
-        </div>
-
-        {/* 3D Tilt Gallery */}
-        <TiltContainer className="relative mx-auto w-full" style={{ height: 600 }}>
-          {/* Light background board */}
-          <div className="absolute inset-0 rounded-3xl overflow-hidden"
+        <div
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="relative mx-auto cursor-default w-full"
+          style={{ perspective: 1200, height: 680 }}
+        >
+          {/* ── The entire wall rotates as ONE solid object ── */}
+          <motion.div
+            className="absolute inset-0"
             style={{
-              background: 'linear-gradient(135deg, #fafafa, #f5f5f8, #f8f8fc)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 4px rgba(0,0,0,0.02)',
+              rotateX: wallRotateX,
+              rotateY: wallRotateY,
+              transformStyle: 'preserve-3d',
+              transformOrigin: 'center center',
             }}
+            transition={{ duration: 0.1 }}
           >
-            {/* Subtle grid */}
-            <div className="absolute inset-0 opacity-[0.3]"
+            {/* ★ WALL SURFACE — premium dark showcase board */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-                                 linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)`,
-                backgroundSize: '60px 60px',
-              }} />
-          </div>
-
-          {/* Certificate cards */}
-          {certificates.map((cert, i) => (
-            <motion.div
-              key={i}
-              className="absolute"
-              style={{
-                left: cardPositions[i].left,
-                top: cardPositions[i].top,
-                width: '18%',
-                transform: `translateZ(${i % 2 === 0 ? 8 : -8}px)`,
+                background: 'linear-gradient(135deg, #0a0a14 0%, #141428 25%, #1a1a30 50%, #12122a 75%, #08081a 100%)',
+                boxShadow: '0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(91,91,255,0.05)',
               }}
             >
-              <CertCard cert={cert} index={i} onClick={() => setExpandedIndex(i)} />
-            </motion.div>
-          ))}
-        </TiltContainer>
+              {/* Gradient border - blue to purple to pink */}
+              <div className="absolute inset-0 rounded-3xl opacity-40" style={{
+                background: 'linear-gradient(135deg, rgba(91,91,255,0.2), rgba(166,108,217,0.1), rgba(245,138,138,0.05), rgba(91,91,255,0.15))',
+                mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                maskComposite: 'exclude',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                padding: '1.5px',
+              }} />
+
+              {/* Vignette overlay — darkens edges for depth */}
+              <div className="absolute inset-0 rounded-3xl pointer-events-none"
+                style={{
+                  background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%)',
+                }} />
+
+              {/* Premium subtle grid texture */}
+              <div className="absolute inset-0 opacity-[0.02]"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(91,91,255,0.06) 1px, transparent 1px),
+                                   linear-gradient(90deg, rgba(91,91,255,0.06) 1px, transparent 1px)`,
+                  backgroundSize: '60px 60px',
+                }} />
+
+              {/* Main ambient glow — soft blue-purple center light */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
+                style={{ background: 'radial-gradient(circle, #5b5bff 0%, #a66cd9 30%, transparent 60%)' }} />
+
+              {/* Secondary glow — warm accent at bottom */}
+              <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full opacity-[0.04]"
+                style={{ background: 'radial-gradient(circle, #f58a8a, transparent)' }} />
+
+              {/* Top reflective sheen */}
+              <div className="absolute inset-x-0 top-0 h-1/3 rounded-t-3xl opacity-[0.03]"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)',
+                }} />
+            </div>
+
+            {/* ★ FLOATING DECORATIVE PARTICLES */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <FloatParticle x={6} y={8} color="#5b5bff" delay={0} size={2.5} />
+              <FloatParticle x={94} y={6} color="#a66cd9" delay={0.8} size={2} />
+              <FloatParticle x={3} y={48} color="#f58a8a" delay={1.6} size={1.5} />
+              <FloatParticle x={97} y={55} color="#5b5bff" delay={2.4} size={2} />
+              <FloatParticle x={8} y={92} color="#a66cd9" delay={3.2} size={1.5} />
+              <FloatParticle x={92} y={94} color="#f58a8a" delay={4} size={2.5} />
+              <FloatParticle x={50} y={2} color="#22c55e" delay={1.2} size={1.5} />
+              <FloatParticle x={50} y={98} color="#06b6d4" delay={3} size={1.5} />
+            </div>
+
+            {/* ★ WALL TITLE */}
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-center z-10">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight">
+                <span className="text-white">Certified</span>{' '}
+                <span style={{
+                  background: 'linear-gradient(135deg, #5b5bff, #a66cd9, #f58a8a)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>Excellence</span>
+              </h2>
+              {/* Title underline accent */}
+              <div className="mx-auto mt-1.5 w-16 h-[2px] rounded-full opacity-50"
+                style={{ background: 'linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a)' }} />
+            </div>
+
+            {/* ★ CERTIFICATE CARDS — glass premium style */}
+            {certificates.map((cert, i) => (
+              <motion.div
+                key={i}
+                className="absolute cursor-pointer group"
+                style={{
+                  left: cardPositions[i].left,
+                  top: cardPositions[i].top,
+                  transform: `translateZ(${i % 2 === 0 ? 10 : -10}px)`,
+                }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                whileHover={{ z: 40, transition: { duration: 0.3 } }}
+                onClick={() => setExpandedIndex(i)}
+              >
+                {/* Card ambient glow on hover */}
+                <motion.div
+                  className="absolute -inset-3 rounded-2xl opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500"
+                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
+                />
+
+                {/* Card — glass effect */}
+                <motion.div
+                  className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  }}
+                  whileHover={{
+                    borderColor: 'rgba(255,255,255,0.2)',
+                    boxShadow: `0 12px 48px rgba(0,0,0,0.4), 0 0 20px ${cert.color}15`,
+                    transition: { duration: 0.3 },
+                  }}
+                >
+                  {/* Color accent bar */}
+                  <div className="h-[2px] w-full opacity-60"
+                    style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }} />
+
+                  {/* Certificate image */}
+                  <div className="relative w-full" style={{ height: 'calc(100% - 2px)' }}>
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="w-full h-full object-contain p-2.5 transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {/* Bottom overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-6 pb-2 px-3">
+                      <h3 className="text-white text-[10px] font-semibold leading-tight truncate tracking-wide">
+                        {cert.title}
+                      </h3>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
-      {/* Lightbox */}
+      {/* ═══════ LIGHTBOX ═══════ */}
       {expandedIndex >= 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-lg flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4"
           onClick={() => setExpandedIndex(-1)}
         >
           <motion.div
-            initial={{ scale: 0.92, opacity: 0, y: 20 }}
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-            className="relative max-w-xl w-full bg-white rounded-2xl p-8 shadow-2xl"
+            className="relative max-w-lg w-full rounded-2xl p-8 shadow-2xl overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #141428, #1a1a30)',
+              border: '1px solid rgba(255,255,255,0.06)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <button onClick={() => setExpandedIndex(-1)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors bg-gray-100">
+              className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.05)' }}>
               <X size={16} />
             </button>
             <div className="text-center">
-              <div className="w-full max-h-[55vh] mx-auto rounded-xl overflow-hidden mb-5 bg-gray-50">
+              <div className="w-full max-h-[55vh] mx-auto rounded-xl overflow-hidden mb-5 flex items-center justify-center"
+                style={{ background: 'rgba(255,255,255,0.03)' }}>
                 <img src={certificates[expandedIndex].image} alt={certificates[expandedIndex].title}
                   className="w-full h-auto object-contain max-h-[55vh]" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{certificates[expandedIndex].title}</h3>
-              <p className="text-gray-500 text-sm max-w-md mx-auto mb-4">{certificates[expandedIndex].description}</p>
-              <div className="flex items-center justify-center gap-4">
+              <h3 className="text-xl font-bold text-white mb-1">{certificates[expandedIndex].title}</h3>
+              <span className="inline-block text-xs uppercase tracking-[0.12em] font-semibold px-3 py-0.5 rounded-full mb-3"
+                style={{ background: `${certificates[expandedIndex].color}15`, color: certificates[expandedIndex].color }}>
+                {certificates[expandedIndex].category}
+              </span>
+              <p className="text-gray-400 text-sm max-w-md mx-auto">{certificates[expandedIndex].description}</p>
+              <div className="flex items-center justify-center gap-4 mt-4">
                 <button onClick={() => setExpandedIndex(((expandedIndex - 1) % certificates.length + certificates.length) % certificates.length)}
-                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 transition-all">
-                  <ChevronLeft size={16} />
-                </button>
-                <span className="text-xs text-gray-400">{expandedIndex + 1} / {certificates.length}</span>
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}> <ChevronLeft size={16} /> </button>
+                <span className="text-xs text-gray-600">{expandedIndex + 1} / {certificates.length}</span>
                 <button onClick={() => setExpandedIndex((expandedIndex + 1) % certificates.length)}
-                  className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 transition-all">
-                  <ChevronRight size={16} />
-                </button>
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}> <ChevronRight size={16} /> </button>
               </div>
             </div>
           </motion.div>

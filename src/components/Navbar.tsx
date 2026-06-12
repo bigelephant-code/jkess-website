@@ -43,7 +43,7 @@ export default function Navbar() {
         initial={{ y: 0 }}
         animate={{ y: visible ? 0 : -120 }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/60 backdrop-blur-xl rounded-[17px] border border-white/[0.04]"
+        className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/50 rounded-[17px] border border-white/[0.04]"
       >
         <div className="px-6 h-20 flex items-center justify-between">
           {/* Logo */}
@@ -102,7 +102,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="md:hidden bg-black/70 backdrop-blur-xl border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px]">
+          <div className="md:hidden bg-black/70 border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px]">
             {navLinks.map((link) => (
               <a
                 key={link.href}

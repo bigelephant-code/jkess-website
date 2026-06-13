@@ -216,6 +216,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
 }
 
 function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
+  // EV icon — uses global drawIcon fill/stroke (same as Solar)
   ctx.lineWidth = 2.2
   // Car body
   ctx.beginPath()
@@ -229,11 +230,9 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.lineTo(s * 0.7, s * 0.05)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
-  ctx.fill()
+  ctx.fill()  // uses global fill (90%)
 
-  // Windows
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.8)'
+  // Windows — use global stroke (95%)
   ctx.beginPath()
   ctx.moveTo(-s * 0.35, -s * 0.22)
   ctx.lineTo(-s * 0.15, -s * 0.22)
@@ -249,8 +248,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.closePath()
   ctx.stroke()
 
-  // Wheels
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.85)'
+  // Wheels — use global fill (90%)
   ctx.beginPath()
   ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
   ctx.fill()
@@ -260,7 +258,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.fill()
   ctx.stroke()
 
-  // Lightning (EV charging symbol)
+  // Lightning (EV charging symbol, white for contrast)
   ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'
   ctx.beginPath()
   ctx.moveTo(s * 0.52, -s * 0.3)
@@ -271,8 +269,8 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
 
   // Headlight glow
   ctx.beginPath()
-  ctx.arc(s * 0.65, -s * 0.1, 3, 0, Math.PI * 2)
-  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.2 + 0.6})`
+  ctx.arc(s * 0.65, -s * 0.12, 3, 0, Math.PI * 2)
+  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.15 + 0.7})`
   ctx.fill()
 }
 
@@ -306,23 +304,23 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
   // Glassmorphism background
   ctx.beginPath()
   ctx.roundRect(-r, -r, size, size, 12)
-  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)'
+  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.12)'
   ctx.fill()
-  ctx.strokeStyle = isRight ? 'rgba(74, 222, 128, 0.6)' : 'rgba(74, 222, 128, 0.45)'
+  ctx.strokeStyle = isRight ? 'rgba(74, 222, 128, 0.7)' : 'rgba(74, 222, 128, 0.45)'
   ctx.lineWidth = isRight ? 1.5 : 1.2
   ctx.stroke()
 
   // Inner highlight
   ctx.beginPath()
   ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [11, 11, 0, 0])
-  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.06)'
+  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.06)'
   ctx.fill()
 
   // Icon area ring
   const iconS = r * 0.38
   ctx.beginPath()
   ctx.arc(0, -3, iconS + 4, 0, Math.PI * 2)
-  ctx.fillStyle = isRight ? 'rgba(74, 222, 128, 0.35)' : 'rgba(74, 222, 128, 0.25)'
+  ctx.fillStyle = isRight ? 'rgba(74, 222, 128, 0.4)' : 'rgba(74, 222, 128, 0.25)'
   ctx.fill()
 
   // Draw icon

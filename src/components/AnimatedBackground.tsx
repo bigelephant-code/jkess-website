@@ -160,7 +160,7 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   // Fill level (shows ~70% charge)
   const fillH = s * 1.1
   const gap = s * 0.08
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.65)'
   ctx.beginPath()
   ctx.roundRect(-s * 0.32, -s * 0.75 + (s * 1.5 - fillH), s * 0.64, fillH - gap, 2)
   ctx.fill()
@@ -175,8 +175,8 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   ctx.fill()
 
   // "JK" text subtle
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
-  ctx.font = '700 9px Inter, sans-serif'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
+  ctx.font = '700 10px Inter, sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText('JK', 0, 0.5)
 }
@@ -195,7 +195,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   ctx.lineTo(s * 0.6, -s * 0.2)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
   ctx.fill()
 
   // Door
@@ -211,7 +211,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   // Light glow in window
   ctx.beginPath()
   ctx.arc(s * 0.25, s * 0.1, s * 0.07, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(255, 255, 200, 0.5)'
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.7)'
   ctx.fill()
 }
 
@@ -229,11 +229,11 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.lineTo(s * 0.7, s * 0.05)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.12)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
   ctx.fill()
 
   // Windows
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.65)'
   ctx.beginPath()
   ctx.moveTo(-s * 0.35, -s * 0.22)
   ctx.lineTo(-s * 0.15, -s * 0.22)
@@ -250,7 +250,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Wheels
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.75)'
   ctx.beginPath()
   ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
   ctx.fill()
@@ -261,7 +261,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Lightning (EV charging symbol)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.8)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
   ctx.beginPath()
   ctx.moveTo(s * 0.52, -s * 0.3)
   ctx.lineTo(s * 0.4, -s * 0.05)
@@ -272,15 +272,15 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   // Headlight glow
   ctx.beginPath()
   ctx.arc(s * 0.65, -s * 0.1, 2, 0, Math.PI * 2)
-  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.15 + 0.3})`
+  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.2 + 0.5})`
   ctx.fill()
 }
 
 function drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, idx: number, time: number) {
   ctx.save()
   ctx.translate(x, y)
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.95)'
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 1.0)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.75)'
   ctx.lineWidth = 1.5
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
@@ -305,23 +305,23 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
   // Glassmorphism background (brighter)
   ctx.beginPath()
   ctx.roundRect(-r, -r, size, size, 12)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.09)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.12)'
   ctx.fill()
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.35)'
-  ctx.lineWidth = 1
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.45)'
+  ctx.lineWidth = 1.2
   ctx.stroke()
 
   // Inner highlight
   ctx.beginPath()
   ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [11, 11, 0, 0])
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.06)'
   ctx.fill()
 
   // Icon area ring
   const iconS = r * 0.38
   ctx.beginPath()
   ctx.arc(0, -3, iconS + 4, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.18)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
   ctx.fill()
 
   // Draw icon

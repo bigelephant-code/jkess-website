@@ -26,19 +26,6 @@ const certificates: Certificate[] = [
   { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/cert-10.jpg', category: 'European', color: '#f97316' },
 ]
 
-const cardPositions = [
-  { left: '4%', top: '16%' },
-  { left: '22%', top: '14%' },
-  { left: '40%', top: '12%' },
-  { left: '58%', top: '14%' },
-  { left: '76%', top: '16%' },
-  { left: '4%', top: '56%' },
-  { left: '22%', top: '58%' },
-  { left: '40%', top: '60%' },
-  { left: '58%', top: '58%' },
-  { left: '76%', top: '56%' },
-]
-
 export default function CertTiltBoard() {
   const [expandedIndex, setExpandedIndex] = useState(-1)
 
@@ -57,68 +44,59 @@ export default function CertTiltBoard() {
           </h2>
         </div>
 
-        {/* Certificate wall — no 3D tilt, flat on white bg */}
-        <div className="relative mx-auto w-full" style={{ height: 680 }}>
-          {/* White/transparent wall background */}
-          <div className="absolute inset-0 rounded-3xl" />
-
-          {/* Certificates on the wall */}
-          {certificates.map((cert, i) => (
-            <motion.div
-              key={i}
-              className="absolute cursor-pointer group"
-              style={{ left: cardPositions[i].left, top: cardPositions[i].top }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1, transition: { duration: 0.5, delay: i * 0.1 } }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.08, y: -6 }}
-              transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              onClick={() => setExpandedIndex(i)}
-            >
-              {/* Card glow */}
+        {/* Certificate wall — grid layout, perfectly aligned */}
+        <div className="mx-auto w-full max-w-5xl">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
+            {certificates.map((cert, i) => (
               <motion.div
-                className="absolute -inset-4 rounded-2xl opacity-0 blur-2xl pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
-                whileHover={{ opacity: 0.3 }}
-                transition={{ duration: 0.4 }}
-              />
-
-              {/* Card */}
-              <motion.div
-                className="relative w-40 aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
-                style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
-                whileHover={{
-                  borderColor: cert.color,
-                  boxShadow: `0 12px 48px rgba(0,0,0,0.1), 0 0 20px ${cert.color}20`,
-                }}
-                transition={{ duration: 0.3 }}
+                key={i}
+                className="flex justify-center cursor-pointer group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.06 } }}
+                viewport={{ once: true }}
+                onClick={() => setExpandedIndex(i)}
               >
-                {/* Color accent bar */}
+                {/* Card glow */}
                 <motion.div
-                  className="h-1"
-                  style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }}
-                  whileHover={{ width: '100%' }}
-                  transition={{ duration: 0.3 }}
+                  className="absolute -inset-4 rounded-2xl opacity-0 blur-2xl pointer-events-none"
+                  style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
+                  whileHover={{ opacity: 0.3 }}
+                  transition={{ duration: 0.4 }}
                 />
-                <div className="relative w-full" style={{ height: 'calc(100% - 4px)' }}>
-                  <img
-                    src={cert.image}
-                    alt={cert.title}
-                    className="absolute inset-0 w-full h-full object-contain p-2 transition-all duration-500 ease-out group-hover:scale-110"
-                    loading="lazy"
+
+                {/* Card */}
+                <motion.div
+                  className="relative w-full max-w-[160px] aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
+                  style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
+                  whileHover={{ y: -6, scale: 1.06, borderColor: cert.color, boxShadow: `0 12px 48px rgba(0,0,0,0.1), 0 0 20px ${cert.color}20` }}
+                  transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                >
+                  {/* Color accent bar */}
+                  <motion.div
+                    className="h-1"
+                    style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }}
+                    whileHover={{ width: '100%' }}
+                    transition={{ duration: 0.3 }}
                   />
-                  {/* Bottom overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3">
-                    <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
+                  <div className="relative w-full" style={{ height: 'calc(100% - 4px)' }}>
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="absolute inset-0 w-full h-full object-contain p-2 transition-all duration-500 ease-out group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3">
+                      <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ═══════ LIGHTBOX ═══════ */}
+      {/* Lightbox */}
       {expandedIndex >= 0 && (
         <motion.div
           initial={{ opacity: 0 }}

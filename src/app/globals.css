@@ -17,8 +17,8 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-/* ─── 3D Perspective Utilities ─── */
-.perspective-[1200px] {
+/* 3D Perspective Utilities */
+.perspective-\[1200px\] {
   perspective: 1200px;
 }
 
@@ -30,7 +30,7 @@ body {
   backface-visibility: hidden;
 }
 
-/* ─── Animated gradient text ─── */
+/* Animated gradient text */
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -45,7 +45,7 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* ─── Green animated gradient text ─── */
+/* Green animated gradient text */
 .animate-gradient-green {
   background: linear-gradient(135deg, #22c55e, #4ade80, #86efac, #22c55e);
   background-size: 300% 100%;
@@ -55,7 +55,7 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* ─── Shimmer animation for buttons ─── */
+/* Shimmer animation for buttons */
 @keyframes shimmer {
   0% { background-position: 200% center; }
   100% { background-position: -200% center; }
@@ -66,7 +66,7 @@ body {
   animation: shimmer 3s linear infinite;
 }
 
-/* ─── Infinite scroll logo wall ─── */
+/* Infinite scroll logo wall */
 @keyframes scroll-left {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -85,9 +85,4 @@ body {
 .animate-scroll-right {
   animation: scroll-right 40s linear infinite;
   width: fit-content;
-}
-
-.animate-scroll-left:hover,
-.animate-scroll-right:hover {
-  animation-play-state: paused;
 }

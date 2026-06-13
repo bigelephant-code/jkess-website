@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Image from 'next/image'
 
@@ -47,7 +47,7 @@ export default function BrandLogos() {
                     src={logo.src}
                     alt={`Partner ${(i % 15) + 1}`}
                     fill
-                    className="object-contain transition-all duration-300 grayscale hover:grayscale-0 hover:scale-110"
+                    className="object-contain transition-all duration-300 hover:scale-110"
                     sizes="144px"
                     loading="lazy"
                   />
@@ -70,7 +70,7 @@ export default function BrandLogos() {
                     src={logo.src}
                     alt={`Partner ${(i % 15) + 1}`}
                     fill
-                    className="object-contain transition-all duration-300 grayscale hover:grayscale-0 hover:scale-110"
+                    className="object-contain transition-all duration-300 hover:scale-110"
                     sizes="144px"
                     loading="lazy"
                   />

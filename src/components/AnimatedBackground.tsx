@@ -39,12 +39,12 @@ interface Particle {
 //   🔌 Grid  (2)  ───→
 
 const NODE_DEFS = [
-  { baseX: 0.14, baseY: 0.18, size: 64, phase: 0, label: 'Solar' },
-  { baseX: 0.06, baseY: 0.48, size: 58, phase: 2, label: 'Wind' },
-  { baseX: 0.18, baseY: 0.76, size: 52, phase: 4, label: 'Grid' },
-  { baseX: 0.86, baseY: 0.18, size: 64, phase: 1, label: 'JKESS' },
-  { baseX: 0.94, baseY: 0.48, size: 58, phase: 3, label: 'Home' },
-  { baseX: 0.82, baseY: 0.76, size: 52, phase: 5, label: 'EV' },
+  { baseX: 0.14, baseY: 0.18, size: 48, phase: 0, label: 'Solar' },
+  { baseX: 0.06, baseY: 0.48, size: 44, phase: 2, label: 'Wind' },
+  { baseX: 0.18, baseY: 0.76, size: 40, phase: 4, label: 'Grid' },
+  { baseX: 0.86, baseY: 0.18, size: 48, phase: 1, label: 'JKESS' },
+  { baseX: 0.94, baseY: 0.48, size: 44, phase: 3, label: 'Home' },
+  { baseX: 0.82, baseY: 0.76, size: 40, phase: 5, label: 'EV' },
 ]
 
 const EDGE_DEFS: EdgeDef[] = [
@@ -79,7 +79,7 @@ function drawSolar(ctx: CanvasRenderingContext2D, s: number, time: number) {
   // Inner glow
   ctx.beginPath()
   ctx.arc(0, 0, s * 0.2, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(255, 255, 200, 0.3)'
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.5)'
   ctx.fill()
 }
 
@@ -103,8 +103,8 @@ function drawWind(ctx: CanvasRenderingContext2D, s: number, time: number) {
     ctx.stroke()
     // Blade tip
     ctx.beginPath()
-    ctx.arc(Math.cos(a) * s * 0.7, Math.sin(a) * s * 0.7, 2, 0, Math.PI * 2)
-    ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+    ctx.arc(Math.cos(a) * s * 0.7, Math.sin(a) * s * 0.7, 2.5, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
     ctx.fill()
   }
   // Hub
@@ -136,7 +136,7 @@ function drawGrid(ctx: CanvasRenderingContext2D, s: number) {
   ctx.strokeStyle = 'rgba(74, 222, 128, 0.4)'
   ctx.stroke()
   // Lightning bolt on plug
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
   ctx.beginPath()
   ctx.moveTo(s * 0.08, -s * 0.15)
   ctx.lineTo(-s * 0.04, s * 0.02)
@@ -160,13 +160,13 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   // Fill level (shows ~70% charge)
   const fillH = s * 1.1
   const gap = s * 0.08
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.35)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
   ctx.beginPath()
   ctx.roundRect(-s * 0.32, -s * 0.75 + (s * 1.5 - fillH), s * 0.64, fillH - gap, 2)
   ctx.fill()
 
   // Lightning bolt inside battery
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
   ctx.beginPath()
   ctx.moveTo(s * 0.12, -s * 0.5)
   ctx.lineTo(-s * 0.06, -s * 0.05)
@@ -175,8 +175,8 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   ctx.fill()
 
   // "JK" text subtle
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
-  ctx.font = '600 8px Inter, sans-serif'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.font = '700 9px Inter, sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText('JK', 0, 0.5)
 }
@@ -195,7 +195,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   ctx.lineTo(s * 0.6, -s * 0.2)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
   ctx.fill()
 
   // Door
@@ -211,7 +211,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   // Light glow in window
   ctx.beginPath()
   ctx.arc(s * 0.25, s * 0.1, s * 0.07, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(255, 255, 200, 0.3)'
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.5)'
   ctx.fill()
 }
 
@@ -229,11 +229,11 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.lineTo(s * 0.7, s * 0.05)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.06)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.12)'
   ctx.fill()
 
   // Windows
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.5)'
   ctx.beginPath()
   ctx.moveTo(-s * 0.35, -s * 0.22)
   ctx.lineTo(-s * 0.15, -s * 0.22)
@@ -250,7 +250,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Wheels
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
   ctx.beginPath()
   ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
   ctx.fill()
@@ -261,7 +261,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Lightning (EV charging symbol)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.8)'
   ctx.beginPath()
   ctx.moveTo(s * 0.52, -s * 0.3)
   ctx.lineTo(s * 0.4, -s * 0.05)
@@ -279,8 +279,8 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
 function drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, idx: number, time: number) {
   ctx.save()
   ctx.translate(x, y)
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.85)'
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.45)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.95)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
   ctx.lineWidth = 1.5
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
@@ -304,32 +304,32 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
 
   // Glassmorphism background (brighter)
   ctx.beginPath()
-  ctx.roundRect(-r, -r, size, size, 14)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.07)'
+  ctx.roundRect(-r, -r, size, size, 12)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.09)'
   ctx.fill()
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.35)'
   ctx.lineWidth = 1
   ctx.stroke()
 
   // Inner highlight
   ctx.beginPath()
-  ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [13, 13, 0, 0])
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
+  ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [11, 11, 0, 0])
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'
   ctx.fill()
 
   // Icon area ring
   const iconS = r * 0.38
   ctx.beginPath()
   ctx.arc(0, -3, iconS + 4, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.18)'
   ctx.fill()
 
   // Draw icon
   drawIcon(ctx, 0, -3, iconS, idx, time)
 
   // Label (brighter)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)'
-  ctx.font = '600 12px Inter, system-ui, sans-serif'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
+  ctx.font = '600 11px Inter, system-ui, sans-serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'bottom'
   ctx.fillText(label, 0, -r - 8)

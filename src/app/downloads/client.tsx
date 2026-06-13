@@ -1,157 +1,162 @@
 'use client'
 
-import { FileText, Download, ArrowLeft, Sparkles } from 'lucide-react'
+import { FileText, Download, ArrowLeft, Sparkles, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 
-interface DocItem {
-  title: string
-  description: string
-  category: string
-  fileUrl: string
-  fileSize: string
+interface FileItem {
+  name: string
+  url: string
 }
 
-const documents: DocItem[] = [
+interface CategoryGroup {
+  label: string
+  files: FileItem[]
+}
+
+const categories: CategoryGroup[] = [
   {
-    title: 'BMS Protection Board Datasheet',
-    description: 'Technical specifications, pin configuration, and electrical characteristics for 16S 48V BMS series.',
-    category: 'BMS',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/bms-datasheet.pdf',
-    fileSize: '1.2 MB',
+    label: 'BMS Protection Board',
+    files: [
+      { name: 'JK-B15A24S Active Balancer Protection Board Manual V11.6.1', url: '/downloads/BMS-Protection-Board/JK-B15A24S-Active-Balancer-Protection-Board-Manual-V11.6.1.pdf' },
+      { name: 'JK-B2A16S-TH Active Balancer Manual V11.5.1', url: '/downloads/BMS-Protection-Board/JK-B2A16S-TH-Active-Balancer-Manual-V11.5.1.pdf' },
+      { name: 'JK-B2A24S Active Balancer Manual V11.5.1', url: '/downloads/BMS-Protection-Board/JK-B2A24S-Active-Balancer-Manual-V11.5.1.pdf' },
+      { name: 'JK-B2A25S-RP Active Balancer Relay Protection Board Manual V1.4', url: '/downloads/BMS-Protection-Board/JK-B2A25S-RP-Active-Balancer-Relay-Protection-Board-Manual-V1.4.pdf' },
+      { name: 'JK-B2A8S Active Balancer Manual V11.6.2', url: '/downloads/BMS-Protection-Board/JK-B2A8S-Active-Balancer-Manual-V11.6.2.pdf' },
+      { name: 'JK-B4A24S Active Balancer Manual V11.1.1', url: '/downloads/BMS-Protection-Board/JK-B4A24S-Active-Balancer-Manual-V11.1.1.pdf' },
+      { name: 'JK-B5A24S Active Balancer Protection Board Manual V11.0.1', url: '/downloads/BMS-Protection-Board/JK-B5A24S-Active-Balancer-Protection-Board-Manual-V11.0.1.pdf' },
+      { name: 'JK-B5A25S-60P Manual V8.0', url: '/downloads/BMS-Protection-Board/JK-B5A25S-60P-Manual-V8.0.pdf' },
+      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V15.1.2', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V15.1.2.pdf' },
+      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V15.1.3 (Mounting Ears)', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V15.1.3-wiht-Mounting-Ears.pdf' },
+      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V17.1.1', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V17.1.1.pdf' },
+      { name: 'JK-WB2A8S-10P-15P-20P-30P Active Balancer Protection Board Manual V1.0', url: '/downloads/BMS-Protection-Board/JK-WB2A8S-10P-15P-20P-30P-Active-Balancer-Protection-Board-Manual-V1.0.pdf' },
+      { name: 'JK-WB2A8S-30P Active Balancer Protection Board Manual V15.0.1', url: '/downloads/BMS-Protection-Board/JK-WB2A8S-30P-Active-Balancer-Protection-Board-Manual-V15.0.1.pdf' },
+      { name: 'JK-WBD6AxxS-15P Active Balancer External Protection Board Specification', url: '/downloads/BMS-Protection-Board/JK-WBD6AxxS-15P-Active-Balancer-External-Protection-Board-Specification.pdf' },
+      { name: 'NY-B2A16S-TH Active Balancer Manual V16.0.2', url: '/downloads/BMS-Protection-Board/NY-B2A16S-TH-Active-Balancer-Manual-V16.0.2.pdf' },
+      { name: 'Active Balancer Manual JK-B2A4S V2.1 (Independent Power)', url: '/downloads/BMS-Protection-Board/Active-Balancer-Manual-JK-B2A4S-V2.1-Independent-Power.pdf' },
+      { name: 'Protection Board Parameter Settings Manual V2.0', url: '/downloads/BMS-Protection-Board/Protection-Board-Parameter-Settings-Manual-V2.0.pdf' },
+      { name: 'Protection Board Parameter Settings Manual V2.2', url: '/downloads/BMS-Protection-Board/Protection-Board-Parameter-Settings-Manual-V2.2.pdf' },
+    ],
   },
   {
-    title: 'Battery Kit User Manual',
-    description: 'Installation guide, operation instructions, and maintenance tips for 15KWh & 16KWh battery kits.',
-    category: 'Battery Kit',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/battery-kit-manual.pdf',
-    fileSize: '3.5 MB',
+    label: 'Balancing Capacitors',
+    files: [
+      { name: 'EK-24S10EB Balancing Capacitor Manual V1.2.1', url: '/downloads/Balancing-Capacitors/EK-24S10EB-Balancing-Capacitor-Manual-V1.2.1.pdf' },
+      { name: 'EK-24S15EB Balancing Capacitor Manual V1.61', url: '/downloads/Balancing-Capacitors/EK-24S15EB-Balancing-Capacitor-Manual-V1.61.pdf' },
+      { name: 'EK-24S4EB Balancing Capacitor Manual V1.0', url: '/downloads/Balancing-Capacitors/EK-24S4EB-Balancing-Capacitor-Manual-V1.0.pdf' },
+      { name: 'EK-24S8EB Balancing Capacitor Manual V1.2.1', url: '/downloads/Balancing-Capacitors/EK-24S8EB-Balancing-Capacitor-Manual-V1.2.1.pdf' },
+      { name: 'NEEY Smart Active Balancer Specification', url: '/downloads/Balancing-Capacitors/NEEY-Smart-Active-Balancer-Specification.pdf' },
+      { name: 'Capacitor Manual', url: '/downloads/Balancing-Capacitors/Capacitor-Manual.pdf' },
+    ],
   },
   {
-    title: '6U Battery Kit Installation Guide',
-    description: 'Rack-mount installation, wiring diagrams, and communication setup for JKLU015 model.',
-    category: 'Battery Kit',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/6u-kit-guide.pdf',
-    fileSize: '2.8 MB',
+    label: 'Kits',
+    files: [
+      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf' },
+      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf' },
+    ],
   },
   {
-    title: 'High Voltage Kit Technical Specs',
-    description: 'Detailed specifications, system architecture, and safety guidelines for HV series.',
-    category: 'High Voltage',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/hv-kit-specs.pdf',
-    fileSize: '4.1 MB',
+    label: 'Accessory Manuals',
+    files: [
+      { name: '3.2-Inch Display Manual V1.0', url: '/downloads/Accessory-Manuals/3.2-Inch-Display-Manual-V1.0.pdf' },
+      { name: '4.3-Inch Display DW Manual V1.1', url: '/downloads/Accessory-Manuals/4.3-Inch-Display-DW-Manual-V1.1.pdf' },
+      { name: '4.3-Inch Display ZX Manual V2.0 (2024.04.09)', url: '/downloads/Accessory-Manuals/4.3-Inch-Display-ZX-Manual-V2.0-20240409.pdf' },
+      { name: 'JK-BLMK-5A V3.0 Battery Parallel Module Manual', url: '/downloads/Accessory-Manuals/JK-BLMK-5A-V3.0-Battery-Parallel-Module-Manual.pdf' },
+      { name: 'JK-QB2A8S-20P Active Balancer Protection Board Manual V17.0.2', url: '/downloads/Accessory-Manuals/JK-QB2A8S-20P-Active-Balancer-Protection-Board-Manual-V17.0.2.pdf' },
+      { name: 'LCD-2.0-LY Display Manual V1.1', url: '/downloads/Accessory-Manuals/LCD-2.0-LY-Display-Manual-V1.1.pdf' },
+      { name: 'MK-30V-P2.5FDS Product Specification', url: '/downloads/Accessory-Manuals/MK-30V-P2.5FDS-Product-Specification.pdf' },
+      { name: 'P-Link-CR Communication Interface Board Manual V1.0', url: '/downloads/Accessory-Manuals/P-Link-CR-Communication-Interface-Board-Manual-V1.0.pdf' },
+      { name: 'USB-TTL Isolation Module Manual', url: '/downloads/Accessory-Manuals/USB-TTL-Isolation-Module-Manual.pdf' },
+      { name: 'Smart Positioning Terminal ZX03 Zhixun Specification', url: '/downloads/Accessory-Manuals/Smart-Positioning-Terminal-ZX03-Zhixun-Specification.pdf' },
+      { name: 'Voice Alarm Manual V1.0', url: '/downloads/Accessory-Manuals/Voice-Alarm-Manual-V1.0.pdf' },
+    ],
   },
   {
-    title: 'CAN / RS485 Communication Protocol',
-    description: 'Communication protocol documentation for system integration and monitoring setup.',
-    category: 'Technical',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/communication-protocol.pdf',
-    fileSize: '1.8 MB',
-  },
-  {
-    title: 'CE & RoHS Certification',
-    description: 'Product compliance certificates including CE declaration and RoHS test reports.',
-    category: 'Certification',
-    fileUrl: 'https://cdn.jsdelivr.net/gh/bigelephant-code/jkess-website/documents/certification.pdf',
-    fileSize: '0.9 MB',
+    label: 'High Voltage',
+    files: [
+      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx' },
+      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf' },
+      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx' },
+      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf' },
+    ],
   },
 ]
 
-const categories = [...new Set(documents.map((d) => d.category))]
-
 export function DownloadsPageClient() {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+
   return (
     <div className="min-h-screen bg-[#010101]">
-      {/* Black bg strip for navbar */}
       <div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
 
-      {/* ═══════ HEADER ═══════ */}
       <div className="relative pt-32 pb-8 z-10">
         <div className="max-w-7xl mx-auto px-6">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6"
-          >
+          <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6">
             <ArrowLeft size={16} /> Back to Home
           </Link>
           <div className="text-center mb-2">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-gray-400 mb-4">
               <Sparkles size={12} className="text-[#a66cd9]" />
-              <span>Technical Resources</span>
+              <span>Product Manuals</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-              Downloads
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">Downloads</h1>
             <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-              Access product datasheets, user manuals, installation guides, and certification documents.
+              Access product manuals, specifications, and technical documents for all JKESS products.
             </p>
           </div>
         </div>
       </div>
 
-      {/* ═══════ DOCUMENTS LIST ═══════ */}
       <section className="relative pb-20 z-10">
         <div className="max-w-5xl mx-auto px-6">
-          {categories.map((category, catIdx) => (
-            <div key={category} className="mb-12 last:mb-0">
-              <h2 className="text-lg font-semibold text-white/60 uppercase tracking-widest mb-6">
-                {category}
-              </h2>
-              <div className="space-y-3">
-                {documents
-                  .filter((d) => d.category === category)
-                  .map((doc, idx) => (
-                    <motion.a
-                      key={idx}
-                      href={doc.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 15 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.08 }}
-                      className="group block bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 
-                        hover:border-white/[0.15] hover:bg-white/[0.04] transition-all duration-300"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] 
-                            flex items-center justify-center shrink-0 text-gray-500 group-hover:text-[#5b5bff] 
-                            transition-colors duration-300">
-                            <FileText size={20} />
-                          </div>
-                          <div className="min-w-0">
-                            <h3 className="text-white font-medium group-hover:text-[#5b5bff] transition-colors duration-200">
-                              {doc.title}
-                            </h3>
-                            <p className="text-sm text-gray-500 mt-1 line-clamp-1">
-                              {doc.description}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-xs text-gray-600">{doc.fileSize}</span>
-                          <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] 
-                            flex items-center justify-center text-gray-500 group-hover:text-green-500 
-                            group-hover:border-green-500/30 transition-all duration-300">
-                            <Download size={15} />
-                          </div>
-                        </div>
-                      </div>
-                    </motion.a>
-                  ))}
-              </div>
-            </div>
-          ))}
+          {categories.map((cat, catIdx) => {
+            const isOpen = expanded[cat.label] ?? true
+            return (
+              <div key={cat.label} className="mb-8 last:mb-0">
+                <button
+                  onClick={() => setExpanded({ ...expanded, [cat.label]: !isOpen })}
+                  className="w-full flex items-center justify-between mb-4 group"
+                >
+                  <h2 className="text-lg font-semibold text-white/60 uppercase tracking-widest">
+                    {cat.label}
+                    <span className="ml-2 text-xs text-gray-600 font-normal">({cat.files.length} files)</span>
+                  </h2>
+                  <ChevronDown size={16} className={`text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
 
-          {/* ═══════ NOTE ═══════ */}
+                {isOpen && (
+                  <div className="space-y-2">
+                    {cat.files.map((file, idx) => (
+                      <motion.a
+                        key={file.name}
+                        href={file.url}
+                        download
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: idx * 0.03 }}
+                        className="group flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-3 hover:border-white/[0.15] hover:bg-white/[0.04] transition-all duration-200"
+                      >
+                        <FileText size={16} className="text-gray-600 shrink-0 group-hover:text-[#5b5bff] transition-colors" />
+                        <span className="flex-1 text-sm text-gray-400 group-hover:text-white transition-colors min-w-0 truncate">
+                          {file.name}
+                        </span>
+                        <Download size={14} className="text-gray-600 shrink-0 group-hover:text-green-500 transition-colors" />
+                      </motion.a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+
           <div className="mt-12 text-center">
             <p className="text-xs text-gray-600">
-              Documents are hosted on CDN for fast worldwide access. Need a document not listed here?
+              All documents are hosted directly on our servers. Need help finding a document?
               <br />
-              <a href="mailto:chinaenergymall@163.com" className="text-[#5b5bff] hover:underline">
-                Contact us
-              </a>
-              {' '}and we&apos;ll send it your way.
+              <a href="mailto:chinaenergymall@163.com" className="text-[#5b5bff] hover:underline">Contact us</a>
+              {' '}and we&apos;ll help you out.
             </p>
           </div>
         </div>

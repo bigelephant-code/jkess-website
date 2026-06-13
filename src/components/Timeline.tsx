@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -46,7 +46,7 @@ export default function Timeline() {
     offset: ['start end', 'end start'],
   })
 
-  // ─── Canvas particles ───
+  // 鈹€鈹€鈹€ Canvas particles 鈹€鈹€鈹€
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -117,10 +117,10 @@ export default function Timeline() {
 
   return (
     <section ref={sectionRef} className="relative bg-gradient-to-b from-gray-900 to-gray-950 py-24 md:py-32 overflow-hidden">
-      {/* ─── Canvas particles ─── */}
+      {/* 鈹€鈹€鈹€ Canvas particles 鈹€鈹€鈹€ */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
 
-      {/* ─── Subtle glow orbs ─── */}
+      {/* 鈹€鈹€鈹€ Subtle glow orbs 鈹€鈹€鈹€ */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.08]"
           style={{ background: 'radial-gradient(circle, #22c55e, transparent)' }}
@@ -138,7 +138,7 @@ export default function Timeline() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 text-sm font-medium mb-4">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
             </svg>
@@ -151,11 +151,11 @@ export default function Timeline() {
             </span>
           </h2>
           <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto">
-            From a humble start to full-chain energy storage leadership — each step built on the last.
+            From a humble start to full-chain energy storage leadership 鈥?each step built on the last.
           </p>
         </motion.div>
 
-        {/* ─── Rising steps cards ─── */}
+        {/* 鈹€鈹€鈹€ Rising steps cards 鈹€鈹€鈹€ */}
         <div className="flex items-end justify-center gap-5 md:gap-6 max-w-5xl mx-auto">
           {milestones.map((item, i) => {
             const heightClasses = ['h-32', 'h-44', 'h-56', 'h-68'][i]
@@ -179,7 +179,7 @@ export default function Timeline() {
                 <motion.div
                   className="relative flex-1 rounded-2xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2"
                   style={{
-                    background: `linear-gradient(180deg, ${item.color}12, ${item.color}04)`,
+                    background: `linear-gradient(180deg, ${item.color}25, ${item.color}10)`,
                     border: `1px solid ${item.color}20`,
                     boxShadow: `0 4px 20px ${item.color}08`,
                   }}
@@ -216,10 +216,10 @@ export default function Timeline() {
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">{item.title}</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-1.5 drop-shadow-sm">{item.title}</h3>
 
                     {/* Description */}
-                    <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+                    <p className="text-xs md:text-sm text-gray-200 leading-relaxed font-medium">
                       {item.desc}
                     </p>
 
@@ -259,7 +259,7 @@ export default function Timeline() {
           })}
         </div>
 
-        {/* ─── Bottom growth footer ─── */}
+        {/* 鈹€鈹€鈹€ Bottom growth footer 鈹€鈹€鈹€ */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -290,3 +290,4 @@ export default function Timeline() {
     </section>
   )
 }
+

@@ -35,8 +35,8 @@ interface Particle {
 // Energy Storage Lifecycle Flow (corrected):
 //   左侧（发电）          右侧（储能→用电）
 //   🔌 Grid  (2)  ─┬─→  🔋 JKESS (3)  ─┬─→  🏠 Home (4)
-//                  ├─→  🏠 Home   (4)   └─→  🚗 EV (5)
-//                  └─→  🚗 EV     (5)
+//                  ├─→  🏠 Home   (4)   ├─→  🚗 EV (5)
+//                  └─→  🚗 EV     (5)   └─→  🏠→🚗 (充电桩)
 //   ☀️ Solar (0)  ───→  🔋 JKESS (3)
 //   🌬️ Wind  (1)  ───→  🔋 JKESS (3)
 
@@ -57,6 +57,7 @@ const EDGE_DEFS: EdgeDef[] = [
   { from: 2, to: 5 }, // Grid → EV（市电直充电动车）
   { from: 3, to: 4 }, // JKESS → Home（储能供家庭）
   { from: 3, to: 5 }, // JKESS → EV（储能充电动车）
+  { from: 4, to: 5 }, // Home → EV（家庭充电桩）
 ]
 
 // ─── Icon Drawers ──────────────────────────────────────────

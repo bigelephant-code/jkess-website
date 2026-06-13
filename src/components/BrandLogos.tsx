@@ -65,7 +65,7 @@ export default function BrandLogos() {
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(90deg, transparent 0%, white 25%, white 75%, transparent 100%)',
+                  'linear-gradient(90deg, transparent 0%, white 35%, white 65%, transparent 100%)',
               }}
             />
             {/* Text content */}

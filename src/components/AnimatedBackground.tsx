@@ -88,7 +88,7 @@ function drawWind(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.beginPath()
   ctx.moveTo(0, s * 0.1)
   ctx.lineTo(0, s * 0.9)
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.7)'
   ctx.stroke()
 
   // Blades (rotating)
@@ -110,7 +110,7 @@ function drawWind(ctx: CanvasRenderingContext2D, s: number, time: number) {
   // Hub
   ctx.beginPath()
   ctx.arc(0, 0, 3, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
   ctx.fill()
   ctx.restore()
 }
@@ -136,7 +136,7 @@ function drawGrid(ctx: CanvasRenderingContext2D, s: number) {
   ctx.strokeStyle = 'rgba(74, 222, 128, 0.4)'
   ctx.stroke()
   // Lightning bolt on plug
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
   ctx.beginPath()
   ctx.moveTo(s * 0.08, -s * 0.15)
   ctx.lineTo(-s * 0.04, s * 0.02)
@@ -160,13 +160,13 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   // Fill level (shows ~70% charge)
   const fillH = s * 1.1
   const gap = s * 0.08
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.35)'
   ctx.beginPath()
   ctx.roundRect(-s * 0.32, -s * 0.75 + (s * 1.5 - fillH), s * 0.64, fillH - gap, 2)
   ctx.fill()
 
   // Lightning bolt inside battery
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
   ctx.beginPath()
   ctx.moveTo(s * 0.12, -s * 0.5)
   ctx.lineTo(-s * 0.06, -s * 0.05)
@@ -175,7 +175,7 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   ctx.fill()
 
   // "JK" text subtle
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
   ctx.font = '600 8px Inter, sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText('JK', 0, 0.5)
@@ -195,7 +195,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   ctx.lineTo(s * 0.6, -s * 0.2)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.08)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
   ctx.fill()
 
   // Door
@@ -250,7 +250,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Wheels
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
   ctx.beginPath()
   ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
   ctx.fill()
@@ -261,7 +261,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Lightning (EV charging symbol)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
   ctx.beginPath()
   ctx.moveTo(s * 0.52, -s * 0.3)
   ctx.lineTo(s * 0.4, -s * 0.05)
@@ -279,8 +279,8 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
 function drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, idx: number, time: number) {
   ctx.save()
   ctx.translate(x, y)
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.65)'
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.85)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.45)'
   ctx.lineWidth = 1.5
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
@@ -302,34 +302,34 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
   ctx.save()
   ctx.translate(x, y)
 
-  // Glassmorphism background
+  // Glassmorphism background (brighter)
   ctx.beginPath()
   ctx.roundRect(-r, -r, size, size, 14)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.025)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.07)'
   ctx.fill()
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.12)'
-  ctx.lineWidth = 0.8
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.lineWidth = 1
   ctx.stroke()
 
   // Inner highlight
   ctx.beginPath()
   ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [13, 13, 0, 0])
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.015)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
   ctx.fill()
 
   // Icon area ring
   const iconS = r * 0.38
   ctx.beginPath()
   ctx.arc(0, -3, iconS + 4, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.06)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
   ctx.fill()
 
   // Draw icon
   drawIcon(ctx, 0, -3, iconS, idx, time)
 
-  // Label
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.55)'
-  ctx.font = '600 11px Inter, system-ui, sans-serif'
+  // Label (brighter)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)'
+  ctx.font = '600 12px Inter, system-ui, sans-serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'bottom'
   ctx.fillText(label, 0, -r - 8)
@@ -403,9 +403,9 @@ export default function AnimatedBackground() {
 
       // Green glow spots
       const spots = [
-        { x: w * 0.3, y: h * 0.22, r: w * 0.28, c: 'rgba(74, 222, 128, 0.04)' },
-        { x: w * 0.7, y: h * 0.6, r: w * 0.3, c: 'rgba(34, 197, 94, 0.025)' },
-        { x: w * 0.5, y: h * 0.4, r: w * 0.2, c: 'rgba(134, 239, 172, 0.02)' },
+        { x: w * 0.3, y: h * 0.22, r: w * 0.28, c: 'rgba(74, 222, 128, 0.08)' },
+        { x: w * 0.7, y: h * 0.6, r: w * 0.3, c: 'rgba(34, 197, 94, 0.05)' },
+        { x: w * 0.5, y: h * 0.4, r: w * 0.2, c: 'rgba(134, 239, 172, 0.04)' },
       ]
       for (const sp of spots) {
         const g = ctx!.createRadialGradient(sp.x, sp.y, 0, sp.x, sp.y, sp.r)
@@ -421,7 +421,7 @@ export default function AnimatedBackground() {
       const offsetY = (time * 6) % step
       const offsetX = (time * 4) % step
 
-      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.02)'
+      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.04)'
       ctx!.lineWidth = 0.4
 
       for (let y = offsetY; y < h; y += step) {
@@ -463,21 +463,21 @@ export default function AnimatedBackground() {
         const fy = fromN.y + Math.sin(time * 0.4 + fromN.phase) * 7
         const ty = toN.y + Math.sin(time * 0.4 + toN.phase) * 7
 
-        // Base line
+        // Base line (brighter)
         ctx!.beginPath()
         ctx!.moveTo(fromN.x, fy)
         ctx!.lineTo(toN.x, ty)
-        ctx!.strokeStyle = 'rgba(74, 222, 128, 0.06)'
-        ctx!.lineWidth = 0.6
+        ctx!.strokeStyle = 'rgba(74, 222, 128, 0.15)'
+        ctx!.lineWidth = 0.8
         ctx!.stroke()
 
-        // Pulse glow
+        // Pulse glow (brighter)
         const pulse = Math.sin(time * 0.6 + edge.from + edge.to * 0.7) * 0.5 + 0.5
         ctx!.beginPath()
         ctx!.moveTo(fromN.x, fy)
         ctx!.lineTo(toN.x, ty)
-        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.035})`
-        ctx!.lineWidth = 2.5
+        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.08})`
+        ctx!.lineWidth = 3
         ctx!.stroke()
       }
 

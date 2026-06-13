@@ -146,8 +146,8 @@ function drawGrid(ctx: CanvasRenderingContext2D, s: number) {
 }
 
 function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
-  // Battery icon (JKESS energy storage)
-  ctx.lineWidth = 1.8
+  // Battery icon (JKESS energy storage) - EXTRA BRIGHT
+  ctx.lineWidth = 2.2
   ctx.beginPath()
   ctx.roundRect(-s * 0.45, -s * 0.9, s * 0.9, s * 1.8, 4)
   ctx.stroke()
@@ -160,13 +160,13 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   // Fill level (shows ~70% charge)
   const fillH = s * 1.1
   const gap = s * 0.08
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.65)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.85)'
   ctx.beginPath()
   ctx.roundRect(-s * 0.32, -s * 0.75 + (s * 1.5 - fillH), s * 0.64, fillH - gap, 2)
   ctx.fill()
 
   // Lightning bolt inside battery
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
   ctx.beginPath()
   ctx.moveTo(s * 0.12, -s * 0.5)
   ctx.lineTo(-s * 0.06, -s * 0.05)
@@ -174,15 +174,15 @@ function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
   ctx.lineTo(-s * 0.12, s * 0.45)
   ctx.fill()
 
-  // "JK" text subtle
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
-  ctx.font = '700 10px Inter, sans-serif'
+  // "JK" text
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
+  ctx.font = '700 11px Inter, sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText('JK', 0, 0.5)
 }
 
 function drawHome(ctx: CanvasRenderingContext2D, s: number) {
-  ctx.lineWidth = 1.8
+  ctx.lineWidth = 2
   // House body
   ctx.beginPath()
   ctx.roundRect(-s * 0.5, -s * 0.2, s, s * 0.7, 2)
@@ -195,7 +195,7 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   ctx.lineTo(s * 0.6, -s * 0.2)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.55)'
   ctx.fill()
 
   // Door
@@ -211,12 +211,12 @@ function drawHome(ctx: CanvasRenderingContext2D, s: number) {
   // Light glow in window
   ctx.beginPath()
   ctx.arc(s * 0.25, s * 0.1, s * 0.07, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(255, 255, 200, 0.7)'
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.9)'
   ctx.fill()
 }
 
 function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
-  ctx.lineWidth = 1.8
+  ctx.lineWidth = 2.2
   // Car body
   ctx.beginPath()
   ctx.moveTo(-s * 0.7, s * 0.05)
@@ -229,11 +229,11 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.lineTo(s * 0.7, s * 0.05)
   ctx.closePath()
   ctx.stroke()
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
   ctx.fill()
 
   // Windows
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.65)'
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.8)'
   ctx.beginPath()
   ctx.moveTo(-s * 0.35, -s * 0.22)
   ctx.lineTo(-s * 0.15, -s * 0.22)
@@ -250,7 +250,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Wheels
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.75)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.85)'
   ctx.beginPath()
   ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
   ctx.fill()
@@ -261,7 +261,7 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
   ctx.stroke()
 
   // Lightning (EV charging symbol)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'
   ctx.beginPath()
   ctx.moveTo(s * 0.52, -s * 0.3)
   ctx.lineTo(s * 0.4, -s * 0.05)
@@ -271,8 +271,8 @@ function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
 
   // Headlight glow
   ctx.beginPath()
-  ctx.arc(s * 0.65, -s * 0.1, 2, 0, Math.PI * 2)
-  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.2 + 0.5})`
+  ctx.arc(s * 0.65, -s * 0.1, 3, 0, Math.PI * 2)
+  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.2 + 0.6})`
   ctx.fill()
 }
 
@@ -299,29 +299,30 @@ function drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number, s: number
 
 function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, label: string, idx: number, time: number) {
   const r = size / 2
+  const isRight = idx >= 3 // Right-side nodes (JKESS, Home, EV) get extra brightness
   ctx.save()
   ctx.translate(x, y)
 
-  // Glassmorphism background (brighter)
+  // Glassmorphism background
   ctx.beginPath()
   ctx.roundRect(-r, -r, size, size, 12)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.12)'
+  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.12)'
   ctx.fill()
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.45)'
-  ctx.lineWidth = 1.2
+  ctx.strokeStyle = isRight ? 'rgba(74, 222, 128, 0.6)' : 'rgba(74, 222, 128, 0.45)'
+  ctx.lineWidth = isRight ? 1.5 : 1.2
   ctx.stroke()
 
   // Inner highlight
   ctx.beginPath()
   ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [11, 11, 0, 0])
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.06)'
+  ctx.fillStyle = isRight ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.06)'
   ctx.fill()
 
   // Icon area ring
   const iconS = r * 0.38
   ctx.beginPath()
   ctx.arc(0, -3, iconS + 4, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.fillStyle = isRight ? 'rgba(74, 222, 128, 0.35)' : 'rgba(74, 222, 128, 0.25)'
   ctx.fill()
 
   // Draw icon

@@ -2,8 +2,8 @@ import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import CertTiltBoard from "@/components/CertTiltBoard";
 import MadeWithJKESS from "@/components/MadeWithJKESS";
-import BrandLogos from "@/components/BrandLogos";
 import AboutSection from "@/components/AboutSection";
+import BrandLogos from "@/components/BrandLogos";
 import ContactSection from "@/components/ContactSection";
 
 // Hardcoded content for now — will be replaced with Sanity CMS later
@@ -110,8 +110,8 @@ export default function Home() {
       <StatsSection data={siteContent.stats} />
       <CertTiltBoard />
       <MadeWithJKESS />
-      <BrandLogos />
       <AboutSection data={siteContent.about} />
+      <BrandLogos />
       <ContactSection data={siteContent.footer} />
     </>
   );

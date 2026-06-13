@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Image from 'next/image'
 
@@ -58,9 +58,9 @@ export default function BrandLogos() {
             </div>
           </div>
 
-          {/* ─── Text overlay centered on top of both rows ─── */}
+          {/* 鈹€鈹€鈹€ Text overlay centered on top of both rows 鈹€鈹€鈹€ */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {/* Gradient mask: solid white center → transparent sides */}
+            {/* Gradient mask: solid white center 鈫?transparent sides */}
             <div
               className="absolute inset-0"
               style={{
@@ -71,13 +71,13 @@ export default function BrandLogos() {
             {/* Text content */}
             <div className="relative z-10 text-center px-6">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-                Plays well with
+                Brand
                 <br />
-                <span className="text-green-600">friends</span>
+                <span className="text-green-600">Matching</span>
               </h2>
               <p className="mt-3 text-gray-500 text-base max-w-xl mx-auto">
-                Being this popular is uncommon. No matter your platform provider
-                or site builder, we&#39;re sure we&#39;re connected.
+                Wide compatibility across platforms and industries. No matter
+                your ecosystem, JKESS integrates seamlessly.
               </p>
             </div>
           </div>

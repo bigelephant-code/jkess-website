@@ -9,7 +9,6 @@ const brandLogos = Array.from({ length: 15 }, (_, i) => ({
 export default function BrandLogos() {
   return (
     <section className="relative bg-white py-20 overflow-hidden">
-      {/* Scrolling logo rows */}
       <div className="space-y-12">
         {/* Row 1: right to left */}
         <div className="relative overflow-hidden">
@@ -24,7 +23,7 @@ export default function BrandLogos() {
                     src={logo.src}
                     alt={`Partner ${(i % 15) + 1}`}
                     fill
-                    className="object-contain transition-all duration-300 grayscale hover:grayscale-0 hover:scale-110 opacity-60 hover:opacity-100"
+                    className="object-contain"
                     sizes="144px"
                     loading="lazy"
                   />
@@ -34,7 +33,7 @@ export default function BrandLogos() {
           </div>
         </div>
 
-        {/* ─── Centered title overlay between the two rows ─── */}
+        {/* Centered title overlay between rows */}
         <div className="relative flex items-center justify-center py-6">
           <div className="text-center z-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
@@ -62,7 +61,7 @@ export default function BrandLogos() {
                     src={logo.src}
                     alt={`Partner ${(i % 15) + 1}`}
                     fill
-                    className="object-contain transition-all duration-300 grayscale hover:grayscale-0 hover:scale-110 opacity-60 hover:opacity-100"
+                    className="object-contain"
                     sizes="144px"
                     loading="lazy"
                   />

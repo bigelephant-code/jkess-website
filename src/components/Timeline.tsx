@@ -4,57 +4,52 @@ import { motion } from 'framer-motion'
 
 const milestones = [
   {
-    period: '2017 – 2019',
-    title: 'Foundation',
+    period: '2017-2019',
+    title: '奠基期',
     subtitle: 'Foundation Period',
     content: [
-      'Established the team under Shandong Tunan, entering the new energy industry, and commenced R&D of energy storage products.',
-      'The first generation of products was launched in the market and received positive feedback from customers.',
+      '成立团队山东图南，进入新能源行业开启储能产品的研发。',
+      '第一代产品投入市场，获得了客户的好评。',
     ],
     color: '#22c55e',
-    index: 0,
   },
   {
-    period: '2020 – 2022',
-    title: 'Growth',
+    period: '2020-2022',
+    title: '成长期',
     subtitle: 'Growth Period',
     content: [
-      'Established the Hangzhou R&D center to focus on cutting-edge technology innovation. Founded Shenzhen Nengyi subsidiary, rapidly growing technical capabilities and team scale.',
-      'Successfully expanded into overseas markets. International market share surged rapidly, attracting significant industry attention.',
+      '设立杭州研发中心聚焦前沿技术创新，成立深圳能亿子公司，技术实力与团队规模快速提升。',
+      '产品成功开拓海外市场，海外市场占有率极速攀升，引发了行业的关注。',
     ],
     color: '#5b5bff',
-    index: 1,
   },
   {
-    period: '2023 – 2024',
-    title: 'Breakthrough',
+    period: '2023-2024',
+    title: '突破期',
     subtitle: 'Breakthrough Period',
     content: [
-      'Launched the JKESS brand covering more than 30 countries worldwide. A 5-hectare large-scale modern energy storage production base was officially completed and put into operation.',
-      'Successfully developed high-voltage commercial & industrial energy storage systems featuring active balancing technology. Designed for peak-shaving policies, effectively helping customers improve returns by 2–5 years.',
+      '推出JKESS品牌覆盖全球30余国，5公顷中大型储能现代化生产基地正式建成投产。',
+      '成功研发设计高压工商业储能系统，产品配置主动均衡功能，针对削峰填谷的政策，能有效帮客户提升2-5年的收益。',
     ],
     color: '#f58a8a',
-    index: 2,
   },
   {
-    period: '2025 – Future',
-    title: 'Expansion',
+    period: '2025-未来',
+    title: '拓展期',
     subtitle: 'Expansion Period',
     content: [
-      'From R&D and design, production integration, to backend testing and after-sales — JKESS now possesses full-chain capabilities in energy storage system development, manufacturing, and sales services.',
-      'Current production lines reach 2.1 GWh/year capacity, emerging as a rising star in the energy storage industry.',
-      'Going forward, we will focus on full industrial chain integration for C&I storage and large-scale project delivery. Through technological innovation and global market expansion, we aim to establish a leading position in the new energy sector.',
-      'Committed to driving the energy transition, practicing sustainable development, and actively fulfilling social responsibilities — contributing to a green energy future.',
+      '从研发设计、生产集成、到后端测试与售后——已具备储能系统全链条研发制造和销售服务能力。',
+      '当前生产线达到2.1GWh/年的产能，成为储能行业一颗冉冉升起的新星。',
     ],
     color: '#eab308',
-    index: 3,
   },
 ]
 
 export default function Timeline() {
   return (
-    <section className="relative bg-white pb-0 overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+    <section className="relative bg-white overflow-hidden">
+      {/* Main content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-28 pb-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,7 +61,7 @@ export default function Timeline() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M2 20L12 4l10 16" />
             </svg>
-            Our Journey
+            发展历程
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
             Development{' '}
@@ -74,7 +69,7 @@ export default function Timeline() {
           </h2>
         </motion.div>
 
-        {/* Timeline - vertical layout with full text */}
+        {/* Timeline - vertical layout */}
         <div className="max-w-3xl mx-auto">
           {milestones.map((item, i) => (
             <motion.div
@@ -83,28 +78,39 @@ export default function Timeline() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="relative pl-10 pb-10 last:pb-0"
+              className="relative pl-14 pb-12 last:pb-0"
             >
               {/* Vertical line */}
               {i < milestones.length - 1 && (
-                <div className="absolute left-[15px] top-8 bottom-0 w-px bg-gray-200" />
+                <div className="absolute left-[18px] top-10 bottom-0 w-[2px] bg-gradient-to-b from-gray-200 to-transparent" />
               )}
 
-              {/* Dot */}
-              <div className="absolute left-0 top-1.5">
+              {/* Dot with number */}
+              <div className="absolute left-0 top-1">
                 <motion.div
-                  className="w-[30px] h-[30px] rounded-full border-[3px] bg-white flex items-center justify-center"
-                  style={{ borderColor: item.color }}
+                  className="relative"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: i * 0.15, type: 'spring', stiffness: 200 }}
                 >
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: item.color }} />
+                  <div
+                    className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm border-[3px] border-white shadow-md"
+                    style={{ background: item.color, color: '#fff' }}
+                  >
+                    {i + 1}
+                  </div>
+                  {/* Pulse ring */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: item.color }}
+                    animate={{ scale: [1, 1.6, 1], opacity: [0.3, 0, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
+                  />
                 </motion.div>
               </div>
 
-              {/* Content */}
+              {/* Content card */}
               <div className="pl-6">
                 {/* Period badge */}
                 <motion.div
@@ -119,13 +125,13 @@ export default function Timeline() {
                   {item.period}
                 </motion.div>
 
-                {/* Title */}
+                {/* Title + subtitle */}
                 <h3 className="text-xl font-bold text-gray-900 mb-1">
                   {item.title}
                   <span className="text-sm font-normal text-gray-400 ml-2">/ {item.subtitle}</span>
                 </h3>
 
-                {/* Full content paragraphs */}
+                {/* Content */}
                 <div className="space-y-2 mt-3">
                   {item.content.map((paragraph, pi) => (
                     <p key={pi} className="text-[15px] text-gray-600 leading-relaxed">
@@ -139,15 +145,16 @@ export default function Timeline() {
         </div>
       </div>
 
-      {/* ─── Mountain background image ─── */}
-      <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
+      {/* ─── Mountain background at bottom ─── */}
+      <div className="relative w-full h-[220px] md:h-[300px]">
         <img
           src="/images/mountain-bg-transparent.png"
-          alt="Mountain landscape"
+          alt=""
           className="w-full h-full object-cover object-bottom"
+          loading="lazy"
         />
-        {/* Gradient fade to white at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent" />
+        {/* White fade at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
       </div>
     </section>
   )

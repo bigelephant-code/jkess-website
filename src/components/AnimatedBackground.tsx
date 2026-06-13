@@ -32,11 +32,13 @@ interface Particle {
   alpha: number
 }
 
-// Energy Storage Lifecycle Flow:
+// Energy Storage Lifecycle Flow (corrected):
 //   左侧（发电）          右侧（储能→用电）
-//   ☀️ Solar (0)  ───→  🔋 JKESS (3)  ──→  🏠 Home (4)
-//   🌬️ Wind  (1)  ───→                   └──→  🚗 EV (5)
-//   🔌 Grid  (2)  ───→
+//   🔌 Grid  (2)  ─┬─→  🔋 JKESS (3)  ─┬─→  🏠 Home (4)
+//                  ├─→  🏠 Home   (4)   └─→  🚗 EV (5)
+//                  └─→  🚗 EV     (5)
+//   ☀️ Solar (0)  ───→  🔋 JKESS (3)
+//   🌬️ Wind  (1)  ───→  🔋 JKESS (3)
 
 const NODE_DEFS = [
   { baseX: 0.18, baseY: 0.76, size: 40, phase: 4, label: 'Solar' },
@@ -48,14 +50,13 @@ const NODE_DEFS = [
 ]
 
 const EDGE_DEFS: EdgeDef[] = [
-  { from: 0, to: 3 }, // Solar → JKESS
-  { from: 1, to: 3 }, // Wind → JKESS
-  { from: 2, to: 3 }, // Grid → JKESS
-  { from: 3, to: 4 }, // JKESS → Home
-  { from: 3, to: 5 }, // JKESS → EV
-  { from: 0, to: 4 }, // Solar → Home (direct supply)
-  { from: 0, to: 5 }, // Solar → EV (direct)
-  { from: 4, to: 5 }, // Home → EV (home charging)
+  { from: 0, to: 3 }, // Solar → JKESS（太阳能只能储能）
+  { from: 1, to: 3 }, // Wind → JKESS（风力只能储能）
+  { from: 2, to: 3 }, // Grid → JKESS（市电也可储能）
+  { from: 2, to: 4 }, // Grid → Home（市电直供家庭）
+  { from: 2, to: 5 }, // Grid → EV（市电直充电动车）
+  { from: 3, to: 4 }, // JKESS → Home（储能供家庭）
+  { from: 3, to: 5 }, // JKESS → EV（储能充电动车）
 ]
 
 // ─── Icon Drawers ──────────────────────────────────────────

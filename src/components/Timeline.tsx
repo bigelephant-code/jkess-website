@@ -1,288 +1,200 @@
-﻿'use client'
+'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const milestones = [
   {
     period: '2017-2019',
     title: 'Foundation',
-    height: 'h-32',
-    scale: 0.8,
-    color: '#22c55e',
-    desc: 'Team established, first-gen products launched, customer trust earned.',
+    pos: { left: '6%', top: '32%' },
+    color: '#6b8f71',
+    desc: 'Team established, first-gen products launched.',
   },
   {
     period: '2020-2022',
     title: 'Growth',
-    height: 'h-44',
-    scale: 0.9,
-    color: '#5b5bff',
-    desc: 'R&D center + subsidiary founded. Overseas markets rapidly expanded.',
+    pos: { left: '27%', top: '24%' },
+    color: '#4a7c6f',
+    desc: 'R&D center founded. Overseas market expansion.',
   },
   {
     period: '2023-2024',
     title: 'Breakthrough',
-    height: 'h-56',
-    scale: 1.0,
-    color: '#f58a8a',
-    desc: 'JKESS brand, 5-hectare factory, HV storage with active balancing tech.',
+    pos: { left: '50%', top: '18%' },
+    color: '#2d6a4f',
+    desc: 'JKESS brand launched. 5-hectare factory built.',
   },
   {
     period: '2025-Future',
     title: 'Expansion',
-    height: 'h-68',
-    scale: 1.1,
-    color: '#eab308',
-    desc: 'Full-chain capabilities, 2.1 GWh/year, leading the energy transition.',
+    pos: { left: '73%', top: '12%' },
+    color: '#1b4332',
+    desc: 'Full-chain capabilities. 2.1 GWh/year capacity.',
   },
 ]
 
 export default function Timeline() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-
-  // 鈹€鈹€鈹€ Canvas particles 鈹€鈹€鈹€
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let particles: { x: number; y: number; vx: number; vy: number; size: number; alpha: number }[] = []
-    let animId: number
-    let time = 0
-
-    function resize() {
-      if (!canvas) return
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-
-    function initParticles() {
-      particles = []
-      for (let i = 0; i < 35; i++) {
-        particles.push({
-          x: Math.random() * canvas!.width,
-          y: Math.random() * canvas!.height,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: -0.15 - Math.random() * 0.4, // rising upward
-          size: 0.8 + Math.random() * 1.8,
-          alpha: 0.1 + Math.random() * 0.3,
-        })
-      }
-    }
-
-    function draw() {
-      if (!ctx || !canvas) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      time += 0.016
-
-      for (const p of particles) {
-        p.x += p.vx + Math.sin(time + p.x * 0.01) * 0.1
-        p.y += p.vy
-        if (p.y < -10) {
-          p.y = canvas.height + 10
-          p.x = Math.random() * canvas.width
-        }
-        if (p.x < -10) p.x = canvas.width + 10
-        if (p.x > canvas.width + 10) p.x = -10
-
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        const flicker = Math.sin(time * 1.5 + p.x * 0.02) * 0.3 + 0.5
-        ctx.fillStyle = p.alpha > 0.2
-          ? `rgba(255, 255, 255, ${p.alpha * flicker})`
-          : `rgba(74, 222, 128, ${p.alpha * flicker})`
-        ctx.fill()
-      }
-
-      animId = requestAnimationFrame(draw)
-    }
-
-    resize()
-    initParticles()
-    draw()
-
-    window.addEventListener('resize', resize)
-    return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('resize', resize)
-    }
-  }, [])
-
   return (
-    <section ref={sectionRef} className="relative bg-gradient-to-b from-gray-900 to-gray-950 py-24 md:py-32 overflow-hidden">
-      {/* 鈹€鈹€鈹€ Canvas particles 鈹€鈹€鈹€ */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
-
-      {/* 鈹€鈹€鈹€ Subtle glow orbs 鈹€鈹€鈹€ */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.08]"
-          style={{ background: 'radial-gradient(circle, #22c55e, transparent)' }}
-        />
-        <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.06]"
-          style={{ background: 'radial-gradient(circle, #5b5bff, transparent)' }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+    <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 text-sm font-medium mb-4">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              <path d="M2 20L12 4l10 16"/>
             </svg>
             Our Journey
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            Rising Through the{' '}
-            <span style={{ background: 'linear-gradient(135deg, #22c55e, #5b5bff, #f58a8a, #eab308)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              Years
-            </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            Development{' '}
+            <span className="text-green-600">Milestones</span>
           </h2>
-          <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto">
-            From a humble start to full-chain energy storage leadership 鈥?each step built on the last.
-          </p>
         </motion.div>
 
-        {/* 鈹€鈹€鈹€ Rising steps cards 鈹€鈹€鈹€ */}
-        <div className="flex items-end justify-center gap-5 md:gap-6 max-w-5xl mx-auto">
-          {milestones.map((item, i) => {
-            const heightClasses = ['h-32', 'h-44', 'h-56', 'h-68'][i]
-            return (
+        {/* ─── Mountain landscape ─── */}
+        <div className="relative w-full h-[520px] md:h-[580px] rounded-2xl overflow-hidden">
+          {/* Sky gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-amber-100 via-orange-50 to-white" />
+
+          {/* Mist layers */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white/60 via-white/20 to-transparent z-10" />
+          <div className="absolute bottom-1/4 left-0 right-0 h-1/4 bg-gradient-to-t from-white/30 to-transparent z-20" />
+
+          {/* ─── SVG Mountain range ─── */}
+          <svg
+            className="absolute bottom-0 left-0 right-0 w-full z-0"
+            viewBox="0 0 1200 400"
+            preserveAspectRatio="xMidYMax meet"
+            style={{ height: '85%' }}
+          >
+            {/* Far background mountains (misty) */}
+            <path
+              d="M0 320 Q60 280 120 300 Q200 250 280 270 Q340 220 400 240 Q480 180 560 200 Q620 160 680 180 Q740 140 800 160 Q860 200 920 220 Q980 240 1040 260 Q1100 280 1200 300 L1200 400 L0 400Z"
+              fill="#d4e0d0"
+              opacity="0.5"
+            />
+            <path
+              d="M0 340 Q80 300 160 320 Q240 270 320 290 Q400 240 480 260 Q560 200 640 220 Q720 180 800 200 Q880 230 960 250 Q1040 270 1200 290 L1200 400 L0 400Z"
+              fill="#b8c9b0"
+              opacity="0.4"
+            />
+
+            {/* Mid mountains */}
+            <path
+              d="M0 360 Q50 330 100 340 Q180 290 260 310 Q340 260 420 280 Q500 230 580 250 Q640 210 700 230 Q760 200 820 220 Q900 250 980 270 Q1060 290 1200 310 L1200 400 L0 400Z"
+              fill="#95b090"
+              opacity="0.5"
+            />
+
+            {/* Main mountain ridge - the "path" the milestones follow */}
+            <path
+              d="M0 380 Q40 355 80 360 Q120 340 160 345 Q220 310 280 320 Q340 285 400 295 Q460 260 520 270 Q560 250 600 255 Q660 230 720 240 Q780 220 840 230 Q900 250 960 260 Q1020 270 1080 280 Q1140 290 1200 300 L1200 400 L0 400Z"
+              fill="#6b8f71"
+              opacity="0.35"
+            />
+
+            {/* Foreground ridge */}
+            <path
+              d="M0 400 L0 390 Q80 370 160 380 Q240 355 320 365 Q400 335 480 345 Q540 325 600 330 Q660 315 720 320 Q780 305 840 310 Q920 325 1000 335 Q1080 345 1200 360 L1200 400Z"
+              fill="#4a7c6f"
+              opacity="0.25"
+            />
+
+            {/* Path/trail connecting milestones */}
+            <path
+              d="M60 340 Q140 310 220 320 Q300 290 380 300 Q460 270 540 280 Q600 265 660 270 Q720 255 780 260 Q840 270 900 280 Q960 290 1020 300"
+              stroke="#2d6a4f"
+              strokeWidth="2"
+              fill="none"
+              opacity="0.15"
+              strokeDasharray="6 4"
+            />
+          </svg>
+
+          {/* Sun (rising sun - symbol of growth) */}
+          <motion.div
+            className="absolute top-8 right-1/4 w-20 h-20 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, #fbbf24, #f59e0b, transparent)',
+              boxShadow: '0 0 60px rgba(251, 191, 36, 0.3), 0 0 120px rgba(251, 191, 36, 0.1)',
+            }}
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+
+          {/* ─── Milestone markers ─── */}
+          {milestones.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.5, delay: i * 0.2, type: 'spring', stiffness: 150 }}
+              className="absolute z-30 group"
+              style={{ left: item.pos.left, top: item.pos.top }}
+            >
+              {/* Connecting line from dot up to card */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gradient-to-t from-transparent to-gray-300 opacity-30 group-hover:opacity-60 transition-opacity" style={{ height: i === 0 ? '2rem' : '1.5rem' }} />
+
+              {/* Dot */}
               <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.7, delay: i * 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className={`flex-1 flex flex-col ${heightClasses} group relative cursor-pointer`}
-                style={{ minWidth: 0 }}
+                className="relative w-4 h-4 rounded-full border-[3px] border-white shadow-md z-10 mx-auto cursor-pointer"
+                style={{ background: item.color }}
+                whileHover={{ scale: 1.5 }}
+                transition={{ duration: 0.2 }}
               >
-                {/* Card glow */}
+                {/* Pulse ring */}
                 <motion.div
-                  className="absolute -inset-3 rounded-2xl opacity-0 blur-2xl group-hover:opacity-100 pointer-events-none transition-opacity duration-500"
-                  style={{ background: `radial-gradient(ellipse, ${item.color}30, transparent 70%)` }}
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: item.color }}
+                  animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
                 />
+              </motion.div>
 
-                {/* Card body - rising height represents growth */}
-                <motion.div
-                  className="relative flex-1 rounded-2xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2"
-                  style={{
-                    background: `linear-gradient(180deg, ${item.color}25, ${item.color}10)`,
-                    border: `1px solid ${item.color}20`,
-                    boxShadow: `0 4px 20px ${item.color}08`,
-                  }}
-                  whileHover={{ boxShadow: `0 8px 40px ${item.color}20` }}
+              {/* Label above dot */}
+              <motion.div
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none"
+                style={{ minWidth: '120px' }}
+              >
+                <div
+                  className="text-center px-3 py-1.5 rounded-lg shadow-md"
+                  style={{ background: `${item.color}E0`, color: '#fff' }}
                 >
-                  {/* Top accent glow */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-16 opacity-30 blur-2xl"
-                    style={{ background: `radial-gradient(ellipse at center, ${item.color}, transparent)` }}
-                  />
-
-                  {/* Color stripe - animated */}
-                  <motion.div
-                    className="h-1 w-full absolute top-0 left-0"
-                    style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}88)` }}
-                    initial={{ scaleX: 0, originX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: i * 0.15 + 0.3 }}
-                  />
-
-                  <div className="p-5 md:p-6 flex flex-col h-full justify-end">
-                    {/* Year badge */}
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold mb-3 w-fit"
-                      style={{ background: `${item.color}15`, color: item.color }}
-                    >
-                      <motion.div
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: item.color }}
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                      {item.period}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-1.5 drop-shadow-sm">{item.title}</h3>
-
-                    {/* Description */}
-                    <p className="text-xs md:text-sm text-gray-200 leading-relaxed font-medium">
-                      {item.desc}
-                    </p>
-
-                    {/* Growth indicator bar */}
-                    <div className="mt-3 flex items-center gap-1.5">
-                      <motion.div
-                        className="h-[2px] flex-1 rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${item.color}, transparent)` }}
-                        initial={{ scaleX: 0, originX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: i * 0.15 + 0.5 }}
-                      />
-                      <motion.div
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: item.color }}
-                        animate={{ scale: [1, 1.5, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Step number */}
-                <div className="flex justify-center mt-3">
-                  <motion.div
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold border"
-                    style={{ borderColor: `${item.color}40`, color: item.color, background: `${item.color}08` }}
-                    whileHover={{ scale: 1.2, background: item.color, color: '#fff' }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {i + 1}
-                  </motion.div>
+                  <p className="text-[10px] font-semibold">{item.period}</p>
                 </div>
               </motion.div>
-            )
-          })}
+
+              {/* Card below dot (always visible) */}
+              <div className="mt-2 text-center">
+                <h3 className="text-sm font-bold text-gray-800">{item.title}</h3>
+                <p className="text-[11px] text-gray-500 mt-0.5 max-w-[130px] mx-auto leading-snug">
+                  {item.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* 鈹€鈹€鈹€ Bottom growth footer 鈹€鈹€鈹€ */}
+        {/* ─── Bottom legend ─── */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="mt-12 text-center"
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-8 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/[0.03] border border-white/[0.06]">
-            <div className="flex items-center gap-1">
-              {[22, 44, 72, 100].map((val, i) => (
-                <motion.div
-                  key={i}
-                  className="w-8 h-1 rounded-full"
-                  style={{ background: [milestones[0].color, milestones[1].color, milestones[2].color, milestones[3].color][i], opacity: 0.4 + i * 0.2 }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: 8 + i * 8 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.8 + i * 0.1 }}
-                />
-              ))}
-            </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-600">
+              <path d="M2 20L12 4l10 16"/>
+            </svg>
             <span className="text-xs text-gray-500">
-              From foundation to full-chain energy leader
+              Climbing higher — from foundation to full-chain energy leader
             </span>
           </div>
         </motion.div>
@@ -290,4 +202,3 @@ export default function Timeline() {
     </section>
   )
 }
-

@@ -38,21 +38,24 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                       +86 131 6282 8868
                     </a>
                   </div>
-                  <a
-                    href="https://wa.me/8613162828868"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative w-16 h-16 rounded-lg overflow-hidden bg-white p-1 shrink-0 transition-transform hover:scale-110"
-                    title="WhatsApp"
-                  >
-                    <Image
-                      src="/images/whatsapp-qr.png"
-                      alt="WhatsApp QR"
-                      fill
-                      className="object-contain"
-                      sizes="64px"
-                    />
-                  </a>
+                  <div className="flex flex-col items-center gap-0.5 shrink-0">
+                    <a
+                      href="https://wa.me/8613162828868"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative w-16 h-16 rounded-lg overflow-hidden bg-white p-1 transition-transform hover:scale-110"
+                      title="WhatsApp"
+                    >
+                      <Image
+                        src="/images/whatsapp-qr.png"
+                        alt="WhatsApp QR"
+                        fill
+                        className="object-contain"
+                        sizes="64px"
+                      />
+                    </a>
+                    <span className="text-[10px] text-green-500 font-semibold tracking-wide">WhatsApp</span>
+                  </div>
                 </div>
               </div>
             </StaggerItem>

@@ -1,7 +1,8 @@
 'use client'
 
-import { Mail, MapPin, Phone, Send } from 'lucide-react'
+import { Mail, MapPin, Phone, Send, MessageCircle } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
+import Image from 'next/image'
 
 interface FooterData {
   contactEmail?: string
@@ -35,6 +36,26 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                   <a href="tel:+8613162828868" className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">
                     +86 131 6282 8868
                   </a>
+                </div>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="flex items-start gap-4 group transition-all duration-200">
+                <div className="w-10 h-10 bg-[#25D366]/10 rounded-lg flex items-center justify-center shrink-0">
+                  <MessageCircle size={20} className="text-[#25D366]" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-white font-semibold">WhatsApp</p>
+                  <p className="text-gray-400 text-sm mb-2">Scan to chat with us</p>
+                  <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-white p-1.5">
+                    <Image
+                      src="/images/whatsapp-qr.png"
+                      alt="WhatsApp QR Code"
+                      fill
+                      className="object-contain"
+                      sizes="96px"
+                    />
+                  </div>
                 </div>
               </div>
             </StaggerItem>

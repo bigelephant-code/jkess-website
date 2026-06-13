@@ -16,8 +16,6 @@ export default function HeroSection({ data }: { data?: HeroData }) {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Animated background with floating nodes, connections, and moving dots */}
       <AnimatedBackground />
-      <div className="absolute inset-0 bg-gradient-to-l from-black via-black/70 to-transparent z-[1]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-green-900/20 via-transparent to-black z-[1]" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">

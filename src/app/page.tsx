@@ -3,6 +3,7 @@ import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
 import CertTiltBoard from "@/components/CertTiltBoard";
 import MadeWithJKESS from "@/components/MadeWithJKESS";
+import ReviewsWall from "@/components/ReviewsWall";
 import BrandLogos from "@/components/BrandLogos";
 import ContactSection from "@/components/ContactSection";
 
@@ -107,6 +108,7 @@ export default function Home() {
       <Timeline />
       <CertTiltBoard />
       <MadeWithJKESS />
+      <ReviewsWall />
       <BrandLogos />
       <ContactSection data={siteContent.footer} />
     </>

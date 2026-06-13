@@ -1,7 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import CertTiltBoard from "@/components/CertTiltBoard";
-import ProductModules from "@/components/ProductModules";
+import MadeWithJKESS from "@/components/MadeWithJKESS";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -108,7 +108,7 @@ export default function Home() {
       <HeroSection data={siteContent.hero} />
       <StatsSection data={siteContent.stats} />
       <CertTiltBoard />
-      <ProductModules />
+      <MadeWithJKESS />
       <AboutSection data={siteContent.about} />
       <ContactSection data={siteContent.footer} />
     </>

@@ -420,7 +420,7 @@ export default function AnimatedBackground() {
       const offsetY = (time * 6) % step
       const offsetX = (time * 4) % step
 
-      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.04)'
+      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.02)'
       ctx!.lineWidth = 0.4
 
       for (let y = offsetY; y < h; y += step) {
@@ -462,21 +462,21 @@ export default function AnimatedBackground() {
         const fy = fromN.y + Math.sin(time * 0.4 + fromN.phase) * 7
         const ty = toN.y + Math.sin(time * 0.4 + toN.phase) * 7
 
-        // Base line (brighter)
+        // Base line (dimmed back)
         ctx!.beginPath()
         ctx!.moveTo(fromN.x, fy)
         ctx!.lineTo(toN.x, ty)
-        ctx!.strokeStyle = 'rgba(74, 222, 128, 0.15)'
-        ctx!.lineWidth = 0.8
+        ctx!.strokeStyle = 'rgba(74, 222, 128, 0.06)'
+        ctx!.lineWidth = 0.6
         ctx!.stroke()
 
-        // Pulse glow (brighter)
+        // Pulse glow (dimmed back)
         const pulse = Math.sin(time * 0.6 + edge.from + edge.to * 0.7) * 0.5 + 0.5
         ctx!.beginPath()
         ctx!.moveTo(fromN.x, fy)
         ctx!.lineTo(toN.x, ty)
-        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.08})`
-        ctx!.lineWidth = 3
+        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.03})`
+        ctx!.lineWidth = 2.5
         ctx!.stroke()
       }
 

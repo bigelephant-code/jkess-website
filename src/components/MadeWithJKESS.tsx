@@ -1,81 +1,111 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef, useMemo } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Image from 'next/image'
 
-const projects = [
-  { src: '/images/projects/project-1.jpg', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-2.png', span: 'col-span-1 row-span-2' },
-  { src: '/images/projects/project-3.png', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-4.jpg', span: 'col-span-2 row-span-1' },
-  { src: '/images/projects/project-5.jpg', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-6.jpg', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-7.png', span: 'col-span-1 row-span-2' },
-  { src: '/images/projects/project-8.png', span: 'col-span-2 row-span-1' },
-  { src: '/images/projects/project-9.png', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-10.png', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-11.png', span: 'col-span-1 row-span-1' },
-  { src: '/images/projects/project-12.png', span: 'col-span-1 row-span-2' },
+const projectImages = [
+  { src: '/images/projects/project-1.jpg' },
+  { src: '/images/projects/project-2.png' },
+  { src: '/images/projects/project-3.png' },
+  { src: '/images/projects/project-4.jpg' },
+  { src: '/images/projects/project-5.jpg' },
+  { src: '/images/projects/project-6.jpg' },
+  { src: '/images/projects/project-7.png' },
+  { src: '/images/projects/project-8.png' },
+  { src: '/images/projects/project-9.png' },
+  { src: '/images/projects/project-10.png' },
+  { src: '/images/projects/project-11.png' },
+  { src: '/images/projects/project-12.png' },
 ]
 
 export default function MadeWithJKESS() {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Mouse for 3D parallax tilt
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const smoothX = useSpring(mouseX, { stiffness: 150, damping: 15 })
+  const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15 })
+
+  // Map mouse position (-1 to 1) to rotation
+  const rotateX = useTransform(smoothY, [-1, 1], [6, -6])
+  const rotateY = useTransform(smoothX, [-1, 1], [-6, 6])
+
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    mouseX.set(Math.max(-1, Math.min(1, (e.clientX - cx) / (rect.width / 2))))
+    mouseY.set(Math.max(-1, Math.min(1, (e.clientY - cy) / (rect.height / 2))))
+  }
+
+  function handleMouseLeave() {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
   return (
-    <section className="relative overflow-hidden bg-gray-50">
-      {/* Title overlay */}
-      <div className="relative z-10 flex flex-col items-center justify-center py-16 md:py-20">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 text-sm font-medium mb-4">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-          Project Showcase
-        </div>
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-          Made with{' '}
-          <span className="text-green-600">JKESS</span>
-        </h2>
-        <p className="mt-3 text-gray-500 text-lg max-w-xl mx-auto text-center">
-          Real projects delivered — from design to deployment.
-        </p>
-      </div>
+    <section className="relative bg-gray-50 overflow-hidden">
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative"
+        style={{ perspective: 1200 }}
+      >
+        {/* ─── 3D Parallax container ─── */}
+        <motion.div
+          style={{
+            rotateX,
+            rotateY,
+            transformStyle: 'preserve-3d',
+            transformOrigin: 'center center',
+          }}
+          transition={{ duration: 0.1 }}
+        >
+          {/* ─── Image grid with creamy white overlay ─── */}
+          <div className="relative">
+            {/* Image grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-3 px-4 md:px-8 pt-20 pb-24 md:pt-28 md:pb-28">
+              {projectImages.map((img, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-20px' }}
+                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                  className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 shadow-sm"
+                >
+                  <Image
+                    src={img.src}
+                    alt={`Project ${i + 1}`}
+                    fill
+                    className="object-cover transition-all duration-500 group-hover:scale-110"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                    loading="lazy"
+                  />
+                  {/* Creamy white overlay — clears on hover */}
+                  <div className="absolute inset-0 bg-white/70 transition-opacity duration-500 group-hover:opacity-0" />
+                </motion.div>
+              ))}
+            </div>
 
-      {/* Staggered masonry grid */}
-      <div className="px-4 md:px-8 pb-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[120px] md:auto-rows-[150px]">
-            {projects.map((project, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: '-20px' }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className={`group relative rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${project.span}`}
-              >
-                <Image
-                  src={project.src}
-                  alt={`Project ${i + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                />
-
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                {/* Zoom icon */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                  <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="M21 21l-4.35-4.35" />
-                    </svg>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            {/* ─── White gradient edges for smooth blend ─── */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-gray-50 via-transparent to-gray-50/80" />
           </div>
+        </motion.div>
+
+        {/* ─── Floating title overlay (not affected by 3D tilt) ─── */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 tracking-tight text-center drop-shadow-sm">
+            Made with{' '}
+            <span className="text-green-600">JKESS</span>
+          </h2>
+          <p className="mt-4 text-gray-600 text-base md:text-lg max-w-md text-center drop-shadow-sm">
+            Real projects powered by JKESS energy storage solutions.
+          </p>
         </div>
       </div>
     </section>

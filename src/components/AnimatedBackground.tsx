@@ -5,12 +5,11 @@ import { useEffect, useRef } from 'react'
 interface NodeState {
   x: number
   y: number
-  baseX: number // fraction of viewport
+  baseX: number
   baseY: number
   size: number
-  phase: number // float animation phase
+  phase: number
   label: string
-  // icon is drawn procedurally based on index
 }
 
 interface EdgeDef {
@@ -22,7 +21,6 @@ interface Traveler {
   edgeIndex: number
   progress: number
   speed: number
-  dir: 1 | -1
 }
 
 interface Particle {
@@ -34,119 +32,268 @@ interface Particle {
   alpha: number
 }
 
+// Energy Storage Lifecycle Flow:
+//   左侧（发电）          右侧（储能→用电）
+//   ☀️ Solar (0)  ───→  🔋 JKESS (3)  ──→  🏠 Home (4)
+//   🌬️ Wind  (1)  ───→                   └──→  🚗 EV (5)
+//   🔌 Grid  (2)  ───→
+
 const NODE_DEFS = [
-  { baseX: 0.14, baseY: 0.18, size: 64, phase: 0, label: 'BMS' },
-  { baseX: 0.06, baseY: 0.48, size: 58, phase: 2, label: 'Battery Kit' },
-  { baseX: 0.18, baseY: 0.76, size: 52, phase: 4, label: '6U Rack' },
-  { baseX: 0.86, baseY: 0.18, size: 64, phase: 1, label: 'HV Kit' },
-  { baseX: 0.94, baseY: 0.48, size: 58, phase: 3, label: 'Inverter' },
-  { baseX: 0.82, baseY: 0.76, size: 52, phase: 5, label: 'Protection' },
+  { baseX: 0.14, baseY: 0.18, size: 64, phase: 0, label: 'Solar' },
+  { baseX: 0.06, baseY: 0.48, size: 58, phase: 2, label: 'Wind' },
+  { baseX: 0.18, baseY: 0.76, size: 52, phase: 4, label: 'Grid' },
+  { baseX: 0.86, baseY: 0.18, size: 64, phase: 1, label: 'JKESS' },
+  { baseX: 0.94, baseY: 0.48, size: 58, phase: 3, label: 'Home' },
+  { baseX: 0.82, baseY: 0.76, size: 52, phase: 5, label: 'EV' },
 ]
 
 const EDGE_DEFS: EdgeDef[] = [
-  { from: 0, to: 1 },
-  { from: 1, to: 2 },
-  { from: 0, to: 3 },
-  { from: 3, to: 4 },
-  { from: 4, to: 5 },
-  { from: 0, to: 4 },
-  { from: 1, to: 3 },
-  { from: 2, to: 5 },
-  { from: 1, to: 4 },
+  { from: 0, to: 3 }, // Solar → JKESS
+  { from: 1, to: 3 }, // Wind → JKESS
+  { from: 2, to: 3 }, // Grid → JKESS
+  { from: 3, to: 4 }, // JKESS → Home
+  { from: 3, to: 5 }, // JKESS → EV
+  { from: 0, to: 4 }, // Solar → Home (direct supply)
+  { from: 0, to: 5 }, // Solar → EV (direct)
+  { from: 4, to: 5 }, // Home → EV (home charging)
 ]
+
+// ─── Icon Drawers ──────────────────────────────────────────
+
+function drawSolar(ctx: CanvasRenderingContext2D, s: number, time: number) {
+  // Sun circle
+  ctx.beginPath()
+  ctx.arc(0, 0, s * 0.4, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.stroke()
+
+  // Rays (rotating slowly)
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + time * 0.06
+    ctx.beginPath()
+    ctx.moveTo(Math.cos(a) * s * 0.55, Math.sin(a) * s * 0.55)
+    ctx.lineTo(Math.cos(a) * s * 0.85, Math.sin(a) * s * 0.85)
+    ctx.stroke()
+  }
+
+  // Inner glow
+  ctx.beginPath()
+  ctx.arc(0, 0, s * 0.2, 0, Math.PI * 2)
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.3)'
+  ctx.fill()
+}
+
+function drawWind(ctx: CanvasRenderingContext2D, s: number, time: number) {
+  // Pole
+  ctx.beginPath()
+  ctx.moveTo(0, s * 0.1)
+  ctx.lineTo(0, s * 0.9)
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.stroke()
+
+  // Blades (rotating)
+  ctx.save()
+  ctx.rotate(time * 0.8)
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(Math.cos(a) * s * 0.7, Math.sin(a) * s * 0.7)
+    ctx.lineWidth = 2.5
+    ctx.stroke()
+    // Blade tip
+    ctx.beginPath()
+    ctx.arc(Math.cos(a) * s * 0.7, Math.sin(a) * s * 0.7, 2, 0, Math.PI * 2)
+    ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+    ctx.fill()
+  }
+  // Hub
+  ctx.beginPath()
+  ctx.arc(0, 0, 3, 0, Math.PI * 2)
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
+  ctx.fill()
+  ctx.restore()
+}
+
+function drawGrid(ctx: CanvasRenderingContext2D, s: number) {
+  // Power plug
+  ctx.lineWidth = 2
+  // Plug body
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.25, -s * 0.35, s * 0.5, s * 0.7, 3)
+  ctx.stroke()
+  // Prongs
+  ctx.beginPath()
+  ctx.moveTo(-s * 0.1, -s * 0.35)
+  ctx.lineTo(-s * 0.1, -s * 0.6)
+  ctx.moveTo(s * 0.1, -s * 0.35)
+  ctx.lineTo(s * 0.1, -s * 0.6)
+  ctx.stroke()
+  // Power line
+  ctx.beginPath()
+  ctx.moveTo(0, s * 0.35)
+  ctx.lineTo(0, s * 0.8)
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.4)'
+  ctx.stroke()
+  // Lightning bolt on plug
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.beginPath()
+  ctx.moveTo(s * 0.08, -s * 0.15)
+  ctx.lineTo(-s * 0.04, s * 0.02)
+  ctx.lineTo(s * 0.04, s * 0.02)
+  ctx.lineTo(-s * 0.08, s * 0.2)
+  ctx.fill()
+}
+
+function drawJKESS(ctx: CanvasRenderingContext2D, s: number) {
+  // Battery icon (JKESS energy storage)
+  ctx.lineWidth = 1.8
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.45, -s * 0.9, s * 0.9, s * 1.8, 4)
+  ctx.stroke()
+
+  // Terminal
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.12, -s * 1.05, s * 0.24, s * 0.18, 2)
+  ctx.fill()
+
+  // Fill level (shows ~70% charge)
+  const fillH = s * 1.1
+  const gap = s * 0.08
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.32, -s * 0.75 + (s * 1.5 - fillH), s * 0.64, fillH - gap, 2)
+  ctx.fill()
+
+  // Lightning bolt inside battery
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.5)'
+  ctx.beginPath()
+  ctx.moveTo(s * 0.12, -s * 0.5)
+  ctx.lineTo(-s * 0.06, -s * 0.05)
+  ctx.lineTo(s * 0.06, -s * 0.05)
+  ctx.lineTo(-s * 0.12, s * 0.45)
+  ctx.fill()
+
+  // "JK" text subtle
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.15)'
+  ctx.font = '600 8px Inter, sans-serif'
+  ctx.textAlign = 'center'
+  ctx.fillText('JK', 0, 0.5)
+}
+
+function drawHome(ctx: CanvasRenderingContext2D, s: number) {
+  ctx.lineWidth = 1.8
+  // House body
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.5, -s * 0.2, s, s * 0.7, 2)
+  ctx.stroke()
+
+  // Roof
+  ctx.beginPath()
+  ctx.moveTo(-s * 0.6, -s * 0.2)
+  ctx.lineTo(0, -s * 0.85)
+  ctx.lineTo(s * 0.6, -s * 0.2)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.08)'
+  ctx.fill()
+
+  // Door
+  ctx.beginPath()
+  ctx.roundRect(-s * 0.1, s * 0.15, s * 0.2, s * 0.35, [2, 2, 0, 0])
+  ctx.stroke()
+
+  // Window
+  ctx.beginPath()
+  ctx.roundRect(s * 0.15, s * 0.0, s * 0.2, s * 0.2, 2)
+  ctx.stroke()
+
+  // Light glow in window
+  ctx.beginPath()
+  ctx.arc(s * 0.25, s * 0.1, s * 0.07, 0, Math.PI * 2)
+  ctx.fillStyle = 'rgba(255, 255, 200, 0.3)'
+  ctx.fill()
+}
+
+function drawEV(ctx: CanvasRenderingContext2D, s: number, time: number) {
+  ctx.lineWidth = 1.8
+  // Car body
+  ctx.beginPath()
+  ctx.moveTo(-s * 0.7, s * 0.05)
+  ctx.lineTo(-s * 0.7, -s * 0.2)
+  ctx.lineTo(-s * 0.4, -s * 0.35)
+  ctx.lineTo(-s * 0.1, -s * 0.35)
+  ctx.lineTo(s * 0.1, -s * 0.2)
+  ctx.lineTo(s * 0.6, -s * 0.2)
+  ctx.lineTo(s * 0.7, -s * 0.05)
+  ctx.lineTo(s * 0.7, s * 0.05)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.06)'
+  ctx.fill()
+
+  // Windows
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.beginPath()
+  ctx.moveTo(-s * 0.35, -s * 0.22)
+  ctx.lineTo(-s * 0.15, -s * 0.22)
+  ctx.lineTo(-s * 0.05, -s * 0.12)
+  ctx.lineTo(-s * 0.35, -s * 0.12)
+  ctx.closePath()
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(-s * 0.05, -s * 0.22)
+  ctx.lineTo(s * 0.15, -s * 0.22)
+  ctx.lineTo(s * 0.25, -s * 0.12)
+  ctx.lineTo(-s * 0.05, -s * 0.12)
+  ctx.closePath()
+  ctx.stroke()
+
+  // Wheels
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.3)'
+  ctx.beginPath()
+  ctx.arc(-s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.arc(s * 0.35, s * 0.05, s * 0.12, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.stroke()
+
+  // Lightning (EV charging symbol)
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.4)'
+  ctx.beginPath()
+  ctx.moveTo(s * 0.52, -s * 0.3)
+  ctx.lineTo(s * 0.4, -s * 0.05)
+  ctx.lineTo(s * 0.48, -s * 0.05)
+  ctx.lineTo(s * 0.36, s * 0.18)
+  ctx.fill()
+
+  // Headlight glow
+  ctx.beginPath()
+  ctx.arc(s * 0.65, -s * 0.1, 2, 0, Math.PI * 2)
+  ctx.fillStyle = `rgba(200, 255, 200, ${Math.sin(time * 2) * 0.15 + 0.3})`
+  ctx.fill()
+}
 
 function drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, idx: number, time: number) {
   ctx.save()
   ctx.translate(x, y)
-  ctx.strokeStyle = 'rgba(74, 222, 128, 0.7)'
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.35)'
-  ctx.lineWidth = 1.8
+  ctx.strokeStyle = 'rgba(74, 222, 128, 0.65)'
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.25)'
+  ctx.lineWidth = 1.5
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
 
   switch (idx) {
-    case 0: // Circuit / BMS
-      ctx.beginPath()
-      ctx.roundRect(-s * 0.5, -s * 0.5, s, s, 3)
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.arc(0, 0, s * 0.25, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.moveTo(-s * 0.35, -s * 0.35)
-      ctx.lineTo(-s * 0.35, 0)
-      ctx.lineTo(s * 0.35, 0)
-      ctx.lineTo(s * 0.35, s * 0.35)
-      ctx.stroke()
-      break
-    case 1: // Battery
-      ctx.beginPath()
-      ctx.roundRect(-s * 0.35, -s, s * 0.7, s * 1.8, 3)
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.roundRect(-s * 0.1, -s * 1.15, s * 0.2, s * 0.22, 1)
-      ctx.fill()
-      ctx.fillStyle = 'rgba(74, 222, 128, 0.2)'
-      ctx.beginPath()
-      ctx.roundRect(-s * 0.22, -s * 0.7, s * 0.44, s * 1.2, 2)
-      ctx.fill()
-      break
-    case 2: // Rack mount
-      ctx.beginPath()
-      ctx.roundRect(-s * 0.45, -s * 0.5, s * 0.9, s, 2)
-      ctx.stroke()
-      for (let i = 0; i < 3; i++) {
-        ctx.beginPath()
-        ctx.moveTo(-s * 0.3, -s * 0.3 + i * s * 0.3)
-        ctx.lineTo(s * 0.3, -s * 0.3 + i * s * 0.3)
-        ctx.stroke()
-      }
-      break
-    case 3: // Lightning bolt / HV
-      ctx.beginPath()
-      ctx.moveTo(s * 0.25, -s * 1.0)
-      ctx.lineTo(-s * 0.15, -s * 0.1)
-      ctx.lineTo(s * 0.15, -s * 0.1)
-      ctx.lineTo(-s * 0.25, s * 1.0)
-      ctx.lineTo(s * 0.15, s * 0.15)
-      ctx.lineTo(-s * 0.1, s * 0.15)
-      ctx.closePath()
-      ctx.fill()
-      ctx.stroke()
-      break
-    case 4: // Inverter / sun
-      ctx.beginPath()
-      ctx.arc(0, 0, s * 0.35, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.stroke()
-      for (let i = 0; i < 6; i++) {
-        const a = (i / 6) * Math.PI * 2 + time * 0.08
-        ctx.beginPath()
-        ctx.moveTo(Math.cos(a) * s * 0.5, Math.sin(a) * s * 0.5)
-        ctx.lineTo(Math.cos(a) * s * 0.78, Math.sin(a) * s * 0.78)
-        ctx.stroke()
-      }
-      break
-    case 5: // Shield / Protection
-      ctx.beginPath()
-      ctx.moveTo(0, -s * 0.95)
-      ctx.lineTo(s * 0.9, -s * 0.5)
-      ctx.lineTo(s * 0.7, s * 0.55)
-      ctx.lineTo(0, s * 0.95)
-      ctx.lineTo(-s * 0.7, s * 0.55)
-      ctx.lineTo(-s * 0.9, -s * 0.5)
-      ctx.closePath()
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.moveTo(-s * 0.18, s * 0.1)
-      ctx.lineTo(0, s * 0.3)
-      ctx.lineTo(s * 0.28, -s * 0.18)
-      ctx.stroke()
-      ctx.fillStyle = 'rgba(74, 222, 128, 0.1)'
-      ctx.fill()
-      break
+    case 0: drawSolar(ctx, s, time); break
+    case 1: drawWind(ctx, s, time); break
+    case 2: drawGrid(ctx, s); break
+    case 3: drawJKESS(ctx, s); break
+    case 4: drawHome(ctx, s); break
+    case 5: drawEV(ctx, s, time); break
   }
+
   ctx.restore()
 }
 
@@ -164,7 +311,7 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
   ctx.lineWidth = 0.8
   ctx.stroke()
 
-  // Inner highlight (top edge shine)
+  // Inner highlight
   ctx.beginPath()
   ctx.roundRect(-r + 1, -r + 1, size - 2, size * 0.4, [13, 13, 0, 0])
   ctx.fillStyle = 'rgba(255, 255, 255, 0.015)'
@@ -187,10 +334,11 @@ function drawGlassCard(ctx: CanvasRenderingContext2D, x: number, y: number, size
   ctx.textBaseline = 'bottom'
   ctx.fillText(label, 0, -r - 8)
 
-  // Small green dot indicator (live status)
+  // Small status dot (glowing)
   ctx.beginPath()
   ctx.arc(r - 8, -r + 8, 2.5, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(74, 222, 128, 0.6)'
+  const pulse = Math.sin(time * 1.5 + idx) * 0.2 + 0.5
+  ctx.fillStyle = `rgba(74, 222, 128, ${pulse * 0.6})`
   ctx.fill()
 
   ctx.restore()
@@ -224,13 +372,12 @@ export default function AnimatedBackground() {
 
     function initTravelers() {
       travelers = []
-      const count = 7
-      for (let i = 0; i < count; i++) {
+      // One traveler per edge, flowing in the energy direction
+      for (let i = 0; i < EDGE_DEFS.length; i++) {
         travelers.push({
-          edgeIndex: i % EDGE_DEFS.length,
-          progress: (i / count) % 1,
-          speed: 0.0025 + Math.random() * 0.004,
-          dir: Math.random() > 0.5 ? 1 : -1,
+          edgeIndex: i,
+          progress: (i / EDGE_DEFS.length) % 1,
+          speed: 0.002 + Math.random() * 0.003,
         })
       }
     }
@@ -238,27 +385,27 @@ export default function AnimatedBackground() {
     function initParticles() {
       if (!canvas) return
       particles = []
-      for (let i = 0; i < 40; i++) {
+      for (let i = 0; i < 30; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.15,
-          vy: (Math.random() - 0.5) * 0.15,
-          size: 0.5 + Math.random() * 1.5,
-          alpha: 0.1 + Math.random() * 0.4,
+          vx: (Math.random() - 0.5) * 0.12,
+          vy: (Math.random() - 0.5) * 0.12,
+          size: 0.4 + Math.random() * 1.2,
+          alpha: 0.08 + Math.random() * 0.3,
         })
       }
     }
 
     function drawBg(w: number, h: number) {
-      // Pure black background (original style)
       ctx!.fillStyle = '#010101'
       ctx!.fillRect(0, 0, w, h)
 
-      // Subtle green glow spots (same as original HeroSection blur-3xl style)
+      // Green glow spots
       const spots = [
-        { x: w * 0.25, y: h * 0.25, r: w * 0.3, c: 'rgba(74, 222, 128, 0.04)' },
-        { x: w * 0.75, y: h * 0.6, r: w * 0.3, c: 'rgba(34, 197, 94, 0.025)' },
+        { x: w * 0.3, y: h * 0.22, r: w * 0.28, c: 'rgba(74, 222, 128, 0.04)' },
+        { x: w * 0.7, y: h * 0.6, r: w * 0.3, c: 'rgba(34, 197, 94, 0.025)' },
+        { x: w * 0.5, y: h * 0.4, r: w * 0.2, c: 'rgba(134, 239, 172, 0.02)' },
       ]
       for (const sp of spots) {
         const g = ctx!.createRadialGradient(sp.x, sp.y, 0, sp.x, sp.y, sp.r)
@@ -270,13 +417,12 @@ export default function AnimatedBackground() {
     }
 
     function drawTechGrid(w: number, h: number) {
-      // Subtle tech lines
       const step = 70
-      const offsetY = (time * 8) % step
-      const offsetX = (time * 5) % step
+      const offsetY = (time * 6) % step
+      const offsetX = (time * 4) % step
 
-      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.025)'
-      ctx!.lineWidth = 0.5
+      ctx!.strokeStyle = 'rgba(74, 222, 128, 0.02)'
+      ctx!.lineWidth = 0.4
 
       for (let y = offsetY; y < h; y += step) {
         ctx!.beginPath()
@@ -301,12 +447,14 @@ export default function AnimatedBackground() {
 
         ctx!.beginPath()
         ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(74, 222, 128, ${p.alpha * (Math.sin(time * 0.3 + p.x * 0.01) * 0.3 + 0.5)})`
+        const flicker = Math.sin(time * 0.5 + p.x * 0.01) * 0.3 + 0.5
+        ctx!.fillStyle = `rgba(74, 222, 128, ${p.alpha * flicker})`
         ctx!.fill()
       }
     }
 
     function drawEdgesAndDots() {
+      // Draw connection lines
       for (const edge of EDGE_DEFS) {
         const fromN = nodes[edge.from]
         const toN = nodes[edge.to]
@@ -328,22 +476,21 @@ export default function AnimatedBackground() {
         ctx!.beginPath()
         ctx!.moveTo(fromN.x, fy)
         ctx!.lineTo(toN.x, ty)
-        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.04})`
+        ctx!.strokeStyle = `rgba(74, 222, 128, ${pulse * 0.035})`
         ctx!.lineWidth = 2.5
         ctx!.stroke()
       }
 
-      // Traveling dots
+      // Traveling dots (energy flow direction: from → to)
       for (const t of travelers) {
         const edge = EDGE_DEFS[t.edgeIndex]
         const fromN = nodes[edge.from]
         const toN = nodes[edge.to]
         if (!fromN || !toN) continue
 
-        t.progress += t.speed * t.dir
-        if (t.progress > 1 || t.progress < 0) {
-          t.dir = (t.dir === 1 ? -1 : 1) as 1 | -1
-          t.progress = Math.max(0, Math.min(1, t.progress))
+        t.progress += t.speed
+        if (t.progress > 1) {
+          t.progress = 0
         }
 
         const pr = t.progress
@@ -356,26 +503,34 @@ export default function AnimatedBackground() {
         const y = fromFy + dy * pr
 
         // Glow ring
+        const size = 4 + Math.sin(pr * Math.PI) * 1.5 // pulse at middle of edge
         ctx!.beginPath()
-        ctx!.arc(x, y, 5, 0, Math.PI * 2)
-        ctx!.fillStyle = 'rgba(74, 222, 128, 0.08)'
+        ctx!.arc(x, y, size, 0, Math.PI * 2)
+        ctx!.fillStyle = 'rgba(74, 222, 128, 0.06)'
         ctx!.fill()
 
-        // Core
+        // Core dot (brighter)
         ctx!.beginPath()
-        ctx!.arc(x, y, 2.2, 0, Math.PI * 2)
-        ctx!.fillStyle = 'rgba(134, 239, 172, 0.85)'
+        ctx!.arc(x, y, 2, 0, Math.PI * 2)
+        ctx!.fillStyle = 'rgba(134, 239, 172, 0.9)'
         ctx!.fill()
 
-        // Trail
-        const trailX = fromN.x + dx * (pr - t.speed * 4 * t.dir)
-        const trailY = fromFy + dy * (pr - t.speed * 4 * t.dir)
-        const grad = ctx!.createRadialGradient(trailX, trailY, 0, trailX, trailY, 4)
-        grad.addColorStop(0, 'rgba(74, 222, 128, 0.15)')
+        // Bright center
+        ctx!.beginPath()
+        ctx!.arc(x, y, 1, 0, Math.PI * 2)
+        ctx!.fillStyle = 'rgba(255, 255, 255, 0.6)'
+        ctx!.fill()
+
+        // Trail behind
+        const trailPr = Math.max(0, pr - t.speed * 5)
+        const trailX = fromN.x + dx * trailPr
+        const trailY = fromFy + dy * trailPr
+        const grad = ctx!.createRadialGradient(trailX, trailY, 0, trailX, trailY, 5)
+        grad.addColorStop(0, 'rgba(74, 222, 128, 0.1)')
         grad.addColorStop(1, 'transparent')
         ctx!.fillStyle = grad
         ctx!.beginPath()
-        ctx!.arc(trailX, trailY, 4, 0, Math.PI * 2)
+        ctx!.arc(trailX, trailY, 5, 0, Math.PI * 2)
         ctx!.fill()
       }
     }

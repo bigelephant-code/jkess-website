@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ShoppingCart } from 'lucide-react'
@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/products' },
   { label: 'News', href: '#news' },
-  { label: 'About', href: '#about' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '#contact' },
   { label: 'Downloads', href: '/downloads' },
 ]

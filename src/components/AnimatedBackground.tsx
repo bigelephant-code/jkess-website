@@ -39,9 +39,9 @@ interface Particle {
 //   🔌 Grid  (2)  ───→
 
 const NODE_DEFS = [
-  { baseX: 0.14, baseY: 0.18, size: 48, phase: 0, label: 'Solar' },
+  { baseX: 0.18, baseY: 0.76, size: 40, phase: 4, label: 'Solar' },
   { baseX: 0.06, baseY: 0.48, size: 44, phase: 2, label: 'Wind' },
-  { baseX: 0.18, baseY: 0.76, size: 40, phase: 4, label: 'Grid' },
+  { baseX: 0.14, baseY: 0.18, size: 48, phase: 0, label: 'Grid' },
   { baseX: 0.86, baseY: 0.18, size: 48, phase: 1, label: 'JKESS' },
   { baseX: 0.94, baseY: 0.48, size: 44, phase: 3, label: 'Home' },
   { baseX: 0.82, baseY: 0.76, size: 40, phase: 5, label: 'EV' },

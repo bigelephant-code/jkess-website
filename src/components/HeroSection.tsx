@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import TechLines from './TechLines'
+import AnimatedBackground from './AnimatedBackground'
 import { motion } from 'framer-motion'
 
 interface HeroData {
@@ -14,13 +14,10 @@ interface HeroData {
 export default function HeroSection({ data }: { data?: HeroData }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Animated tech lines background */}
-      <TechLines />
-      {/* Background gradient */}
+      {/* Animated background with floating nodes, connections, and moving dots */}
+      <AnimatedBackground />
       <div className="absolute inset-0 bg-gradient-to-l from-black via-black/70 to-transparent z-[1]" />
       <div className="absolute inset-0 bg-gradient-to-b from-green-900/20 via-transparent to-black z-[1]" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">

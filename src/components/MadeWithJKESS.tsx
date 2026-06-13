@@ -3,79 +3,19 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
-const products = [
-  {
-    name: 'BMS Protection Board',
-    image: '/images/battery-kit-hero.webp',
-    category: 'BMS',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: 'Battery Kit (With Caster)',
-    image: '/images/battery-kit-system.webp',
-    category: 'Battery',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: '6U Rack Mount',
-    image: '/images/6u-kit/1.webp',
-    category: 'Rack',
-    span: 'col-span-1 row-span-2',
-  },
-  {
-    name: 'High Voltage Kit',
-    image: '/images/6u-kit/2.webp',
-    category: 'HV',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: 'Battery Kit Front',
-    image: '/images/battery-kit-front.webp',
-    category: 'Battery',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: '6U Kit Detail',
-    image: '/images/6u-kit/3.webp',
-    category: 'Detail',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: 'Battery Display',
-    image: '/images/battery-kit-display.webp',
-    category: 'LCD',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: '6U Kit Side View',
-    image: '/images/6u-kit/4.webp',
-    category: 'Rack',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: 'Battery Kit Side',
-    image: '/images/battery-kit-side.webp',
-    category: 'Battery',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: '6U Kit Rear',
-    image: '/images/6u-kit/5.webp',
-    category: 'Rack',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: 'Battery Kit Rear',
-    image: '/images/battery-kit-rear.webp',
-    category: 'Battery',
-    span: 'col-span-1 row-span-1',
-  },
-  {
-    name: '6U Kit Detail 6',
-    image: '/images/6u-kit/6.webp',
-    category: 'Detail',
-    span: 'col-span-1 row-span-1',
-  },
+const projects = [
+  { src: '/images/projects/project-1.jpg', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-2.png', span: 'col-span-1 row-span-2' },
+  { src: '/images/projects/project-3.png', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-4.jpg', span: 'col-span-2 row-span-1' },
+  { src: '/images/projects/project-5.jpg', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-6.jpg', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-7.png', span: 'col-span-1 row-span-2' },
+  { src: '/images/projects/project-8.png', span: 'col-span-2 row-span-1' },
+  { src: '/images/projects/project-9.png', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-10.png', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-11.png', span: 'col-span-1 row-span-1' },
+  { src: '/images/projects/project-12.png', span: 'col-span-1 row-span-2' },
 ]
 
 export default function MadeWithJKESS() {
@@ -89,55 +29,53 @@ export default function MadeWithJKESS() {
             <path d="M2 17l10 5 10-5" />
             <path d="M2 12l10 5 10-5" />
           </svg>
-          Product Showcase
+          Project Showcase
         </div>
         <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
           Made with{' '}
           <span className="text-green-600">JKESS</span>
         </h2>
         <p className="mt-3 text-gray-500 text-lg max-w-xl mx-auto text-center">
-          Explore our range of energy storage solutions — built for reliability, safety, and performance.
+          Real projects delivered — from design to deployment.
         </p>
       </div>
 
-      {/* Masonry-like grid of product images */}
+      {/* Staggered masonry grid */}
       <div className="px-4 md:px-8 pb-16">
-        <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {products.map((product, i) => (
-            <motion.div
-              key={product.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: '-20px' }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              className={`group relative rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${product.span}`}
-            >
-              {/* Image */}
-              <div className="relative w-full h-full">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[120px] md:auto-rows-[150px]">
+            {projects.map((project, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: '-20px' }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className={`group relative rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${project.span}`}
+              >
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={project.src}
+                  alt={`Project ${i + 1}`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                  loading="lazy"
                 />
-              </div>
 
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end" />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-              {/* Bottom label */}
-              <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                <span className="inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-white/90 text-gray-800 backdrop-blur-sm">
-                  {product.category}
-                </span>
-                <h3 className="text-white text-sm font-semibold mt-1 leading-tight">
-                  {product.name}
-                </h3>
-              </div>
-            </motion.div>
-          ))}
+                {/* Zoom icon */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                  <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

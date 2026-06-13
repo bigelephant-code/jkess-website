@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import CertTiltBoard from "@/components/CertTiltBoard";
 import MadeWithJKESS from "@/components/MadeWithJKESS";
+import BrandLogos from "@/components/BrandLogos";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -109,6 +110,7 @@ export default function Home() {
       <StatsSection data={siteContent.stats} />
       <CertTiltBoard />
       <MadeWithJKESS />
+      <BrandLogos />
       <AboutSection data={siteContent.about} />
       <ContactSection data={siteContent.footer} />
     </>

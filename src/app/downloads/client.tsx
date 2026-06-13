@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { FileText, Download, ArrowLeft, Sparkles, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
@@ -88,20 +88,20 @@ export function DownloadsPageClient() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   return (
-    <div className="min-h-screen bg-[#010101]">
-      <div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
+    <div className="min-h-screen bg-white">
+      
 
       <div className="relative pt-32 pb-8 z-10">
         <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6">
+          <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-6">
             <ArrowLeft size={16} /> Back to Home
           </Link>
           <div className="text-center mb-2">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-gray-400 mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 text-sm mb-4">
               <Sparkles size={12} className="text-[#a66cd9]" />
               <span>Product Manuals</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">Downloads</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">Downloads</h1>
             <p className="text-gray-500 mt-3 max-w-xl mx-auto">
               Access product manuals, specifications, and technical documents for all JKESS products.
             </p>
@@ -119,7 +119,7 @@ export function DownloadsPageClient() {
                   onClick={() => setExpanded({ ...expanded, [cat.label]: !isOpen })}
                   className="w-full flex items-center justify-between mb-4 group"
                 >
-                  <h2 className="text-lg font-semibold text-white/60 uppercase tracking-widest">
+                  <h2 className="text-lg font-semibold text-gray-700 uppercase tracking-widest">
                     {cat.label}
                     <span className="ml-2 text-xs text-gray-600 font-normal">({cat.files.length} files)</span>
                   </h2>
@@ -136,10 +136,10 @@ export function DownloadsPageClient() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.2, delay: idx * 0.03 }}
-                        className="group flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-3 hover:border-white/[0.15] hover:bg-white/[0.04] transition-all duration-200"
+                        className="group flex items-center gap-4 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 hover:border-gray-200 hover:bg-gray-100 transition-all duration-200"
                       >
                         <FileText size={16} className="text-gray-600 shrink-0 group-hover:text-[#5b5bff] transition-colors" />
-                        <span className="flex-1 text-sm text-gray-400 group-hover:text-white transition-colors min-w-0 truncate">
+                        <span className="flex-1 text-sm text-gray-400 group-hover:text-gray-900 transition-colors min-w-0 truncate">
                           {file.name}
                         </span>
                         <Download size={14} className="text-gray-600 shrink-0 group-hover:text-green-500 transition-colors" />

@@ -3,7 +3,7 @@
 import Image from 'next/image'
 
 const brandLogos = Array.from({ length: 15 }, (_, i) => ({
-  src: `/images/brands/brand-${i + 1}.jpg`,
+  src: `/images/brands-processed/brand-${i + 1}.png`,
 }))
 
 export default function BrandLogos() {
@@ -25,7 +25,7 @@ export default function BrandLogos() {
             <span className="text-green-600">We Support</span>
           </h2>
           <p className="mt-3 text-gray-500 text-base max-w-xl mx-auto">
-            JKESS energy storage solutions are trusted across industries —
+            JKESS energy storage solutions are trusted across industries &mdash;
             from solar installers to EV infrastructure providers.
           </p>
         </div>

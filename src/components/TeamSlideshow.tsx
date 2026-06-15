@@ -1,31 +1,24 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 const teamImages = [
-  '/images/team/072986de101b8dd30cb2a3ff111126f.jpg',
-  '/images/team/a18713ac6f8676f0700bf46e5fe324e.jpg',
-  '/images/team/客户合作照片 (1).jpg',
-  '/images/team/客户合作照片 (10).jpg',
-  '/images/team/客户合作照片 (11).jpg',
-  '/images/team/客户合作照片 (2).jpg',
-  '/images/team/客户合作照片 (7).jpg',
-  '/images/team/客户合作照片 (8).jpg',
-  '/images/team/客户合作照片 (9).jpg',
-  '/images/team/微信图片_20250717183700.jpg',
-  '/images/team/微信图片_20251229185847_474_168.jpg',
-  '/images/team/微信图片_20251229185905_481_168.jpg',
-  '/images/team/微信图片_20251229190216_559_168.jpg',
-  '/images/team/微信图片_20260122134047_683_110.jpg',
-  '/images/team/微信图片_20260306184840_931_168.jpg',
+  '/images/team/1.jpg',
+  '/images/team/2.jpg',
+  '/images/team/3.jpg',
+  '/images/team/4.jpg',
+  '/images/team/5.jpg',
+  '/images/team/6.jpg',
+  '/images/team/7.jpg',
+  '/images/team/8.jpg',
+  '/images/team/9.jpg',
+  '/images/team/10.jpg',
 ]
 
 export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
   const [curIdx, setCurIdx] = useState(0)
   const [nextIdx, setNextIdx] = useState(1)
   const [isFading, setIsFading] = useState(false)
-  const el1Ref = useRef<HTMLDivElement>(null)
-  const el2Ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const advance = () => {
@@ -49,7 +42,6 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
       <div className="absolute inset-0">
         {/* Layer 1: always shows curIdx */}
         <div
-          ref={el1Ref}
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${teamImages[curIdx]})`,
@@ -60,7 +52,6 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
         />
         {/* Layer 2: always shows nextIdx */}
         <div
-          ref={el2Ref}
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${teamImages[nextIdx]})`,

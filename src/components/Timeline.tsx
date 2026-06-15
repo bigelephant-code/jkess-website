@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import TechLines from './TechLines'
 
 const milestones = [
   {
@@ -44,11 +43,8 @@ const milestones = [
 
 export default function Timeline() {
   return (
-    <section className="relative z-10 py-20 md:py-28 overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <TechLines />
-      </div>
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+    <section className="relative py-20 md:py-28 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

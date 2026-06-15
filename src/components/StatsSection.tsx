@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from 'react'
 import { Factory, Globe, Users, Building2 } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
 import { motion } from 'framer-motion'
-import TechLines from './TechLines'
 
 interface StatsData {
   yearsEstablished?: number
@@ -124,11 +123,8 @@ export default function StatsSection({ data }: { data?: StatsData }) {
   ]
 
   return (
-    <section className="relative z-10 py-20">
-      <div className="absolute inset-0 z-0">
-        <TechLines />
-      </div>
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+    <section className="py-20">
+      <div className="max-w-6xl mx-auto px-6">
         <Reveal>
           <StaggerReveal staggerDelay={0.15}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

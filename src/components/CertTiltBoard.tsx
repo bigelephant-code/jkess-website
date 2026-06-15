@@ -29,7 +29,7 @@ export default function CertTiltBoard() {
   const [expandedIndex, setExpandedIndex] = useState(-1)
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative z-10 overflow-hidden">
 
       <div className="relative z-10 mx-auto px-6 max-w-[1580px] py-16">
         {/* Module title */}

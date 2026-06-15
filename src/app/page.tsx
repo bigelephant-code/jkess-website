@@ -107,11 +107,9 @@ export default function Home() {
       <HeroSection data={siteContent.hero} />
       <section className="relative bg-white">
         <TechLines />
-        <div className="relative z-10">
-          <StatsSection data={siteContent.stats} />
-          <Timeline />
-          <CertTiltBoard />
-        </div>
+        <StatsSection data={siteContent.stats} />
+        <Timeline />
+        <CertTiltBoard />
       </section>
       <MadeWithJKESS />
       <ReviewsWall />

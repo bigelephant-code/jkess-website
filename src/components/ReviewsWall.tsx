@@ -1,7 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
-
 interface Review {
   name: string
   text: string
@@ -42,26 +40,6 @@ const colors = ['#ff6b6b', '#339af0', '#20c997', '#f06595', '#ff922b', '#7048e8'
 export default function ReviewsWall() {
   return (
     <section className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-white py-20 md:py-28 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 text-gray-600 text-sm font-medium mb-4 hover:border-gray-300 transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-            Loved by Customers
-          </a>
-        </motion.div>
-      </div>
-
       {/* ─── Scrolling reviews ─── */}
       <div className="space-y-6">
         {/* Row 1: scroll right to left */}

@@ -29,7 +29,7 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
   useEffect(() => {
     const interval = setInterval(() => {
       setBgImage((prev) => (prev + 1) % teamImages.length)
-    }, 5000)
+    }, 3000)
 
     return () => clearInterval(interval)
   }, [])

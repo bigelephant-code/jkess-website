@@ -57,7 +57,7 @@ export default function AboutPage() {
         >
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
             Powering a{' '}
-            <span className="text-green-400">Cleaner Future</span>
+            <span className="animate-gradient-green">Cleaner Future</span>
           </h1>
           <p className="text-gray-300 text-lg max-w-xl mx-auto">
             From BMS to complete battery systems — discover the story, mission, and values behind JKESS.
@@ -71,9 +71,8 @@ export default function AboutPage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            Our <span className="text-green-400">Team</span> &{' '}
-            <span className="text-green-400">Vision</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight animate-gradient-vision">
+            Our Team & Vision
           </h2>
         </motion.div>
 

@@ -45,14 +45,24 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Green animated gradient text */
+/* Green animated gradient text (flowing shimmer) */
 .animate-gradient-green {
-  background: linear-gradient(135deg, #22c55e, #4ade80, #86efac, #22c55e);
-  background-size: 300% 100%;
+  background: linear-gradient(135deg, #22c55e, #4ade80, #86efac, #4ade80, #22c55e);
+  background-size: 400% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradient-shift 3s ease infinite;
+}
+
+/* Blue → Purple → Orange → Purple → Blue flowing gradient */
+.animate-gradient-vision {
+  background: linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a, #a66cd9, #5b5bff);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
 }
 
 /* Shimmer animation for buttons */

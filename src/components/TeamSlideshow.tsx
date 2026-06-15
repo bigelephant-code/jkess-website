@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
 const teamImages = [
   '/images/team/072986de101b8dd30cb2a3ff111126f.jpg',
@@ -23,77 +22,53 @@ const teamImages = [
 ]
 
 export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
-  const [currentIdx, setCurrentIdx] = useState(0)
-  const [nextIdx, setNextIdx] = useState<number | null>(null)
-  const [fadeProgress, setFadeProgress] = useState(0) // 0 = fully current, 1 = fully next
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [idx, setIdx] = useState(0)
+  const [transitioning, setTransitioning] = useState(false)
+  const idxRef = useRef(0)
 
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      const next = (currentIdx + 1) % teamImages.length
-      setNextIdx(next)
+    const interval = setInterval(() => {
+      // Start crossfade: show next image while current fades out
+      setTransitioning(true)
+      // After crossfade duration, advance to next
+      setTimeout(() => {
+        idxRef.current = (idxRef.current + 1) % teamImages.length
+        setIdx(idxRef.current)
+        setTransitioning(false)
+      }, 1000)
     }, 3000)
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-    }
-  }, [currentIdx])
+    return () => clearInterval(interval)
+  }, [])
 
-  // When nextIdx is set, start crossfade
-  useEffect(() => {
-    if (nextIdx === null) return
-
-    let start: number | null = null
-    const duration = 1000 // 1s crossfade
-
-    const animate = (timestamp: number) => {
-      if (!start) start = timestamp
-      const elapsed = timestamp - start
-      const progress = Math.min(elapsed / duration, 1)
-      // Ease-in-out
-      const eased = progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2
-      setFadeProgress(eased)
-
-      if (progress < 1) {
-        requestAnimationFrame(animate)
-      } else {
-        setCurrentIdx(nextIdx)
-        setNextIdx(null)
-        setFadeProgress(0)
-      }
-    }
-
-    requestAnimationFrame(animate)
-  }, [nextIdx])
-
-  const currentOpacity = 1 - fadeProgress
-  const nextOpacity = fadeProgress
+  const prevIdx = (idx - 1 + teamImages.length) % teamImages.length
+  const displayIdx = idx
+  const overlayIdx = transitioning ? (idx + 1) % teamImages.length : null
 
   return (
     <section className="relative overflow-hidden bg-gray-900">
       {/* ===== Full background slideshow ===== */}
       <div className="absolute inset-0">
-        {/* Current image - fading out */}
+        {/* Base image (always visible) */}
         <div
-          className="absolute inset-0 bg-cover bg-center transition-none"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${teamImages[currentIdx]})`,
+            backgroundImage: `url(${teamImages[displayIdx]})`,
             filter: 'brightness(0.55)',
-            opacity: currentOpacity,
-            zIndex: nextIdx !== null ? 0 : 1,
+            transition: 'opacity 1s ease-in-out',
+            opacity: transitioning ? 0 : 1,
           }}
         />
-        {/* Next image - fading in */}
-        {nextIdx !== null && (
+        {/* Overlay image (fades in during transition) */}
+        {overlayIdx !== null && (
           <div
-            className="absolute inset-0 bg-cover bg-center transition-none"
+            key={overlayIdx}
+            className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url(${teamImages[nextIdx]})`,
+              backgroundImage: `url(${teamImages[overlayIdx]})`,
               filter: 'brightness(0.55)',
-              opacity: nextOpacity,
-              zIndex: 1,
+              transition: 'opacity 1s ease-in-out',
+              opacity: transitioning ? 1 : 0,
             }}
           />
         )}

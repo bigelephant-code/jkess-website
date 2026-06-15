@@ -31,8 +31,8 @@ const milestones = [
     ],
   },
   {
-    year: '2025',
-    period: '2025-Future',
+    year: '2026',
+    period: '2026-Future',
     title: 'EXPANSION',
     content: [
       'From R&D design and production integration to backend testing and after-sales — JKESS now possesses full-chain capabilities in energy storage system development, manufacturing, and sales services.',
@@ -114,9 +114,6 @@ export default function Timeline() {
 
         {/* Horizontal Timeline */}
         <div className="relative">
-          {/* Central horizontal axis */}
-          <div className="absolute left-0 right-0 top-1/2 h-[3px] bg-green-500 -translate-y-1/2 hidden md:block" />
-
           <div className="grid md:grid-cols-4 gap-6 md:gap-8">
             {milestones.map((item, i) => {
               const isTop = i % 2 === 0
@@ -157,14 +154,7 @@ export default function Timeline() {
                     </div>
                   </div>
 
-                  {/* Vertical connector line */}
-                  <div
-                    className={`absolute left-1/2 w-[2px] bg-green-300 -translate-x-1/2 z-0 hidden md:block ${
-                      isTop
-                        ? 'top-0 bottom-[calc(50%+32px)]'
-                        : 'top-[calc(50%+32px)] bottom-0'
-                    }`}
-                  />
+
                 </motion.div>
               )
             })}

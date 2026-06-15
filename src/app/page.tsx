@@ -105,13 +105,16 @@ export default function Home() {
   return (
     <>
       <HeroSection data={siteContent.hero} />
-      <section className="relative bg-white">
-        <div className="absolute inset-0 z-[-1]">
+      <section className="relative">
+        <div className="absolute inset-0 bg-white" />
+        <div className="absolute inset-0">
           <TechLines />
         </div>
-        <StatsSection data={siteContent.stats} />
-        <Timeline />
-        <CertTiltBoard />
+        <div className="relative z-10">
+          <StatsSection data={siteContent.stats} />
+          <Timeline />
+          <CertTiltBoard />
+        </div>
       </section>
       <MadeWithJKESS />
       <ReviewsWall />

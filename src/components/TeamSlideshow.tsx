@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const teamImages = [
@@ -22,34 +22,14 @@ const teamImages = [
   '/images/team/微信图片_20260306184840_931_168.jpg',
 ]
 
-export default function TeamSlideshow() {
-  const [visibleImages, setVisibleImages] = useState<number[]>([0, 1, 2, 3])
+export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
   const [bgImage, setBgImage] = useState(0)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Cycle through large background images (slow crossfade)
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setBgImage((prev) => (prev + 1) % teamImages.length)
-    }, 5000)
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [])
-
-  // Cycle through visible grid images
+  // Cycle through background images (slow crossfade)
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisibleImages((prev) => {
-        const next = [...prev]
-        // Shift: remove first, add a new one at the end
-        next.shift()
-        const lastIdx = prev[prev.length - 1]
-        next.push((lastIdx + 1) % teamImages.length)
-        return next
-      })
-    }, 4000)
+      setBgImage((prev) => (prev + 1) % teamImages.length)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [])
@@ -71,10 +51,10 @@ export default function TeamSlideshow() {
               className="w-full h-full bg-cover bg-center"
               style={{
                 backgroundImage: `url(${teamImages[bgImage]})`,
-                filter: 'brightness(0.6)',
+                filter: 'brightness(0.55)',
               }}
             />
-            {/* Slow zoom animation */}
+            {/* Ken Burns slow zoom */}
             <style jsx>{`
               .ken-burns {
                 animation: kenburns 8s ease-in-out infinite alternate;
@@ -89,62 +69,11 @@ export default function TeamSlideshow() {
       </div>
 
       {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/40" />
 
-      {/* ===== Content area ===== */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 md:py-24">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-10"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            Our <span className="text-green-400">Team</span>
-          </h2>
-          <p className="text-gray-300 mt-3 max-w-2xl mx-auto text-sm md:text-base">
-            The people behind JKESS — dedicated, passionate, and committed to powering a cleaner future.
-          </p>
-        </motion.div>
-
-        {/* Photo mosaic grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {visibleImages.map((imgIdx, i) => (
-            <motion.div
-              key={`${imgIdx}-${i}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className={`
-                relative rounded-xl overflow-hidden shadow-lg
-                ${i === 0 ? 'row-span-2 col-span-2 md:row-span-2 md:col-span-2' : ''}
-                ${i === 1 ? 'col-span-1' : ''}
-                ${i === 2 ? 'col-span-1' : ''}
-                ${i === 3 ? 'col-span-2 md:col-span-2' : ''}
-              `}
-              style={{ aspectRatio: i === 0 ? '16/10' : i === 3 ? '16/9' : '4/3' }}
-            >
-              <img
-                src={teamImages[imgIdx]}
-                alt="JKESS Team"
-                className="w-full h-full object-cover transition-transform duration-7000 hover:scale-110"
-                style={{ transitionDuration: '7s' }}
-              />
-              {/* Subtle overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom decorative line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          className="h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent mt-10 max-w-md mx-auto"
-        />
+      {/* ===== Foreground content ===== */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-28">
+        {children}
       </div>
     </section>
   )

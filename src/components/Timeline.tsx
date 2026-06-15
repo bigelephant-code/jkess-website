@@ -43,7 +43,7 @@ const milestones = [
 
 export default function Timeline() {
   return (
-    <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+    <section className="relative py-20 md:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div

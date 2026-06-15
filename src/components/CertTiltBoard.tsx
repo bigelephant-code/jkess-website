@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
-import TechLines from './TechLines'
 
 interface Certificate {
   title: string
@@ -30,11 +29,7 @@ export default function CertTiltBoard() {
   const [expandedIndex, setExpandedIndex] = useState(-1)
 
   return (
-    <section className="relative bg-white overflow-hidden">
-      {/* TechLines fills the entire module background */}
-      <div className="absolute inset-0 z-0">
-        <TechLines />
-      </div>
+    <section className="relative overflow-hidden">
 
       <div className="relative z-10 mx-auto px-6 max-w-[1580px] py-16">
         {/* Module title */}

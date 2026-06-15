@@ -21,82 +21,54 @@ const teamImages = [
 ]
 
 export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
-  const idxRef = useRef(0)
-  const curElRef = useRef<HTMLDivElement>(null)
-  const nextElRef = useRef<HTMLDivElement>(null)
-  const [, forceRender] = useState(0)
-  const [nextSrc, setNextSrc] = useState<string | null>(null)
+  const [curIdx, setCurIdx] = useState(0)
+  const [nextIdx, setNextIdx] = useState(1)
+  const [isFading, setIsFading] = useState(false)
+  const el1Ref = useRef<HTMLDivElement>(null)
+  const el2Ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const tick = () => {
-      const nextIdx = (idxRef.current + 1) % teamImages.length
-      const next = teamImages[nextIdx]
+    const advance = () => {
+      // Start fade: layer2 becomes visible
+      setIsFading(true)
 
-      // Set next image ready (hidden, opaque so no flash)
-      setNextSrc(next)
-
-      // Use next frame to let DOM settle, then start crossfade
-      requestAnimationFrame(() => {
-        if (curElRef.current) curElRef.current.style.opacity = '0'
-        if (nextElRef.current) nextElRef.current.style.opacity = '1'
-      })
-
-      // After crossfade, finalize: swap layers
+      // After crossfade, promote next to cur
       setTimeout(() => {
-        idxRef.current = nextIdx
-        setNextSrc(null)
-        // Trigger re-render with new current
-        forceRender((n) => n + 1)
-        // Reset opacities instantly (no transition)
-        if (curElRef.current) {
-          curElRef.current.style.transition = 'none'
-          curElRef.current.style.opacity = '1'
-        }
-        if (nextElRef.current) {
-          nextElRef.current.style.transition = 'none'
-          nextElRef.current.style.opacity = '0'
-        }
-        // Re-enable transition after a frame
-        requestAnimationFrame(() => {
-          if (curElRef.current) curElRef.current.style.transition = ''
-          if (nextElRef.current) nextElRef.current.style.transition = ''
-        })
+        setCurIdx(nextIdx)
+        setNextIdx((nextIdx + 1) % teamImages.length)
+        setIsFading(false)
       }, 1000)
     }
 
-    const timer = setInterval(tick, 3000)
+    const timer = setInterval(advance, 3000)
     return () => clearInterval(timer)
-  }, [])
+  }, [nextIdx])
 
   return (
     <section className="relative overflow-hidden bg-gray-900">
       <div className="absolute inset-0">
-        {/* Current image - always visible, fades out during transition */}
+        {/* Layer 1: always shows curIdx */}
         <div
-          ref={curElRef}
+          ref={el1Ref}
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${teamImages[idxRef.current]})`,
+            backgroundImage: `url(${teamImages[curIdx]})`,
             filter: 'brightness(0.55)',
-            opacity: 1,
+            opacity: isFading ? 0 : 1,
             transition: 'opacity 1s ease-in-out',
-            zIndex: 0,
           }}
         />
-        {/* Next image - fades in during transition, pre-loaded */}
-        {nextSrc && (
-          <div
-            ref={nextElRef}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${nextSrc})`,
-              filter: 'brightness(0.55)',
-              opacity: 0,
-              transition: 'opacity 1s ease-in-out',
-              zIndex: 1,
-            }}
-          />
-        )}
+        {/* Layer 2: always shows nextIdx */}
+        <div
+          ref={el2Ref}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${teamImages[nextIdx]})`,
+            filter: 'brightness(0.55)',
+            opacity: isFading ? 1 : 0,
+            transition: 'opacity 1s ease-in-out',
+          }}
+        />
       </div>
 
       {/* Overlay gradient */}

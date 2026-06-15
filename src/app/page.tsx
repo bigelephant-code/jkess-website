@@ -8,12 +8,12 @@ import BrandLogos from "@/components/BrandLogos";
 import ContactSection from "@/components/ContactSection";
 import TechLines from "@/components/TechLines";
 
-// Hardcoded content for now 鈥?will be replaced with Sanity CMS later
+// Hardcoded content for now — will be replaced with Sanity CMS later
 const siteContent = {
   hero: {
     title: "Powering a",
     subtitle:
-      "Shenzhen Nengyi Electronic Technology 鈥?your trusted partner in energy storage solutions, from BMS to complete battery systems.",
+      "Shenzhen Nengyi Electronic Technology — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
     ctaText: "Explore Products",
     ctaLink: "/products",
   },
@@ -66,8 +66,8 @@ const siteContent = {
       description:
         "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity, intelligent BMS, LCD display, and CAN/RS485 communication. Fits standard 19-inch cabinets.",
       features: [
-        "6U rack-mount 鈥?fits 19-inch cabinets",
-        "Modular expandable 鈥?parallel up to 30KWh+",
+        "6U rack-mount — fits 19-inch cabinets",
+        "Modular expandable — parallel up to 30KWh+",
         "Intelligent BMS with active balancing",
         "4.3\" LCD + CAN/RS485 communication",
       ],

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import Image from 'next/image'
@@ -50,7 +50,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* ═══════ DARK SECTION: Hero + Product Info ═══════ */}
+      {/* �T�T�T�T�T�T�T DARK SECTION: Hero + Product Info �T�T�T�T�T�T�T */}
       <div className="bg-black pt-24 pb-4">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Back link */}
@@ -161,7 +161,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                     <div className="grid grid-cols-2 gap-3">
                       <button onClick={handleAddToCart}
                         className={'flex items-center justify-center gap-2 font-semibold px-6 py-3.5 rounded-xl text-base transition-all ' + (addedToCart ? 'bg-green-400 text-black' : 'bg-green-500/20 border border-green-500 text-green-400 hover:bg-green-500/30')}>
-                        {addedToCart ? '✓ Added' : <><ShoppingCart size={18} /> Add to Cart</>}
+                        {addedToCart ? '? Added' : <><ShoppingCart size={18} /> Add to Cart</>}
                       </button>
                       <button onClick={handleBuyNow} className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3.5 rounded-xl text-base transition-all">
                         Buy Now
@@ -186,15 +186,15 @@ export function ProductDetailClient({ product }: { product: Product }) {
               {/* Service badges */}
               <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
                 <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Free Shipping</p></div>
-                <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">2-Year Warranty</p></div>
-                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">30-Day Returns</p></div>
+                <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">1-Year Warranty</p></div>
+                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">7-Day Returns</p></div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ═══════ LIGHT SECTION: Technical Specifications ═══════ */}
+      {/* �T�T�T�T�T�T�T LIGHT SECTION: Technical Specifications �T�T�T�T�T�T�T */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <Reveal>
@@ -214,7 +214,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
         </div>
       </section>
 
-      {/* ═══════ LIGHT SECTION: Customer Reviews ═══════ */}
+      {/* �T�T�T�T�T�T�T LIGHT SECTION: Customer Reviews �T�T�T�T�T�T�T */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <Reveal>
@@ -271,7 +271,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
         </div>
       </section>
 
-      {/* ═══════ LIGHT SECTION: Product Details ═══════ */}
+      {/* �T�T�T�T�T�T�T LIGHT SECTION: Product Details �T�T�T�T�T�T�T */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <Reveal>
@@ -319,7 +319,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   )
 }
 
-// ── Mock Reviews ──
+// ���� Mock Reviews ����
 const reviews = [
   {
     name: 'Marco Rossi',
@@ -329,7 +329,7 @@ const reviews = [
     content: 'Excellent BMS board. Installation was straightforward and the Bluetooth monitoring app works perfectly. Highly recommend for DIY battery builds.',
   },
   {
-    name: 'Klaus Müller',
+    name: 'Klaus M��ller',
     date: '2026-05-15',
     rating: 5,
     variant: '15KWh Kit',

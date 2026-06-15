@@ -48,7 +48,6 @@ export default function Timeline() {
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none">
         <svg className="w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
           <g fill="none" stroke="currentColor" strokeWidth="0.5" className="text-gray-900">
-            {/* Simplified continent outlines */}
             <path d="M200,150 Q220,130 260,135 Q280,140 290,155 Q295,170 280,185 Q260,195 240,190 Q215,185 200,170 Z" />
             <path d="M300,145 Q320,120 360,115 Q400,118 420,130 Q430,145 425,160 Q410,170 390,168 Q370,170 350,165 Q320,160 300,155 Z" />
             <path d="M260,190 Q280,180 300,185 Q320,195 330,210 Q325,225 310,230 Q290,228 275,218 Q262,208 260,195 Z" />
@@ -85,18 +84,14 @@ export default function Timeline() {
             <path d="M400,412 Q430,402 470,400 Q505,405 520,420 Q522,436 508,446 Q478,454 442,448 Q410,440 402,425 Z" />
             <path d="M550,405 Q580,395 620,392 Q655,398 670,412 Q672,428 658,438 Q628,446 592,440 Q560,432 552,418 Z" />
             <path d="M700,400 Q730,390 770,388 Q805,392 820,408 Q822,424 808,434 Q778,442 742,436 Q710,428 702,412 Z" />
-            {/* Australia */}
             <path d="M880,420 Q910,408 950,405 Q980,412 990,428 Q988,445 970,452 Q940,458 910,450 Q888,442 882,430 Z" />
-            {/* South America */}
             <path d="M120,200 Q140,185 170,180 Q195,185 205,200 Q210,220 200,240 Q185,255 160,258 Q135,255 122,240 Q115,220 120,200 Z" />
             <path d="M125,260 Q145,250 170,248 Q190,255 198,270 Q200,288 190,300 Q170,308 148,305 Q130,298 125,282 Z" />
-            {/* Africa */}
             <path d="M450,160 Q470,148 500,145 Q525,150 535,165 Q538,182 528,195 Q510,202 488,198 Q465,192 455,178 Q448,168 450,160 Z" />
             <path d="M448,200 Q468,190 498,188 Q522,195 532,210 Q535,228 522,240 Q502,248 480,242 Q458,235 448,220 Q445,210 448,200 Z" />
             <path d="M445,245 Q465,235 495,232 Q518,240 528,255 Q530,272 518,282 Q498,290 478,285 Q458,278 448,265 Q442,255 445,245 Z" />
             <path d="M440,288 Q460,278 490,275 Q512,282 522,298 Q524,315 512,325 Q492,332 472,328 Q452,320 442,308 Z" />
             <path d="M442,332 Q462,322 490,320 Q510,328 518,342 Q515,358 502,365 Q482,370 462,365 Q445,358 440,345 Z" />
-            {/* North America */}
             <path d="M200,80 Q220,60 260,55 Q290,58 310,70 Q320,85 315,100 Q305,110 280,112 Q255,108 230,100 Q210,92 200,80 Z" />
             <path d="M210,105 Q235,95 265,92 Q290,98 302,112 Q308,128 295,140 Q275,148 250,145 Q228,138 215,125 Q208,115 210,105 Z" />
             <path d="M220,148 Q245,138 275,135 Q298,142 308,158 Q312,175 300,188 Q280,196 255,192 Q232,185 220,170 Q215,158 220,148 Z" />
@@ -104,104 +99,110 @@ export default function Timeline() {
         </svg>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
             Development <span className="text-green-600">History</span>
           </h2>
         </motion.div>
 
-        {/* Timeline */}
+        {/* Horizontal Timeline */}
         <div className="relative">
-          {/* Central axis line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-[3px] bg-green-500 -translate-x-1/2 hidden md:block" />
-          <div className="absolute left-8 top-0 bottom-0 w-[3px] bg-green-500 md:hidden" />
+          {/* Central horizontal axis */}
+          <div className="absolute left-0 right-0 top-1/2 h-[3px] bg-green-500 -translate-y-1/2 hidden md:block" />
 
-          {/* Milestones */}
-          <div className="space-y-16 md:space-y-24">
+          <div className="grid md:grid-cols-4 gap-6 md:gap-8">
             {milestones.map((item, i) => {
-              const isLeft = i % 2 === 0
+              const isTop = i % 2 === 0
 
               return (
                 <motion.div
                   key={item.year}
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.15, ease: [0.23, 1, 0.32, 1] }}
-                  className="relative flex items-center md:block"
+                  transition={{ duration: 0.5, delay: i * 0.12, ease: [0.23, 1, 0.32, 1] }}
+                  className="relative flex flex-col items-center"
                 >
-                  {/* Desktop: alternating layout */}
-                  <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center">
-                    {/* Content card */}
-                    <div className={`${isLeft ? 'text-right pr-12' : 'col-start-3 pl-12'}`}>
-                      <div className={`inline-block text-left max-w-md ${!isLeft ? 'text-left' : ''}`}>
-                        {/* Event title */}
-                        <h3 className="text-xs md:text-sm font-bold tracking-[0.15em] text-green-600 mb-2">
-                          {item.title}
-                        </h3>
-                        {/* Divider */}
-                        <div className="h-px w-10 bg-green-500/40 mb-3" style={{ marginLeft: isLeft ? 'auto' : 0, marginRight: isLeft ? 0 : 'auto' }} />
-                        {/* Description */}
-                        <div className="space-y-2">
-                          {item.content.map((p, pi) => (
-                            <p key={pi} className="text-xs md:text-[13px] text-gray-600 leading-relaxed">
-                              {p}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Year marker on axis */}
-                    <div className="flex flex-col items-center">
-                      <div
-                        className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white border-[3px] border-green-500 flex items-center justify-center z-10"
-                      >
-                        <span className="text-lg md:text-2xl font-bold text-green-600">{item.year}</span>
-                      </div>
-                    </div>
-
-                    {/* Empty spacer for right-side content */}
-                    {isLeft && <div className="pl-12" />}
-                  </div>
-
-                  {/* Mobile: stacked layout */}
-                  <div className="md:hidden relative pl-16">
-                    {/* Vertical connector */}
-                    <div className="absolute left-[29px] top-0 bottom-0 w-[3px] bg-green-200 -z-10" />
-                    
-                    {/* Year dot on timeline */}
-                    <div className="absolute left-[18px] top-0 w-[22px] h-[22px] rounded-full bg-green-500 border-[3px] border-white shadow z-10" />
-
-                    {/* Year label */}
-                    <span className="text-sm font-bold text-green-600 mb-1 block">{item.year}</span>
-
-                    {/* Content card */}
-                    <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
-                      <h3 className="text-xs font-bold tracking-[0.12em] text-green-600 mb-2">
+                  {/* Content - alternating top/bottom */}
+                  <div className={`w-full ${isTop ? 'order-1 mb-8' : 'order-3 mt-8'}`}>
+                    <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                      {/* Title */}
+                      <h3 className="text-xs md:text-sm font-bold tracking-[0.15em] text-green-600 mb-2">
                         {item.title}
                       </h3>
+                      {/* Divider */}
                       <div className="h-px w-8 bg-green-500/40 mb-3" />
+                      {/* Description */}
                       <div className="space-y-2">
                         {item.content.map((p, pi) => (
-                          <p key={pi} className="text-xs text-gray-600 leading-relaxed">
+                          <p key={pi} className="text-[11px] md:text-[13px] text-gray-600 leading-relaxed">
                             {p}
                           </p>
                         ))}
                       </div>
                     </div>
                   </div>
+
+                  {/* Year marker on axis */}
+                  <div className={`order-2 z-10 ${isTop ? 'mb-auto' : 'mt-auto'}`}>
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white border-[3px] border-green-500 flex items-center justify-center shadow-sm">
+                      <span className="text-base md:text-xl font-bold text-green-600">{item.year}</span>
+                    </div>
+                  </div>
+
+                  {/* Vertical connector line */}
+                  <div
+                    className={`absolute left-1/2 w-[2px] bg-green-300 -translate-x-1/2 z-0 hidden md:block ${
+                      isTop
+                        ? 'top-0 bottom-[calc(50%+32px)]'
+                        : 'top-[calc(50%+32px)] bottom-0'
+                    }`}
+                  />
                 </motion.div>
               )
             })}
           </div>
+        </div>
+
+        {/* Mobile: stacked timeline */}
+        <div className="md:hidden mt-8 space-y-10">
+          {milestones.map((item, i) => (
+            <motion.div
+              key={item.year}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="relative pl-10"
+            >
+              {/* Vertical line */}
+              <div className="absolute left-[15px] top-0 bottom-0 w-[2px] bg-green-200" />
+
+              {/* Dot */}
+              <div className="absolute left-[7px] top-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white shadow z-10" />
+
+              {/* Year */}
+              <span className="text-sm font-bold text-green-600 mb-1 block">{item.year}</span>
+
+              {/* Content */}
+              <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+                <h3 className="text-xs font-bold tracking-[0.12em] text-green-600 mb-2">{item.title}</h3>
+                <div className="h-px w-6 bg-green-500/40 mb-2" />
+                <div className="space-y-1.5">
+                  {item.content.map((p, pi) => (
+                    <p key={pi} className="text-xs text-gray-600 leading-relaxed">{p}</p>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

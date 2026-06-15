@@ -1,4 +1,5 @@
 ﻿import HeroSection from "@/components/HeroSection";
+import ProductSection from "@/components/ProductSection";
 import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
 import CertTiltBoard from "@/components/CertTiltBoard";
@@ -105,6 +106,7 @@ export default function Home() {
   return (
     <>
       <HeroSection data={siteContent.hero} />
+      <ProductSection products={siteContent.products} />
       <section className="relative">
         <div className="absolute inset-0 bg-white">
           <TechLines />

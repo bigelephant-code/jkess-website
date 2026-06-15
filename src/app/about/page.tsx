@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import AboutSection from "@/components/AboutSection"
+import TeamSlideshow from "@/components/TeamSlideshow"
 
 const cultures = [
   {
@@ -107,6 +108,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Team Slideshow ─── */}
+      <TeamSlideshow />
 
       {/* ─── 2. About Us ─── */}
       <AboutSection

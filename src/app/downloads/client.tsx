@@ -1,7 +1,6 @@
 ﻿'use client'
 
-import { FileText, Download, ArrowLeft, Sparkles, ChevronDown } from 'lucide-react'
-import Link from 'next/link'
+import { FileText, Download, ChevronDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
@@ -98,11 +97,8 @@ export function DownloadsPageClient() {
               'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)',
           }}
         />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-24 pb-12 md:pt-28 md:pb-16 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors mb-6">
-              <ArrowLeft size={16} /> Back to Home
-            </Link>
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">Downloads</h1>
             <p className="text-gray-400 mt-3 max-w-xl mx-auto">
               Access product manuals, specifications, and technical documents for all JKESS products.

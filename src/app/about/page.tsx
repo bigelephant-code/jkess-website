@@ -71,7 +71,7 @@ export default function AboutPage() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight animate-gradient-vision">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight animate-gradient-text">
             Our Team & Vision
           </h2>
         </motion.div>

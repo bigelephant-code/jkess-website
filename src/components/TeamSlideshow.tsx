@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 
 const teamImages = [
   '/images/team/072986de101b8dd30cb2a3ff111126f.jpg',
@@ -23,39 +23,80 @@ const teamImages = [
 ]
 
 export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
-  const [bgImage, setBgImage] = useState(0)
+  const [currentIdx, setCurrentIdx] = useState(0)
+  const [nextIdx, setNextIdx] = useState<number | null>(null)
+  const [fadeProgress, setFadeProgress] = useState(0) // 0 = fully current, 1 = fully next
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Cycle through background images (slow crossfade)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setBgImage((prev) => (prev + 1) % teamImages.length)
+    timerRef.current = setInterval(() => {
+      const next = (currentIdx + 1) % teamImages.length
+      setNextIdx(next)
     }, 3000)
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [currentIdx])
+
+  // When nextIdx is set, start crossfade
+  useEffect(() => {
+    if (nextIdx === null) return
+
+    let start: number | null = null
+    const duration = 1000 // 1s crossfade
+
+    const animate = (timestamp: number) => {
+      if (!start) start = timestamp
+      const elapsed = timestamp - start
+      const progress = Math.min(elapsed / duration, 1)
+      // Ease-in-out
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2
+      setFadeProgress(eased)
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        setCurrentIdx(nextIdx)
+        setNextIdx(null)
+        setFadeProgress(0)
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [nextIdx])
+
+  const currentOpacity = 1 - fadeProgress
+  const nextOpacity = fadeProgress
 
   return (
     <section className="relative overflow-hidden bg-gray-900">
       {/* ===== Full background slideshow ===== */}
       <div className="absolute inset-0">
-        <AnimatePresence>
-          <motion.div
-            key={bgImage}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
-          >
-            <div
-              className="w-full h-full bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${teamImages[bgImage]})`,
-                filter: 'brightness(0.55)',
-              }}
-            />
-          </motion.div>
-        </AnimatePresence>
+        {/* Current image - fading out */}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-none"
+          style={{
+            backgroundImage: `url(${teamImages[currentIdx]})`,
+            filter: 'brightness(0.55)',
+            opacity: currentOpacity,
+            zIndex: nextIdx !== null ? 0 : 1,
+          }}
+        />
+        {/* Next image - fading in */}
+        {nextIdx !== null && (
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-none"
+            style={{
+              backgroundImage: `url(${teamImages[nextIdx]})`,
+              filter: 'brightness(0.55)',
+              opacity: nextOpacity,
+              zIndex: 1,
+            }}
+          />
+        )}
       </div>
 
       {/* Overlay gradient */}

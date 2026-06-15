@@ -6,7 +6,6 @@ import MadeWithJKESS from "@/components/MadeWithJKESS";
 import ReviewsWall from "@/components/ReviewsWall";
 import BrandLogos from "@/components/BrandLogos";
 import ContactSection from "@/components/ContactSection";
-import TechLines from "@/components/TechLines";
 
 // Hardcoded content for now 鈥?will be replaced with Sanity CMS later
 const siteContent = {
@@ -105,12 +104,9 @@ export default function Home() {
   return (
     <>
       <HeroSection data={siteContent.hero} />
-      <section className="relative bg-white">
-        <TechLines />
-        <StatsSection data={siteContent.stats} />
-        <Timeline />
-        <CertTiltBoard />
-      </section>
+      <StatsSection data={siteContent.stats} />
+      <Timeline />
+      <CertTiltBoard />
       <MadeWithJKESS />
       <ReviewsWall />
       <BrandLogos />

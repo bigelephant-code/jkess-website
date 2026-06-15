@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import TechLines from './TechLines'
 
 interface Certificate {
   title: string
@@ -30,6 +31,9 @@ export default function CertTiltBoard() {
 
   return (
     <section className="relative z-10 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <TechLines />
+      </div>
 
       <div className="relative z-10 mx-auto px-6 max-w-[1580px] py-16">
         {/* Module title */}

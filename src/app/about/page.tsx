@@ -76,8 +76,8 @@ export default function AboutPage() {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            Our{' '}
-            <span className="text-green-400">Purpose</span>
+Our <span className="text-green-400">Team</span> &{' '}
+            <span className="text-green-400">Vision</span>
           </h2>
         </motion.div>
 

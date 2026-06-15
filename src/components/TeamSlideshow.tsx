@@ -72,7 +72,7 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/40" />
 
       {/* ===== Foreground content ===== */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 md:py-28">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 md:pt-40 pb-20 md:pb-28">
         {children}
       </div>
     </section>

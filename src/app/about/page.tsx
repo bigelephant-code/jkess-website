@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import AboutSection from "@/components/AboutSection"
 import TeamSlideshow from "@/components/TeamSlideshow"
@@ -44,31 +43,28 @@ const cultures = [
 export default function AboutPage() {
   return (
     <div className="bg-white min-h-screen">
-      {/* ─── Hero ─── */}
-      <section className="relative bg-gray-900 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)',
-          }}
-        />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      {/* ─── Thin nav-height spacer ─── */}
+      <div className="h-16 bg-gray-900" />
 
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
-              Powering a{' '}
-              <span className="text-green-400">Cleaner Future</span>
-            </h1>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              From BMS to complete battery systems — discover the story, mission, and values behind JKESS.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── Team Slideshow + Our Purpose ─── */}
+      {/* ─── Team Slideshow (Hero + Team & Vision) ─── */}
       <TeamSlideshow>
+        {/* Hero line */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
+            Powering a{' '}
+            <span className="text-green-400">Cleaner Future</span>
+          </h1>
+          <p className="text-gray-300 text-lg max-w-xl mx-auto">
+            From BMS to complete battery systems — discover the story, mission, and values behind JKESS.
+          </p>
+        </motion.div>
+
+        {/* Team & Vision title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +72,7 @@ export default function AboutPage() {
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-Our <span className="text-green-400">Team</span> &{' '}
+            Our <span className="text-green-400">Team</span> &{' '}
             <span className="text-green-400">Vision</span>
           </h2>
         </motion.div>

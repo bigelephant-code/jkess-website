@@ -43,7 +43,7 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
       }, 1000)
     }
 
-    const timer = setInterval(advance, 3000)
+    const timer = setInterval(advance, 1000)
     return () => clearInterval(timer)
   }, [nextIdx])
 

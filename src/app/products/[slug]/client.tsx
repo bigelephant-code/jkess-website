@@ -197,7 +197,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
       {/* �T�T�T�T�T�T�T LIGHT SECTION: Technical Specifications �T�T�T�T�T�T�T */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <Reveal>
+          
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-green-500 rounded-full" />
               <h2 className="text-xl md:text-2xl font-bold text-gray-900">Technical Specifications</h2>
@@ -210,14 +210,12 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 </div>
               ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
+          </div></section>
 
       {/* �T�T�T�T�T�T�T LIGHT SECTION: Customer Reviews �T�T�T�T�T�T�T */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <Reveal>
+          
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-green-500 rounded-full" />
               <h2 className="text-xl md:text-2xl font-bold text-gray-900">Customer Reviews</h2>
@@ -267,14 +265,12 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 </StaggerItem>
               ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
+          </div></section>
 
       {/* �T�T�T�T�T�T�T LIGHT SECTION: Product Details �T�T�T�T�T�T�T */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <Reveal>
+          
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-6 bg-green-500 rounded-full" />
               <h2 className="text-xl md:text-2xl font-bold text-gray-900">Product Details</h2>
@@ -312,9 +308,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 </div>
               )}
             </div>
-          </Reveal>
-        </div>
-      </section>
+          </div></section>
     </div>
   )
 }

@@ -97,10 +97,7 @@ export function DownloadsPageClient() {
             <ArrowLeft size={16} /> Back to Home
           </Link>
           <div className="text-center mb-2">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 text-sm mb-4">
-              <Sparkles size={12} className="text-[#a66cd9]" />
-              <span>Product Manuals</span>
-            </div>
+
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">Downloads</h1>
             <p className="text-gray-500 mt-3 max-w-xl mx-auto">
               Access product manuals, specifications, and technical documents for all JKESS products.

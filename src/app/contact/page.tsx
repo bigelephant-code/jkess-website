@@ -63,10 +63,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 text-white/70 text-sm font-medium mb-6">
-              <MessageCircle size={14} />
-              Get in Touch
-            </div>
+
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
               Let&apos;s Talk{' '}
               <span className="text-green-400">Energy</span>

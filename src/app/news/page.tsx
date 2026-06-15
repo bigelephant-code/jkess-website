@@ -86,10 +86,7 @@ export default function NewsPage() {
         />
         <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 text-white/70 text-sm font-medium mb-6">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Industry News
-            </div>
+
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
               Energy Storage{' '}
               <span className="text-green-400">News</span>

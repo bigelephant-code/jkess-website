@@ -123,7 +123,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
   ]
 
   return (
-    <section className="bg-white py-20 border-y border-gray-100">
+    <section className="bg-white py-20">
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
           <StaggerReveal staggerDelay={0.15}>

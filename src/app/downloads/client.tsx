@@ -89,22 +89,27 @@ export function DownloadsPageClient() {
 
   return (
     <div className="min-h-screen bg-white">
-      
-
-      <div className="relative pt-32 pb-8 z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-6">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
-          <div className="text-center mb-2">
-
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 tracking-tight">Downloads</h1>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">
+      {/* ─── Hero ─── */}
+      <section className="relative bg-gray-900 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+        <div className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)',
+          }}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors mb-6">
+              <ArrowLeft size={16} /> Back to Home
+            </Link>
+            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">Downloads</h1>
+            <p className="text-gray-400 mt-3 max-w-xl mx-auto">
               Access product manuals, specifications, and technical documents for all JKESS products.
             </p>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
       <section className="relative pb-20 z-10">
         <div className="max-w-5xl mx-auto px-6">

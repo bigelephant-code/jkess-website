@@ -163,7 +163,7 @@ export const products: Product[] = [
       '/images/hv-kit-detail/4.jpg',
       '/images/hv-kit-detail/5.jpg',
       '/images/hv-kit-detail/6.jpg',
-      '/images/hv-kit-detail/7.png',
+      '/images/hv-kit-detail/7.jpg',
       '/images/hv-kit-detail/8.jpg',
       '/images/hv-kit-detail/9.jpg',
       '/images/hv-kit-detail/10.jpg',

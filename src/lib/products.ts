@@ -48,8 +48,12 @@ export const products: Product[] = [
       { key: 'Accessories', value: 'LCD displays, GPS 4G, shunt, adapters, cables' },
     ],
     images: [
-      '/images/bms-board-1.webp',
-      '/images/bms-board-2.webp',
+      '/images/bms-board/1.jpg',
+      '/images/bms-board/2.jpg',
+      '/images/bms-board/3.jpg',
+      '/images/bms-board/4.jpg',
+      '/images/bms-board/5.jpg',
+      '/images/bms-board/6.jpg',
     ],
     type: 'shop',
     variants: [

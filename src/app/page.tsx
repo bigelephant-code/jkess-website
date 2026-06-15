@@ -36,6 +36,7 @@ const siteContent = {
         "Parallel boards with integrated 10A current limiter",
         "CAN / RS485 / Bluetooth / isoSPI communication",
       ],
+      image: "/images/bms-board/1.jpg",
     },
     {
       name: "Battery Kit (With Caster)",

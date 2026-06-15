@@ -96,8 +96,8 @@ export const products: Product[] = [
     ],
     type: 'shop',
     variants: [
-      { label: '15KWh Kit', price: '$1,299.00' },
-      { label: '16KWh Kit', price: '$1,399.00' },
+      { label: 'BOX and LCDBMS', price: '$400.00' },
+      { label: 'OnlyBOX', price: '$250.00' },
     ],
     detailImages: [
       '/images/battery-kit-detail/1.webp',
@@ -239,8 +239,8 @@ export const products: Product[] = [
     ],
     type: 'shop',
     variants: [
-      { label: 'JKLU015 15KWh', price: '$1,899.00' },
-      { label: 'JKLU015 30KWh (x2 Parallel)', price: '$3,599.00' },
+      { label: 'BOX and LCDBMS', price: '$400.00' },
+      { label: 'OnlyBOX', price: '$250.00' },
     ],
   },
 ]

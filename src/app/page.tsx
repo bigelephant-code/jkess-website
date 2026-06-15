@@ -86,12 +86,12 @@ const siteContent = {
       slug: "high-voltage-kit",
       category: "high-voltage-kit",
       description:
-        "High-performance HV battery solutions engineered for large-scale energy storage, industrial backup power, and grid-support applications.",
+        "Complete HV BMS solution: BCU-B3 master control (ISO 26262, 1500V) & BMU-H5-16 active balancing slaves (±5mV, 2A). Smart SOC/SOH/SOP estimation, remote OTA, IoT cloud monitoring.",
       features: [
-        "High voltage architecture (up to 800V)",
-        "Industry-leading energy density",
-        "Advanced thermal management system",
-        "CAN / RS485 communication interface",
+        "BCU-B3 Master: ISO 26262 functional safety, 1500V detection",
+        "BMU-H5-16 Slave: ±5mV accuracy, 2A bidirectional active balancing",
+        "SOC/SOH/SOP smart estimation + 16-cell voltage collection",
+        "Remote OTA & real-time IoT cloud monitoring with GPS/BeiDou",
       ],
       image: "",
     },

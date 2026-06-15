@@ -29,12 +29,12 @@ const siteContent = {
       slug: "bms-protection-board",
       category: "bms",
       description:
-        "Advanced battery management system designed for optimal performance, safety monitoring, and extended battery life across various energy storage applications.",
+        "Comprehensive BMS solutions: active balancers (2A~15A), protection boards (40A~300A, 4S~32S), and parallel boards with integrated limiter. CAN/RS485/Bluetooth, GPS-ready.",
       features: [
-        "Real-time voltage & temperature monitoring",
-        "Overcharge / over-discharge protection",
-        "Cell balancing for extended cycle life",
-        "Compatible with LFP & NMC chemistries",
+        "Active balancers: 2A~15A balancing, 4S~24S support",
+        "Protection boards: 40A~300A continuous, 4S~32S cell",
+        "Parallel boards with integrated 10A current limiter",
+        "CAN / RS485 / Bluetooth / isoSPI communication",
       ],
     },
     {

@@ -38,14 +38,14 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
     <section className="relative overflow-hidden bg-gray-900">
       {/* ===== Full background slideshow ===== */}
       <div className="absolute inset-0">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={bgImage}
             className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2, ease: 'easeInOut' }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
           >
             <div
               className="w-full h-full bg-cover bg-center"
@@ -54,16 +54,6 @@ export default function TeamSlideshow({ children }: { children?: React.ReactNode
                 filter: 'brightness(0.55)',
               }}
             />
-            {/* Ken Burns slow zoom */}
-            <style jsx>{`
-              .ken-burns {
-                animation: kenburns 8s ease-in-out infinite alternate;
-              }
-              @keyframes kenburns {
-                0% { transform: scale(1); }
-                100% { transform: scale(1.08); }
-              }
-            `}</style>
           </motion.div>
         </AnimatePresence>
       </div>

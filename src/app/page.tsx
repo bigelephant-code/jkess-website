@@ -106,8 +106,7 @@ export default function Home() {
     <>
       <HeroSection data={siteContent.hero} />
       <section className="relative">
-        <div className="absolute inset-0 bg-white" />
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-white">
           <TechLines />
         </div>
         <div className="relative z-10">

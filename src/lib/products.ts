@@ -157,6 +157,7 @@ export const products: Product[] = [
       '/images/hv-kit/6.jpg',
     ],
     detailImages: [
+      '/images/hv-kit-detail/20.jpg',
       '/images/hv-kit-detail/1.jpg',
       '/images/hv-kit-detail/2.jpg',
       '/images/hv-kit-detail/3.jpg',
@@ -175,7 +176,6 @@ export const products: Product[] = [
       '/images/hv-kit-detail/17.jpg',
       '/images/hv-kit-detail/18.jpg',
       '/images/hv-kit-detail/19.jpg',
-      '/images/hv-kit-detail/20.jpg',
     ],
     type: 'inquiry',
   },

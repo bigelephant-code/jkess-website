@@ -75,10 +75,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 text-sm font-medium mb-4">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-              Company Culture
-            </div>
+
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
               Our{' '}
               <span className="text-green-600">Purpose</span>

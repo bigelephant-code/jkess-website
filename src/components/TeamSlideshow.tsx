@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 
 const teamImages = [
   '/images/team/072986de101b8dd30cb2a3ff111126f.jpg',
-  '/images/team/4 拷贝.jpg',
   '/images/team/a18713ac6f8676f0700bf46e5fe324e.jpg',
   '/images/team/客户合作照片 (1).jpg',
   '/images/team/客户合作照片 (10).jpg',
@@ -22,56 +21,58 @@ const teamImages = [
 ]
 
 export default function TeamSlideshow({ children }: { children?: React.ReactNode }) {
-  const [idx, setIdx] = useState(0)
-  const [transitioning, setTransitioning] = useState(false)
   const idxRef = useRef(0)
+  const [display, setDisplay] = useState({ cur: 0, next: 1 })
+  const [opacity, setOpacity] = useState([1, 0])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Start crossfade: show next image while current fades out
-      setTransitioning(true)
-      // After crossfade duration, advance to next
+    const advance = () => {
+      const next = (idxRef.current + 1) % teamImages.length
+
+      // Show both: current fades out, next fades in
+      setDisplay({ cur: idxRef.current, next })
+      // Trigger fade via next frame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        setOpacity([0, 1])
+      })
+
+      // After crossfade, finalize
       setTimeout(() => {
-        idxRef.current = (idxRef.current + 1) % teamImages.length
-        setIdx(idxRef.current)
-        setTransitioning(false)
+        idxRef.current = next
+        const afterNext = (next + 1) % teamImages.length
+        setDisplay({ cur: next, next: afterNext })
+        setOpacity([1, 0])
       }, 1000)
-    }, 3000)
+    }
 
-    return () => clearInterval(interval)
+    const timer = setInterval(advance, 3000)
+    return () => clearInterval(timer)
   }, [])
-
-  const prevIdx = (idx - 1 + teamImages.length) % teamImages.length
-  const displayIdx = idx
-  const overlayIdx = transitioning ? (idx + 1) % teamImages.length : null
 
   return (
     <section className="relative overflow-hidden bg-gray-900">
       {/* ===== Full background slideshow ===== */}
       <div className="absolute inset-0">
-        {/* Base image (always visible) */}
+        {/* Layer 1: current/previous image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${teamImages[displayIdx]})`,
+            backgroundImage: `url(${teamImages[display.cur]})`,
             filter: 'brightness(0.55)',
+            opacity: opacity[0],
             transition: 'opacity 1s ease-in-out',
-            opacity: transitioning ? 0 : 1,
           }}
         />
-        {/* Overlay image (fades in during transition) */}
-        {overlayIdx !== null && (
-          <div
-            key={overlayIdx}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${teamImages[overlayIdx]})`,
-              filter: 'brightness(0.55)',
-              transition: 'opacity 1s ease-in-out',
-              opacity: transitioning ? 1 : 0,
-            }}
-          />
-        )}
+        {/* Layer 2: next image (always ready, no flash) */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${teamImages[display.next]})`,
+            filter: 'brightness(0.55)',
+            opacity: opacity[1],
+            transition: 'opacity 1s ease-in-out',
+          }}
+        />
       </div>
 
       {/* Overlay gradient */}

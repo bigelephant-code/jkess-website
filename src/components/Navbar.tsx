@@ -33,6 +33,7 @@ export default function Navbar() {
   const [justAppeared, setJustAppeared] = useState(false)
   const lastScrollY = useRef(0)
   const wasHidden = useRef(false)
+  const scrollDirection = useRef<'up' | 'down' | null>(null)
   const navRef = useRef<HTMLDivElement>(null)
   const { itemCount } = useCart()
   const { lang, t } = useI18n()
@@ -44,38 +45,50 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      if (Math.abs(currentScrollY - lastScrollY.current) < 5) return
+      
+      // Always track raw direction from last position
+      if (currentScrollY > lastScrollY.current + 2) {
+        scrollDirection.current = 'down'
+      } else if (currentScrollY < lastScrollY.current - 2) {
+        scrollDirection.current = 'up'
+      }
+      lastScrollY.current = currentScrollY
+      
       // Close language panel on scroll
       setLangOpen(false)
       
-      // Phase 0: At top → full-width seamless
-      // Phase 1: Peel off (gap appears) 
-      // Phase 2: Hide (slide up)
-      
+      // Phase logic based on scroll position + direction
       if (currentScrollY <= 5) {
+        // At very top: full-width seamless
         setAtTop(true)
         if (!visible) {
           wasHidden.current = true
           setVisible(true)
         }
-      } else if (currentScrollY <= 80) {
+      } else if (currentScrollY <= 60) {
+        // Small scroll: peeled state
         setAtTop(false)
         if (!visible) {
           wasHidden.current = true
           setVisible(true)
         }
-      } else if (currentScrollY > lastScrollY.current) {
-        setAtTop(false)
+      } else if (scrollDirection.current === 'down' && currentScrollY > 60) {
+        // Scrolling down: hide navbar
         setVisible(false)
-      } else {
-        setAtTop(false)
+      } else if (scrollDirection.current === 'up') {
+        // Scrolling up: show navbar
         if (!visible) {
           wasHidden.current = true
-          setVisible(true)
         }
+        setVisible(true)
       }
       
-      lastScrollY.current = currentScrollY
+      // When scrolling up to near top, go seamless
+      if (currentScrollY <= 5) {
+        setAtTop(true)
+      } else {
+        setAtTop(false)
+      }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)

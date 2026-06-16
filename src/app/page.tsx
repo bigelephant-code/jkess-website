@@ -1,12 +1,23 @@
-﻿import HeroSection from "@/components/HeroSection";
+﻿import dynamic from "next/dynamic";
+import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
 import CertTiltBoard from "@/components/CertTiltBoard";
-import MadeWithJKESS from "@/components/MadeWithJKESS";
-import ReviewsWall from "@/components/ReviewsWall";
-import BrandLogos from "@/components/BrandLogos";
-import ContactSection from "@/components/ContactSection";
 import TechLines from "@/components/TechLines";
+
+// Lazy-load below-fold components to improve initial bundle size
+const MadeWithJKESS = dynamic(() => import("@/components/MadeWithJKESS"), {
+  loading: () => null,
+});
+const ReviewsWall = dynamic(() => import("@/components/ReviewsWall"), {
+  loading: () => null,
+});
+const BrandLogos = dynamic(() => import("@/components/BrandLogos"), {
+  loading: () => null,
+});
+const ContactSection = dynamic(() => import("@/components/ContactSection"), {
+  loading: () => null,
+});
 
 // Hardcoded content for now — will be replaced with Sanity CMS later
 const siteContent = {

@@ -17,28 +17,12 @@ const navLinks = [
   { key: 'nav.downloads', href: '/downloads' },
 ]
 
-// Group languages by region for the dropdown
 const languageGroups = [
-  {
-    label: 'West & Central Europe',
-    codes: ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt'] as LangCode[],
-  },
-  {
-    label: 'Nordic',
-    codes: ['sv', 'da', 'fi'] as LangCode[],
-  },
-  {
-    label: 'Central & Eastern Europe',
-    codes: ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el'] as LangCode[],
-  },
-  {
-    label: 'Baltics & Balkans',
-    codes: ['hr', 'sl', 'lt', 'lv', 'et'] as LangCode[],
-  },
-  {
-    label: 'CIS & Middle East',
-    codes: ['ru', 'uk', 'fa', 'tr'] as LangCode[],
-  },
+  { label: 'West & Central Europe', codes: ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt'] as LangCode[] },
+  { label: 'Nordic', codes: ['sv', 'da', 'fi'] as LangCode[] },
+  { label: 'Central & Eastern Europe', codes: ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el'] as LangCode[] },
+  { label: 'Baltics & Balkans', codes: ['hr', 'sl', 'lt', 'lv', 'et'] as LangCode[] },
+  { label: 'CIS & Middle East', codes: ['ru', 'uk', 'fa', 'tr'] as LangCode[] },
 ]
 
 export default function Navbar() {
@@ -46,7 +30,7 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false)
   const [visible, setVisible] = useState(true)
   const lastScrollY = useRef(0)
-  const langRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLDivElement>(null)
   const { itemCount } = useCart()
   const { lang, t } = useI18n()
   const prefix = lang === 'en' ? '' : '/' + lang
@@ -69,10 +53,10 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Close language dropdown on outside click
+  // Close language panel on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
         setLangOpen(false)
       }
     }
@@ -82,19 +66,16 @@ export default function Navbar() {
 
   return (
     <motion.nav
+      ref={navRef}
       initial={{ y: 0 }}
       animate={{ y: visible ? 0 : -120 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/50 rounded-[17px] border border-white/[0.04]"
+      className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/50 rounded-[17px] border border-white/[0.04] overflow-hidden"
     >
+      {/* ── Main bar (always visible) ── */}
       <div className="px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
         <a href={prefix || '/'} className="flex items-center">
-          <img
-            src="/images/jkess-logo-cropped.png"
-            alt="JKESS"
-            className="h-12 w-auto brightness-0 invert"
-          />
+          <img src="/images/jkess-logo-cropped.png" alt="JKESS" className="h-12 w-auto brightness-0 invert" />
         </a>
 
         {/* Desktop nav */}
@@ -105,27 +86,19 @@ export default function Navbar() {
               href={`${prefix}${link.href}`}
               className="relative text-lg tracking-wider font-medium text-white/80 transition-colors duration-200
                 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
-                before:bg-green-500 before:rounded-full before:transition-all before:duration-300
-                hover:before:w-full"
+                before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full"
             >
               <motion.span
                 className="flex"
                 initial="rest"
                 animate="rest"
-                variants={{
-                  rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-                  hover: { transition: { staggerChildren: 0.025 } },
-                }}
+                variants={{ rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } }, hover: { transition: { staggerChildren: 0.025 } } }}
                 whileHover="hover"
               >
                 {(t(link.key) || link.key.replace('nav.', '')).split('').map((char: string, i: number) => (
                   <motion.span
-                    key={i}
-                    className="inline-block"
-                    variants={{
-                      rest: { y: 0, color: 'rgba(255,255,255,0.8)', transition: { duration: 0.2 } },
-                      hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } },
-                    }}
+                    key={i} className="inline-block"
+                    variants={{ rest: { y: 0, color: 'rgba(255,255,255,0.8)', transition: { duration: 0.2 } }, hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } } }}
                   >
                     {char === ' ' ? '\u00A0' : char}
                   </motion.span>
@@ -135,65 +108,16 @@ export default function Navbar() {
           ))}
 
           {/* ── Language Switcher ── */}
-          <div className="relative" ref={langRef}>
-            <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-lg"
-            >
-              <Globe size={20} />
-              <span className="text-xl leading-none">{currentLocale.flag}</span>
-            </button>
-
-            <AnimatePresence>
-              {langOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-[320px] max-h-[480px] overflow-y-auto bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-xl p-2 lang-dropdown-scrollbar"
-                >
-                  {languageGroups.map((group) => (
-                    <div key={group.label} className="mb-1">
-                      <p className="text-[10px] uppercase tracking-widest text-gray-500 px-3 py-2 font-semibold">
-                        {group.label}
-                      </p>
-                      {group.codes.map((code) => {
-                        const locale = localeMap.get(code)
-                        if (!locale) return null
-                        const isActive = lang === code
-                        return (
-                          <a
-                            key={code}
-                            href={code === 'en' ? '/' : `/${code}`}
-                            className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-colors ${
-                              isActive
-                                ? 'bg-green-500/15 text-green-400'
-                                : 'text-gray-300 hover:bg-white/5 hover:text-white'
-                            }`}
-                          >
-                            <span className="text-lg">{locale.flag}</span>
-                            <div className="flex-1">
-                              <span className="font-medium">{locale.name}</span>
-                              <span className="text-gray-500 text-xs ml-2">{locale.englishName}</span>
-                            </div>
-                            {isActive && <span className="text-green-400 text-xs font-bold">✓</span>}
-                          </a>
-                        )
-                      })}
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-          {/* ── End Language Switcher ── */}
+          <button
+            onClick={() => setLangOpen(!langOpen)}
+            className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-lg"
+          >
+            <Globe size={20} />
+            <span className="text-xl leading-none">{currentLocale.flag}</span>
+          </button>
 
           {/* Cart icon */}
-          <a
-            href={`${prefix}/cart`}
-            className="relative text-white/60 hover:text-green-500 transition-colors duration-200"
-          >
+          <a href={`${prefix}/cart`} className="relative text-white/60 hover:text-green-500 transition-colors duration-200">
             <ShoppingCart size={20} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
@@ -219,6 +143,53 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* ── Expandable Language Panel ── */}
+      <AnimatePresence>
+        {langOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="border-t border-white/[0.06]"
+          >
+            <div className="px-8 py-6">
+              <div className="grid grid-cols-5 gap-x-6 gap-y-0 max-w-[1400px] mx-auto">
+                {languageGroups.map((group) => (
+                  <div key={group.label}>
+                    <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-semibold">
+                      {group.label}
+                    </p>
+                    <div className="space-y-0.5">
+                      {group.codes.map((code) => {
+                        const locale = localeMap.get(code)
+                        if (!locale) return null
+                        const isActive = lang === code
+                        return (
+                          <a
+                            key={code}
+                            href={code === 'en' ? '/' : `/${code}`}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-colors ${
+                              isActive
+                                ? 'bg-green-500/15 text-green-400'
+                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                            }`}
+                          >
+                            <span className="text-base shrink-0">{locale.flag}</span>
+                            <span className="text-[13px]">{locale.name}</span>
+                            {isActive && <span className="text-green-400 text-[10px] ml-auto font-bold">✓</span>}
+                          </a>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
@@ -239,7 +210,6 @@ export default function Navbar() {
               </a>
             ))}
 
-            {/* Mobile language switcher */}
             <div className="border-t border-white/10 pt-4">
               <p className="text-xs uppercase tracking-widest text-gray-500 mb-3 font-semibold flex items-center gap-2">
                 <Globe size={14} /> {t('nav.language', 'Language')}
@@ -253,9 +223,7 @@ export default function Navbar() {
                       href={locale.code === 'en' ? '/' : `/${locale.code}`}
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${
-                        isActive
-                          ? 'bg-green-500/15 text-green-400'
-                          : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                        isActive ? 'bg-green-500/15 text-green-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'
                       }`}
                     >
                       <span>{locale.flag}</span>

@@ -1,4 +1,5 @@
 'use client'
+import { useTranslate } from '@/i18n/client'
 
 import { useState } from 'react'
 import Image from 'next/image'
@@ -22,6 +23,7 @@ const categoryLabels: Record<string, string> = {
 }
 
 function ProductCard({ product, idx }: { product: Product; idx: number }) {
+  const t = useTranslate()
   const allImages = product.images && product.images.length > 0
     ? product.images
     : product.image
@@ -110,7 +112,7 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
           href={product.slug ? `/products/${product.slug}` : "#contact"}
           className="inline-flex items-center gap-2 text-green-600 hover:text-green-500 font-semibold transition-colors"
         >
-          View Details <ArrowRight size={16} />
+          {t('productsSection.viewDetails', 'View Details')} <ArrowRight size={16} />
         </a>
       </div>
     </div>
@@ -118,6 +120,7 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
 }
 
 export default function ProductSection({ products }: { products?: Product[] }) {
+  const t = useTranslate()
   if (!products || products.length === 0) {
     return null
   }
@@ -128,10 +131,10 @@ export default function ProductSection({ products }: { products?: Product[] }) {
         <Reveal>
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Our Products
+              {t('productsSection.title', 'Our Products')}
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto">
-              Comprehensive energy storage solutions engineered for reliability and performance
+              {t('productsSection.desc', 'Comprehensive energy storage solutions engineered for reliability and performance')}
             </p>
           </div>
         </Reveal>

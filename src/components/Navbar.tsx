@@ -80,7 +80,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="bg-black/20 border-b border-white/[0.06]"
+            className="bg-black/10 border-b border-white/[0.06]"
           >
             <div className="px-8 py-6">
               <div className="grid grid-cols-5 gap-x-6 gap-y-0 max-w-[1400px] mx-auto">

@@ -112,16 +112,17 @@ export default function Navbar() {
   return (
     <motion.nav
       ref={navRef}
-      initial={{ y: 0, top: 0, width: '100%', borderRadius: '0px' }}
+      initial={{ y: 0, left: 0, x: 0, width: '100%', borderRadius: '0px' }}
       animate={{
         y: visible ? 0 : -120,
-        top: atTop ? 0 : 8,
+        left: atTop ? 0 : '50%',
+        x: atTop ? 0 : '-50%',
         width: atTop ? '100%' : '97%',
         borderRadius: atTop ? '0px' : '17px',
       }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={`fixed left-1/2 -translate-x-1/2 z-50 max-w-[1580px] bg-black/50 overflow-hidden ${
-        atTop ? 'border-0' : 'border border-white/[0.04]'
+      className={`fixed z-50 bg-black/50 overflow-hidden ${
+        atTop ? '' : 'max-w-[1580px] border border-white/[0.04]'
       }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}
@@ -170,6 +171,13 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Navbar Content (fades in with particles on reappear) ── */}
+      <motion.div
+        initial={justAppeared ? { opacity: 0, y: 10, scale: 0.97 } : false}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.15, ease: 'easeOut' }}
+      >
 
       {/* ── Language Panel (appears ABOVE navbar content, pushes everything down) ── */}
       <AnimatePresence>

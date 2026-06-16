@@ -104,7 +104,7 @@ export default function Navbar() {
   return (
     <motion.nav
       ref={navRef}
-      initial={{ y: 0 }}
+      initial={{ y: 0, top: 0, width: '100%', borderRadius: '0px' }}
       animate={{
         y: visible ? 0 : -120,
         top: atTop ? 0 : 8,

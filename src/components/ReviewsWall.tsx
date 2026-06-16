@@ -39,7 +39,7 @@ const colors = ['#ff6b6b', '#339af0', '#20c997', '#f06595', '#ff922b', '#7048e8'
 
 export default function ReviewsWall() {
   return (
-    <section className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-white py-20 md:py-28 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-white py-12 md:py-16 overflow-hidden">
       {/* ─── Scrolling reviews ─── */}
       <div className="space-y-6">
         {/* Row 1: scroll right to left */}

@@ -34,6 +34,7 @@ export default function Navbar() {
   const lastScrollY = useRef(0)
   const wasHidden = useRef(false)
   const scrollDirection = useRef<'up' | 'down' | null>(null)
+  const visibleRef = useRef(true)
   const navRef = useRef<HTMLDivElement>(null)
   const { itemCount } = useCart()
   const { lang, t } = useI18n()
@@ -41,12 +42,15 @@ export default function Navbar() {
 
   const currentLocale = localeMap.get(lang)!
 
+  // Sync visibleRef with state
+  useEffect(() => { visibleRef.current = visible }, [visible])
+
   // Hide navbar on scroll down
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       
-      // Always track raw direction from last position
+      // Track scroll direction (always, with small dead zone)
       if (currentScrollY > lastScrollY.current + 2) {
         scrollDirection.current = 'down'
       } else if (currentScrollY < lastScrollY.current - 2) {
@@ -57,44 +61,35 @@ export default function Navbar() {
       // Close language panel on scroll
       setLangOpen(false)
       
-      // Phase logic based on scroll position + direction
-      if (currentScrollY <= 5) {
-        // At very top: full-width seamless
-        setAtTop(true)
-        if (!visible) {
-          wasHidden.current = true
-          setVisible(true)
-        }
-      } else if (currentScrollY <= 60) {
-        // Small scroll: peeled state
-        setAtTop(false)
-        if (!visible) {
-          wasHidden.current = true
-          setVisible(true)
-        }
-      } else if (scrollDirection.current === 'down' && currentScrollY > 60) {
-        // Scrolling down: hide navbar
-        setVisible(false)
-      } else if (scrollDirection.current === 'up') {
-        // Scrolling up: show navbar
-        if (!visible) {
-          wasHidden.current = true
-        }
-        setVisible(true)
-      }
+      const isCurrentlyVisible = visibleRef.current
       
-      // When scrolling up to near top, go seamless
-      if (currentScrollY <= 5) {
+      if (currentScrollY <= 10) {
+        // At top: seamless full-width
         setAtTop(true)
-      } else {
+        if (!isCurrentlyVisible) {
+          wasHidden.current = true
+          setVisible(true)
+        }
+      } else if (scrollDirection.current === 'down' && currentScrollY > 100) {
+        // Scrolling down past threshold: peel then hide
         setAtTop(false)
+        setVisible(false)
+      } else if (scrollDirection.current === 'up' && !isCurrentlyVisible) {
+        // Scrolling up while hidden: reappear with particles
+        setAtTop(currentScrollY <= 10)
+        wasHidden.current = true
+        setVisible(true)
+      } else {
+        // Between 10-100px: peeled visible state
+        setAtTop(false)
+        if (!isCurrentlyVisible) {
+          setVisible(true)
+        }
       }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  // Trigger particle rain effect when navbar reappears
   useEffect(() => {
     if (visible && wasHidden.current) {
       setJustAppeared(true)

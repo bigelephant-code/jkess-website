@@ -50,7 +50,7 @@ export const locales: LocaleDef[] = [
   { code: 'uk', name: 'Українська', englishName: 'Ukrainian', flag: '🇺🇦', dir: 'ltr' },
 
   // ── Middle East ──
-  { code: 'fa', name: 'فارسی', englishName: 'Persian', flag: '🇮🇷', dir: 'rtl' },
+  { code: 'fa', name: 'فارسی', englishName: 'Persian', flag: '🇮🇷', dir: 'ltr' },
   { code: 'tr', name: 'Türkçe', englishName: 'Turkish', flag: '🇹🇷', dir: 'ltr' },
 ]
 

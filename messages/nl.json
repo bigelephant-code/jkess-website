@@ -62,7 +62,6 @@
   "madeWith.title": "Gemaakt met",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Elk onderdeel, elk circuit, elke verbinding — alles wat we bouwen wordt gemaakt met precisie, passie en doelgerichtheid.",
-  "timeline.title": "Ontwikkelingsgeschiedenis",
   "cart.empty": "Uw winkelwagen is leeg",
   "cart.emptyDesc": "U heeft nog geen producten toegevoegd.",
   "cart.browse": "Blader door producten",
@@ -96,5 +95,19 @@
   "product.productGallery": "Productgalerij",
   "product.customerReviews": "Klantbeoordelingen",
   "product.model": "Model",
-  "search.placeholder": "Producten zoeken..."
+  "search.placeholder": "Producten zoeken...",
+  "timeline.title.part1": "Ontwikkelings",
+  "timeline.title.part2": "geschiedenis",
+  "timeline.2017.title": "OPRICHTING",
+  "timeline.2017.line1": "Het team opgericht onder Shandong Tunan, toetreding tot de nieuwe energie-industrie en start van R&D van energieopslagproducten.",
+  "timeline.2017.line2": "Lancering van de eerste generatie producten, met positieve feedback van klanten.",
+  "timeline.2020.title": "GROEI",
+  "timeline.2020.line1": "Oprichting van het Hangzhou R&D-centrum voor innovatie op het gebied van geavanceerde technologie. Oprichting van de JKBMS-dochteronderneming, met snelle opschaling van technische capaciteiten en teamgrootte.",
+  "timeline.2020.line2": "Succesvolle uitbreiding naar overzeese markten. Het internationale marktaandeel steeg snel en trok aanzienlijke aandacht in de sector.",
+  "timeline.2023.title": "DOORBRAAK",
+  "timeline.2023.line1": "Lancering van het JKESS-merk met dekking in meer dan 30 landen wereldwijd. Een moderne grootschalige productiebasis voor energieopslag van 5 hectare werd voltooid en in gebruik genomen.",
+  "timeline.2023.line2": "Succesvolle ontwikkeling van hoogspannings-energieopslagsystemen voor commercieel en industrieel gebruik met actieve balancing-technologie, waarmee klanten hun rendement met 2-5 jaar kunnen verbeteren.",
+  "timeline.2026.title": "EXPANSIE",
+  "timeline.2026.line1": "Van R&D-ontwerp en productie-integratie tot backend-testen en after-sales — JKESS beschikt nu over full-chain-capaciteiten in de ontwikkeling, productie en verkoop van energieopslagsystemen.",
+  "timeline.2026.line2": "De huidige productielijnen bereiken een capaciteit van 2,1 GWh/jaar, waarmee JKESS uitgroeit tot een snelgroeiende ster in de energieopslagindustrie."
 }

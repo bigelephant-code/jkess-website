@@ -62,7 +62,6 @@
   "madeWith.title": "Realizzato con",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Ogni componente, ogni circuito, ogni connessione — tutto ciò che costruiamo è realizzato con precisione, passione e determinazione.",
-  "timeline.title": "Storia dello sviluppo",
   "cart.empty": "Il carrello è vuoto",
   "cart.emptyDesc": "Sembra che tu non abbia ancora aggiunto prodotti.",
   "cart.browse": "Sfoglia prodotti",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galleria prodotti",
   "product.customerReviews": "Recensioni clienti",
   "product.model": "Modello",
-  "search.placeholder": "Cerca prodotti..."
+  "search.placeholder": "Cerca prodotti...",
+  "timeline.title.part1": "Sviluppo",
+  "timeline.title.part2": "Storia",
+  "timeline.2017.title": "FONDAZIONE",
+  "timeline.2017.line1": "Creazione del team sotto Shandong Tunan, ingresso nell'industria delle nuove energie e avvio della R&S di prodotti per l'accumulo energetico.",
+  "timeline.2017.line2": "Lancio dei prodotti di prima generazione, ottenendo feedback positivi dai clienti.",
+  "timeline.2020.title": "CRESCITA",
+  "timeline.2020.line1": "Creazione del centro R&S di Hangzhou per l'innovazione tecnologica all'avanguardia. Fondazione della controllata JKBMS, con una rapida espansione delle capacità tecniche e del team.",
+  "timeline.2020.line2": "Espansione di successo nei mercati esteri. La quota di mercato internazionale è cresciuta rapidamente, attirando notevole attenzione nel settore.",
+  "timeline.2023.title": "SVOLTA",
+  "timeline.2023.line1": "Lancio del marchio JKESS che copre oltre 30 paesi in tutto il mondo. È stata completata e messa in funzione una base produttiva moderna su larga scala di 5 ettari per lo stoccaggio energetico.",
+  "timeline.2023.line2": "Sviluppo di successo di sistemi di accumulo energetico ad alta tensione per uso commerciale e industriale con tecnologia di bilanciamento attivo, aiutando i clienti a migliorare i rendimenti di 2-5 anni.",
+  "timeline.2026.title": "ESPANSIONE",
+  "timeline.2026.line1": "Dalla progettazione R&S e dall'integrazione produttiva ai test backend e all'assistenza post-vendita — JKESS ora possiede capacità a catena completa nello sviluppo, nella produzione e nei servizi di vendita di sistemi di accumulo energetico.",
+  "timeline.2026.line2": "Le attuali linee di produzione raggiungono una capacità di 2,1 GWh/anno, affermandosi come una stella in rapida crescita nel settore dello stoccaggio energetico."
 }

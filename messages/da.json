@@ -62,7 +62,6 @@
   "madeWith.title": "Lavet med",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Hver komponent, hvert kredsløb, hver forbindelse — alt, hvad vi bygger, er lavet med præcision, passion og formål.",
-  "timeline.title": "Udviklingshistorie",
   "cart.empty": "Din indkøbskurv er tom",
   "cart.emptyDesc": "Det ser ud til, at du ikke har tilføjet nogen produkter endnu.",
   "cart.browse": "Gennemse produkter",
@@ -96,5 +95,19 @@
   "product.productGallery": "Produktgalleri",
   "product.customerReviews": "Kundeanmeldelser",
   "product.model": "Model",
-  "search.placeholder": "Søg efter produkter..."
+  "search.placeholder": "Søg efter produkter...",
+  "timeline.title.part1": "Udviklings",
+  "timeline.title.part2": "historie",
+  "timeline.2017.title": "GRUNDLÆGGELSE",
+  "timeline.2017.line1": "Etablering af teamet under Shandong Tunan, indtræden i den nye energiindustri og påbegyndelse af F&U af energilagringsprodukter.",
+  "timeline.2017.line2": "Lancering af første generation af produkter, der modtog positiv feedback fra kunder.",
+  "timeline.2020.title": "VÆKST",
+  "timeline.2020.line1": "Etablering af F&U-center i Hangzhou til banebrydende teknologisk innovation. Grundlæggelse af JKBMS-datterselskab med hurtig skalering af tekniske kapaciteter og teamstørrelse.",
+  "timeline.2020.line2": "Succesfuld udvidelse til oversøiske markeder. Den internationale markedsandel steg hurtigt og tiltrak betydelig opmærksomhed i branchen.",
+  "timeline.2023.title": "GENNEMBRUD",
+  "timeline.2023.line1": "Lancering af JKESS-mærket, der dækker mere end 30 lande verden over. En moderne storskalaprojektionsbase for energilagring på 5 hektar blev færdiggjort og sat i drift.",
+  "timeline.2023.line2": "Succesfuld udvikling af højspændings kommercielle og industrielle energilagringssystemer med aktiv balanceringsteknologi, der hjælper kunder med at forbedre afkastet med 2-5 år.",
+  "timeline.2026.title": "EKSPANSION",
+  "timeline.2026.line1": "Fra F&U-design og produktionsintegration til backend-testning og eftersalg — JKESS besidder nu fuldkædekapaciteter inden for udvikling, fremstilling og salgsservice af energilagringssystemer.",
+  "timeline.2026.line2": "De nuværende produktionslinjer når en kapacitet på 2,1 GWh/år og vokser som en hurtigtvoksende stjerne i energilagringsindustrien."
 }

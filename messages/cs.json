@@ -62,7 +62,6 @@
   "madeWith.title": "Vyrobeno s",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Každá součástka, každý obvod, každé spojení — vše, co stavíme, je vyrobeno s precizností, vášní a účelem.",
-  "timeline.title": "Historie vývoje",
   "cart.empty": "Váš košík je prázdný",
   "cart.emptyDesc": "Vypadá to, že jste ještě nepřidali žádné produkty.",
   "cart.browse": "Procházet produkty",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galerie produktů",
   "product.customerReviews": "Hodnocení zákazníků",
   "product.model": "Model",
-  "search.placeholder": "Hledat produkty..."
+  "search.placeholder": "Hledat produkty...",
+  "timeline.title.part1": "Vývoj",
+  "timeline.title.part2": "Historie",
+  "timeline.2017.title": "ZALOŽENÍ",
+  "timeline.2017.line1": "Založení týmu pod Shandong Tunan, vstup do odvětví nové energie a zahájení výzkumu a vývoje produktů pro ukládání energie.",
+  "timeline.2017.line2": "Uvedení produktů první generace, které získaly pozitivní zpětnou vazbu od zákazníků.",
+  "timeline.2020.title": "RŮST",
+  "timeline.2020.line1": "Založení výzkumného a vývojového centra v Hangzhou pro inovace špičkových technologií. Založení dceřiné společnosti JKBMS, s rychlým rozšiřováním technických kapacit a velikosti týmu.",
+  "timeline.2020.line2": "Úspěšná expanze na zámořské trhy. Mezinárodní podíl na trhu rychle vzrostl a přitáhl významnou pozornost odvětví.",
+  "timeline.2023.title": "PRŮLOM",
+  "timeline.2023.line1": "Uvedení značky JKESS pokrývající více než 30 zemí po celém světě. Byla dokončena a uvedena do provozu moderní velkokapacitní výrobní základna pro ukládání energie o rozloze 5 hektarů.",
+  "timeline.2023.line2": "Úspěšný vývoj vysokonapěťových komerčních a průmyslových systémů pro ukládání energie s technologií aktivního vyvažování, pomáhající zákazníkům zlepšit návratnost o 2-5 let.",
+  "timeline.2026.title": "EXPANZE",
+  "timeline.2026.line1": "Od návrhu výzkumu a vývoje a integrace výroby až po backendové testování a poprodejní servis — JKESS nyní disponuje schopnostmi celého řetězce ve vývoji, výrobě a prodejních službách systémů pro ukládání energie.",
+  "timeline.2026.line2": "Současné výrobní linky dosahují kapacity 2,1 GWh/rok a stávají se rychle rostoucí hvězdou v odvětví ukládání energie."
 }

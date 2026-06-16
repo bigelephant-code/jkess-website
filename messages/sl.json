@@ -62,7 +62,6 @@
   "madeWith.title": "Izdelano z",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Vsaka komponenta, vsako vezje, vsaka povezava — vse, kar gradimo, je izdelano z natančnostjo, strastjo in namenom.",
-  "timeline.title": "Zgodovina razvoja",
   "cart.empty": "Vaša košarica je prazna",
   "cart.emptyDesc": "Zdi se, da še niste dodali nobenih izdelkov.",
   "cart.browse": "Prebrskaj izdelke",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galerija izdelkov",
   "product.customerReviews": "Mnenja strank",
   "product.model": "Model",
-  "search.placeholder": "Išči izdelke..."
+  "search.placeholder": "Išči izdelke...",
+  "timeline.title.part1": "Razvoj",
+  "timeline.title.part2": "Zgodovina",
+  "timeline.2017.title": "USTANOVITEV",
+  "timeline.2017.line1": "Ustanovitev ekipe pod okriljem Shandong Tunan, vstop v industrijo nove energije in začetek raziskav in razvoja izdelkov za shranjevanje energije.",
+  "timeline.2017.line2": "Lansiranje izdelkov prve generacije, ki so prejeli pozitivne povratne informacije strank.",
+  "timeline.2020.title": "RAST",
+  "timeline.2020.line1": "Ustanovitev raziskovalno-razvojnega centra v Hangzhouju za inovacije vrhunske tehnologije. Ustanovitev hčerinske družbe JKBMS s hitrim povečanjem tehničnih zmogljivosti in velikosti ekipe.",
+  "timeline.2020.line2": "Uspešna širitev na čezmorske trge. Mednarodni tržni delež je hitro narasel in pritegnil veliko pozornost industrije.",
+  "timeline.2023.title": "PREBOJ",
+  "timeline.2023.line1": "Lansiranje blagovne znamke JKESS, ki pokriva več kot 30 držav po vsem svetu. Sodobna velika proizvodna baza za shranjevanje energije na 5 hektarih je bila dokončana in predana v uporabo.",
+  "timeline.2023.line2": "Uspešen razvoj visokonapetostnih komercialnih in industrijskih sistemov za shranjevanje energije s tehnologijo aktivnega uravnoteženja, ki strankam pomaga izboljšati donos za 2-5 let.",
+  "timeline.2026.title": "ŠIRITEV",
+  "timeline.2026.line1": "Od raziskovalno-razvojnega načrtovanja in proizvodne integracije do backend testiranja in poprodajnih storitev — JKESS zdaj poseduje zmožnosti celotne verige v razvoju, proizvodnji in prodajnih storitvah sistemov za shranjevanje energije.",
+  "timeline.2026.line2": "Trenutne proizvodne linije dosegajo zmogljivost 2,1 GWh/leto in postajajo hitro rastoča zvezda v industriji shranjevanja energije."
 }

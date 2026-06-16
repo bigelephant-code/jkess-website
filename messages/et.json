@@ -62,7 +62,6 @@
   "madeWith.title": "Valmistatud",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Iga komponent, iga vooluahel, iga ühendus — kõik, mida ehitame, on valmistatud täpsuse, kirglikkuse ja eesmärgipärasusega.",
-  "timeline.title": "Arengulugu",
   "cart.empty": "Teie ostukorv on tühi",
   "cart.emptyDesc": "Näib, et te pole veel ühtegi toodet lisanud.",
   "cart.browse": "Sirvi tooteid",
@@ -96,5 +95,19 @@
   "product.productGallery": "Tootegalerii",
   "product.customerReviews": "Klientide arvustused",
   "product.model": "Mudel",
-  "search.placeholder": "Otsi tooteid..."
+  "search.placeholder": "Otsi tooteid...",
+  "timeline.title.part1": "Development",
+  "timeline.title.part2": "History",
+  "timeline.2017.title": "ASUTAMINE",
+  "timeline.2017.line1": "Meeskonna loomine Shandong Tunan all, sisenemine uue energia tööstusesse ning energiasalvestustoodete T&A tegevuse alustamine.",
+  "timeline.2017.line2": "Esimese põlvkonna toodete turuletoomine, mis pälvisid klientidelt positiivset tagasisidet.",
+  "timeline.2020.title": "KASV",
+  "timeline.2020.line1": "Hangzhou T&A keskuse loomine tipptehnoloogia innovatsiooniks. JKBMS tütarettevõtte asutamine, tehniliste võimekuste ja meeskonna suuruse kiire skaleerimine.",
+  "timeline.2020.line2": "Edukas laienemine välisturgudele. Rahvusvaheline turuosa kasvas kiiresti, tõmmates märkimisväärset tööstuse tähelepanu.",
+  "timeline.2023.title": "LÄBIMURRE",
+  "timeline.2023.line1": "JKESS brändi turuletoomine, mis katab enam kui 30 riiki üle maailma. Valmis ehitati ja võeti kasutusele 5 hektari suurune kaasaegne suuremahuline energiasalvestustootmisbaas.",
+  "timeline.2023.line2": "Edukalt välja töötatud kõrgepingelised kaubanduslikud ja tööstuslikud energiasalvestussüsteemid aktiivse tasakaalustamise tehnoloogiaga, aidates klientidel parandada tasuvust 2-5 aasta võrra.",
+  "timeline.2026.title": "LAIENDUS",
+  "timeline.2026.line1": "Alates T&A disainist ja tootmise integreerimisest kuni backend-testimise ja müügijärgse teeninduseni — JKESS omab nüüd täisahela võimekust energiasalvestussüsteemide arendamisel, tootmisel ja müügiteenustes.",
+  "timeline.2026.line2": "Praegused tootmisliinid ulatuvad 2,1 GWh/aasta mahuni, tõustes kiiresti kasvavaks täheks energiasalvestustööstuses."
 }

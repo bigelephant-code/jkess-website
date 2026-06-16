@@ -62,7 +62,6 @@
   "madeWith.title": "Fabricat cu",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Fiecare componentă, fiecare circuit, fiecare conexiune — tot ceea ce construim este realizat cu precizie, pasiune și scop.",
-  "timeline.title": "Istoric de dezvoltare",
   "cart.empty": "Coșul tău este gol",
   "cart.emptyDesc": "Se pare că nu ai adăugat încă niciun produs.",
   "cart.browse": "Navighează produse",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galerie produse",
   "product.customerReviews": "Recenzii clienți",
   "product.model": "Model",
-  "search.placeholder": "Caută produse..."
+  "search.placeholder": "Caută produse...",
+  "timeline.title.part1": "Dezvoltare",
+  "timeline.title.part2": "Istoric",
+  "timeline.2017.title": "FONDARE",
+  "timeline.2017.line1": "Constituirea echipei sub Shandong Tunan, intrarea în industria noilor energii și începerea activității de C&D pentru produse de stocare a energiei.",
+  "timeline.2017.line2": "Lansarea produselor de prima generație, care au primit feedback pozitiv din partea clienților.",
+  "timeline.2020.title": "CREȘTERE",
+  "timeline.2020.line1": "Înființarea centrului C&D din Hangzhou pentru inovare tehnologică de vârf. Fondarea filialei JKBMS, cu scalarea rapidă a capacităților tehnice și a dimensiunii echipei.",
+  "timeline.2020.line2": "Extindere reușită pe piețele externe. Cota de piață internațională a crescut rapid, atrăgând o atenție semnificativă din partea industriei.",
+  "timeline.2023.title": "PROGRES",
+  "timeline.2023.line1": "Lansarea mărcii JKESS, care acoperă peste 30 de țări la nivel mondial. O bază de producție modernă de stocare a energiei la scară largă, de 5 hectare, a fost finalizată și pusă în funcțiune.",
+  "timeline.2023.line2": "Dezvoltarea cu succes a sistemelor de stocare a energiei de înaltă tensiune pentru uz comercial și industrial, cu tehnologie de echilibrare activă, ajutând clienții să îmbunătățească randamentul cu 2-5 ani.",
+  "timeline.2026.title": "EXPANSIUNE",
+  "timeline.2026.line1": "De la proiectarea C&D și integrarea producției până la testarea backend și serviciile post-vânzare — JKESS deține acum capacități de lanț complet în dezvoltarea, fabricarea și serviciile de vânzare a sistemelor de stocare a energiei.",
+  "timeline.2026.line2": "Liniile de producție actuale ating o capacitate de 2,1 GWh/an, devenind o stea cu creștere rapidă în industria de stocare a energiei."
 }

@@ -62,7 +62,6 @@
   "madeWith.title": "Valmistettu",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Jokainen komponentti, jokainen piiri, jokainen liitäntä — kaikki mitä rakennamme on tehty tarkkuudella, intohimolla ja tarkoituksella.",
-  "timeline.title": "Kehityshistoria",
   "cart.empty": "Ostoskorisi on tyhjä",
   "cart.emptyDesc": "Et ole vielä lisännyt yhtään tuotetta.",
   "cart.browse": "Selaa tuotteita",
@@ -96,5 +95,19 @@
   "product.productGallery": "Tuotegalleria",
   "product.customerReviews": "Asiakasarvostelut",
   "product.model": "Malli",
-  "search.placeholder": "Hae tuotteita..."
+  "search.placeholder": "Hae tuotteita...",
+  "timeline.title.part1": "Kehitys",
+  "timeline.title.part2": "historia",
+  "timeline.2017.title": "PERUSTUS",
+  "timeline.2017.line1": "Tiimi perustettiin Shandong Tunanin alaisuudessa, ja astuimme uuden energian teollisuuteen aloittaen energian varastointituotteiden T&K-toiminnan.",
+  "timeline.2017.line2": "Ensimmäisen sukupolven tuotteiden lanseeraus, joka sai positiivista palautetta asiakkailta.",
+  "timeline.2020.title": "KASVU",
+  "timeline.2020.line1": "Hangzhoun T&K-keskuksen perustaminen huipputeknologian innovaatioita varten. JKBMS-tytäryhtiön perustaminen, mikä mahdollisti teknisten kyvykkyyksien ja tiimikoon nopean kasvattamisen.",
+  "timeline.2020.line2": "Onnistunut laajentuminen ulkomaisille markkinoille. Kansainvälinen markkinaosuus kasvoi nopeasti herättäen merkittävää huomiota alalla.",
+  "timeline.2023.title": "LÄPIMURTO",
+  "timeline.2023.line1": "JKESS-brändin lanseeraus, joka kattaa yli 30 maata maailmanlaajuisesti. 5 hehtaarin laajuinen moderni energian varastointituotantolaitos valmistui ja otettiin käyttöön.",
+  "timeline.2023.line2": "Onnistuneesti kehitettiin korkeajännitteisiä kaupallisia ja teollisia energian varastointijärjestelmiä aktiivisella tasapainotusteknologialla, auttaen asiakkaita parantamaan tuottoja 2–5 vuodella.",
+  "timeline.2026.title": "LAAJENTUMINEN",
+  "timeline.2026.line1": "T&K-suunnittelusta ja tuotannon integroinnista backend-testaukseen ja jälkimarkkinointiin — JKESSillä on nyt täyden ketjun kyvykkyydet energian varastointijärjestelmien kehityksessä, valmistuksessa ja myyntipalveluissa.",
+  "timeline.2026.line2": "Nykyiset tuotantolinjat saavuttavat 2,1 GWh/vuosi kapasiteetin, noustessa nopeasti kasvavaksi tähdeksi energian varastointiteollisuudessa."
 }

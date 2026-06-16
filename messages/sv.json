@@ -62,7 +62,6 @@
   "madeWith.title": "Tillverkad med",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Varje komponent, varje krets, varje anslutning — allt vi bygger är tillverkat med precision, passion och mening.",
-  "timeline.title": "Utvecklingshistoria",
   "cart.empty": "Din varukorg är tom",
   "cart.emptyDesc": "Det verkar som att du inte har lagt till några produkter än.",
   "cart.browse": "Bläddra bland produkter",
@@ -96,5 +95,19 @@
   "product.productGallery": "Produktgalleri",
   "product.customerReviews": "Kundrecensioner",
   "product.model": "Modell",
-  "search.placeholder": "Sök produkter..."
+  "search.placeholder": "Sök produkter...",
+  "timeline.title.part1": "Utvecklings",
+  "timeline.title.part2": "historik",
+  "timeline.2017.title": "GRUNDANDE",
+  "timeline.2017.line1": "Teamet etablerades under Shandong Tunan, med inträde i den nya energiindustrin och påbörjande av FoU för energilagringsprodukter.",
+  "timeline.2017.line2": "Lansering av första generationens produkter, som fick positiv feedback från kunder.",
+  "timeline.2020.title": "TILLVÄXT",
+  "timeline.2020.line1": "Etablering av FoU-center i Hangzhou för banbrytande teknisk innovation. Grundande av JKBMS-dotterbolaget med snabb skalning av tekniska förmågor och teamstorlek.",
+  "timeline.2020.line2": "Framgångsrik expansion till utländska marknader. Den internationella marknadsandelen ökade snabbt och drog till sig betydande uppmärksamhet i branschen.",
+  "timeline.2023.title": "GENOMBROTT",
+  "timeline.2023.line1": "Lansering av JKESS-varumärket som täcker mer än 30 länder världen över. En modern storskalig produktionsbas för energilagring på 5 hektar färdigställdes och togs i drift.",
+  "timeline.2023.line2": "Framgångsrik utveckling av högspända kommersiella och industriella energilagringssystem med aktiv balanseringsteknik, som hjälper kunder att förbättra avkastningen med 2-5 år.",
+  "timeline.2026.title": "EXPANSION",
+  "timeline.2026.line1": "Från FoU-design och produktionsintegration till backend-testning och eftermarknad — JKESS har nu fullkedjeförmåga inom utveckling, tillverkning och försäljningstjänster av energilagringssystem.",
+  "timeline.2026.line2": "Nuvarande produktionslinjer når en kapacitet på 2,1 GWh/år och blir en snabbväxande stjärna inom energilagringsindustrin."
 }

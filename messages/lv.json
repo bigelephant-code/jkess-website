@@ -62,7 +62,6 @@
   "madeWith.title": "Izgatavots ar",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Katra sastāvdaļa, katra shēma, katrs savienojums — viss, ko būvējam, ir izgatavots ar precizitāti, aizrautību un mērķtiecību.",
-  "timeline.title": "Attīstības vēsture",
   "cart.empty": "Jūsu grozs ir tukšs",
   "cart.emptyDesc": "Izskatās, ka vēl neesat pievienojis nevienu produktu.",
   "cart.browse": "Pārlūkot produktus",
@@ -96,5 +95,19 @@
   "product.productGallery": "Produktu galerija",
   "product.customerReviews": "Klientu atsauksmes",
   "product.model": "Modelis",
-  "search.placeholder": "Meklēt produktus..."
+  "search.placeholder": "Meklēt produktus...",
+  "timeline.title.part1": "Attīstības",
+  "timeline.title.part2": "vēsture",
+  "timeline.2017.title": "DIBINĀŠANA",
+  "timeline.2017.line1": "Komandas izveide Shandong Tunan paspārnē, ienākšana jaunās enerģijas nozarē un enerģijas uzkrāšanas produktu pētniecības un attīstības uzsākšana.",
+  "timeline.2017.line2": "Pirmās paaudzes produktu laišana tirgū, kas saņēma pozitīvas atsauksmes no klientiem.",
+  "timeline.2020.title": "IZAUGSME",
+  "timeline.2020.line1": "Pētniecības un attīstības centra izveide Handžou vismodernāko tehnoloģiju inovācijām. JKBMS meitasuzņēmuma dibināšana, strauji palielinot tehniskās spējas un komandas lielumu.",
+  "timeline.2020.line2": "Veiksmīga paplašināšanās ārvalstu tirgos. Starptautiskā tirgus daļa strauji pieauga, piesaistot ievērojamu nozares uzmanību.",
+  "timeline.2023.title": "IZRĀVIENS",
+  "timeline.2023.line1": "Launched the JKESS brand covering more than 30 countries worldwide. A 5-hectare large-scale modern energy storage production base was completed and put into operation.",
+  "timeline.2023.line2": "Successfully developed high-voltage commercial & industrial energy storage systems with active balancing technology, helping customers improve returns by 2-5 years.",
+  "timeline.2026.title": "PAKPLAŠINĀŠANĀS",
+  "timeline.2026.line1": "No pētniecības un attīstības dizaina un ražošanas integrācijas līdz backend testēšanai un pēcpārdošanas pakalpojumiem — JKESS tagad piemīt pilnas ķēdes spējas enerģijas uzkrāšanas sistēmu izstrādē, ražošanā un pārdošanas pakalpojumos.",
+  "timeline.2026.line2": "Pašreizējās ražošanas līnijas sasniedz 2,1 GWh/gadā jaudu, kļūstot par strauji augošu zvaigzni enerģijas uzkrāšanas nozarē."
 }

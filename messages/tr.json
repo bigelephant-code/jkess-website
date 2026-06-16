@@ -62,7 +62,6 @@
   "madeWith.title": "İle Üretildi",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Her bileşen, her devre, her bağlantı — inşa ettiğimiz her şey hassasiyet, tutku ve amaçla üretilmiştir.",
-  "timeline.title": "Gelişim Geçmişi",
   "cart.empty": "Sepetiniz boş",
   "cart.emptyDesc": "Henüz herhangi bir ürün eklememişsiniz.",
   "cart.browse": "Ürünlere Göz At",
@@ -96,5 +95,19 @@
   "product.productGallery": "Ürün Galerisi",
   "product.customerReviews": "Müşteri Yorumları",
   "product.model": "Model",
-  "search.placeholder": "Ürünlerde ara..."
+  "search.placeholder": "Ürünlerde ara...",
+  "timeline.title.part1": "Gelişim",
+  "timeline.title.part2": "Geçmişi",
+  "timeline.2017.title": "KURULUŞ",
+  "timeline.2017.line1": "Ekibin Shandong Tunan bünyesinde kurulması, yeni enerji sektörüne giriş ve enerji depolama ürünlerinin Ar-Ge'sine başlanması.",
+  "timeline.2017.line2": "İlk nesil ürünlerin piyasaya sürülmesi ve müşterilerden olumlu geri bildirim alınması.",
+  "timeline.2020.title": "BÜYÜME",
+  "timeline.2020.line1": "En ileri teknoloji inovasyonu için Hangzhou Ar-Ge merkezinin kurulması. JKBMS yan kuruluşunun kurulması, teknik yeteneklerin ve ekip büyüklüğünün hızla ölçeklendirilmesi.",
+  "timeline.2020.line2": "Denizaşırı pazarlara başarıyla genişleme. Uluslararası pazar payı hızla yükseldi ve sektörde önemli dikkat çekti.",
+  "timeline.2023.title": "ATILIM",
+  "timeline.2023.line1": "Dünya çapında 30'dan fazla ülkeyi kapsayan JKESS markasının lansmanı. 5 hektarlık modern büyük ölçekli bir enerji depolama üretim tesisi tamamlanarak faaliyete geçirildi.",
+  "timeline.2023.line2": "Aktif dengeleme teknolojisine sahip yüksek voltajlı ticari ve endüstriyel enerji depolama sistemlerinin başarıyla geliştirilmesi, müşterilerin getirilerini 2-5 yıl iyileştirmelerine yardımcı oluyor.",
+  "timeline.2026.title": "EXPANSION",
+  "timeline.2026.line1": "From R&D design and production integration to backend testing and after-sales — JKESS now possesses full-chain capabilities in energy storage system development, manufacturing, and sales services.",
+  "timeline.2026.line2": "Mevcut üretim hatları 2,1 GWh/yıl kapasiteye ulaşarak, enerji depolama sektöründe hızla büyüyen bir yıldız olarak yükselmektedir."
 }

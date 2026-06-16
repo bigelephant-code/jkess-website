@@ -62,7 +62,6 @@
   "madeWith.title": "Vyrobené s",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Každý komponent, každý obvod, každé spojenie — všetko, čo staviame, je vyrobené s precíznosťou, vášňou a účelom.",
-  "timeline.title": "História vývoja",
   "cart.empty": "Váš košík je prázdny",
   "cart.emptyDesc": "Zdá sa, že ste ešte nepridali žiadne produkty.",
   "cart.browse": "Prehliadať produkty",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galéria produktov",
   "product.customerReviews": "Hodnotenia zákazníkov",
   "product.model": "Model",
-  "search.placeholder": "Hľadať produkty..."
+  "search.placeholder": "Hľadať produkty...",
+  "timeline.title.part1": "Vývoj",
+  "timeline.title.part2": "História",
+  "timeline.2017.title": "ZALOŽENIE",
+  "timeline.2017.line1": "Založenie tímu pod Shandong Tunan, vstup do odvetvia novej energie a začatie výskumu a vývoja produktov na skladovanie energie.",
+  "timeline.2017.line2": "Uvedenie produktov prvej generácie, ktoré získali pozitívnu spätnú väzbu od zákazníkov.",
+  "timeline.2020.title": "RAST",
+  "timeline.2020.line1": "Založenie výskumného a vývojového centra v Hangzhou na inováciu špičkových technológií. Založenie dcérskej spoločnosti JKBMS, s rýchlym rozširovaním technických kapacít a veľkosti tímu.",
+  "timeline.2020.line2": "Úspešná expanzia na zámorské trhy. Medzinárodný podiel na trhu rýchlo vzrástol a pritiahol významnú pozornosť odvetvia.",
+  "timeline.2023.title": "PRIELOM",
+  "timeline.2023.line1": "Uvedenie značky JKESS pokrývajúcej viac ako 30 krajín po celom svete. Moderná veľkokapacitná výrobná základňa na skladovanie energie o rozlohe 5 hektárov bola dokončená a uvedená do prevádzky.",
+  "timeline.2023.line2": "Úspešný vývoj vysokonapäťových komerčných a priemyselných systémov na skladovanie energie s technológiou aktívneho vyvažovania, pomáhajúc zákazníkom zlepšiť návratnosť o 2-5 rokov.",
+  "timeline.2026.title": "EXPANZIA",
+  "timeline.2026.line1": "Od návrhu výskumu a vývoja a integrácie výroby až po backendové testovanie a popredajný servis — JKESS teraz disponuje schopnosťami celého reťazca vo vývoji, výrobe a predajných službách systémov na skladovanie energie.",
+  "timeline.2026.line2": "Súčasné výrobné linky dosahujú kapacitu 2,1 GWh/rok a stávajú sa rýchlo rastúcou hviezdou v odvetví skladovania energie."
 }

@@ -62,7 +62,6 @@
   "madeWith.title": "Feito com",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Cada componente, cada circuito, cada conexão — tudo o que construímos é feito com precisão, paixão e propósito.",
-  "timeline.title": "Histórico de desenvolvimento",
   "cart.empty": "Seu carrinho está vazio",
   "cart.emptyDesc": "Parece que você ainda não adicionou nenhum produto.",
   "cart.browse": "Navegar por produtos",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galeria de produtos",
   "product.customerReviews": "Avaliações de clientes",
   "product.model": "Modelo",
-  "search.placeholder": "Pesquisar produtos..."
+  "search.placeholder": "Pesquisar produtos...",
+  "timeline.title.part1": "Desenvolvimento",
+  "timeline.title.part2": "Histórico",
+  "timeline.2017.title": "FUNDAÇÃO",
+  "timeline.2017.line1": "Estabelecimento da equipe sob a Shandong Tunan, entrada no setor de novas energias e início de P&D de produtos de armazenamento de energia.",
+  "timeline.2017.line2": "Lançamento dos produtos de primeira geração, obtendo feedback positivo dos clientes.",
+  "timeline.2020.title": "CRESCIMENTO",
+  "timeline.2020.line1": "Criação do centro de P&D em Hangzhou para inovação tecnológica de ponta. Fundação da subsidiária JKBMS, com rápida expansão das capacidades técnicas e do tamanho da equipe.",
+  "timeline.2020.line2": "Expansão bem-sucedida para mercados internacionais. A participação no mercado global cresceu rapidamente, atraindo atenção significativa do setor.",
+  "timeline.2023.title": "AVANÇO",
+  "timeline.2023.line1": "Lançamento da marca JKESS cobrindo mais de 30 países em todo o mundo. Uma base de produção moderna de armazenamento de energia em larga escala de 5 hectares foi concluída e colocada em operação.",
+  "timeline.2023.line2": "Desenvolvimento bem-sucedido de sistemas de armazenamento de energia de alta tensão para uso comercial e industrial com tecnologia de balanceamento ativo, ajudando os clientes a melhorar os retornos em 2 a 5 anos.",
+  "timeline.2026.title": "EXPANSÃO",
+  "timeline.2026.line1": "Do design de P&D e integração de produção aos testes de backend e pós-venda — a JKESS agora possui capacidades de cadeia completa no desenvolvimento, fabricação e serviços de vendas de sistemas de armazenamento de energia.",
+  "timeline.2026.line2": "As linhas de produção atuais atingem capacidade de 2,1 GWh/ano, consolidando-se como uma estrela em rápido crescimento na indústria de armazenamento de energia."
 }

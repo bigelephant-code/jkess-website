@@ -62,7 +62,6 @@
   "madeWith.title": "Hergestellt mit",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Jede Komponente, jede Schaltung, jede Verbindung — alles, was wir bauen, wird mit Präzision, Leidenschaft und Zielstrebigkeit gefertigt.",
-  "timeline.title": "Entwicklungsgeschichte",
   "cart.empty": "Ihr Warenkorb ist leer",
   "cart.emptyDesc": "Sie haben noch keine Produkte hinzugefügt.",
   "cart.browse": "Produkte durchsuchen",
@@ -96,5 +95,19 @@
   "product.productGallery": "Produktgalerie",
   "product.customerReviews": "Kundenbewertungen",
   "product.model": "Modell",
-  "search.placeholder": "Produkte suchen..."
+  "search.placeholder": "Produkte suchen...",
+  "timeline.title.part1": "Entwicklungs",
+  "timeline.title.part2": "geschichte",
+  "timeline.2017.title": "GRÜNDUNG",
+  "timeline.2017.line1": "Das Team wurde unter Shandong Tunan gegründet, um in die neue Energiebranche einzusteigen und mit der Forschung und Entwicklung von Energiespeicherprodukten zu beginnen.",
+  "timeline.2017.line2": "Einführung der ersten Produktgeneration, die positives Kundenfeedback erhielt.",
+  "timeline.2020.title": "WACHSTUM",
+  "timeline.2020.line1": "Gründung des Hangzhou F&E-Zentrums für Spitzentechnologie-Innovation. Gründung der Tochtergesellschaft JKBMS, mit raschem Ausbau der technischen Fähigkeiten und Teamgröße.",
+  "timeline.2020.line2": "Erfolgreiche Expansion in Überseemärkte. Der internationale Marktanteil stieg rasant an und zog erhebliche Branchenaufmerksamkeit auf sich.",
+  "timeline.2023.title": "DURCHBRUCH",
+  "timeline.2023.line1": "Einführung der Marke JKESS, die mehr als 30 Länder weltweit abdeckt. Eine moderne Großproduktionsanlage für Energiespeicher auf 5 Hektar wurde fertiggestellt und in Betrieb genommen.",
+  "timeline.2023.line2": "Erfolgreiche Entwicklung von Hochspannungs-Energiespeichersystemen für Gewerbe und Industrie mit Active-Balancing-Technologie, die Kunden helfen, ihre Rendite um 2-5 Jahre zu verbessern.",
+  "timeline.2026.title": "EXPANSION",
+  "timeline.2026.line1": "Von der F&E-Konstruktion und Produktionsintegration bis hin zu Backend-Tests und After-Sales — JKESS verfügt nun über Full-Chain-Kapazitäten in der Entwicklung, Fertigung und im Vertrieb von Energiespeichersystemen.",
+  "timeline.2026.line2": "Die aktuellen Produktionslinien erreichen eine Kapazität von 2,1 GWh/Jahr und machen JKESS zu einem schnell wachsenden Star in der Energiespeicherbranche."
 }

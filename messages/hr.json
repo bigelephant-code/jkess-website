@@ -62,7 +62,6 @@
   "madeWith.title": "Izrađeno s",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Svaka komponenta, svaki sklop, svaka veza — sve što gradimo izrađeno je s preciznošću, strašću i svrhom.",
-  "timeline.title": "Povijest razvoja",
   "cart.empty": "Vaša košarica je prazna",
   "cart.emptyDesc": "Čini se da još niste dodali nijedan proizvod.",
   "cart.browse": "Pregledaj proizvode",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galerija proizvoda",
   "product.customerReviews": "Recenzije kupaca",
   "product.model": "Model",
-  "search.placeholder": "Pretraži proizvode..."
+  "search.placeholder": "Pretraži proizvode...",
+  "timeline.title.part1": "Razvoj",
+  "timeline.title.part2": "Povijest",
+  "timeline.2017.title": "OSNUTAK",
+  "timeline.2017.line1": "Osnivanje tima pod Shandong Tunan, ulazak u industriju nove energije i početak istraživanja i razvoja proizvoda za pohranu energije.",
+  "timeline.2017.line2": "Lansiranje proizvoda prve generacije, koji su dobili pozitivne povratne informacije od kupaca.",
+  "timeline.2020.title": "RAST",
+  "timeline.2020.line1": "Osnivanje istraživačko-razvojnog centra u Hangzhouu za inovacije vrhunske tehnologije. Osnivanje podružnice JKBMS, s brzim povećanjem tehničkih kapaciteta i veličine tima.",
+  "timeline.2020.line2": "Uspješno širenje na prekomorska tržišta. Međunarodni tržišni udio naglo je porastao, privlačeći značajnu pozornost industrije.",
+  "timeline.2023.title": "PROBOJ",
+  "timeline.2023.line1": "Pokretanje brenda JKESS koji pokriva više od 30 zemalja širom svijeta. Dovršena je i puštena u pogon moderna velika proizvodna baza za pohranu energije površine 5 hektara.",
+  "timeline.2023.line2": "Uspješan razvoj visokonaponskih komercijalnih i industrijskih sustava za pohranu energije s tehnologijom aktivnog balansiranja, pomažući kupcima da poboljšaju povrat za 2-5 godina.",
+  "timeline.2026.title": "EKSPANZIJA",
+  "timeline.2026.line1": "Od istraživačko-razvojnog dizajna i integracije proizvodnje do backend testiranja i postprodajnih usluga — JKESS sada posjeduje mogućnosti cijelog lanca u razvoju, proizvodnji i prodajnim uslugama sustava za pohranu energije.",
+  "timeline.2026.line2": "Trenutne proizvodne linije dosežu kapacitet od 2,1 GWh/godinu, postajući brzorastuća zvijezda u industriji pohrane energije."
 }

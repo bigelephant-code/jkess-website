@@ -62,7 +62,6 @@
   "madeWith.title": "Készült",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Minden alkatrész, minden áramkör, minden kapcsolat — amit építünk, pontossággal, szenvedéllyel és céltudatossággal készül.",
-  "timeline.title": "Fejlődéstörténet",
   "cart.empty": "A kosár üres",
   "cart.emptyDesc": "Úgy tűnik, még nem adott hozzá termékeket.",
   "cart.browse": "Termékek böngészése",
@@ -96,5 +95,19 @@
   "product.productGallery": "Termékképgaléria",
   "product.customerReviews": "Vásárlói vélemények",
   "product.model": "Modell",
-  "search.placeholder": "Termékek keresése..."
+  "search.placeholder": "Termékek keresése...",
+  "timeline.title.part1": "Fejlődési",
+  "timeline.title.part2": "történet",
+  "timeline.2017.title": "ALAPÍTÁS",
+  "timeline.2017.line1": "A csapat létrehozása a Shandong Tunan égisze alatt, belépés az újenergia-iparba és az energiatárolási termékek K+F-tevékenységének megkezdése.",
+  "timeline.2017.line2": "Az első generációs termékek bevezetése, amelyek pozitív visszajelzéseket kaptak az ügyfelektől.",
+  "timeline.2020.title": "NÖVEKEDÉS",
+  "timeline.2020.line1": "A Hangzhou-i K+F központ létrehozása a csúcstechnológiai innováció érdekében. A JKBMS leányvállalat megalapítása, a technikai képességek és a csapatméret gyors növelése.",
+  "timeline.2020.line2": "Sikeres terjeszkedés a tengerentúli piacokon. A nemzetközi piaci részesedés rohamosan nőtt, jelentős iparági figyelmet vonzva.",
+  "timeline.2023.title": "ÁTTÖRÉS",
+  "timeline.2023.line1": "A JKESS márka bevezetése, amely több mint 30 országot fed le világszerte. Egy 5 hektáros, korszerű, nagyméretű energiatárolási gyártóbázis épült meg és kezdte meg működését.",
+  "timeline.2023.line2": "Sikeresen kifejlesztett nagyfeszültségű kereskedelmi és ipari energiatároló rendszerek aktív kiegyenlítő technológiával, segítve az ügyfeleket a megtérülés 2-5 évvel történő javításában.",
+  "timeline.2026.title": "TERJESZKEDÉS",
+  "timeline.2026.line1": "A K+F-tervezéstől és gyártásintegrációtól a backend-tesztelésig és az értékesítés utáni szolgáltatásokig — a JKESS mostantól teljes láncú képességekkel rendelkezik az energiatároló rendszerek fejlesztése, gyártása és értékesítési szolgáltatásai terén.",
+  "timeline.2026.line2": "A jelenlegi gyártósorok kapacitása eléri a 2,1 GWh/évet, amivel a JKESS gyorsan növekvő csillaggá válik az energiatárolási iparágban."
 }

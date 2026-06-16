@@ -62,7 +62,6 @@
   "madeWith.title": "Pagaminta su",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Kiekvienas komponentas, kiekviena grandinė, kiekviena jungtis — viskas, ką statome, yra pagaminta tiksliai, su aistra ir tikslu.",
-  "timeline.title": "Vystymosi istorija",
   "cart.empty": "Jūsų krepšelis tuščias",
   "cart.emptyDesc": "Atrodo, kad dar nepridėjote jokių produktų.",
   "cart.browse": "Naršyti produktus",
@@ -96,5 +95,19 @@
   "product.productGallery": "Produktų galerija",
   "product.customerReviews": "Klientų atsiliepimai",
   "product.model": "Modelis",
-  "search.placeholder": "Ieškoti produktų..."
+  "search.placeholder": "Ieškoti produktų...",
+  "timeline.title.part1": "Vystymosi",
+  "timeline.title.part2": "istorija",
+  "timeline.2017.title": "ĮKŪRIMAS",
+  "timeline.2017.line1": "Komandos sukūrimas po Shandong Tunan sparnu, įėjimas į naujosios energijos pramonę ir energijos kaupimo produktų MTTP pradžia.",
+  "timeline.2017.line2": "Pirmosios kartos produktų išleidimas, sulaukęs teigiamų klientų atsiliepimų.",
+  "timeline.2020.title": "AUGIMAS",
+  "timeline.2020.line1": "MTTP centro Hangdžou mieste įkūrimas pažangių technologijų inovacijoms. JKBMS dukterinės įmonės įsteigimas, sparčiai didinant technines galimybes ir komandos dydį.",
+  "timeline.2020.line2": "Sėkminga plėtra į užsienio rinkas. Tarptautinė rinkos dalis sparčiai išaugo, pritraukdama didelį pramonės dėmesį.",
+  "timeline.2023.title": "PROVERŽIS",
+  "timeline.2023.line1": "JKESS prekės ženklo pristatymas, apimantis daugiau nei 30 šalių visame pasaulyje. 5 hektarų moderni didelio masto energijos kaupimo gamybos bazė buvo baigta ir pradėta eksploatuoti.",
+  "timeline.2023.line2": "Sėkmingai sukurtos aukštos įtampos komercinės ir pramoninės energijos kaupimo sistemos su aktyvaus balansavimo technologija, padedančios klientams pagerinti grąžą 2-5 metais.",
+  "timeline.2026.title": "PLĖTRA",
+  "timeline.2026.line1": "Nuo MTTP projektavimo ir gamybos integracijos iki backend testavimo ir popardavimo — JKESS dabar turi visos grandinės galimybes energijos kaupimo sistemų kūrime, gamyboje ir pardavimo paslaugose.",
+  "timeline.2026.line2": "Dabartinės gamybos linijos pasiekia 2,1 GWh/metų pajėgumą, tampant greitai augančia žvaigžde energijos kaupimo pramonėje."
 }

@@ -1,4 +1,5 @@
-'use client'
+﻿'use client'
+import { useTranslate } from '@/i18n/client'
 
 import { motion } from 'framer-motion'
 
@@ -42,6 +43,7 @@ const milestones = [
 ]
 
 export default function Timeline() {
+  const t = useTranslate()
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
       {/* Subtle world map background pattern */}

@@ -62,7 +62,6 @@
   "madeWith.title": "Wykonane z",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Każdy komponent, każdy obwód, każde połączenie — wszystko, co budujemy, jest wykonane z precyzją, pasją i celem.",
-  "timeline.title": "Historia rozwoju",
   "cart.empty": "Twój koszyk jest pusty",
   "cart.emptyDesc": "Wygląda na to, że nie dodałeś jeszcze żadnych produktów.",
   "cart.browse": "Przeglądaj produkty",
@@ -96,5 +95,19 @@
   "product.productGallery": "Galeria produktu",
   "product.customerReviews": "Opinie klientów",
   "product.model": "Model",
-  "search.placeholder": "Szukaj produktów..."
+  "search.placeholder": "Szukaj produktów...",
+  "timeline.title.part1": "Rozwój",
+  "timeline.title.part2": "Historia",
+  "timeline.2017.title": "ZAŁOŻENIE",
+  "timeline.2017.line1": "Zespół powstał pod skrzydłami Shandong Tunan, wkraczając do branży nowej energii i rozpoczynając prace B+R nad produktami do magazynowania energii.",
+  "timeline.2017.line2": "Wprowadzenie produktów pierwszej generacji, które otrzymały pozytywne opinie od klientów.",
+  "timeline.2020.title": "WZROST",
+  "timeline.2020.line1": "Utworzenie centrum B+R w Hangzhou dla innowacji najnowocześniejszych technologii. Założenie spółki zależnej JKBMS, szybko zwiększającej możliwości techniczne i wielkość zespołu.",
+  "timeline.2020.line2": "Skuteczna ekspansja na rynki zagraniczne. Udział w rynku międzynarodowym gwałtownie wzrósł, przyciągając znaczną uwagę branży.",
+  "timeline.2023.title": "PRZEŁOM",
+  "timeline.2023.line1": "Wprowadzenie marki JKESS obejmującej ponad 30 krajów na całym świecie. Ukończono i uruchomiono nowoczesną, wielkoskalową bazę produkcyjną magazynów energii o powierzchni 5 hektarów.",
+  "timeline.2023.line2": "Pomyślne opracowanie wysokonapięciowych systemów magazynowania energii dla komercyjnego i przemysłowego zastosowania z technologią aktywnego balansowania, pomagając klientom poprawić zwrot z inwestycji o 2-5 lat.",
+  "timeline.2026.title": "EKSPANSJA",
+  "timeline.2026.line1": "Od projektowania B+R i integracji produkcji po testy zaplecza i obsługę posprzedażową — JKESS posiada obecnie pełnołańcuchowe możliwości w zakresie rozwoju, produkcji i usług sprzedażowych systemów magazynowania energii.",
+  "timeline.2026.line2": "Obecne linie produkcyjne osiągają wydajność 2,1 GWh/rok, stając się szybko rozwijającą się gwiazdą w branży magazynowania energii."
 }

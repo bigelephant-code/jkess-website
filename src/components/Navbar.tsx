@@ -114,12 +114,13 @@ export default function Navbar() {
       ref={navRef}
       initial={false}
       animate={{
-        y: visible ? 0 : -120,
+        y: visible ? (atTop ? 0 : 8) : -120,
         opacity: justAppeared ? [0, 0, 1] : 1,
+        scale: atTop ? 1 : 0.97,
       }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={`fixed z-50 bg-black/50 overflow-hidden transition-all duration-300 ease-in-out ${
-        atTop ? 'left-0 translate-x-0 w-full max-w-none rounded-none border-0' : 'left-1/2 -translate-x-1/2 w-[97%] rounded-[17px] border border-white/[0.04]'
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className={`fixed left-1/2 -translate-x-1/2 z-50 max-w-[1580px] bg-black/50 overflow-hidden origin-top ${
+        atTop ? 'rounded-none border-0 w-full' : 'rounded-[17px] border border-white/[0.04]'
       }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}

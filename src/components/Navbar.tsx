@@ -42,6 +42,8 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       if (Math.abs(currentScrollY - lastScrollY.current) < 10) return
+      // Close language panel on scroll
+      setLangOpen(false)
       if (currentScrollY > lastScrollY.current && currentScrollY > 10) {
         setVisible(false)
       } else {

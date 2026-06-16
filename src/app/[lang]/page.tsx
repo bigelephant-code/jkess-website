@@ -25,8 +25,7 @@ const ContactSection = dynamic(() => import("@/components/ContactSection"), {
 const siteContent = {
   hero: {
     title: "Powering a",
-    subtitle:
-      "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
+    // subtitle is now loaded from i18n translations
     ctaText: "Explore Products",
     ctaLink: "/products",
   },

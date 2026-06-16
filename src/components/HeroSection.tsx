@@ -3,6 +3,7 @@
 import { ArrowRight } from 'lucide-react'
 import AnimatedBackground from './AnimatedBackground'
 import { motion } from 'framer-motion'
+import { useTranslate } from '@/i18n/client'
 
 interface HeroData {
   title?: string
@@ -12,20 +13,21 @@ interface HeroData {
 }
 
 export default function HeroSection({ data }: { data?: HeroData }) {
+  const t = useTranslate()
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Animated background with floating nodes, connections, and moving dots */}
       <AnimatedBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
-          <span className="animate-gradient-text">{data?.title || 'Powering a'}</span>
+          <span className="animate-gradient-text">{data?.title || t('hero.title.part1', 'Powering a')}</span>
           <br />
-          <span className="animate-gradient-green">Cleaner Future</span>
+          <span className="animate-gradient-green">{t('hero.title.part2', 'Cleaner Future')}</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           {data?.subtitle ||
-            'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.'}
+            t('hero.subtitle', 'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.')}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
@@ -40,23 +42,20 @@ export default function HeroSection({ data }: { data?: HeroData }) {
               animate="rest"
               variants={{
                 rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-                hover: { transition: { staggerChildren: 0.025 } }
+                hover: { transition: { staggerChildren: 0.025 } },
               }}
               whileHover="hover"
             >
-              {(data?.ctaText || 'Explore Products').split('').map((char, i) => (
+              {(data?.ctaText || t('hero.cta', 'Explore Products')).split('').map((char, i) => (
                 <motion.span
                   key={i}
                   className="inline-block"
                   variants={{
                     rest: { y: 0, transition: { duration: 0.2 } },
-                    hover: {
-                      y: -4,
-                      transition: { duration: 0.2 }
-                    }
+                    hover: { y: -4, transition: { duration: 0.2 } },
                   }}
                 >
-                  {char === ' ' ? ' ' : char}
+                  {char === ' ' ? '\u00A0' : char}
                 </motion.span>
               ))}
               <ArrowRight size={20} className="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -66,12 +65,11 @@ export default function HeroSection({ data }: { data?: HeroData }) {
             href="#about"
             className="inline-flex items-center gap-2 border border-white/20 hover:border-white/40 text-white px-8 py-3 rounded-full text-lg transition-all"
           >
-            Learn More
+            {t('hero.learnMore', 'Learn More')}
           </a>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-2 bg-green-400 rounded-full mt-2 animate-pulse" />

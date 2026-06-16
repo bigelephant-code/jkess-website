@@ -1,0 +1,48 @@
+{
+  "nav.home": "Главная",
+  "nav.shop": "Магазин",
+  "nav.products": "Продукция",
+  "nav.news": "Новости",
+  "nav.about": "О компании",
+  "nav.contact": "Контакты",
+  "nav.downloads": "Загрузки",
+  "nav.getQuote": "Запросить предложение",
+  "nav.language": "Язык",
+  "nav.viewCart": "Корзина",
+
+  "hero.title.part1": "Более",
+  "hero.title.part2": "чистое будущее",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — ваш надежный партнер в области решений для хранения энергии, от BMS до полных аккумуляторных систем.",
+  "hero.cta": "Посмотреть продукцию",
+  "hero.learnMore": "Узнать больше",
+
+  "about.title": "О JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd — высокотехнологичное предприятие, глубоко укоренившееся в секторе хранения новой энергии, охватывающее дизайн продуктов, НИОКР, системную интеграцию, интеллектуальное производство и глобальные продажи.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Все права защищены.",
+  "footer.tagline": "Создавая более чистое будущее",
+
+  "product.notFound": "Товар не найден",
+  "product.inStock": "В наличии",
+  "product.customOrder": "Индивидуальный заказ",
+  "product.backToProducts": "Назад к товарам",
+  "product.addToCart": "Добавить в корзину",
+  "product.buyNow": "Купить сейчас",
+  "product.getQuote": "Запросить предложение",
+  "product.added": "Добавлено",
+  "product.reviews": "отзывов",
+  "product.freeShipping": "Бесплатная доставка",
+  "product.warranty": "Гарантия 1 год",
+  "product.returns": "Возврат в течение 7 дней",
+  "product.technicalSpecs": "Технические характеристики",
+  "product.productDetails": "Описание товара",
+  "product.keyFeatures": "Ключевые особенности",
+  "product.productGallery": "Галерея товара",
+  "product.customerReviews": "Отзывы клиентов",
+  "product.model": "Модель",
+
+  "search.placeholder": "Поиск товаров...",
+
+  "contact.email": "Электронная почта",
+  "contact.location": "Расположение"
+}

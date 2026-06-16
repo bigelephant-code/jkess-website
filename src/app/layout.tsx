@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,8 +23,6 @@ export const metadata: Metadata = {
   ],
 };
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID
-
 const orgJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -50,10 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
         <script
           type="application/ld+json"
@@ -61,28 +52,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-black text-white">
-        {/* Google Analytics */}
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}');
-              `}
-            </Script>
-          </>
-        )}
-        <CartProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        {children}
       </body>
     </html>
   );

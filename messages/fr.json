@@ -1,0 +1,48 @@
+{
+  "nav.home": "Accueil",
+  "nav.shop": "Boutique",
+  "nav.products": "Produits",
+  "nav.news": "Actualités",
+  "nav.about": "À propos",
+  "nav.contact": "Contact",
+  "nav.downloads": "Téléchargements",
+  "nav.getQuote": "Demander un devis",
+  "nav.language": "Langue",
+  "nav.viewCart": "Voir le panier",
+
+  "hero.title.part1": "Un avenir",
+  "hero.title.part2": "plus propre",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — votre partenaire de confiance pour les solutions de stockage d'énergie, du BMS aux systèmes de batteries complets.",
+  "hero.cta": "Découvrir les produits",
+  "hero.learnMore": "En savoir plus",
+
+  "about.title": "À propos de JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd est une entreprise de haute technologie profondément ancrée dans le secteur du stockage d'énergie nouvelle, couvrant la conception de produits, la R&D, l'intégration de systèmes, la fabrication intelligente et les ventes mondiales.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Tous droits réservés.",
+  "footer.tagline": "Bâtir un avenir plus propre",
+
+  "product.notFound": "Produit non trouvé",
+  "product.inStock": "En stock",
+  "product.customOrder": "Commande personnalisée",
+  "product.backToProducts": "Retour aux produits",
+  "product.addToCart": "Ajouter au panier",
+  "product.buyNow": "Acheter maintenant",
+  "product.getQuote": "Demander un devis",
+  "product.added": "Ajouté",
+  "product.reviews": "avis",
+  "product.freeShipping": "Livraison gratuite",
+  "product.warranty": "Garantie 1 an",
+  "product.returns": "Retours sous 7 jours",
+  "product.technicalSpecs": "Spécifications techniques",
+  "product.productDetails": "Détails du produit",
+  "product.keyFeatures": "Caractéristiques principales",
+  "product.productGallery": "Galerie de produits",
+  "product.customerReviews": "Avis clients",
+  "product.model": "Modèle",
+
+  "search.placeholder": "Rechercher des produits...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Emplacement"
+}

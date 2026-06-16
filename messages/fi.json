@@ -1,0 +1,48 @@
+{
+  "nav.home": "Koti",
+  "nav.shop": "Kauppa",
+  "nav.products": "Tuotteet",
+  "nav.news": "Uutiset",
+  "nav.about": "Tietoa",
+  "nav.contact": "Yhteys",
+  "nav.downloads": "Lataukset",
+  "nav.getQuote": "Pyydä tarjous",
+  "nav.language": "Kieli",
+  "nav.viewCart": "Näytä ostoskori",
+
+  "hero.title.part1": "Puhtaampi",
+  "hero.title.part2": "tulevaisuus",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — luotettu kumppanisi energiavarastointiratkaisuissa BMS:stä täydellisiin akkujärjestelmiin.",
+  "hero.cta": "Tutustu tuotteisiin",
+  "hero.learnMore": "Lue lisää",
+
+  "about.title": "Tietoa JKESSistä",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd on korkean teknologian yritys, joka on syvällä uuden energian varastoinnin alalla kattaen tuotesuunnittelun, T&K:n, järjestelmäintegraation, älykkään valmistuksen ja maailmanlaajuisen myynnin.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Kaikki oikeudet pidätetään.",
+  "footer.tagline": "Voimavarana puhtaampi tulevaisuus",
+
+  "product.notFound": "Tuotetta ei löytynyt",
+  "product.inStock": "Varastossa",
+  "product.customOrder": "Erikoistilaus",
+  "product.backToProducts": "Takaisin tuotteisiin",
+  "product.addToCart": "Lisää ostoskoriin",
+  "product.buyNow": "Osta nyt",
+  "product.getQuote": "Pyydä tarjous",
+  "product.added": "Lisätty",
+  "product.reviews": "arvostelut",
+  "product.freeShipping": "Ilmainen toimitus",
+  "product.warranty": "1 vuoden takuu",
+  "product.returns": "7 päivän palautusoikeus",
+  "product.technicalSpecs": "Tekniset tiedot",
+  "product.productDetails": "Tuotetiedot",
+  "product.keyFeatures": "Keskeiset ominaisuudet",
+  "product.productGallery": "Tuotegalleria",
+  "product.customerReviews": "Asiakasarvostelut",
+  "product.model": "Malli",
+
+  "search.placeholder": "Hae tuotteita...",
+
+  "contact.email": "Sähköposti",
+  "contact.location": "Sijainti"
+}

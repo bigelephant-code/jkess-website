@@ -1,0 +1,48 @@
+{
+  "nav.home": "Начало",
+  "nav.shop": "Магазин",
+  "nav.products": "Продукти",
+  "nav.news": "Новини",
+  "nav.about": "За нас",
+  "nav.contact": "Контакт",
+  "nav.downloads": "Изтегляния",
+  "nav.getQuote": "Поискай оферта",
+  "nav.language": "Език",
+  "nav.viewCart": "Виж количката",
+
+  "hero.title.part1": "По-чисто",
+  "hero.title.part2": "бъдеще",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — вашият доверен партньор в решенията за съхранение на енергия, от BMS до пълни батерийни системи.",
+  "hero.cta": "Разгледай продуктите",
+  "hero.learnMore": "Научи повече",
+
+  "about.title": "За JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd е високотехнологично предприятие, дълбоко вкоренено в сектора за съхранение на нова енергия, обхващащо дизайн на продукти, научноизследователска и развойна дейност, системна интеграция, интелигентно производство и глобални продажби.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Всички права запазени.",
+  "footer.tagline": "Задвижваме по-чисто бъдеще",
+
+  "product.notFound": "Продуктът не е намерен",
+  "product.inStock": "Наличност",
+  "product.customOrder": "Персонализирана поръчка",
+  "product.backToProducts": "Обратно към продуктите",
+  "product.addToCart": "Добави в количката",
+  "product.buyNow": "Купи сега",
+  "product.getQuote": "Поискай оферта",
+  "product.added": "Добавено",
+  "product.reviews": "отзива",
+  "product.freeShipping": "Безплатна доставка",
+  "product.warranty": "1 година гаранция",
+  "product.returns": "Връщане в 7 дни",
+  "product.technicalSpecs": "Технически спецификации",
+  "product.productDetails": "Подробности за продукта",
+  "product.keyFeatures": "Основни характеристики",
+  "product.productGallery": "Галерия на продукта",
+  "product.customerReviews": "Отзиви на клиенти",
+  "product.model": "Модел",
+
+  "search.placeholder": "Търсене на продукти...",
+
+  "contact.email": "Имейл",
+  "contact.location": "Местоположение"
+}

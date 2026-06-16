@@ -1,0 +1,48 @@
+{
+  "nav.home": "Inicio",
+  "nav.shop": "Tienda",
+  "nav.products": "Productos",
+  "nav.news": "Noticias",
+  "nav.about": "Nosotros",
+  "nav.contact": "Contacto",
+  "nav.downloads": "Descargas",
+  "nav.getQuote": "Solicitar presupuesto",
+  "nav.language": "Idioma",
+  "nav.viewCart": "Ver carrito",
+
+  "hero.title.part1": "Un futuro",
+  "hero.title.part2": "más limpio",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — su socio de confianza en soluciones de almacenamiento de energía, desde BMS hasta sistemas de baterías completos.",
+  "hero.cta": "Explorar productos",
+  "hero.learnMore": "Más información",
+
+  "about.title": "Acerca de JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd es una empresa de alta tecnología profundamente arraigada en el sector del almacenamiento de nuevas energías, que abarca diseño de productos, I+D, integración de sistemas, fabricación inteligente y ventas globales.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Todos los derechos reservados.",
+  "footer.tagline": "Construyendo un futuro más limpio",
+
+  "product.notFound": "Producto no encontrado",
+  "product.inStock": "En stock",
+  "product.customOrder": "Pedido personalizado",
+  "product.backToProducts": "Volver a productos",
+  "product.addToCart": "Añadir al carrito",
+  "product.buyNow": "Comprar ahora",
+  "product.getQuote": "Solicitar presupuesto",
+  "product.added": "Añadido",
+  "product.reviews": "opiniones",
+  "product.freeShipping": "Envío gratuito",
+  "product.warranty": "Garantía de 1 año",
+  "product.returns": "Devoluciones en 7 días",
+  "product.technicalSpecs": "Especificaciones técnicas",
+  "product.productDetails": "Detalles del producto",
+  "product.keyFeatures": "Características principales",
+  "product.productGallery": "Galería de productos",
+  "product.customerReviews": "Opiniones de clientes",
+  "product.model": "Modelo",
+
+  "search.placeholder": "Buscar productos...",
+
+  "contact.email": "Correo electrónico",
+  "contact.location": "Ubicación"
+}

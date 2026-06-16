@@ -1,0 +1,48 @@
+{
+  "nav.home": "Pagrindinis",
+  "nav.shop": "Parduotuvė",
+  "nav.products": "Produktai",
+  "nav.news": "Naujienos",
+  "nav.about": "Apie mus",
+  "nav.contact": "Kontaktai",
+  "nav.downloads": "Atsisiuntimai",
+  "nav.getQuote": "Paprašyti pasiūlymo",
+  "nav.language": "Kalba",
+  "nav.viewCart": "Peržiūrėti krepšelį",
+
+  "hero.title.part1": "Švaresnė",
+  "hero.title.part2": "ateitis",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — jūsų patikimas partneris energijos kaupimo sprendimuose, nuo BMS iki pilnų akumuliatorių sistemų.",
+  "hero.cta": "Peržiūrėti produktus",
+  "hero.learnMore": "Sužinoti daugiau",
+
+  "about.title": "Apie JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd yra aukštųjų technologijų įmonė, giliai įsišaknijusi naujosios energijos kaupimo sektoriuje, apimanti produktų dizainą, MTTP, sistemų integravimą, išmaniąją gamybą ir pasaulinį pardavimą.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Visos teisės saugomos.",
+  "footer.tagline": "Kuriame švaresnę ateitį",
+
+  "product.notFound": "Produktas nerastas",
+  "product.inStock": "Sandėlyje",
+  "product.customOrder": "Užsakymas pagal poreikius",
+  "product.backToProducts": "Grįžti į produktus",
+  "product.addToCart": "Įdėti į krepšelį",
+  "product.buyNow": "Pirkti dabar",
+  "product.getQuote": "Paprašyti pasiūlymo",
+  "product.added": "Pridėta",
+  "product.reviews": "atsiliepimai",
+  "product.freeShipping": "Nemokamas pristatymas",
+  "product.warranty": "1 metų garantija",
+  "product.returns": "Grąžinimas per 7 dienas",
+  "product.technicalSpecs": "Techninės specifikacijos",
+  "product.productDetails": "Produkto informacija",
+  "product.keyFeatures": "Pagrindinės savybės",
+  "product.productGallery": "Produktų galerija",
+  "product.customerReviews": "Klientų atsiliepimai",
+  "product.model": "Modelis",
+
+  "search.placeholder": "Ieškoti produktų...",
+
+  "contact.email": "El. paštas",
+  "contact.location": "Vieta"
+}

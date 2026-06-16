@@ -1,0 +1,48 @@
+{
+  "nav.home": "Home",
+  "nav.shop": "Negozio",
+  "nav.products": "Prodotti",
+  "nav.news": "Novità",
+  "nav.about": "Chi siamo",
+  "nav.contact": "Contatti",
+  "nav.downloads": "Download",
+  "nav.getQuote": "Richiedi un preventivo",
+  "nav.language": "Lingua",
+  "nav.viewCart": "Vedi carrello",
+
+  "hero.title.part1": "Un futuro",
+  "hero.title.part2": "più pulito",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — il vostro partner di fiducia per soluzioni di accumulo energetico, dal BMS ai sistemi batteria completi.",
+  "hero.cta": "Esplora prodotti",
+  "hero.learnMore": "Scopri di più",
+
+  "about.title": "Chi siamo JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd è un'azienda high-tech profondamente radicata nel settore dello stoccaggio di nuova energia, che copre progettazione di prodotti, R&S, integrazione di sistemi, produzione intelligente e vendite globali.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Tutti i diritti riservati.",
+  "footer.tagline": "Costruire un futuro più pulito",
+
+  "product.notFound": "Prodotto non trovato",
+  "product.inStock": "Disponibile",
+  "product.customOrder": "Ordine personalizzato",
+  "product.backToProducts": "Torna ai prodotti",
+  "product.addToCart": "Aggiungi al carrello",
+  "product.buyNow": "Acquista ora",
+  "product.getQuote": "Richiedi un preventivo",
+  "product.added": "Aggiunto",
+  "product.reviews": "recensioni",
+  "product.freeShipping": "Spedizione gratuita",
+  "product.warranty": "Garanzia 1 anno",
+  "product.returns": "Resi entro 7 giorni",
+  "product.technicalSpecs": "Specifiche tecniche",
+  "product.productDetails": "Dettagli del prodotto",
+  "product.keyFeatures": "Caratteristiche principali",
+  "product.productGallery": "Galleria prodotti",
+  "product.customerReviews": "Recensioni clienti",
+  "product.model": "Modello",
+
+  "search.placeholder": "Cerca prodotti...",
+
+  "contact.email": "Email",
+  "contact.location": "Sede"
+}

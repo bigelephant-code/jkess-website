@@ -1,0 +1,48 @@
+{
+  "nav.home": "Domů",
+  "nav.shop": "Obchod",
+  "nav.products": "Produkty",
+  "nav.news": "Novinky",
+  "nav.about": "O nás",
+  "nav.contact": "Kontakt",
+  "nav.downloads": "Ke stažení",
+  "nav.getQuote": "Vyžádat nabídku",
+  "nav.language": "Jazyk",
+  "nav.viewCart": "Zobrazit košík",
+
+  "hero.title.part1": "Čistší",
+  "hero.title.part2": "budoucnost",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — váš důvěryhodný partner v oblasti řešení pro ukládání energie, od BMS až po kompletní bateriové systémy.",
+  "hero.cta": "Prozkoumat produkty",
+  "hero.learnMore": "Zjistit více",
+
+  "about.title": "O JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd je high-tech podnik hluboce zakořeněný v odvětví skladování nové energie, zahrnující návrh produktů, výzkum a vývoj, systémovou integraci, inteligentní výrobu a globální prodej.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Všechna práva vyhrazena.",
+  "footer.tagline": "Poháníme čistší budoucnost",
+
+  "product.notFound": "Produkt nenalezen",
+  "product.inStock": "Skladem",
+  "product.customOrder": "Zakázková objednávka",
+  "product.backToProducts": "Zpět na produkty",
+  "product.addToCart": "Přidat do košíku",
+  "product.buyNow": "Koupit nyní",
+  "product.getQuote": "Vyžádat nabídku",
+  "product.added": "Přidáno",
+  "product.reviews": "hodnocení",
+  "product.freeShipping": "Doprava zdarma",
+  "product.warranty": "1letá záruka",
+  "product.returns": "Vrácení do 7 dnů",
+  "product.technicalSpecs": "Technické specifikace",
+  "product.productDetails": "Podrobnosti o produktu",
+  "product.keyFeatures": "Klíčové vlastnosti",
+  "product.productGallery": "Galerie produktů",
+  "product.customerReviews": "Hodnocení zákazníků",
+  "product.model": "Model",
+
+  "search.placeholder": "Hledat produkty...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Místo"
+}

@@ -1,0 +1,48 @@
+{
+  "nav.home": "Home",
+  "nav.shop": "Shop",
+  "nav.products": "Products",
+  "nav.news": "News",
+  "nav.about": "About",
+  "nav.contact": "Contact",
+  "nav.downloads": "Downloads",
+  "nav.getQuote": "Get a Quote",
+  "nav.language": "Language",
+  "nav.viewCart": "View Cart",
+
+  "hero.title.part1": "Powering a",
+  "hero.title.part2": "Cleaner Future",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
+  "hero.cta": "Explore Products",
+  "hero.learnMore": "Learn More",
+
+  "about.title": "About JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd is a high-tech enterprise deeply rooted in the new energy storage sector, covering product design, R&D, system integration, intelligent manufacturing, and global sales.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. All rights reserved.",
+  "footer.tagline": "Powering a Cleaner Future",
+
+  "product.notFound": "Product not found",
+  "product.inStock": "In Stock",
+  "product.customOrder": "Custom Order",
+  "product.backToProducts": "Back to Products",
+  "product.addToCart": "Add to Cart",
+  "product.buyNow": "Buy Now",
+  "product.getQuote": "Get a Quote",
+  "product.added": "Added",
+  "product.reviews": "reviews",
+  "product.freeShipping": "Free Shipping",
+  "product.warranty": "1-Year Warranty",
+  "product.returns": "7-Day Returns",
+  "product.technicalSpecs": "Technical Specifications",
+  "product.productDetails": "Product Details",
+  "product.keyFeatures": "Key Features",
+  "product.productGallery": "Product Gallery",
+  "product.customerReviews": "Customer Reviews",
+  "product.model": "Model",
+
+  "search.placeholder": "Search products...",
+
+  "contact.email": "Email",
+  "contact.location": "Location"
+}

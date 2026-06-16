@@ -1,11 +1,13 @@
-﻿import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
 import CertTiltBoard from "@/components/CertTiltBoard";
 import TechLines from "@/components/TechLines";
+import { localizedPath } from "@/lib/lang";
+import type { LangCode } from "@/i18n/config";
 
-// Lazy-load below-fold components to improve initial bundle size
+// Lazy-load below-fold components
 const MadeWithJKESS = dynamic(() => import("@/components/MadeWithJKESS"), {
   loading: () => null,
 });
@@ -19,7 +21,7 @@ const ContactSection = dynamic(() => import("@/components/ContactSection"), {
   loading: () => null,
 });
 
-// Hardcoded content for now — will be replaced with Sanity CMS later
+// Hardcoded English content — translations via i18n for hero only in this pass
 const siteContent = {
   hero: {
     title: "Powering a",
@@ -40,7 +42,7 @@ const siteContent = {
       slug: "bms-protection-board",
       category: "bms",
       description:
-        "Comprehensive BMS solutions: active balancers (2A~15A), protection boards (40A~300A, 4S~32S), and parallel boards with integrated limiter. CAN/RS485/Bluetooth, GPS-ready.",
+        "Comprehensive BMS solutions: active balancers (2A~15A), protection boards (40A~300A, 4S~32S), and parallel boards with integrated limiter.",
       features: [
         "Active balancers: 2A~15A balancing, 4S~24S support",
         "Protection boards: 40A~300A continuous, 4S~32S cell",
@@ -54,7 +56,7 @@ const siteContent = {
       slug: "battery-kit",
       category: "battery-kit",
       description:
-        "Portable energy storage system on heavy-duty caster wheels. Sheet-metal enclosure, IP54 rated, supports 15KWh & 16KWh LFP cells with integrated BMS and LCD display.",
+        "Portable energy storage system on heavy-duty caster wheels. Sheet-metal enclosure, IP54 rated.",
       features: [
         "Heavy-duty caster wheels for easy mobility",
         "Sheet-metal enclosure, IP54 rated",
@@ -76,7 +78,7 @@ const siteContent = {
       slug: "6u-battery-kit",
       category: "battery-kit",
       description:
-        "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity, intelligent BMS, LCD display, and CAN/RS485 communication. Fits standard 19-inch cabinets.",
+        "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity.",
       features: [
         "6U rack-mount — fits 19-inch cabinets",
         "Modular expandable — parallel up to 30KWh+",
@@ -98,12 +100,12 @@ const siteContent = {
       slug: "high-voltage-kit",
       category: "high-voltage-kit",
       description:
-        "Complete HV BMS solution: BCU-B3 master control (ISO 26262, 1500V) & BMU-H5-16 active balancing slaves (±5mV, 2A). Smart SOC/SOH/SOP estimation, remote OTA, IoT cloud monitoring.",
+        "Complete HV BMS solution: BCU-B3 master control (ISO 26262, 1500V) & BMU-H5-16.",
       features: [
         "BCU-B3 Master: ISO 26262 functional safety, 1500V detection",
         "BMU-H5-16 Slave: ±5mV accuracy, 2A bidirectional active balancing",
         "SOC/SOH/SOP smart estimation + 16-cell voltage collection",
-        "Remote OTA & real-time IoT cloud monitoring with GPS/BeiDou",
+        "Remote OTA & real-time IoT cloud monitoring",
       ],
       image: "",
     },
@@ -113,10 +115,18 @@ const siteContent = {
   },
 };
 
-export default function Home() {
+export default async function Home(props: { params: Promise<{ lang: string }> }) {
+  const { lang } = await props.params;
+
+  // Localize hero CTA link
+  const heroData = {
+    ...siteContent.hero,
+    ctaLink: localizedPath(lang as LangCode, siteContent.hero.ctaLink),
+  };
+
   return (
     <>
-      <HeroSection data={siteContent.hero} />
+      <HeroSection data={heroData} />
       <section className="relative">
         <div className="absolute inset-0 bg-white">
           <TechLines />
@@ -134,4 +144,3 @@ export default function Home() {
     </>
   );
 }
-

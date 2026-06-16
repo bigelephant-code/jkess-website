@@ -1,0 +1,48 @@
+{
+  "nav.home": "Avaleht",
+  "nav.shop": "Pood",
+  "nav.products": "Tooted",
+  "nav.news": "Uudised",
+  "nav.about": "Meist",
+  "nav.contact": "Kontakt",
+  "nav.downloads": "Allalaadimised",
+  "nav.getQuote": "Küsi pakkumist",
+  "nav.language": "Keel",
+  "nav.viewCart": "Vaata ostukorvi",
+
+  "hero.title.part1": "Puhtam",
+  "hero.title.part2": "tulevik",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — teie usaldusväärne partner energia salvestamise lahendustes, alates BMS-st kuni terviklike akusüsteemideni.",
+  "hero.cta": "Avasta tooteid",
+  "hero.learnMore": "Loe edasi",
+
+  "about.title": "JKESSist",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd on kõrgtehnoloogiaettevõte, mis on sügavalt juurdunud uue energia salvestamise sektoris, hõlmates toote disaini, teadus- ja arendustegevust, süsteemide integreerimist, intelligentset tootmist ja ülemaailmset müüki.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Kõik õigused kaitstud.",
+  "footer.tagline": "Puhtama tuleviku teenistuses",
+
+  "product.notFound": "Toodet ei leitud",
+  "product.inStock": "Laos",
+  "product.customOrder": "Eritellimus",
+  "product.backToProducts": "Tagasi toodete juurde",
+  "product.addToCart": "Lisa ostukorvi",
+  "product.buyNow": "Osta kohe",
+  "product.getQuote": "Küsi pakkumist",
+  "product.added": "Lisatud",
+  "product.reviews": "arvustust",
+  "product.freeShipping": "Tasuta saatmine",
+  "product.warranty": "1-aastane garantii",
+  "product.returns": "7-päevane tagastusõigus",
+  "product.technicalSpecs": "Tehnilised andmed",
+  "product.productDetails": "Toote üksikasjad",
+  "product.keyFeatures": "Peamised omadused",
+  "product.productGallery": "Tootegalerii",
+  "product.customerReviews": "Klientide arvustused",
+  "product.model": "Mudel",
+
+  "search.placeholder": "Otsi tooteid...",
+
+  "contact.email": "E-post",
+  "contact.location": "Asukoht"
+}

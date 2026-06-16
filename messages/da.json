@@ -1,0 +1,48 @@
+{
+  "nav.home": "Hjem",
+  "nav.shop": "Butik",
+  "nav.products": "Produkter",
+  "nav.news": "Nyheder",
+  "nav.about": "Om os",
+  "nav.contact": "Kontakt",
+  "nav.downloads": "Downloads",
+  "nav.getQuote": "Anmod om tilbud",
+  "nav.language": "Sprog",
+  "nav.viewCart": "Se indkøbskurv",
+
+  "hero.title.part1": "En",
+  "hero.title.part2": "renere fremtid",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — din betroede partner inden for energilagringsløsninger, fra BMS til komplette batterisystemer.",
+  "hero.cta": "Udforsk produkter",
+  "hero.learnMore": "Lær mere",
+
+  "about.title": "Om JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd er en højteknologisk virksomhed dybt forankret i sektoren for ny energilagring, der dækker produktdesign, F&U, systemintegration, intelligent fremstilling og globalt salg.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Alle rettigheder forbeholdes.",
+  "footer.tagline": "Skaber en renere fremtid",
+
+  "product.notFound": "Produkt ikke fundet",
+  "product.inStock": "På lager",
+  "product.customOrder": "Specialordre",
+  "product.backToProducts": "Tilbage til produkter",
+  "product.addToCart": "Læg i kurv",
+  "product.buyNow": "Køb nu",
+  "product.getQuote": "Anmod om tilbud",
+  "product.added": "Tilføjet",
+  "product.reviews": "anmeldelser",
+  "product.freeShipping": "Gratis fragt",
+  "product.warranty": "1 års garanti",
+  "product.returns": "7 dages returret",
+  "product.technicalSpecs": "Tekniske specifikationer",
+  "product.productDetails": "Produktdetaljer",
+  "product.keyFeatures": "Nøglefunktioner",
+  "product.productGallery": "Produktgalleri",
+  "product.customerReviews": "Kundeanmeldelser",
+  "product.model": "Model",
+
+  "search.placeholder": "Søg efter produkter...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Placering"
+}

@@ -1,0 +1,48 @@
+{
+  "nav.home": "Acasă",
+  "nav.shop": "Magazin",
+  "nav.products": "Produse",
+  "nav.news": "Noutăți",
+  "nav.about": "Despre noi",
+  "nav.contact": "Contact",
+  "nav.downloads": "Descărcări",
+  "nav.getQuote": "Solicită ofertă",
+  "nav.language": "Limbă",
+  "nav.viewCart": "Vezi coșul",
+
+  "hero.title.part1": "Un",
+  "hero.title.part2": "viitor mai curat",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — partenerul dumneavoastră de încredere în soluții de stocare a energiei, de la BMS la sisteme complete de baterii.",
+  "hero.cta": "Explorează produsele",
+  "hero.learnMore": "Află mai multe",
+
+  "about.title": "Despre JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd este o întreprindere high-tech adânc înrădăcinată în sectorul stocării de energie nouă, acoperind proiectarea produselor, cercetare și dezvoltare, integrarea sistemelor, fabricația inteligentă și vânzările globale.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Toate drepturile rezervate.",
+  "footer.tagline": "Alimentăm un viitor mai curat",
+
+  "product.notFound": "Produsul nu a fost găsit",
+  "product.inStock": "În stoc",
+  "product.customOrder": "Comandă personalizată",
+  "product.backToProducts": "Înapoi la produse",
+  "product.addToCart": "Adaugă în coș",
+  "product.buyNow": "Cumpără acum",
+  "product.getQuote": "Solicită ofertă",
+  "product.added": "Adăugat",
+  "product.reviews": "recenzii",
+  "product.freeShipping": "Transport gratuit",
+  "product.warranty": "Garanție 1 an",
+  "product.returns": "Retur în 7 zile",
+  "product.technicalSpecs": "Specificații tehnice",
+  "product.productDetails": "Detalii produs",
+  "product.keyFeatures": "Caracteristici principale",
+  "product.productGallery": "Galerie produse",
+  "product.customerReviews": "Recenzii clienți",
+  "product.model": "Model",
+
+  "search.placeholder": "Caută produse...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Locație"
+}

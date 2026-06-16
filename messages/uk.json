@@ -1,0 +1,48 @@
+{
+  "nav.home": "Головна",
+  "nav.shop": "Магазин",
+  "nav.products": "Продукти",
+  "nav.news": "Новини",
+  "nav.about": "Про нас",
+  "nav.contact": "Контакти",
+  "nav.downloads": "Завантаження",
+  "nav.getQuote": "Отримати пропозицію",
+  "nav.language": "Мова",
+  "nav.viewCart": "Переглянути кошик",
+
+  "hero.title.part1": "Більш",
+  "hero.title.part2": "чисте майбутнє",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — ваш надійний партнер у рішеннях для зберігання енергії, від BMS до повних акумуляторних систем.",
+  "hero.cta": "Переглянути продукти",
+  "hero.learnMore": "Дізнатися більше",
+
+  "about.title": "Про JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd — високотехнологічне підприємство, глибоко вкорінене в секторі зберігання нової енергії, що охоплює дизайн продуктів, НДДКР, системну інтеграцію, інтелектуальне виробництво та глобальний продаж.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Усі права захищені.",
+  "footer.tagline": "Створюємо чистіше майбутнє",
+
+  "product.notFound": "Товар не знайдено",
+  "product.inStock": "У наявності",
+  "product.customOrder": "Індивідуальне замовлення",
+  "product.backToProducts": "Назад до товарів",
+  "product.addToCart": "Додати до кошика",
+  "product.buyNow": "Купити зараз",
+  "product.getQuote": "Отримати пропозицію",
+  "product.added": "Додано",
+  "product.reviews": "відгуків",
+  "product.freeShipping": "Безкоштовна доставка",
+  "product.warranty": "Гарантія 1 рік",
+  "product.returns": "Повернення протягом 7 днів",
+  "product.technicalSpecs": "Технічні характеристики",
+  "product.productDetails": "Деталі товару",
+  "product.keyFeatures": "Ключові особливості",
+  "product.productGallery": "Галерея товарів",
+  "product.customerReviews": "Відгуки клієнтів",
+  "product.model": "Модель",
+
+  "search.placeholder": "Пошук товарів...",
+
+  "contact.email": "Електронна пошта",
+  "contact.location": "Місцезнаходження"
+}

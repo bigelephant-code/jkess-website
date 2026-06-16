@@ -1,0 +1,48 @@
+{
+  "nav.home": "Αρχική",
+  "nav.shop": "Κατάστημα",
+  "nav.products": "Προϊόντα",
+  "nav.news": "Νέα",
+  "nav.about": "Σχετικά",
+  "nav.contact": "Επικοινωνία",
+  "nav.downloads": "Λήψεις",
+  "nav.getQuote": "Ζητήστε προσφορά",
+  "nav.language": "Γλώσσα",
+  "nav.viewCart": "Προβολή καλαθιού",
+
+  "hero.title.part1": "Ένα",
+  "hero.title.part2": "καθαρότερο μέλλον",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — ο αξιόπιστος συνεργάτης σας σε λύσεις αποθήκευσης ενέργειας, από BMS έως ολοκληρωμένα συστήματα μπαταριών.",
+  "hero.cta": "Εξερευνήστε προϊόντα",
+  "hero.learnMore": "Μάθετε περισσότερα",
+
+  "about.title": "Σχετικά με την JKESS",
+  "about.desc": "Η JKBMS Electronic Technology Co.,Ltd είναι μια επιχείρηση υψηλής τεχνολογίας βαθιά ριζωμένη στον τομέα αποθήκευσης νέας ενέργειας, που καλύπτει σχεδιασμό προϊόντων, Ε&Α, ολοκλήρωση συστημάτων, έξυπνη κατασκευή και παγκόσμιες πωλήσεις.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Με την επιφύλαξη κάθε νόμιμου δικαιώματος.",
+  "footer.tagline": "Τροφοδοτώντας ένα καθαρότερο μέλλον",
+
+  "product.notFound": "Το προϊόν δεν βρέθηκε",
+  "product.inStock": "Διαθέσιμο",
+  "product.customOrder": "Παραγγελία κατά παραγγελία",
+  "product.backToProducts": "Επιστροφή στα προϊόντα",
+  "product.addToCart": "Προσθήκη στο καλάθι",
+  "product.buyNow": "Αγορά τώρα",
+  "product.getQuote": "Ζητήστε προσφορά",
+  "product.added": "Προστέθηκε",
+  "product.reviews": "κριτικές",
+  "product.freeShipping": "Δωρεάν αποστολή",
+  "product.warranty": "Εγγύηση 1 έτους",
+  "product.returns": "Επιστροφή εντός 7 ημερών",
+  "product.technicalSpecs": "Τεχνικές προδιαγραφές",
+  "product.productDetails": "Λεπτομέρειες προϊόντος",
+  "product.keyFeatures": "Βασικά χαρακτηριστικά",
+  "product.productGallery": "Γκαλερί προϊόντων",
+  "product.customerReviews": "Κριτικές πελατών",
+  "product.model": "Μοντέλο",
+
+  "search.placeholder": "Αναζήτηση προϊόντων...",
+
+  "contact.email": "Email",
+  "contact.location": "Τοποθεσία"
+}

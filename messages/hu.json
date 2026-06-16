@@ -1,0 +1,48 @@
+{
+  "nav.home": "Kezdőlap",
+  "nav.shop": "Webáruház",
+  "nav.products": "Termékek",
+  "nav.news": "Hírek",
+  "nav.about": "Rólunk",
+  "nav.contact": "Kapcsolat",
+  "nav.downloads": "Letöltések",
+  "nav.getQuote": "Árajánlat kérése",
+  "nav.language": "Nyelv",
+  "nav.viewCart": "Kosár megtekintése",
+
+  "hero.title.part1": "Egy",
+  "hero.title.part2": "tisztább jövő",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — az Ön megbízható partnere energiatárolási megoldások terén, a BMS-től a komplett akkumulátorrendszerekig.",
+  "hero.cta": "Termékek felfedezése",
+  "hero.learnMore": "Tudjon meg többet",
+
+  "about.title": "A JKESS-ről",
+  "about.desc": "A JKBMS Electronic Technology Co.,Ltd egy high-tech vállalkozás, amely mélyen gyökerezik az új energiatárolási ágazatban, lefedve a terméktervezést, K+F-et, rendszerintegrációt, intelligens gyártást és globális értékesítést.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Minden jog fenntartva.",
+  "footer.tagline": "Tisztább jövő hajtóereje",
+
+  "product.notFound": "A termék nem található",
+  "product.inStock": "Raktáron",
+  "product.customOrder": "Egyedi rendelés",
+  "product.backToProducts": "Vissza a termékekhez",
+  "product.addToCart": "Kosárba",
+  "product.buyNow": "Vásárlás",
+  "product.getQuote": "Árajánlat kérése",
+  "product.added": "Hozzáadva",
+  "product.reviews": "vélemények",
+  "product.freeShipping": "Ingyenes szállítás",
+  "product.warranty": "1 év garancia",
+  "product.returns": "7 napos visszaküldés",
+  "product.technicalSpecs": "Műszaki adatok",
+  "product.productDetails": "Termék részletei",
+  "product.keyFeatures": "Főbb jellemzők",
+  "product.productGallery": "Termékképgaléria",
+  "product.customerReviews": "Vásárlói vélemények",
+  "product.model": "Modell",
+
+  "search.placeholder": "Termékek keresése...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Helyszín"
+}

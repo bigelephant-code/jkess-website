@@ -1,0 +1,48 @@
+{
+  "nav.home": "Sākums",
+  "nav.shop": "Veikals",
+  "nav.products": "Produkti",
+  "nav.news": "Jaunumi",
+  "nav.about": "Par mums",
+  "nav.contact": "Kontakti",
+  "nav.downloads": "Lejupielādes",
+  "nav.getQuote": "Pieprasīt piedāvājumu",
+  "nav.language": "Valoda",
+  "nav.viewCart": "Skatīt grozu",
+
+  "hero.title.part1": "Tīrāka",
+  "hero.title.part2": "nākotne",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — jūsu uzticamais partneris enerģijas uzkrāšanas risinājumos, no BMS līdz pilnām akumulatoru sistēmām.",
+  "hero.cta": "Izpētīt produktus",
+  "hero.learnMore": "Uzzināt vairāk",
+
+  "about.title": "Par JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd ir augsto tehnoloģiju uzņēmums, kas dziļi iesakņojies jaunās enerģijas uzkrāšanas nozarē, aptverot produktu dizainu, pētniecību un attīstību, sistēmu integrāciju, viedo ražošanu un globālo pārdošanu.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Visas tiesības aizsargātas.",
+  "footer.tagline": "Veidojam tīrāku nākotni",
+
+  "product.notFound": "Produkts nav atrasts",
+  "product.inStock": "Noliktavā",
+  "product.customOrder": "Pielāgots pasūtījums",
+  "product.backToProducts": "Atpakaļ pie produktiem",
+  "product.addToCart": "Pievienot grozam",
+  "product.buyNow": "Pirkt tagad",
+  "product.getQuote": "Pieprasīt piedāvājumu",
+  "product.added": "Pievienots",
+  "product.reviews": "atsauksmes",
+  "product.freeShipping": "Bezmaksas piegāde",
+  "product.warranty": "1 gada garantija",
+  "product.returns": "Atgriešana 7 dienu laikā",
+  "product.technicalSpecs": "Tehniskās specifikācijas",
+  "product.productDetails": "Produkta detaļas",
+  "product.keyFeatures": "Galvenās īpašības",
+  "product.productGallery": "Produktu galerija",
+  "product.customerReviews": "Klientu atsauksmes",
+  "product.model": "Modelis",
+
+  "search.placeholder": "Meklēt produktus...",
+
+  "contact.email": "E-pasts",
+  "contact.location": "Atrašanās vieta"
+}

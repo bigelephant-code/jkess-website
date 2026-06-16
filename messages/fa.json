@@ -1,0 +1,48 @@
+{
+  "nav.home": "خانه",
+  "nav.shop": "فروشگاه",
+  "nav.products": "محصولات",
+  "nav.news": "اخبار",
+  "nav.about": "درباره ما",
+  "nav.contact": "تماس",
+  "nav.downloads": "دانلودها",
+  "nav.getQuote": "درخواست قیمت",
+  "nav.language": "زبان",
+  "nav.viewCart": "مشاهده سبد خرید",
+
+  "hero.title.part1": "آینده‌ای",
+  "hero.title.part2": "پاک‌تر",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — شریک قابل اعتماد شما در راه‌حل‌های ذخیره‌سازی انرژی، از BMS تا سیستم‌های کامل باتری.",
+  "hero.cta": "مشاهده محصولات",
+  "hero.learnMore": "اطلاعات بیشتر",
+
+  "about.title": "درباره JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd یک شرکت فناوری پیشرفته است که ریشه عمیقی در بخش ذخیره‌سازی انرژی جدید دارد و طراحی محصول، تحقیق و توسعه، یکپارچه‌سازی سیستم، تولید هوشمند و فروش جهانی را پوشش می‌دهد.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. کلیه حقوق محفوظ است.",
+  "footer.tagline": "توان‌بخش آینده‌ای پاک‌تر",
+
+  "product.notFound": "محصول یافت نشد",
+  "product.inStock": "موجود در انبار",
+  "product.customOrder": "سفارش سفارشی",
+  "product.backToProducts": "بازگشت به محصولات",
+  "product.addToCart": "افزودن به سبد خرید",
+  "product.buyNow": "خرید الآن",
+  "product.getQuote": "درخواست قیمت",
+  "product.added": "افزوده شد",
+  "product.reviews": "نظرات",
+  "product.freeShipping": "ارسال رایگان",
+  "product.warranty": "گارانتی ۱ ساله",
+  "product.returns": "بازگشت کالا تا ۷ روز",
+  "product.technicalSpecs": "مشخصات فنی",
+  "product.productDetails": "جزئیات محصول",
+  "product.keyFeatures": "ویژگی‌های کلیدی",
+  "product.productGallery": "گالری محصول",
+  "product.customerReviews": "نظرات مشتریان",
+  "product.model": "مدل",
+
+  "search.placeholder": "جستجوی محصولات...",
+
+  "contact.email": "ایمیل",
+  "contact.location": "موقعیت"
+}

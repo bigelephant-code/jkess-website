@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { Product } from '@/lib/products'
-import { Reveal, StaggerReveal, StaggerItem } from '@/components/ScrollReveal'
+import { StaggerReveal, StaggerItem } from '@/components/ScrollReveal'
+import { useI18n } from '@/i18n/client'
 
 const categoryIcons: Record<string, string> = {
   bms: '⚡',
@@ -19,19 +20,14 @@ const categoryLabels: Record<string, string> = {
 }
 
 export function ProductsPageClient({ products }: { products: Product[] }) {
+  const { lang } = useI18n()
+
   return (
     <div className="relative min-h-screen bg-gray-50">
-      {/* ═══════ BLACK NAV BACKGROUND ═══════ */}
       <div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
-
-      {/* ═══════ TOP SPACER ═══════ */}
       <div className="relative pt-32 pb-8 z-10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="h-0" /> {/* just spacer */}
-        </div>
+        <div className="max-w-7xl mx-auto px-6"><div className="h-0" /></div>
       </div>
-
-      {/* ═══════ PRODUCT GRID ═══════ */}
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-6">
           <StaggerReveal staggerDelay={0.12}>
@@ -39,10 +35,9 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
               {products.map((product) => (
                 <StaggerItem key={product.slug}>
                   <Link
-                    href={`/products/${product.slug}`}
+                    href={`/${lang === 'en' ? '' : lang + '/'}products/${product.slug}`}
                     className="group block bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1"
                   >
-                    {/* Image */}
                     <div className="relative aspect-[16/10] bg-gray-100 overflow-hidden">
                       {product.images[0] ? (
                         <Image
@@ -57,13 +52,10 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                           {categoryIcons[product.category] || '📦'}
                         </div>
                       )}
-                      {/* Category badge */}
                       <span className="absolute top-4 left-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
                         {categoryLabels[product.category] || product.category}
                       </span>
                     </div>
-
-                    {/* Content */}
                     <div className="p-6">
                       <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
                         {product.name}
@@ -71,8 +63,6 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                       <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
                         {product.description}
                       </p>
-
-                      {/* Feature highlights */}
                       <div className="space-y-1.5 mb-4">
                         {product.features.slice(0, 3).map((feat, i) => (
                           <div key={i} className="flex items-start gap-2">
@@ -81,7 +71,6 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                           </div>
                         ))}
                       </div>
-
                       <div className="flex items-center gap-2 text-green-600 font-semibold text-sm group-hover:gap-3 transition-all">
                         View Details <ArrowRight size={16} />
                       </div>
@@ -93,8 +82,6 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
           </StaggerReveal>
         </div>
       </section>
-
-      {/* ═══════ BOTTOM TAGLINE ═══════ */}
       <div className="pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide whitespace-nowrap">

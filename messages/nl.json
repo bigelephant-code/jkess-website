@@ -1,0 +1,48 @@
+{
+  "nav.home": "Home",
+  "nav.shop": "Winkel",
+  "nav.products": "Producten",
+  "nav.news": "Nieuws",
+  "nav.about": "Over ons",
+  "nav.contact": "Contact",
+  "nav.downloads": "Downloads",
+  "nav.getQuote": "Offerte aanvragen",
+  "nav.language": "Taal",
+  "nav.viewCart": "Winkelwagen bekijken",
+
+  "hero.title.part1": "Een",
+  "hero.title.part2": "schonere toekomst",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — uw vertrouwde partner in energieopslagoplossingen, van BMS tot complete accusystemen.",
+  "hero.cta": "Producten ontdekken",
+  "hero.learnMore": "Meer informatie",
+
+  "about.title": "Over JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd is een hightechonderneming die diep geworteld is in de nieuwe energieopslagsector en zich bezighoudt met productontwerp, R&D, systeemintegratie, slimme productie en wereldwijde verkoop.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Alle rechten voorbehouden.",
+  "footer.tagline": "Een schonere toekomst mogelijk maken",
+
+  "product.notFound": "Product niet gevonden",
+  "product.inStock": "Op voorraad",
+  "product.customOrder": "Maatwerkbestelling",
+  "product.backToProducts": "Terug naar producten",
+  "product.addToCart": "In winkelwagen",
+  "product.buyNow": "Nu kopen",
+  "product.getQuote": "Offerte aanvragen",
+  "product.added": "Toegevoegd",
+  "product.reviews": "beoordelingen",
+  "product.freeShipping": "Gratis verzending",
+  "product.warranty": "1 jaar garantie",
+  "product.returns": "7 dagen retourrecht",
+  "product.technicalSpecs": "Technische specificaties",
+  "product.productDetails": "Productdetails",
+  "product.keyFeatures": "Belangrijkste kenmerken",
+  "product.productGallery": "Productgalerij",
+  "product.customerReviews": "Klantbeoordelingen",
+  "product.model": "Model",
+
+  "search.placeholder": "Producten zoeken...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Locatie"
+}

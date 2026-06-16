@@ -1,0 +1,48 @@
+{
+  "nav.home": "Início",
+  "nav.shop": "Loja",
+  "nav.products": "Produtos",
+  "nav.news": "Notícias",
+  "nav.about": "Sobre",
+  "nav.contact": "Contato",
+  "nav.downloads": "Downloads",
+  "nav.getQuote": "Solicitar orçamento",
+  "nav.language": "Idioma",
+  "nav.viewCart": "Ver carrinho",
+
+  "hero.title.part1": "Um futuro",
+  "hero.title.part2": "mais limpo",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — seu parceiro de confiança em soluções de armazenamento de energia, desde BMS até sistemas completos de baterias.",
+  "hero.cta": "Explorar produtos",
+  "hero.learnMore": "Saiba mais",
+
+  "about.title": "Sobre a JKESS",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd é uma empresa de alta tecnologia profundamente enraizada no setor de armazenamento de novas energias, abrangendo design de produtos, P&D, integração de sistemas, fabricação inteligente e vendas globais.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Todos os direitos reservados.",
+  "footer.tagline": "Impulsionando um futuro mais limpo",
+
+  "product.notFound": "Produto não encontrado",
+  "product.inStock": "Em estoque",
+  "product.customOrder": "Pedido personalizado",
+  "product.backToProducts": "Voltar aos produtos",
+  "product.addToCart": "Adicionar ao carrinho",
+  "product.buyNow": "Comprar agora",
+  "product.getQuote": "Solicitar orçamento",
+  "product.added": "Adicionado",
+  "product.reviews": "avaliações",
+  "product.freeShipping": "Frete grátis",
+  "product.warranty": "Garantia de 1 ano",
+  "product.returns": "Devolução em 7 dias",
+  "product.technicalSpecs": "Especificações técnicas",
+  "product.productDetails": "Detalhes do produto",
+  "product.keyFeatures": "Principais recursos",
+  "product.productGallery": "Galeria de produtos",
+  "product.customerReviews": "Avaliações de clientes",
+  "product.model": "Modelo",
+
+  "search.placeholder": "Pesquisar produtos...",
+
+  "contact.email": "E-mail",
+  "contact.location": "Localização"
+}

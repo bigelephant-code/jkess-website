@@ -1,12 +1,20 @@
 import { products, getProductBySlug } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
+import { locales, defaultLocale, localeMap, isValidLocale } from '@/i18n/config'
 
 export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }))
+  const params: Array<{ lang: string; slug: string }> = []
+  for (const locale of locales) {
+    for (const product of products) {
+      params.push({ lang: locale.code, slug: product.slug })
+    }
+  }
+  return params
 }
 
-function productJsonLd(p: Product) {
+function productJsonLd(p: Product, lang: string) {
+  const siteUrl = defaultLocale ? `https://jkess-energy.com` : `https://jkess-energy.com/${lang}`
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -14,6 +22,7 @@ function productJsonLd(p: Product) {
     description: p.description,
     brand: { '@type': 'Brand', name: 'JKESS' },
     image: p.images.map((img) => `https://jkess-energy.com${img}`),
+    url: `${siteUrl}/products/${p.slug}`,
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'USD',
@@ -40,15 +49,13 @@ function productJsonLd(p: Product) {
     },
     category: p.categoryLabel,
   }
-  if (p.specs.length) {
-    const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
-    if (mpn) schema.mpn = mpn.value
-  }
+  const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
+  if (mpn) schema.mpn = mpn.value
   return JSON.stringify(schema, null, 2)
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
-  const { slug } = await props.params
+export async function generateMetadata(props: { params: Promise<{ lang: string; slug: string }> }) {
+  const { lang, slug } = await props.params
   const product = getProductBySlug(slug)
   if (!product) return {}
   return {
@@ -58,13 +65,14 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     openGraph: {
       title: `${product.name} — JKESS`,
       description: product.description.slice(0, 160),
+      url: `https://jkess-energy.com${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`,
       images: product.images[0] ? [`https://jkess-energy.com${product.images[0]}`] : [],
     },
   }
 }
 
-export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
-  const { slug } = await props.params
+export default async function ProductPage(props: { params: Promise<{ lang: string; slug: string }> }) {
+  const { lang, slug } = await props.params
   const product = getProductBySlug(slug)
   if (!product) {
     return (
@@ -77,9 +85,9 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: productJsonLd(product) }}
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product, lang) }}
       />
-      <ProductDetailClient product={product} />
+      <ProductDetailClient product={product} lang={lang} />
     </>
   )
 }

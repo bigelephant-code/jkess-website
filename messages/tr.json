@@ -1,0 +1,48 @@
+{
+  "nav.home": "Ana Sayfa",
+  "nav.shop": "Mağaza",
+  "nav.products": "Ürünler",
+  "nav.news": "Haberler",
+  "nav.about": "Hakkımızda",
+  "nav.contact": "İletişim",
+  "nav.downloads": "İndirmeler",
+  "nav.getQuote": "Teklif Al",
+  "nav.language": "Dil",
+  "nav.viewCart": "Sepeti Görüntüle",
+
+  "hero.title.part1": "Daha",
+  "hero.title.part2": "temiz bir gelecek",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — BMS'den komple batarya sistemlerine kadar enerji depolama çözümlerinde güvenilir ortağınız.",
+  "hero.cta": "Ürünleri Keşfet",
+  "hero.learnMore": "Daha Fazla Bilgi",
+
+  "about.title": "JKESS Hakkında",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd, yeni enerji depolama sektöründe köklü bir yüksek teknoloji kuruluşudur; ürün tasarımı, Ar-Ge, sistem entegrasyonu, akıllı üretim ve küresel satış alanlarını kapsamaktadır.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Tüm hakları saklıdır.",
+  "footer.tagline": "Daha temiz bir geleceğe güç veriyoruz",
+
+  "product.notFound": "Ürün bulunamadı",
+  "product.inStock": "Stokta",
+  "product.customOrder": "Özel Sipariş",
+  "product.backToProducts": "Ürünlere Dön",
+  "product.addToCart": "Sepete Ekle",
+  "product.buyNow": "Şimdi Satın Al",
+  "product.getQuote": "Teklif Al",
+  "product.added": "Eklendi",
+  "product.reviews": "değerlendirme",
+  "product.freeShipping": "Ücretsiz Kargo",
+  "product.warranty": "1 Yıl Garanti",
+  "product.returns": "7 Gün İade",
+  "product.technicalSpecs": "Teknik Özellikler",
+  "product.productDetails": "Ürün Detayları",
+  "product.keyFeatures": "Temel Özellikler",
+  "product.productGallery": "Ürün Galerisi",
+  "product.customerReviews": "Müşteri Yorumları",
+  "product.model": "Model",
+
+  "search.placeholder": "Ürünlerde ara...",
+
+  "contact.email": "E-posta",
+  "contact.location": "Konum"
+}

@@ -1,0 +1,48 @@
+{
+  "nav.home": "Početna",
+  "nav.shop": "Trgovina",
+  "nav.products": "Proizvodi",
+  "nav.news": "Novosti",
+  "nav.about": "O nama",
+  "nav.contact": "Kontakt",
+  "nav.downloads": "Preuzimanja",
+  "nav.getQuote": "Zatražite ponudu",
+  "nav.language": "Jezik",
+  "nav.viewCart": "Pregledaj košaricu",
+
+  "hero.title.part1": "Čistija",
+  "hero.title.part2": "budućnost",
+  "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — vaš pouzdani partner u rješenjima za pohranu energije, od BMS-a do kompletnih baterijskih sustava.",
+  "hero.cta": "Istražite proizvode",
+  "hero.learnMore": "Saznajte više",
+
+  "about.title": "O JKESS-u",
+  "about.desc": "JKBMS Electronic Technology Co.,Ltd je visokotehnološko poduzeće duboko ukorijenjeno u sektor pohrane nove energije, koje pokriva dizajn proizvoda, istraživanje i razvoj, integraciju sustava, inteligentnu proizvodnju i globalnu prodaju.",
+
+  "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. Sva prava pridržana.",
+  "footer.tagline": "Pokrećemo čišću budućnost",
+
+  "product.notFound": "Proizvod nije pronađen",
+  "product.inStock": "Na zalihi",
+  "product.customOrder": "Narudžba po mjeri",
+  "product.backToProducts": "Povratak na proizvode",
+  "product.addToCart": "Dodaj u košaricu",
+  "product.buyNow": "Kupi odmah",
+  "product.getQuote": "Zatražite ponudu",
+  "product.added": "Dodano",
+  "product.reviews": "recenzija",
+  "product.freeShipping": "Besplatna dostava",
+  "product.warranty": "1 godina jamstva",
+  "product.returns": "Povrat u 7 dana",
+  "product.technicalSpecs": "Tehničke specifikacije",
+  "product.productDetails": "Detalji proizvoda",
+  "product.keyFeatures": "Ključne značajke",
+  "product.productGallery": "Galerija proizvoda",
+  "product.customerReviews": "Recenzije kupaca",
+  "product.model": "Model",
+
+  "search.placeholder": "Pretraži proizvode...",
+
+  "contact.email": "E-pošta",
+  "contact.location": "Lokacija"
+}

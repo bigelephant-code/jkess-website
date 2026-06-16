@@ -118,10 +118,10 @@ export default function Navbar() {
         opacity: justAppeared ? [0, 0, 1] : 1,
       }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
-      className={`fixed z-50 bg-black/50 transition-all duration-200 ease-out ${
+      className={`fixed z-50 bg-black/50 border border-white/[0.04] transition-all duration-200 ease-out ${
         atTop
-          ? 'top-0 left-0 w-full max-w-none rounded-none border-0'
-          : 'top-2 left-1/2 -translate-x-1/2 w-[97%] max-w-[1580px] rounded-[17px] border border-white/[0.04]'
+          ? 'top-0 left-0 w-full max-w-none rounded-none'
+          : 'top-2 left-1/2 -translate-x-1/2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}

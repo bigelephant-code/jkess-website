@@ -11,7 +11,6 @@ const teamImages = [
   '/images/team/6.jpg',
   '/images/team/7.jpg',
   '/images/team/8.jpg',
-  '/images/team/9.jpg',
   '/images/team/10.jpg',
 ]
 

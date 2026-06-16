@@ -92,7 +92,7 @@ export const products: Product[] = [
       'Pre-assembled and tested — plug-and-play installation, ready out of the box',
       'Scalable design — connect multiple units for larger capacity requirements',
       'CAN / RS485 communication — integrates with inverters and monitoring systems',
-      '5-year warranty — backed by Shenzhen Nengyi quality assurance',
+      '5-year warranty — backed by JKBMS quality assurance',
     ],
     specs: [
       { key: 'Capacity', value: '15KWh / 16KWh' },
@@ -216,7 +216,7 @@ export const products: Product[] = [
       'CAN / RS485 communication — seamless integration with inverters and monitoring systems',
       'Modular parallel design — expandable up to 30KWh or more for larger capacity',
       'Compatible with leading inverters — works with Victron, Growatt, Deye, Sofar, and more',
-      '5-year warranty — backed by Shenzhen Nengyi quality assurance',
+      '5-year warranty — backed by JKBMS quality assurance',
     ],
     specs: [
       { key: 'Model', value: 'JKLU015' },

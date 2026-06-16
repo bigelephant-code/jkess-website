@@ -13,7 +13,7 @@ const siteContent = {
   hero: {
     title: "Powering a",
     subtitle:
-      "Shenzhen Nengyi Electronic Technology — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
+      "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
     ctaText: "Explore Products",
     ctaLink: "/products",
   },

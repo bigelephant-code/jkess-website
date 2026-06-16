@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "JKESS — Powering a Cleaner Future",
   description:
-    "Shenzhen Nengyi Electronic Technology — your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
+    "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
   keywords: [
     "JKESS",
     "BMS",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "energy storage",
     "battery kit",
     "high voltage kit",
-    "Shenzhen Nengyi",
+    "JKBMS",
   ],
 };
 

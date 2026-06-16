@@ -25,7 +25,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           {data?.subtitle ||
-            'Shenzhen Nengyi Electronic Technology — your trusted partner in energy storage solutions, from BMS to complete battery systems.'}
+            'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.'}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a

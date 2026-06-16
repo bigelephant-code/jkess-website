@@ -20,7 +20,7 @@ export default function AboutSection({ data }: { data?: AboutData }) {
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 group cursor-pointer">
                 <Image
                   src={data.image}
-                  alt="JKESS — Shenzhen Nengyi Electronic Technology"
+                  alt="JKESS — JKBMS Electronic Technology Co.,Ltd"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -50,7 +50,7 @@ export default function AboutSection({ data }: { data?: AboutData }) {
                   : (
                     <>
                       <p>
-                        Shenzhen Nengyi Electronic Technology Co., Ltd. is a high-tech enterprise
+                        JKBMS Electronic Technology Co.,Ltd is a high-tech enterprise
                         deeply rooted in the new energy storage sector, covering product design,
                         R&D, system integration, intelligent manufacturing, and global sales.
                       </p>

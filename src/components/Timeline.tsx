@@ -17,7 +17,7 @@ const milestones = [
     period: '2020-2022',
     title: 'GROWTH',
     content: [
-      'Established the Hangzhou R&D center for cutting-edge technology innovation. Founded Shenzhen Nengyi subsidiary, rapidly scaling technical capabilities and team size.',
+      'Established the Hangzhou R&D center for cutting-edge technology innovation. Founded JKBMS subsidiary, rapidly scaling technical capabilities and team size.',
       'Successfully expanded into overseas markets. International market share surged rapidly, attracting significant industry attention.',
     ],
   },

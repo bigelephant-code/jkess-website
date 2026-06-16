@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2">
           {/* Copyright */}
           <p className="text-sm text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} Shenzhen Nengyi Electronic Technology Co., Ltd. All rights reserved.
+            &copy; {new Date().getFullYear()} JKBMS Electronic Technology Co.,Ltd. All rights reserved.
           </p>
 
           {/* Tagline */}

@@ -138,10 +138,10 @@ export default function Navbar() {
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-sm"
+              className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-lg"
             >
-              <Globe size={16} />
-              <span className="text-base leading-none">{currentLocale.flag}</span>
+              <Globe size={20} />
+              <span className="text-xl leading-none">{currentLocale.flag}</span>
             </button>
 
             <AnimatePresence>

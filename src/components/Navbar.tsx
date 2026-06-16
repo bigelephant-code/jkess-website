@@ -30,7 +30,9 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false)
   const [visible, setVisible] = useState(true)
   const [atTop, setAtTop] = useState(true)
+  const [justAppeared, setJustAppeared] = useState(false)
   const lastScrollY = useRef(0)
+  const wasHidden = useRef(false)
   const navRef = useRef<HTMLDivElement>(null)
   const { itemCount } = useCart()
   const { lang, t } = useI18n()
@@ -51,21 +53,26 @@ export default function Navbar() {
       // Phase 2: Hide (slide up)
       
       if (currentScrollY <= 5) {
-        // At very top: seamless full-width
         setAtTop(true)
-        setVisible(true)
+        if (!visible) {
+          wasHidden.current = true
+          setVisible(true)
+        }
       } else if (currentScrollY <= 80) {
-        // Small scroll: peel to gapped state
         setAtTop(false)
-        setVisible(true)
+        if (!visible) {
+          wasHidden.current = true
+          setVisible(true)
+        }
       } else if (currentScrollY > lastScrollY.current) {
-        // Scrolling down past threshold: hide
         setAtTop(false)
         setVisible(false)
       } else {
-        // Scrolling up: show gapped, then go seamless when at top
         setAtTop(false)
-        setVisible(true)
+        if (!visible) {
+          wasHidden.current = true
+          setVisible(true)
+        }
       }
       
       lastScrollY.current = currentScrollY
@@ -73,6 +80,15 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Trigger particle rain effect when navbar reappears
+  useEffect(() => {
+    if (visible && wasHidden.current) {
+      setJustAppeared(true)
+      wasHidden.current = false
+      setTimeout(() => setJustAppeared(false), 700)
+    }
+  }, [visible])
 
   // Close language panel on outside click
   useEffect(() => {
@@ -100,6 +116,53 @@ export default function Navbar() {
         atTop ? 'border-0' : 'border border-white/[0.04]'
       }`}
     >
+      {/* ── Particle Rain Effect (on reappear) ── */}
+      <AnimatePresence>
+        {justAppeared && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute inset-0 z-30 pointer-events-none overflow-hidden"
+            style={{ borderRadius: 'inherit' }}
+          >
+            {Array.from({ length: 40 }).map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{
+                  x: Math.random() * 100 + '%',
+                  y: -20 - Math.random() * 30,
+                  scale: 0.3,
+                  opacity: 1,
+                }}
+                animate={{
+                  y: [null, 60 + Math.random() * 40 + '%', 100 + Math.random() * 30 + '%'],
+                  x: [null, (Math.random() - 0.5) * 80 + '%'],
+                  scale: [0.3, 1.2, 2.5],
+                  opacity: [1, 0.8, 0],
+                }}
+                transition={{
+                  duration: 0.6 + Math.random() * 0.3,
+                  delay: Math.random() * 0.15,
+                  ease: 'easeOut',
+                }}
+                className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
+                style={{
+                  left: (i * 2.5) % 100 + '%',
+                }}
+              />
+            ))}
+            {/* Radial burst center */}
+            <motion.div
+              initial={{ scale: 0, opacity: 1 }}
+              animate={{ scale: 20, opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/15"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Language Panel (appears ABOVE navbar content, pushes everything down) ── */}
       <AnimatePresence>
         {langOpen && (

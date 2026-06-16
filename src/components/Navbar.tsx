@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { Menu, X, ShoppingCart, Globe, ChevronUp } from 'lucide-react'
@@ -101,7 +101,7 @@ export default function Navbar() {
                             className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-colors ${
                               isActive
                                 ? 'bg-green-500/15 text-green-400'
-                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                : 'text-gray-300 hover:bg-white/10 hover:text-white'
                             }`}
                           >
                             <span className="text-lg shrink-0">{locale.flag}</span>
@@ -239,7 +239,7 @@ export default function Navbar() {
                       href={locale.code === 'en' ? '/' : `/${locale.code}`}
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${
-                        isActive ? 'bg-green-500/15 text-green-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                        isActive ? 'bg-green-500/15 text-green-400' : 'text-gray-300 hover:bg-white/10 hover:text-white'
                       }`}
                     >
                       <span>{locale.flag}</span>

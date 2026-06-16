@@ -9,13 +9,11 @@
   "nav.getQuote": "Get a Quote",
   "nav.language": "Language",
   "nav.viewCart": "View Cart",
-
   "hero.title.part1": "Powering a",
   "hero.title.part2": "Cleaner Future",
   "hero.subtitle": "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.",
   "hero.cta": "Explore Products",
   "hero.learnMore": "Learn More",
-
   "about.title": "About JKESS",
   "about.desc": "JKBMS Electronic Technology Co.,Ltd is a high-tech enterprise deeply rooted in the new energy storage sector, covering product design, R&D, system integration, intelligent manufacturing, and global sales.",
   "about.mission": "Mission",
@@ -28,15 +26,12 @@
   "about.heroDesc": "From BMS to complete battery systems — discover the story, mission, and values behind JKESS.",
   "about.ourTeam": "Our Team & Vision",
   "about.learnMore": "Learn More",
-
   "footer.copyright": "© {year} JKBMS Electronic Technology Co.,Ltd. All rights reserved.",
   "footer.tagline": "Powering a Cleaner Future",
-
   "stats.years": "Years Established",
   "stats.manufacturing": "Manufacturing Base",
   "stats.countries": "Countries Covered",
   "stats.employees": "Employees",
-
   "contactSection.title": "Get in Touch",
   "contactSection.desc": "Ready to power your future? Contact us for a custom quote or partnership inquiry.",
   "contactSection.phone": "Phone",
@@ -46,7 +41,6 @@
   "contactSection.company": "Company",
   "contactSection.yourMessage": "Your Message",
   "contactSection.send": "Send Message",
-
   "contactPage.title": "Let's Talk Energy",
   "contactPage.desc": "Have a project in mind? Need a custom quote? Our team is ready to help you find the perfect energy storage solution.",
   "contactPage.formTitle": "Send us a message",
@@ -60,23 +54,17 @@
   "contactPage.whatsappTitle": "Chat on WhatsApp",
   "contactPage.whatsappDesc": "Quickest way to get a response. Scan the QR code or tap the button below.",
   "contactPage.startChat": "Start Chat",
-
   "productsSection.title": "Our Products",
   "productsSection.desc": "Comprehensive energy storage solutions engineered for reliability and performance",
   "productsSection.viewDetails": "View Details",
-
   "certified.title": "Certified Excellence",
-
   "brands.title": "Global Brands",
   "brands.matching": "Matching",
   "brands.desc": "We use only the highest quality global brands for components, ensuring every JKESS product meets international standards of reliability and performance.",
-
   "madeWith.title": "Made With",
   "madeWith.brand": "JKESS",
   "madeWith.desc": "Every component, every circuit, every connection — everything we build is made with precision, passion, and purpose.",
-
   "timeline.title": "Development History",
-
   "cart.empty": "Your cart is empty",
   "cart.emptyDesc": "Looks like you haven't added any products yet.",
   "cart.browse": "Browse Products",
@@ -85,13 +73,10 @@
   "cart.subtotal": "Subtotal",
   "cart.shippingNote": "Shipping & taxes calculated at checkout",
   "cart.checkout": "Proceed to Checkout",
-
   "downloads.title": "Downloads",
   "downloads.desc": "Access product manuals, specifications, and technical documents for all JKESS products.",
-
   "news.title": "Energy Storage News",
   "news.desc": "Curated industry news from January 2024 to June 2026 — tracking the latest in battery technology, market trends, and policy developments worldwide.",
-
   "product.notFound": "Product not found",
   "product.inStock": "In Stock",
   "product.customOrder": "Custom Order",
@@ -111,6 +96,5 @@
   "product.customerReviews": "Customer Reviews",
   "product.model": "Model",
   "product.quantity": "Quantity",
-
   "search.placeholder": "Search products..."
 }

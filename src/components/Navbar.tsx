@@ -72,41 +72,14 @@ export default function Navbar() {
       transition={{ duration: 0.35, ease: 'easeInOut' }}
       className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/50 rounded-[17px] border border-white/[0.04] overflow-hidden"
     >
-      {/* ── Main bar (always visible) ── */}
+      {/* ── Top Row: Logo + Lang button + Cart (always visible) ── */}
       <div className="px-6 h-20 flex items-center justify-between">
         <a href={prefix || '/'} className="flex items-center">
           <img src="/images/jkess-logo-cropped.png" alt="JKESS" className="h-12 w-auto brightness-0 invert" />
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <a
-              key={link.key}
-              href={`${prefix}${link.href}`}
-              className="relative text-lg tracking-wider font-medium text-white/80 transition-colors duration-200
-                before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
-                before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full"
-            >
-              <motion.span
-                className="flex"
-                initial="rest"
-                animate="rest"
-                variants={{ rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } }, hover: { transition: { staggerChildren: 0.025 } } }}
-                whileHover="hover"
-              >
-                {(t(link.key) || link.key.replace('nav.', '')).split('').map((char: string, i: number) => (
-                  <motion.span
-                    key={i} className="inline-block"
-                    variants={{ rest: { y: 0, color: 'rgba(255,255,255,0.8)', transition: { duration: 0.2 } }, hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } } }}
-                  >
-                    {char === ' ' ? '\u00A0' : char}
-                  </motion.span>
-                ))}
-              </motion.span>
-            </a>
-          ))}
-
+        {/* Desktop: actions on the right */}
+        <div className="hidden md:flex items-center gap-6">
           {/* ── Language Switcher ── */}
           <button
             onClick={() => setLangOpen(!langOpen)}
@@ -127,7 +100,7 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Mobile menu button */}
+        {/* Mobile: cart + hamburger */}
         <div className="md:hidden flex items-center gap-3">
           <a href={`${prefix}/cart`} className="relative text-white/60">
             <ShoppingCart size={20} />
@@ -190,7 +163,25 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile menu */}
+      {/* ── Nav Links Row (appears below language panel or directly below top bar) ── */}
+      <div className="hidden md:block border-t border-white/[0.06]">
+        <div className="flex items-center justify-center gap-10 h-12 px-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.key}
+              href={`${prefix}${link.href}`}
+              className="relative text-[15px] tracking-wider font-medium text-white/70 transition-colors duration-200
+                before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
+                before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full
+                hover:text-white"
+            >
+              {t(link.key) || link.key.replace('nav.', '')}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Mobile menu ── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

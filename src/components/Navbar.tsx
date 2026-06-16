@@ -29,6 +29,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [visible, setVisible] = useState(true)
+  const [atTop, setAtTop] = useState(true)
   const lastScrollY = useRef(0)
   const navRef = useRef<HTMLDivElement>(null)
   const { itemCount } = useCart()
@@ -41,14 +42,32 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      if (Math.abs(currentScrollY - lastScrollY.current) < 10) return
+      if (Math.abs(currentScrollY - lastScrollY.current) < 5) return
       // Close language panel on scroll
       setLangOpen(false)
-      if (currentScrollY > lastScrollY.current && currentScrollY > 10) {
+      
+      // Phase 0: At top → full-width seamless
+      // Phase 1: Peel off (gap appears) 
+      // Phase 2: Hide (slide up)
+      
+      if (currentScrollY <= 5) {
+        // At very top: seamless full-width
+        setAtTop(true)
+        setVisible(true)
+      } else if (currentScrollY <= 80) {
+        // Small scroll: peel to gapped state
+        setAtTop(false)
+        setVisible(true)
+      } else if (currentScrollY > lastScrollY.current) {
+        // Scrolling down past threshold: hide
+        setAtTop(false)
         setVisible(false)
       } else {
+        // Scrolling up: show gapped, then go seamless when at top
+        setAtTop(false)
         setVisible(true)
       }
+      
       lastScrollY.current = currentScrollY
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -70,9 +89,16 @@ export default function Navbar() {
     <motion.nav
       ref={navRef}
       initial={{ y: 0 }}
-      animate={{ y: visible ? 0 : -120 }}
-      transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className="fixed top-2 left-1/2 -translate-x-1/2 z-50 w-[97%] max-w-[1580px] bg-black/50 rounded-[17px] border border-white/[0.04] overflow-hidden"
+      animate={{
+        y: visible ? 0 : -120,
+        top: atTop ? 0 : 8,
+        width: atTop ? '100%' : '97%',
+        borderRadius: atTop ? '0px' : '17px',
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      className={`fixed left-1/2 -translate-x-1/2 z-50 max-w-[1580px] bg-black/50 overflow-hidden ${
+        atTop ? 'border-0' : 'border border-white/[0.04]'
+      }`}
     >
       {/* ── Language Panel (appears ABOVE navbar content, pushes everything down) ── */}
       <AnimatePresence>

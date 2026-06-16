@@ -80,13 +80,13 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="bg-[#3a3a3a] border-b border-white/[0.06]"
+            className="bg-black/70 border-b border-white/[0.06]"
           >
             <div className="px-8 py-6">
               <div className="grid grid-cols-5 gap-x-6 gap-y-0 max-w-[1400px] mx-auto">
                 {languageGroups.map((group) => (
                   <div key={group.label}>
-                    <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-semibold">
+                    <p className="text-[11px] uppercase tracking-widest text-gray-400 mb-2 font-semibold">
                       {group.label}
                     </p>
                     <div className="space-y-0.5">
@@ -104,9 +104,9 @@ export default function Navbar() {
                                 : 'text-gray-400 hover:bg-white/5 hover:text-white'
                             }`}
                           >
-                            <span className="text-base shrink-0">{locale.flag}</span>
-                            <span className="text-[13px]">{locale.name}</span>
-                            {isActive && <span className="text-green-400 text-[10px] ml-auto font-bold">✓</span>}
+                            <span className="text-lg shrink-0">{locale.flag}</span>
+                            <span className="text-sm">{locale.name}</span>
+                            {isActive && <span className="text-green-400 text-xs ml-auto font-bold">✓</span>}
                           </a>
                         )
                       })}

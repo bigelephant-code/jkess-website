@@ -151,7 +151,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 top-full mt-2 w-[320px] max-h-[480px] overflow-y-auto bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-xl p-2"
+                  className="absolute right-0 top-full mt-2 w-[320px] max-h-[480px] overflow-y-auto bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-xl p-2 lang-dropdown-scrollbar"
                 >
                   {languageGroups.map((group) => (
                     <div key={group.label} className="mb-1">

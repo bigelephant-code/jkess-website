@@ -96,3 +96,23 @@ body {
   animation: scroll-right 40s linear infinite;
   width: fit-content;
 }
+
+/* Dark language dropdown scrollbar */
+.lang-dropdown-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.lang-dropdown-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.lang-dropdown-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+.lang-dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* Firefox */
+.lang-dropdown-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}

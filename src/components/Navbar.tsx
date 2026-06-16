@@ -112,18 +112,15 @@ export default function Navbar() {
   return (
     <motion.nav
       ref={navRef}
-      initial={{ y: 0, left: 0, x: 0, width: '100%', borderRadius: '0px'}}
+      initial={false}
       animate={{
         y: visible ? 0 : -120,
-        left: atTop ? 0 : '50%',
-        x: atTop ? 0 : '-50%',
-        width: atTop ? '100%' : '97%',
-        borderRadius: atTop ? '0px' : '17px',
-     }}
-      transition={{ duration: 0.3, ease: 'easeInOut'}}
-      className={`fixed z-50 bg-black/50 overflow-hidden ${
-        atTop ? '' : 'max-w-[1580px] border border-white/[0.04]'
-     }`}
+        opacity: justAppeared ? [0, 0, 1] : 1,
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      className={`fixed z-50 bg-black/50 overflow-hidden transition-all duration-300 ease-in-out ${
+        atTop ? 'left-0 translate-x-0 w-full max-w-none rounded-none border-0' : 'left-1/2 -translate-x-1/2 w-[97%] rounded-[17px] border border-white/[0.04]'
+      }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}
       <AnimatePresence>

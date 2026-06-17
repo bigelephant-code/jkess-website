@@ -47,7 +47,7 @@ export default function CertTiltBoard() {
 
         {/* Certificate wall — grid layout, perfectly aligned */}
         <div className="mx-auto w-full max-w-7xl">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-5">
             {certificates.map((cert, i) => (
               <motion.div
                 key={i}
@@ -67,7 +67,7 @@ export default function CertTiltBoard() {
 
                 {/* Card */}
                 <motion.div
-                  className="relative w-full max-w-[180px] aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
+                  className="relative w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
                   style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
                   whileHover={{ y: -6, scale: 1.06, borderColor: cert.color, boxShadow: `0 12px 48px rgba(0,0,0,0.1), 0 0 20px ${cert.color}20` }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}

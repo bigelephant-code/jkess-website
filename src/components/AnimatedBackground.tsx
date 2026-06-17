@@ -34,15 +34,13 @@ interface Particle {
 
 // Energy Storage Lifecycle Flow (corrected):
 //   左侧（发电）          右侧（储能→用电）
-//   🔌 Grid  (2)  ─┬─→  🔋 JKESS (3)  ─┬─→  🏠 Home (4)
-//                  ├─→  🏠 Home   (4)   ├─→  🚗 EV (5)
-//                  └─→  🚗 EV     (5)   └─→  🏠→🚗 (充电桩)
-//   ☀️ Solar (0)  ───→  🔋 JKESS (3)
-//   🌬️ Wind  (1)  ───→  🔋 JKESS (3)
+//   ☀️ Solar (0) ───→  🔋 JKESS (3)  ─┬─→  🏠 Home (4)
+//   🌬️ Wind  (1) ───→  🔋 JKESS (3)  ├─→  🚗 EV (5)
+//   🔌 Grid  (2)  ─┬─→  🔋 JKESS (3) ├─→  🚗 EV (5)
 
 const NODE_DEFS = [
-  { baseX: 0.18, baseY: 0.76, size: 40, phase: 4, label: 'Solar' },
-  { baseX: 0.06, baseY: 0.48, size: 44, phase: 2, label: 'Wind' },
+  { baseX: 0.06, baseY: 0.48, size: 44, phase: 4, label: 'Solar' },
+  { baseX: 0.18, baseY: 0.76, size: 40, phase: 2, label: 'Wind' },
   { baseX: 0.14, baseY: 0.18, size: 48, phase: 0, label: 'Grid' },
   { baseX: 0.86, baseY: 0.18, size: 48, phase: 1, label: 'JKESS' },
   { baseX: 0.94, baseY: 0.48, size: 44, phase: 3, label: 'Home' },

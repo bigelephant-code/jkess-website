@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslate } from '@/i18n/client'
 
 interface NewsItem {
   date: string
@@ -55,6 +56,7 @@ const categoryColors: Record<string, string> = {
 }
 
 export default function NewsPage() {
+  const t = useTranslate()
   return (
     <div className="bg-white min-h-screen">
       <section className="relative bg-gray-900 overflow-hidden">
@@ -66,10 +68,10 @@ export default function NewsPage() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
-              Energy Storage <span className="text-green-400">News</span>
+              {t('news.title')?.split(' ')?.slice(0, -1)?.join(' ')} <span className="text-green-400">{t('news.title')?.split(' ')?.slice(-1)}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-xl mx-auto">
-              Curated industry news from January 2024 to June 2026 — tracking the latest in battery technology, market trends, and policy developments worldwide.
+{t('news.desc')}
             </p>
           </motion.div>
         </div>

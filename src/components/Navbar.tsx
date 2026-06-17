@@ -186,13 +186,13 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* ── Original Navbar Content — unchanged layout ── */}
-      <div className="px-6 h-20 flex items-center justify-between">
+      <div className="px-6 h-22 flex items-center justify-between">
         {/* Logo */}
         <a href={prefix || '/'} className="flex items-center">
           <img
             src="/images/jkess-logo-cropped.png"
             alt="JKESS"
-            className="h-12 w-auto brightness-0 invert"
+            className="h-14 w-auto brightness-0 invert"
           />
         </a>
 
@@ -202,7 +202,7 @@ export default function Navbar() {
             <a
               key={link.key}
               href={`${prefix}${link.href}`}
-              className="relative text-lg tracking-wider font-medium text-white/80 transition-colors duration-200
+              className="relative text-xl tracking-wider font-medium text-white/80 transition-colors duration-200
                 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
                 before:bg-green-500 before:rounded-full before:transition-all before:duration-300
                 hover:before:w-full"
@@ -236,10 +236,10 @@ export default function Navbar() {
           {/* ── Language Switcher ── */}
           <button
             onClick={() => setLangOpen(!langOpen)}
-            className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-lg"
+            className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-xl"
           >
-            <Globe size={20} />
-            <span className="text-xl leading-none">{currentLocale.flag}</span>
+            <Globe size={24} />
+            <span className="text-2xl leading-none">{currentLocale.flag}</span>
           </button>
 
           {/* Cart icon */}
@@ -247,7 +247,7 @@ export default function Navbar() {
             href={`${prefix}/cart`}
             className="relative text-white/60 hover:text-green-500 transition-colors duration-200"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={24} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}
@@ -259,7 +259,7 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-3">
           <a href={`${prefix}/cart`} className="relative text-white/60">
-            <ShoppingCart size={20} />
+            <ShoppingCart size={24} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}

@@ -1,12 +1,14 @@
 ﻿'use client'
 
 import Image from 'next/image'
+import { useTranslate } from '@/i18n/client'
 
 const brandLogos = Array.from({ length: 15 }, (_, i) => ({
   src: `/images/brands-processed/brand-${i + 1}.png`,
 }))
 
 export default function BrandLogos() {
+  const t = useTranslate()
   return (
     <section className="relative bg-white py-20 overflow-hidden">
       <div className="space-y-0">
@@ -71,13 +73,12 @@ export default function BrandLogos() {
             {/* Text content */}
             <div className="relative z-10 text-center px-6">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-                Brand
+                {t('brands.title')}
                 <br />
-                <span className="text-green-600">Matching</span>
+                <span className="text-green-600">{t('brands.matching')}</span>
               </h2>
               <p className="mt-3 text-gray-500 text-base max-w-xl mx-auto">
-                Wide compatibility across platforms and industries. No matter
-                your ecosystem, JKESS integrates seamlessly.
+                {t('brands.desc')}
               </p>
             </div>
           </div>

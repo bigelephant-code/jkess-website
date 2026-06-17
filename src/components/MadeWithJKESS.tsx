@@ -3,6 +3,7 @@
 import { useRef, useMemo } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import Image from 'next/image'
+import { useTranslate } from '@/i18n/client'
 
 const projectImages = [
   { src: '/images/projects/project-1.jpg' },
@@ -20,6 +21,7 @@ const projectImages = [
 ]
 
 export default function MadeWithJKESS() {
+  const t = useTranslate()
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Mouse for 3D parallax tilt
@@ -100,11 +102,11 @@ export default function MadeWithJKESS() {
         {/* ─── Floating title overlay (not affected by 3D tilt) ─── */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
           <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 tracking-tight text-center drop-shadow-sm">
-            Made with{' '}
-            <span className="text-green-600">JKESS</span>
+            {t('madeWith.title')}{' '}
+            <span className="text-green-600">{t('madeWith.brand')}</span>
           </h2>
           <p className="mt-4 text-gray-600 text-base md:text-lg max-w-md text-center drop-shadow-sm">
-            Real projects powered by JKESS energy storage solutions.
+            {t('madeWith.desc')}
           </p>
         </div>
       </div>

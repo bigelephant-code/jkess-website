@@ -170,7 +170,7 @@ export default function Navbar() {
                                 : 'text-gray-300 hover:bg-white/10 hover:text-white'
                            }`}
                           >
-                            <span className="text-2xl shrink-0">{locale.flag}</span>
+                            <span className="text-2xl shrink-0 leading-none flex items-center">{locale.flag}</span>
                             <span className="text-base">{locale.name}</span>
                             {isActive && <span className="text-green-400 text-sm ml-auto font-bold">✓</span>}
                           </a>

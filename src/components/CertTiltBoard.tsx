@@ -40,7 +40,7 @@ export default function CertTiltBoard() {
 
       <div className="relative z-10 mx-auto px-6 max-w-[1800px] py-16">
         {/* Module title */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">
 {t('certified.title')?.split(' ')?.[0]} <span className="text-green-600">{t('certified.title')?.split(' ')?.slice(1)?.join(' ')}</span>
           </h2>

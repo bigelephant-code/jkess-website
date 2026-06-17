@@ -81,19 +81,19 @@ export default function SolutionsSection() {
   const strokeDashoffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
 
   return (
-    <section className="relative bg-gray-900 py-20 md:py-28 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+    <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50" />
       <div className="absolute inset-0 opacity-10" style={{
         backgroundImage: 'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #3b82f6 0%, transparent 50%)'
       }} />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">
             {t('solutions.title', 'Solutions')} &amp;{' '}
-            <span className="text-green-400">{t('solutions.scenarios', 'Scenarios')}</span>
+            <span className="text-green-600">{t('solutions.scenarios', 'Scenarios')}</span>
           </h2>
-          <p className="mt-3 text-gray-400 text-sm">
+          <p className="mt-3 text-gray-500 text-sm">
             C&I Storage · Residential · Special Vehicles · Special Equipment
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function SolutionsSection() {
                 <svg className="absolute inset-0 w-full h-full" viewBox="0 0 64 64">
                   {/* Background circle */}
                   <circle cx="32" cy="32" r="28" fill="transparent"
-                    stroke={i === activeTab ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.06)'}
+                    stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(0,0,0,0.08)'}
                     strokeWidth="5" />
                   {/* Progress circle */}
                   {i === activeTab && (
@@ -128,8 +128,8 @@ export default function SolutionsSection() {
 
                 {/* Icon inside circle - using CSS mask to extract shape from PNG */}
                 <div
-                  className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-400 ${
-                    i === activeTab ? 'bg-green-400 scale-110' : 'group-hover:bg-gray-300'
+                  className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${
+                    i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'
                   }`}
                   style={{
                     mask: `url(/images/goodwe-icon-${i + 1}.png) center/contain no-repeat`,
@@ -144,17 +144,17 @@ export default function SolutionsSection() {
           <div className="flex-1 min-w-0 grid md:grid-cols-5 gap-8 items-center">
             {/* Text content */}
             <div className="md:col-span-2 space-y-4">
-              <h3 className="text-lg md:text-2xl font-bold text-white">
+              <h3 className="text-lg md:text-2xl font-bold text-gray-900">
                 {scenarios[activeTab].title}
               </h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
+              <p className="text-sm text-gray-700 leading-relaxed">
                 {scenarios[activeTab].desc}
               </p>
             </div>
 
             {/* Photo */}
             <div className="md:col-span-3">
-              <div className="relative w-full aspect-[4/3] bg-gray-800/40 backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden flex items-center justify-center">
+              <div className="relative w-full aspect-[4/3] bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden flex items-center justify-center">
                 {scenarios[activeTab].image ? (
                   <img
                     src={scenarios[activeTab].image}
@@ -164,7 +164,7 @@ export default function SolutionsSection() {
                 ) : (
                   <div className="text-center">
                     <div className="text-3xl mb-2">🏗️</div>
-                    <p className="text-xs text-gray-500">Image coming soon</p>
+                    <p className="text-xs text-gray-400">Image coming soon</p>
                   </div>
                 )}
               </div>

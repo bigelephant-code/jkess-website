@@ -126,10 +126,10 @@ export default function Timeline() {
               return (
                 <motion.div
                   key={item.year}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: isTop ? -50 : 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.12, ease: [0.23, 1, 0.32, 1] }}
+                  transition={{ duration: 0.6, delay: i * 0.15, ease: [0.23, 1, 0.32, 1] }}
                   className="relative flex flex-col items-center"
                 >
                   {/* Content - alternating top/bottom */}

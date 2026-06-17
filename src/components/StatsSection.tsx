@@ -17,7 +17,7 @@ interface StatsData {
 function StaggerText({ text, className }: { text: string; className?: string }) {
   return (
     <motion.span
-      className={`flex ${className || ''}`}
+      className={`flex group cursor-default ${className || ''}`}
       initial="rest"
       animate="rest"
       variants={{
@@ -29,19 +29,11 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
       {(text || '').split('').map((char, i) => (
         <motion.span
           key={i}
-          className="inline-block transition-all duration-200"
+          className="inline-block transition-all duration-200 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent group-hover:opacity-100 opacity-50"
           variants={{
             rest: { y: 0, transition: { duration: 0.2 } },
             hover: { y: -2, transition: { duration: 0.2 } },
           }}
-          style={{
-            backgroundImage: 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            opacity: 0.55
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '0.55'}
         >
           {char === ' ' ? '\u00A0' : char}
         </motion.span>

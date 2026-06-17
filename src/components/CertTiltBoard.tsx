@@ -24,6 +24,10 @@ const certificates: Certificate[] = [
   { title: 'CB Scheme', description: 'IECEE global product certification.', image: '/images/certifications/cert-8.jpg', category: 'International', color: '#8b5cf6' },
   { title: 'WEEE Directive', description: 'Waste electrical equipment compliance.', image: '/images/certifications/cert-9.jpg', category: 'European', color: '#14b8a6' },
   { title: 'REACH Regulation', description: 'Chemical substance safety compliance.', image: '/images/certifications/cert-10.jpg', category: 'European', color: '#f97316' },
+  { title: 'CE UKCA', description: 'UKCA marking for products sold in Great Britain.', image: '/images/certifications/11.jpg', category: 'International', color: '#f43f5e' },
+  { title: 'Battery Directive', description: 'EU battery collection and recycling compliance.', image: '/images/certifications/12.jpg', category: 'European', color: '#10b981' },
+  { title: 'EMC Directive', description: 'Electromagnetic compatibility compliance for EU market.', image: '/images/certifications/13.jpg', category: 'European', color: '#6366f1' },
+  { title: 'MSDS Certificate', description: 'Material safety data sheet for lithium battery transport.', image: '/images/certifications/14.jpg', category: 'Safety', color: '#d946ef' },
 ]
 
 export default function CertTiltBoard() {
@@ -42,8 +46,8 @@ export default function CertTiltBoard() {
         </div>
 
         {/* Certificate wall — grid layout, perfectly aligned */}
-        <div className="mx-auto w-full max-w-5xl">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
+        <div className="mx-auto w-full max-w-7xl">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-4 md:gap-6">
             {certificates.map((cert, i) => (
               <motion.div
                 key={i}

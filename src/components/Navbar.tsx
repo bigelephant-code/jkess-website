@@ -146,13 +146,13 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1}}
             exit={{ height: 0, opacity: 0}}
             transition={{ duration: 0.3, ease: 'easeInOut'}}
-            className="bg-black/90 border-b border-white/[0.06]"
+            className="bg-black/90 border-b border-white/[0.06] rounded-t-[17px]"
           >
             <div className="px-8 py-6">
               <div className="grid grid-cols-5 gap-x-6 gap-y-0 max-w-[1400px] mx-auto">
                 {languageGroups.map((group) => (
                   <div key={group.label}>
-                    <p className="text-[11px] uppercase tracking-widest text-gray-400 mb-2 font-semibold">
+                    <p className="text-sm uppercase tracking-widest text-gray-400 mb-2 font-semibold">
                       {group.label}
                     </p>
                     <div className="space-y-0.5">
@@ -164,15 +164,15 @@ export default function Navbar() {
                           <a
                             key={code}
                             href={code === 'en' ? '/' : `/${code}`}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-colors ${
+                            className={`flex items-center gap-2 px-2 py-2 rounded-lg text-base transition-colors ${
                               isActive
                                 ? 'bg-green-500/15 text-green-400'
                                 : 'text-gray-300 hover:bg-white/10 hover:text-white'
                            }`}
                           >
-                            <span className="text-lg shrink-0">{locale.flag}</span>
-                            <span className="text-sm">{locale.name}</span>
-                            {isActive && <span className="text-green-400 text-xs ml-auto font-bold">✓</span>}
+                            <span className="text-2xl shrink-0">{locale.flag}</span>
+                            <span className="text-base">{locale.name}</span>
+                            {isActive && <span className="text-green-400 text-sm ml-auto font-bold">✓</span>}
                           </a>
                         )
                      })}

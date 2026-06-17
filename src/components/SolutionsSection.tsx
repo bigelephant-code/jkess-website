@@ -98,9 +98,9 @@ export default function SolutionsSection() {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 md:gap-10">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">
           {/* Left: Vertical tab buttons with progress rings */}
-          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center gap-7">
+          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}

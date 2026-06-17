@@ -38,9 +38,9 @@ export default function CertTiltBoard() {
   return (
     <section className="relative overflow-hidden">
 
-      <div className="relative z-10 mx-auto px-6 max-w-[1800px] py-16">
+      <div className="relative z-10 mx-auto px-6 max-w-[1800px] pt-10 pb-16">
         {/* Module title */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">
 {t('certified.title')?.split(' ')?.[0]} <span className="text-green-600">{t('certified.title')?.split(' ')?.slice(1)?.join(' ')}</span>
           </h2>

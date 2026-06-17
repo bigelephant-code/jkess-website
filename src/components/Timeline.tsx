@@ -117,9 +117,9 @@ export default function Timeline() {
         {/* Horizontal Timeline */}
         <div className="relative">
           {/* Central horizontal axis */}
-          <div className="absolute left-0 right-0 top-1/2 h-[3px] bg-green-500 -translate-y-1/2 hidden md:block" />
+          <div className="absolute left-0 right-0 top-1/2 h-[3px] bg-green-500 -translate-y-1/2 hidden lg:block" />
 
-          <div className="grid md:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-7">
             {milestones.map((item, i) => {
               const isTop = i % 2 === 0
 

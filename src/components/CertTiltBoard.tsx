@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslate } from '@/i18n/client'
+import Image from 'next/image'
 
 interface Certificate {
   title: string
@@ -79,14 +80,15 @@ export default function CertTiltBoard() {
                     whileHover={{ width: '100%' }}
                     transition={{ duration: 0.3 }}
                   />
-                  <div className="relative w-full" style={{ height: 'calc(100% - 4px)' }}>
-                    <img
+                  <div className="relative w-full p-2" style={{ height: 'calc(100% - 4px)' }}>
+                    <Image
                       src={cert.image}
                       alt={cert.title}
-                      className="absolute inset-0 w-full h-full object-contain p-2 transition-all duration-500 ease-out group-hover:scale-110"
-                      loading="lazy"
+                      fill
+                      className="object-contain transition-all duration-500 ease-out group-hover:scale-110"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 14vw"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3">
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3 z-10">
                       <h3 className="text-white text-[10px] font-semibold leading-tight truncate">{cert.title}</h3>
                     </div>
                   </div>

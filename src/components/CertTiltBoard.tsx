@@ -38,7 +38,7 @@ export default function CertTiltBoard() {
   return (
     <section className="relative overflow-hidden">
 
-      <div className="relative z-10 mx-auto px-6 max-w-[1580px] py-16">
+      <div className="relative z-10 mx-auto px-6 max-w-[1800px] py-16">
         {/* Module title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
@@ -47,7 +47,7 @@ export default function CertTiltBoard() {
         </div>
 
         {/* Certificate wall — grid layout, perfectly aligned */}
-        <div className="mx-auto w-full max-w-7xl">
+        <div className="mx-auto w-full">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 md:gap-5">
             {certificates.map((cert, i) => (
               <motion.div

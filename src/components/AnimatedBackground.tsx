@@ -466,8 +466,8 @@ export default function AnimatedBackground() {
         const toN = nodes[edge.to]
         if (!fromN || !toN) continue
 
-        const fy = fromN.y + Math.sin(time * 0.5 + fromN.phase) * 10
-        const ty = toN.y + Math.sin(time * 0.5 + toN.phase) * 10
+        const fy = fromN.y + Math.sin(time * 0.8 + fromN.phase) * 12
+        const ty = toN.y + Math.sin(time * 0.8 + toN.phase) * 12
 
         // Base line (dimmed back)
         ctx!.beginPath()
@@ -500,8 +500,8 @@ export default function AnimatedBackground() {
         }
 
         const pr = t.progress
-        const fromFy = fromN.y + Math.sin(time * 0.5 + fromN.phase) * 10
-        const toFy = toN.y + Math.sin(time * 0.5 + toN.phase) * 10
+        const fromFy = fromN.y + Math.sin(time * 0.8 + fromN.phase) * 12
+        const toFy = toN.y + Math.sin(time * 0.8 + toN.phase) * 12
         const dx = toN.x - fromN.x
         const dy = toFy - fromFy
 
@@ -555,7 +555,7 @@ export default function AnimatedBackground() {
       // JKESS energy pulse
       if (nodes.length > 3) {
         const jk = nodes[3]
-        const jkY = jk.y + Math.sin(time * 0.5 + jk.phase) * 10
+        const jkY = jk.y + Math.sin(time * 0.8 + jk.phase) * 12
         const pulseR = ((time * 45) % 120) * 1.5
         if (pulseR < 150) {
           ctx!.beginPath()
@@ -569,7 +569,7 @@ export default function AnimatedBackground() {
       // Draw glass cards on top
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i]
-        const floatY = Math.sin(time * 0.5 + n.phase) * 10
+        const floatY = Math.sin(time * 0.8 + n.phase) * 12
         drawGlassCard(ctx, n.x, n.y + floatY, n.size, n.label, i, time)
       }
 

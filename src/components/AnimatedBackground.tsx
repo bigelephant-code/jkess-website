@@ -373,12 +373,17 @@ export default function AnimatedBackground() {
 
     function initTravelers() {
       travelers = []
-      // One traveler per edge, flowing in the energy direction
+      // Two travelers per edge for more energy flow
       for (let i = 0; i < EDGE_DEFS.length; i++) {
         travelers.push({
           edgeIndex: i,
           progress: (i / EDGE_DEFS.length) % 1,
-          speed: 0.002 + Math.random() * 0.003,
+          speed: 0.003 + Math.random() * 0.005,
+        })
+        travelers.push({
+          edgeIndex: i,
+          progress: ((i / EDGE_DEFS.length) + 0.5) % 1,
+          speed: 0.003 + Math.random() * 0.005,
         })
       }
     }
@@ -386,14 +391,14 @@ export default function AnimatedBackground() {
     function initParticles() {
       if (!canvas) return
       particles = []
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 50; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.12,
-          vy: (Math.random() - 0.5) * 0.12,
-          size: 0.4 + Math.random() * 1.2,
-          alpha: 0.08 + Math.random() * 0.3,
+          vx: (Math.random() - 0.5) * 0.25,
+          vy: (Math.random() - 0.5) * 0.25,
+          size: 0.5 + Math.random() * 1.5,
+          alpha: 0.1 + Math.random() * 0.35,
         })
       }
     }
@@ -419,8 +424,8 @@ export default function AnimatedBackground() {
 
     function drawTechGrid(w: number, h: number) {
       const step = 70
-      const offsetY = (time * 6) % step
-      const offsetX = (time * 4) % step
+      const offsetY = (time * 12) % step
+      const offsetX = (time * 8) % step
 
       ctx!.strokeStyle = 'rgba(74, 222, 128, 0.02)'
       ctx!.lineWidth = 0.4
@@ -461,8 +466,8 @@ export default function AnimatedBackground() {
         const toN = nodes[edge.to]
         if (!fromN || !toN) continue
 
-        const fy = fromN.y + Math.sin(time * 0.4 + fromN.phase) * 7
-        const ty = toN.y + Math.sin(time * 0.4 + toN.phase) * 7
+        const fy = fromN.y + Math.sin(time * 0.5 + fromN.phase) * 10
+        const ty = toN.y + Math.sin(time * 0.5 + toN.phase) * 10
 
         // Base line (dimmed back)
         ctx!.beginPath()
@@ -495,8 +500,8 @@ export default function AnimatedBackground() {
         }
 
         const pr = t.progress
-        const fromFy = fromN.y + Math.sin(time * 0.4 + fromN.phase) * 7
-        const toFy = toN.y + Math.sin(time * 0.4 + toN.phase) * 7
+        const fromFy = fromN.y + Math.sin(time * 0.5 + fromN.phase) * 10
+        const toFy = toN.y + Math.sin(time * 0.5 + toN.phase) * 10
         const dx = toN.x - fromN.x
         const dy = toFy - fromFy
 
@@ -547,10 +552,24 @@ export default function AnimatedBackground() {
       drawParticles()
       drawEdgesAndDots()
 
+      // JKESS energy pulse
+      if (nodes.length > 3) {
+        const jk = nodes[3]
+        const jkY = jk.y + Math.sin(time * 0.5 + jk.phase) * 10
+        const pulseR = ((time * 45) % 120) * 1.5
+        if (pulseR < 150) {
+          ctx!.beginPath()
+          ctx!.arc(jk.x, jkY, pulseR, 0, Math.PI * 2)
+          ctx!.strokeStyle = `rgba(74, 222, 128, ${Math.max(0, 0.08 - pulseR / 2000)})`
+          ctx!.lineWidth = 2
+          ctx!.stroke()
+        }
+      }
+
       // Draw glass cards on top
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i]
-        const floatY = Math.sin(time * 0.4 + n.phase) * 7
+        const floatY = Math.sin(time * 0.5 + n.phase) * 10
         drawGlassCard(ctx, n.x, n.y + floatY, n.size, n.label, i, time)
       }
 

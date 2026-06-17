@@ -114,10 +114,12 @@ export default function Navbar() {
       ref={navRef}
       style={{
         transition: 'all 0.25s ease-out',
-        transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})`,
+        transform: `translateX(${atTop ? '0' : '-50%'}) translateY(${visible ? '0' : '-120px'})`,
       }}
-      className={`fixed z-50 left-1/2 w-[97%] max-w-[1580px] bg-black/50 border border-white/[0.04] ${
-        atTop ? 'top-0 rounded-none' : 'top-2 rounded-[17px]'
+      className={`fixed z-50 bg-black/50 border border-white/[0.04] ${
+        atTop
+          ? 'top-0 left-0 w-full max-w-none rounded-none'
+          : 'top-2 left-1/2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}

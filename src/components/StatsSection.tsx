@@ -132,14 +132,14 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                     transition={{ duration: 0.2 }}
                   >
                     <motion.div
-                      className="flex justify-center text-gray-400 group-hover:text-green-500 transition-colors duration-200"
+                      className="flex justify-center text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent"
                       whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
                       transition={{ duration: 0.3 }}
                     >
                       {iconMap[stat.key]?.icon || iconMap.years.icon}
                     </motion.div>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl md:text-5xl font-bold text-gray-900">
+                      <span className="text-4xl md:text-5xl font-bold text-gray-900 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">
                         <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                       </span>
                       {stat.suffix && (

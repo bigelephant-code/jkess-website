@@ -3,7 +3,8 @@
 import { ArrowRight } from 'lucide-react'
 import AnimatedBackground from './AnimatedBackground'
 import { motion } from 'framer-motion'
-import { useTranslate } from '@/i18n/client'
+import { useI18n } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 interface HeroData {
   title?: string
@@ -13,7 +14,7 @@ interface HeroData {
 }
 
 export default function HeroSection({ data }: { data?: HeroData }) {
-  const t = useTranslate()
+  const { lang, t } = useI18n()
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
@@ -62,7 +63,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
             </motion.span>
           </a>
           <a
-            href="#about"
+            href={localizedPath(lang, '/about')}
             className="inline-flex items-center gap-2 border border-white/20 hover:border-white/40 text-white px-8 py-3 rounded-full text-lg transition-all"
           >
             {t('hero.learnMore', 'Learn More')}

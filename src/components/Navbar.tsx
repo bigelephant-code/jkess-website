@@ -171,7 +171,7 @@ export default function Navbar() {
                            }`}
                           >
                             <span className="text-2xl shrink-0 leading-none flex items-center self-center">{locale.flag}</span>
-                            <span className="text-base leading-none self-center">{locale.name}</span>
+                            <span className="text-base leading-none self-center translate-y-px">{locale.name}</span>
                             {isActive && <span className="text-green-400 text-sm ml-auto font-bold">✓</span>}
                           </a>
                         )

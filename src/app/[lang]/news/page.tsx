@@ -58,8 +58,8 @@ export default function NewsPage() {
   return (
     <div className="bg-white min-h-screen">
       <section className="relative bg-gray-900 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src="/images/news-banner-bg.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 overflow-hidden">
+          <img src="/images/news-banner-bg.png" alt="" className="w-full h-[130%] object-cover object-[center_18%]" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-800/75 to-gray-900/85" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)' }} />

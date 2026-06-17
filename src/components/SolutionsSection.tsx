@@ -38,7 +38,7 @@ const scenarios = [
   },
 ]
 
-const CIRCUMFERENCE = 2 * Math.PI * 35  // r=35
+const CIRCUMFERENCE = 2 * Math.PI * 28
 
 export default function SolutionsSection() {
   const t = useTranslate()
@@ -95,54 +95,45 @@ export default function SolutionsSection() {
             {t('solutions.title', 'Solutions')} &amp;{' '}
             <span className="text-green-400">{t('solutions.scenarios', 'Scenarios')}</span>
           </h2>
+          <p className="mt-3 text-gray-400 text-sm">
+            C&I Storage · Residential · Special Vehicles · Special Equipment
+          </p>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10">
           {/* Left: Vertical tab buttons with progress rings */}
-          <div className="w-full md:w-[220px] flex-shrink-0 flex flex-row md:flex-col gap-4">
+          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center gap-5">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
                 onClick={() => handleTabClick(i)}
-                className="relative flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 group flex-1 md:flex-none"
+                className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full transition-all duration-300 group flex-shrink-0"
               >
                 {/* Progress ring */}
-                <svg className="absolute -inset-0.5 w-[calc(100%+4px)] h-[calc(100%+4px)]" viewBox="0 0 78 78">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 64 64">
                   {/* Background circle */}
-                  <circle cx="39" cy="39" r="35" fill="transparent"
-                    stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.06)'}
-                    strokeWidth="3" />
+                  <circle cx="32" cy="32" r="28" fill="transparent"
+                    stroke={i === activeTab ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.06)'}
+                    strokeWidth="5" />
                   {/* Progress circle */}
                   {i === activeTab && (
-                    <circle cx="39" cy="39" r="35" fill="transparent"
+                    <circle cx="32" cy="32" r="28" fill="transparent"
                       stroke="#22c55e"
-                      strokeWidth="3"
+                      strokeWidth="5"
                       strokeLinecap="round"
                       strokeDasharray={CIRCUMFERENCE}
                       strokeDashoffset={strokeDashoffset}
-                      style={{ transform: 'rotate(-90deg)', transformOrigin: '39px 39px', transition: 'stroke-dashoffset 0.03s linear' }}
+                      style={{ transform: 'rotate(-90deg)', transformOrigin: '32px 32px', transition: 'stroke-dashoffset 0.03s linear' }}
                     />
                   )}
                 </svg>
 
-                {/* Content */}
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 flex-shrink-0 ${
-                  i === activeTab
-                    ? 'bg-green-500/20 text-green-400 shadow-[0_0_12px_rgba(34,197,94,0.2)]'
-                    : 'bg-white/10 text-gray-400 group-hover:bg-white/15'
+                {/* Icon inside circle */}
+                <span className={`relative z-10 text-xl transition-all duration-300 ${
+                  i === activeTab ? 'text-green-400 scale-110' : 'text-gray-400 group-hover:text-gray-200'
                 }`}>
                   {['⚡', '🏠', '🚛', '🔧'][i]}
-                </div>
-                <div className="text-left">
-                  <p className={`text-sm font-semibold leading-tight transition-colors ${
-                    i === activeTab ? 'text-green-400' : 'text-gray-300 group-hover:text-white'
-                  }`}>
-                    {s.labelCn}
-                  </p>
-                  <p className="text-[10px] text-gray-500 leading-tight mt-0.5">
-                    {s.label}
-                  </p>
-                </div>
+                </span>
               </button>
             ))}
           </div>

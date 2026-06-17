@@ -6,35 +6,27 @@ import { useTranslate } from '@/i18n/client'
 const scenarios = [
   {
     id: 'ci-storage',
-    label: 'C&I Energy Storage',
-    labelCn: '工商储能',
     title: 'Industrial & Commercial Power Station Solution',
     desc: 'Large rooftop solar + energy storage for factories, office buildings, government facilities, schools and hospitals. Reduces electricity costs, ensures uninterrupted power, and maximizes return on investment through peak shaving and smart energy management.',
-    image: '/images/solution-residential.png',
+    image: '/images/scenario-1.png',
   },
   {
     id: 'residential',
-    label: 'Residential Storage',
-    labelCn: '民用储能',
     title: 'Residential Energy Storage Solution',
     desc: 'Home solar + battery systems for energy independence. Store excess solar energy for nighttime use, reduce electricity bills, and keep critical appliances running during power outages. Available in 3-50kW capacities.',
-    image: '/images/solution-residential.png',
+    image: '/images/scenario-2.jpg',
   },
   {
     id: 'special-vehicle',
-    label: 'Special Vehicles',
-    labelCn: '特殊车辆',
     title: 'Special Vehicle Energy Solutions',
     desc: 'Custom energy storage and power supply solutions for electric vehicles, RVs, emergency vehicles, and mobile workstations. Reliable power on the move for any application.',
-    image: '/images/solution-residential.png',
+    image: '/images/scenario-3.png',
   },
   {
     id: 'special-equipment',
-    label: 'Special Equipment',
-    labelCn: '特殊设备',
     title: 'Special Equipment Power Solutions',
     desc: 'Tailored energy storage solutions for specialized industrial equipment, medical devices, telecom base stations, and critical infrastructure requiring stable, uninterrupted power supply.',
-    image: '/images/solution-residential.png',
+    image: '/images/scenario-4.png',
   },
 ]
 

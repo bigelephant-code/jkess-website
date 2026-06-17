@@ -29,11 +29,19 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
       {(text || '').split('').map((char, i) => (
         <motion.span
           key={i}
-          className="inline-block"
+          className="inline-block transition-all duration-200"
           variants={{
-            rest: { y: 0, color: 'rgba(107,114,128,1)', transition: { duration: 0.2 } },
-            hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } },
+            rest: { y: 0, transition: { duration: 0.2 } },
+            hover: { y: -2, transition: { duration: 0.2 } },
           }}
+          style={{
+            backgroundImage: 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            opacity: 0.55
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '0.55'}
         >
           {char === ' ' ? '\u00A0' : char}
         </motion.span>

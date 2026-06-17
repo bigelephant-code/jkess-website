@@ -1,48 +1,86 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import { useTranslate } from '@/i18n/client'
 
-const solutions = [
+const scenarios = [
   {
-    title: 'Solar and Wind Farm',
-    desc: 'Large-scale renewable energy generation stations combining solar PV and wind turbines for utility-grade power supply.',
-    icon: '🌬️',
-    tag: 'Utility',
+    id: 'ci-storage',
+    label: 'C&I Energy Storage',
+    labelCn: '工商储能',
+    title: 'Industrial & Commercial Power Station Solution',
+    desc: 'Large rooftop solar + energy storage for factories, office buildings, government facilities, schools and hospitals. Reduces electricity costs, ensures uninterrupted power, and maximizes return on investment through peak shaving and smart energy management.',
+    image: '/images/solution-residential.png',
   },
   {
-    title: 'Farm & Island',
-    desc: 'Off-grid and hybrid energy solutions for remote farms and islands, providing reliable 24/7 power independence.',
-    icon: '🏝️',
-    tag: 'Off-grid',
+    id: 'residential',
+    label: 'Residential Storage',
+    labelCn: '民用储能',
+    title: 'Residential Energy Storage Solution',
+    desc: 'Home solar + battery systems for energy independence. Store excess solar energy for nighttime use, reduce electricity bills, and keep critical appliances running during power outages. Available in 3-50kW capacities.',
+    image: '/images/solution-residential.png',
   },
   {
-    title: 'Business District & Community',
-    desc: 'Commercial and community energy storage for peak shaving, load balancing, and emergency backup power.',
-    icon: '🏢',
-    tag: 'Commercial',
+    id: 'special-vehicle',
+    label: 'Special Vehicles',
+    labelCn: '特殊车辆',
+    title: 'Special Vehicle Energy Solutions',
+    desc: 'Custom energy storage and power supply solutions for electric vehicles, RVs, emergency vehicles, and mobile workstations. Reliable power on the move for any application.',
+    image: '/images/solution-residential.png',
   },
   {
-    title: 'Industrial Park & Factory',
-    desc: 'High-capacity energy storage for industrial parks, factories, and manufacturing facilities to reduce demand charges.',
-    icon: '🏭',
-    tag: 'Industrial',
-  },
-  {
-    title: 'Residential Rooftop Solar',
-    desc: 'Home solar + battery solutions for energy independence, lower electricity bills, and backup power during outages.',
-    icon: '🏠',
-    tag: 'Residential',
-  },
-  {
-    title: 'EV Charging Station',
-    desc: 'Integrated PV-storage-charging solutions for EV charging hubs, enabling green mobility with lower operating costs.',
-    icon: '🚗',
-    tag: 'Charging',
+    id: 'special-equipment',
+    label: 'Special Equipment',
+    labelCn: '特殊设备',
+    title: 'Special Equipment Power Solutions',
+    desc: 'Tailored energy storage solutions for specialized industrial equipment, medical devices, telecom base stations, and critical infrastructure requiring stable, uninterrupted power supply.',
+    image: '/images/solution-residential.png',
   },
 ]
 
+const CIRCUMFERENCE = 2 * Math.PI * 35  // r=35
+
 export default function SolutionsSection() {
   const t = useTranslate()
+  const [activeTab, setActiveTab] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const progressRef = useRef(0)
+  const startTimeRef = useRef(Date.now())
+
+  // Auto-rotation every 3 seconds
+  useEffect(() => {
+    startTimeRef.current = Date.now()
+    progressRef.current = 0
+    setProgress(0)
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTimeRef.current
+      const newProgress = Math.min((elapsed / 3000) * 100, 100)
+      progressRef.current = newProgress
+      setProgress(newProgress)
+
+      if (newProgress >= 100) {
+        setActiveTab((prev) => (prev + 1) % scenarios.length)
+        startTimeRef.current = Date.now()
+        progressRef.current = 0
+        setProgress(0)
+      }
+    }, 30)
+
+    timerRef.current = interval
+    return () => clearInterval(interval)
+  }, [])
+
+  // Reset timer when tab is manually clicked
+  const handleTabClick = (idx: number) => {
+    setActiveTab(idx)
+    startTimeRef.current = Date.now()
+    progressRef.current = 0
+    setProgress(0)
+  }
+
+  const strokeDashoffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
 
   return (
     <section className="relative bg-gray-900 py-20 md:py-28 overflow-hidden">
@@ -55,43 +93,83 @@ export default function SolutionsSection() {
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
             {t('solutions.title', 'Solutions')} &amp;{' '}
-            <span className="text-green-400">{t('solutions.app', 'Applications')}</span>
+            <span className="text-green-400">{t('solutions.scenarios', 'Scenarios')}</span>
           </h2>
-          <p className="mt-4 text-gray-400 text-base max-w-2xl mx-auto">
-            Comprehensive energy storage solutions covering residential, commercial, industrial and utility-scale applications
-          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {solutions.map((sol, i) => (
-            <div
-              key={sol.title}
-              className="group relative bg-white/5 backdrop-blur-sm border border-white/[0.06] rounded-2xl p-5 md:p-6 hover:border-green-500/30 hover:bg-white/[0.08] transition-all duration-300 cursor-default overflow-hidden"
-            >
-              {/* Hover accent line */}
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-green-500/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
+        <div className="flex flex-col md:flex-row gap-8 md:gap-10">
+          {/* Left: Vertical tab buttons with progress rings */}
+          <div className="w-full md:w-[220px] flex-shrink-0 flex flex-row md:flex-col gap-4">
+            {scenarios.map((s, i) => (
+              <button
+                key={s.id}
+                onClick={() => handleTabClick(i)}
+                className="relative flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 group flex-1 md:flex-none"
+              >
+                {/* Progress ring */}
+                <svg className="absolute -inset-0.5 w-[calc(100%+4px)] h-[calc(100%+4px)]" viewBox="0 0 78 78">
+                  {/* Background circle */}
+                  <circle cx="39" cy="39" r="35" fill="transparent"
+                    stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.06)'}
+                    strokeWidth="3" />
+                  {/* Progress circle */}
+                  {i === activeTab && (
+                    <circle cx="39" cy="39" r="35" fill="transparent"
+                      stroke="#22c55e"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeDasharray={CIRCUMFERENCE}
+                      strokeDashoffset={strokeDashoffset}
+                      style={{ transform: 'rotate(-90deg)', transformOrigin: '39px 39px', transition: 'stroke-dashoffset 0.03s linear' }}
+                    />
+                  )}
+                </svg>
 
-              {/* Icon */}
-              <div className="w-11 h-11 rounded-xl bg-green-500/10 flex items-center justify-center text-xl mb-4 group-hover:bg-green-500/20 transition-colors">
-                {sol.icon}
-              </div>
+                {/* Content */}
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-300 flex-shrink-0 ${
+                  i === activeTab
+                    ? 'bg-green-500/20 text-green-400 shadow-[0_0_12px_rgba(34,197,94,0.2)]'
+                    : 'bg-white/10 text-gray-400 group-hover:bg-white/15'
+                }`}>
+                  {['⚡', '🏠', '🚛', '🔧'][i]}
+                </div>
+                <div className="text-left">
+                  <p className={`text-sm font-semibold leading-tight transition-colors ${
+                    i === activeTab ? 'text-green-400' : 'text-gray-300 group-hover:text-white'
+                  }`}>
+                    {s.labelCn}
+                  </p>
+                  <p className="text-[10px] text-gray-500 leading-tight mt-0.5">
+                    {s.label}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
 
-              {/* Tag */}
-              <span className="inline-block text-[10px] uppercase tracking-widest text-green-400/70 font-semibold mb-1.5">
-                {sol.tag}
-              </span>
-
-              {/* Title */}
-              <h3 className="text-base md:text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors">
-                {sol.title}
+          {/* Right: Content + Photo */}
+          <div className="flex-1 min-w-0 grid md:grid-cols-5 gap-8 items-center">
+            {/* Text content */}
+            <div className="md:col-span-2 space-y-4">
+              <h3 className="text-lg md:text-2xl font-bold text-white">
+                {scenarios[activeTab].title}
               </h3>
-
-              {/* Description */}
-              <p className="text-xs md:text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
-                {sol.desc}
+              <p className="text-sm text-gray-400 leading-relaxed">
+                {scenarios[activeTab].desc}
               </p>
             </div>
-          ))}
+
+            {/* Photo */}
+            <div className="md:col-span-3">
+              <div className="relative w-full aspect-[4/3] bg-gray-800/40 backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden">
+                <img
+                  src={scenarios[activeTab].image}
+                  alt={scenarios[activeTab].title}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

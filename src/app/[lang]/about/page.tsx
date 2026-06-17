@@ -34,7 +34,6 @@ const cultures = [
 export default function AboutPage() {
   return (
     <div className="bg-white min-h-screen">
-      <div className="h-16 bg-gray-900" />
       <TeamSlideshow>
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">

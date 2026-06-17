@@ -25,7 +25,6 @@ const ContactSection = dynamic(() => import("@/components/ContactSection"), {
 const siteContent = {
   hero: {
     // title & subtitle are now loaded from i18n translations
-    ctaText: "Explore Products",
     ctaLink: "/products",
   },
   stats: {

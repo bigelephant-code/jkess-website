@@ -222,7 +222,7 @@ export default function Navbar() {
                     key={i}
                     className="inline-block"
                     variants={{
-                      rest: { y: 0, color: 'rgba(255,255,255,0.8)', transition: { duration: 0.2}},
+                      rest: { y: 0, color: 'rgba(255,255,255,1)', transition: { duration: 0.2}},
                       hover: { y: -2, color: '#22c55e', transition: { duration: 0.2}},
                    }}
                   >

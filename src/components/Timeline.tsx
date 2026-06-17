@@ -101,7 +101,7 @@ export default function Timeline() {
         </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-[1600px] mx-auto px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

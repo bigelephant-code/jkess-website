@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
 import CertTiltBoard from "@/components/CertTiltBoard";
+import SolutionsSection from "@/components/SolutionsSection";
 import TechLines from "@/components/TechLines";
 import { localizedPath } from "@/lib/lang";
 import type { LangCode } from "@/i18n/config";
@@ -131,6 +132,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
         <div className="relative z-10">
           <StatsSection data={siteContent.stats} />
           <Timeline />
+          <SolutionsSection />
           <CertTiltBoard />
         </div>
       </section>

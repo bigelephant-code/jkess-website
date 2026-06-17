@@ -100,7 +100,7 @@ export default function SolutionsSection() {
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10">
           {/* Left: Vertical tab buttons with progress rings */}
-          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center gap-5">
+          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center gap-7">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
@@ -112,12 +112,12 @@ export default function SolutionsSection() {
                   {/* Background circle */}
                   <circle cx="32" cy="32" r="28" fill="transparent"
                     stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(0,0,0,0.08)'}
-                    strokeWidth="5" />
+                    strokeWidth="6" />
                   {/* Progress circle */}
                   {i === activeTab && (
                     <circle cx="32" cy="32" r="28" fill="transparent"
                       stroke="#22c55e"
-                      strokeWidth="5"
+                      strokeWidth="6"
                       strokeLinecap="round"
                       strokeDasharray={CIRCUMFERENCE}
                       strokeDashoffset={strokeDashoffset}

@@ -28,6 +28,12 @@ const scenarios = [
     desc: 'Tailored energy storage solutions for specialized industrial equipment, medical devices, telecom base stations, and critical infrastructure requiring stable, uninterrupted power supply.',
     image: '/images/scenario-4.png',
   },
+  {
+    id: 'ground-station',
+    title: 'Ground Power Station',
+    desc: 'Large-scale ground-mounted solar and energy storage stations for utility-level power generation. Covers plain, mountain, hill, desert and water surface applications with stable and efficient operation under extreme environmental conditions.',
+    image: '',
+  },
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
@@ -148,12 +154,19 @@ export default function SolutionsSection() {
 
             {/* Photo */}
             <div className="md:col-span-3">
-              <div className="relative w-full aspect-[4/3] bg-gray-800/40 backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden">
-                <img
-                  src={scenarios[activeTab].image}
-                  alt={scenarios[activeTab].title}
-                  className="w-full h-full object-contain"
-                />
+              <div className="relative w-full aspect-[4/3] bg-gray-800/40 backdrop-blur-sm border border-white/[0.06] rounded-2xl overflow-hidden flex items-center justify-center">
+                {scenarios[activeTab].image ? (
+                  <img
+                    src={scenarios[activeTab].image}
+                    alt={scenarios[activeTab].title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="text-3xl mb-2">🏗️</div>
+                    <p className="text-xs text-gray-500">Image coming soon</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

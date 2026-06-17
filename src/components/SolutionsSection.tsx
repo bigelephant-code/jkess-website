@@ -128,7 +128,7 @@ export default function SolutionsSection() {
 
                 {/* Icons: PNG mask for 1,3,4,5 and SVG car for index 2 */}
                 {i === 1 ? (
-                  <svg key="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`relative z-10 w-6 h-6 transition-all duration-300 ${i === activeTab ? 'scale-110' : ''}`}><path d="M5 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4" /><circle cx="9" cy="17" r="1" /><circle cx="15" cy="17" r="1" /></svg>
+                  <svg key="car" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`relative z-10 w-6 h-6 transition-all duration-300 stroke-gray-600 ${i === activeTab ? 'scale-110 stroke-green-500' : ''}`}><path d="M5 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4" /><circle cx="9" cy="17" r="1" /><circle cx="15" cy="17" r="1" /></svg>
                 ) : (
                   <div
                     className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}

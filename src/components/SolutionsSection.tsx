@@ -126,14 +126,18 @@ export default function SolutionsSection() {
                   )}
                 </svg>
 
-                {/* SVG Icons inside circle */}
-                {[
-                  <svg key="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-6 h-6 ${i === activeTab ? 'scale-110' : ''}`}><rect x="3" y="9" width="18" height="10" rx="2" /><circle cx="7" cy="17" r="2" /><circle cx="17" cy="17" r="2" /><path d="M9 9l2-4h4l2 4" /></svg>,
-                  <svg key="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-6 h-6 ${i === activeTab ? 'scale-110' : ''}`}><path d="M5 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4" /><circle cx="9" cy="17" r="1" /><circle cx="15" cy="17" r="1" /></svg>,
-                  <svg key="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-6 h-6 ${i === activeTab ? 'scale-110' : ''}`}><circle cx="12" cy="12" r="10" /><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" /><path d="M2 12h20" /></svg>,
-                  <svg key="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-6 h-6 ${i === activeTab ? 'scale-110' : ''}`}><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>,
-                  <svg key="pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`w-6 h-6 ${i === activeTab ? 'scale-110' : ''}`}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>,
-                ][i]}
+                {/* Icons: PNG mask for 1,3,4,5 and SVG car for index 2 */}
+                {i === 1 ? (
+                  <svg key="car" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`relative z-10 w-6 h-6 transition-all duration-300 ${i === activeTab ? 'scale-110' : ''}`}><path d="M5 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4" /><circle cx="9" cy="17" r="1" /><circle cx="15" cy="17" r="1" /></svg>
+                ) : (
+                  <div
+                    className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}
+                    style={{
+                      mask: `url(/images/goodwe-icon-${['1','1','3','4','5'][i]}.png) center/contain no-repeat`,
+                      WebkitMask: `url(/images/goodwe-icon-${['1','1','3','4','5'][i]}.png) center/contain no-repeat`,
+                    }}
+                  />
+                )}
               </button>
             ))}
           </div>

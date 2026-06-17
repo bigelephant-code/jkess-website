@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
+import { useTranslate } from '@/i18n/client'
 
 export default function CartPage() {
+  const t = useTranslate()
   const { items, removeItem, updateQuantity, clearCart, itemCount, total } = useCart()
 
   // ── Empty cart ──
@@ -15,15 +17,15 @@ export default function CartPage() {
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
         <div className="text-center max-w-md">
           <ShoppingBag size={64} className="mx-auto mb-6 text-gray-600" />
-          <h1 className="text-2xl font-bold text-white mb-3">Your Cart is Empty</h1>
+          <h1 className="text-2xl font-bold text-white mb-3">{t('cart.empty')}</h1>
           <p className="text-gray-400 mb-8">
-            Looks like you haven&apos;t added any products yet.
+            {t('cart.emptyDesc')}
           </p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all"
           >
-            <ArrowLeft size={18} /> Continue Shopping
+            <ArrowLeft size={18} /> {t('cart.browse')}
           </Link>
         </div>
       </div>
@@ -37,12 +39,12 @@ export default function CartPage() {
       <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('cart.title')}</h1>
             <button
               onClick={clearCart}
               className="text-sm text-gray-500 hover:text-red-500 transition-colors"
             >
-              Clear All
+              {t('cart.clearAll')}
             </button>
           </div>
 
@@ -110,24 +112,24 @@ export default function CartPage() {
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-500">
-                  Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                  {t('cart.subtotal')} ({itemCount} {itemCount === 1 ? 'item' : 'items'})
                 </span>
                 <span className="text-gray-900 font-semibold">{total}</span>
               </div>
               <p className="text-xs text-gray-400 mb-6">
-                Shipping &amp; taxes calculated at checkout
+                {t('cart.shippingNote')}
               </p>
               <Link
                 href="/checkout"
                 className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-full text-lg transition-all"
               >
-                Proceed to Checkout
+                {t('cart.checkout')}
               </Link>
               <Link
                 href="/"
                 className="w-full flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900 font-medium px-8 py-3 mt-3 transition-colors"
               >
-                <ArrowLeft size={16} /> Continue Shopping
+                <ArrowLeft size={16} /> {t('cart.browse')}
               </Link>
             </div>
           </Reveal>

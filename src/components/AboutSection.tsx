@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { Reveal } from './ScrollReveal'
 
+import { useTranslate } from '@/i18n/client'
+
 interface AboutData {
   title?: string
   content?: string
@@ -10,6 +12,7 @@ interface AboutData {
 }
 
 export default function AboutSection({ data }: { data?: AboutData }) {
+  const t = useTranslate()
   return (
     <section id="about" className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -40,7 +43,7 @@ export default function AboutSection({ data }: { data?: AboutData }) {
           <Reveal direction="right" delay={0.15}>
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                {data?.title || 'About JKESS'}
+                {data?.title || t('about.title')}
               </h2>
               <div className="text-gray-600 leading-relaxed space-y-4">
                 {data?.content
@@ -49,21 +52,9 @@ export default function AboutSection({ data }: { data?: AboutData }) {
                     ))
                   : (
                     <>
-                      <p>
-                        JKBMS Electronic Technology Co.,Ltd is a high-tech enterprise
-                        deeply rooted in the new energy storage sector, covering product design,
-                        R&D, system integration, intelligent manufacturing, and global sales.
-                      </p>
-                      <p>
-                        With over a decade of technical expertise, we are committed to providing
-                        safe, reliable, efficient, and clean energy storage solutions to customers
-                        worldwide.
-                      </p>
-                      <p>
-                        As of 2026, our products have been exported to more than 30 countries,
-                        establishing long-term strategic partnerships with renowned enterprises
-                        across the globe.
-                      </p>
+                      <p>{t('about.desc')}</p>
+                      <p>{t('about.desc2')}</p>
+                      <p>{t('about.desc3')}</p>
                     </>
                   )}
               </div>

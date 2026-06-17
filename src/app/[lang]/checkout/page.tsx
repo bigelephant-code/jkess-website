@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowLeft, Lock, CheckCircle, Loader2, ExternalLink } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
+import { useTranslate } from '@/i18n/client'
 
 const PAYPAL_CLIENT_ID = 'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
 
@@ -16,6 +17,7 @@ declare global {
 }
 
 export default function CheckoutPage() {
+  const t = useTranslate()
   const { items, total, clearCart, itemCount } = useCart()
   const [submitted, setSubmitted] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
@@ -112,10 +114,10 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-3">Cart is Empty</h1>
-          <p className="text-gray-400 mb-6">Add some products first.</p>
+          <h1 className="text-2xl font-bold text-white mb-3">{t('checkout.cartIsEmpty')}</h1>
+          <p className="text-gray-400 mb-6">{t('checkout.addProductsFirst')}</p>
           <Link href="/" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
-            <ArrowLeft size={18} /> Continue Shopping
+            <ArrowLeft size={18} /> {t('checkout.continueShopping')}
           </Link>
         </div>
       </div>
@@ -128,12 +130,12 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
         <div className="text-center max-w-md">
           <CheckCircle size={64} className="mx-auto mb-6 text-green-400" />
-          <h1 className="text-3xl font-bold text-white mb-3">Payment Successful!</h1>
+          <h1 className="text-3xl font-bold text-white mb-3">{t('checkout.paymentSuccessful')}</h1>
           {orderId && <p className="text-sm text-gray-500 mb-2">PayPal Order: {orderId}</p>}
-          <p className="text-gray-400 mb-2">Thank you for your order! Your payment has been received.</p>
-          <p className="text-sm text-gray-500 mb-8">We will contact you shortly with shipping details.</p>
+          <p className="text-gray-400 mb-2">{t('checkout.thankYou')}</p>
+          <p className="text-sm text-gray-500 mb-8">{t('checkout.shippingDetails')}</p>
           <Link href="/" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
-            <ArrowLeft size={18} /> Back to Home
+            <ArrowLeft size={18} /> {t('checkout.backToHome')}
           </Link>
         </div>
       </div>
@@ -145,36 +147,36 @@ export default function CheckoutPage() {
     <div className="relative min-h-screen bg-gray-50"><div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
       <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">{t('checkout.title')}</h1>
 
           <Reveal>
             <div className="grid lg:grid-cols-5 gap-8">
               {/* Left: Forms */}
               <div className="lg:col-span-3 space-y-6">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
-                  <h2 className="text-lg font-semibold text-gray-900">Contact Information</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">{t('checkout.contactInfo')}</h2>
                   <div className="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="Full Name *" value={formData.name}
+                    <input type="text" placeholder={t('checkout.fullName')} value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       className="col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="email" placeholder="Email *" value={formData.email}
+                    <input type="email" placeholder={t('checkout.email')} value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="tel" placeholder="Phone *" value={formData.phone}
+                    <input type="tel" placeholder={t('checkout.phone')} value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="text" placeholder="Company" value={formData.company}
+                    <input type="text" placeholder={t('checkout.company')} value={formData.company}
                       onChange={(e) => setFormData({...formData, company: e.target.value})}
                       className="col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
                   </div>
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
-                  <h2 className="text-lg font-semibold text-gray-900">Shipping Address</h2>
-                  <textarea placeholder="Street address, City, Country, Postal code *" rows={3} value={formData.address}
+                  <h2 className="text-lg font-semibold text-gray-900">{t('checkout.shippingAddress')}</h2>
+                  <textarea placeholder={t('checkout.addressPlaceholder')} rows={3} value={formData.address}
                     onChange={(e) => setFormData({...formData, address: e.target.value})}
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
-                  <textarea placeholder="Order notes (optional)" rows={2} value={formData.notes}
+                  <textarea placeholder={t('checkout.notesPlaceholder')} rows={2} value={formData.notes}
                     onChange={(e) => setFormData({...formData, notes: e.target.value})}
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
                 </div>
@@ -183,7 +185,7 @@ export default function CheckoutPage() {
               {/* Right: Order Summary + PayPal */}
               <div className="lg:col-span-2">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-24">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('checkout.orderSummary')}</h2>
                   <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
                     {items.map((item) => (
                       <div key={item.slug + item.variant} className="flex gap-3">
@@ -202,7 +204,7 @@ export default function CheckoutPage() {
                     ))}
                   </div>
                   <div className="border-t border-gray-200 pt-4 mb-6 flex items-center justify-between">
-                    <span className="text-gray-900 font-semibold">Total</span>
+                    <span className="text-gray-900 font-semibold">{t('checkout.total')}</span>
                     <span className="text-xl font-bold text-green-600">${totalAmount}</span>
                   </div>
 
@@ -211,15 +213,15 @@ export default function CheckoutPage() {
                     {!sdkReady ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">
                         <Loader2 size={18} className="animate-spin text-green-500" />
-                        <span className="text-sm text-gray-500">Loading PayPal...</span>
+                        <span className="text-sm text-gray-500">{t('checkout.paypalLoading')}</span>
                       </div>
                     ) : sdkError ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
-                        <p className="text-sm text-yellow-700 font-medium mb-2">⚠️ PayPal temporarily unavailable</p>
-                        <p className="text-xs text-gray-500 mb-4">Please send payment via bank transfer or contact us.</p>
+                        <p className="text-sm text-yellow-700 font-medium mb-2">{'⚠️ ' + t('checkout.paypalUnavailable')}</p>
+                        <p className="text-xs text-gray-500 mb-4">{t('checkout.paypalDesc')}</p>
                         <a href="mailto:chinaenergymall@163.com"
                           className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
-                          <ExternalLink size={16} /> Contact Us to Pay
+                          <ExternalLink size={16} /> {t('checkout.contactToPay')}
                         </a>
                       </div>
                     ) : (
@@ -227,12 +229,12 @@ export default function CheckoutPage() {
                     )}
 
                     <p className="text-xs text-gray-400 text-center flex items-center justify-center gap-1">
-                      <Lock size={12} /> Secure payment via PayPal
+                      <Lock size={12} /> {t('checkout.securePayment')}
                     </p>
 
                     {(!formData.name || !formData.email || !formData.phone || !formData.address) && (
                       <p className="text-xs text-yellow-600 text-center">
-                        Please fill in all required fields above before paying
+                      {t('checkout.fillFields')}
                       </p>
                     )}
                   </div>

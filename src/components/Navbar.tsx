@@ -285,7 +285,7 @@ export default function Navbar() {
               <a
                 key={link.key}
                 href={`${prefix}${link.href}`}
-                className="block text-lg tracking-wider font-medium text-white/80 transition-colors duration-200"
+                className="block text-xl tracking-wider font-medium text-white/80 transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 {t(link.key) || link.key.replace('nav.', '')}
@@ -294,7 +294,7 @@ export default function Navbar() {
 
             <div className="border-t border-white/10 pt-4">
               <p className="text-xs uppercase tracking-widest text-gray-500 mb-3 font-semibold flex items-center gap-2">
-                <Globe size={14} /> {t('nav.language', 'Language')}
+                <Globe size={16} /> {t('nav.language', 'Language')}
               </p>
               <div className="grid grid-cols-2 gap-1.5 max-h-[300px] overflow-y-auto">
                 {locales.map((locale) => {

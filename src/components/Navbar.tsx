@@ -186,13 +186,13 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* ── Original Navbar Content — unchanged layout ── */}
-      <div className="px-6 h-22 flex items-center justify-between">
+      <div className="px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <a href={prefix || '/'} className="flex items-center">
           <img
             src="/images/jkess-logo-cropped.png"
             alt="JKESS"
-            className="h-14 w-auto brightness-0 invert"
+            className="h-12 w-auto brightness-0 invert"
           />
         </a>
 

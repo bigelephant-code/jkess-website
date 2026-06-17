@@ -113,7 +113,7 @@ export default function Navbar() {
     <nav
       ref={navRef}
       style={{
-        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.5s ease-in-out',
         transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})`,
       }}
       className={`fixed z-50 left-1/2 bg-black/50 border border-white/[0.04] ${

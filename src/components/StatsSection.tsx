@@ -132,7 +132,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                     transition={{ duration: 0.2 }}
                   >
                     <motion.div
-                      className="flex justify-center text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent"
+                      className="flex justify-center text-gray-400 transition-all duration-300 group-hover:text-blue-500"
                       whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
                       transition={{ duration: 0.3 }}
                     >

@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
-import { useTranslate } from '@/i18n/client'
+import { useI18n } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 export default function CartPage() {
-  const t = useTranslate()
+  const { lang, t } = useI18n()
   const { items, removeItem, updateQuantity, clearCart, itemCount, total } = useCart()
 
   // ── Empty cart ──
@@ -22,7 +23,7 @@ export default function CartPage() {
             {t('cart.emptyDesc')}
           </p>
           <Link
-            href="/"
+            href={localizedPath(lang, '/')}
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all"
           >
             <ArrowLeft size={18} /> {t('cart.browse')}
@@ -120,13 +121,13 @@ export default function CartPage() {
                 {t('cart.shippingNote')}
               </p>
               <Link
-                href="/checkout"
+                href={localizedPath(lang, '/checkout')}
                 className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-full text-lg transition-all"
               >
                 {t('cart.checkout')}
               </Link>
               <Link
-                href="/"
+                href={localizedPath(lang, '/')}
                 className="w-full flex items-center justify-center gap-2 text-gray-500 hover:text-gray-900 font-medium px-8 py-3 mt-3 transition-colors"
               >
                 <ArrowLeft size={16} /> {t('cart.browse')}

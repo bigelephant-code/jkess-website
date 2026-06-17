@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { ArrowLeft, Lock, CheckCircle, Loader2, ExternalLink } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
-import { useTranslate } from '@/i18n/client'
+import { useI18n } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 const PAYPAL_CLIENT_ID = 'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
 
@@ -17,7 +18,7 @@ declare global {
 }
 
 export default function CheckoutPage() {
-  const t = useTranslate()
+  const { lang, t } = useI18n()
   const { items, total, clearCart, itemCount } = useCart()
   const [submitted, setSubmitted] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
@@ -116,7 +117,7 @@ export default function CheckoutPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-3">{t('checkout.cartIsEmpty')}</h1>
           <p className="text-gray-400 mb-6">{t('checkout.addProductsFirst')}</p>
-          <Link href="/" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
+          <Link href={localizedPath(lang, '/')} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
             <ArrowLeft size={18} /> {t('checkout.continueShopping')}
           </Link>
         </div>
@@ -134,7 +135,7 @@ export default function CheckoutPage() {
           {orderId && <p className="text-sm text-gray-500 mb-2">PayPal Order: {orderId}</p>}
           <p className="text-gray-400 mb-2">{t('checkout.thankYou')}</p>
           <p className="text-sm text-gray-500 mb-8">{t('checkout.shippingDetails')}</p>
-          <Link href="/" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
+          <Link href={localizedPath(lang, '/')} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
             <ArrowLeft size={18} /> {t('checkout.backToHome')}
           </Link>
         </div>

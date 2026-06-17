@@ -120,12 +120,15 @@ export default function SolutionsSection() {
                   )}
                 </svg>
 
-                {/* Icon inside circle */}
-                <img src="/images/goodwe-icon-${i + 1}.png"
-                  alt={s.title}
-                  className={`relative z-10 w-6 h-6 transition-all duration-300 brightness-0 invert ${
-                    i === activeTab ? 'opacity-100 scale-110 drop-shadow-[0_0_4px_rgba(34,197,94,0.5)]' : 'opacity-60 group-hover:opacity-90'
+                {/* Icon inside circle - using CSS mask to extract shape from PNG */}
+                <div
+                  className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-400 ${
+                    i === activeTab ? 'bg-green-400 scale-110' : 'group-hover:bg-gray-300'
                   }`}
+                  style={{
+                    mask: `url(/images/goodwe-icon-${i + 1}.png) center/contain no-repeat`,
+                    WebkitMask: `url(/images/goodwe-icon-${i + 1}.png) center/contain no-repeat`,
+                  }}
                 />
               </button>
             ))}

@@ -29,7 +29,7 @@ const siteContent = {
   },
   stats: {
     yearsEstablished: 10,
-    manufacturingBase: "30,000",
+    manufacturingBase: "30000",
     countriesCovered: 30,
     employees: "100+",
   },

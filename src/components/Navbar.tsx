@@ -110,18 +110,16 @@ export default function Navbar() {
  }, [])
 
   return (
-    <motion.nav
+    <nav
       ref={navRef}
-      initial={false}
-      animate={{
-        x: atTop ? 0 : '-50%',
-        y: visible ? 0 : -120,
+      style={{
+        transition: 'all 0.36s ease-out',
+        transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})`,
       }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      className={`fixed z-50 bg-black/50 border border-white/[0.04] transition-[top,left,width,max-width,border-radius] duration-250 ease-out ${
+      className={`fixed z-50 left-1/2 bg-black/50 border border-white/[0.04] ${
         atTop
-          ? 'top-0 left-0 w-full max-w-none rounded-none'
-          : 'top-2 left-1/2 w-[97%] max-w-[1580px] rounded-[17px]'
+          ? 'top-0 w-full max-w-none rounded-none'
+          : 'top-2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
       {/* ── Particle Rain Effect (on reappear) ── */}
@@ -360,6 +358,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   )
 }

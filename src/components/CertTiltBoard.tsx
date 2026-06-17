@@ -66,7 +66,7 @@ export default function CertTiltBoard() {
                 <motion.div
                   className="relative w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
                   style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
-                  whileHover={{ y: -8, scale: 1.15, borderColor: cert.color, boxShadow: `0 16px 48px rgba(0,0,0,0.12), 0 0 30px ${cert.color}30` }}
+                  whileHover={{ y: -7, scale: 1.10, borderColor: cert.color, boxShadow: `0 14px 48px rgba(0,0,0,0.1), 0 0 25px ${cert.color}25` }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 >
                   {/* Color accent bar */}
@@ -81,7 +81,7 @@ export default function CertTiltBoard() {
                       src={cert.image}
                       alt={cert.title}
                       fill
-                      className="object-contain transition-all duration-500 ease-out group-hover:scale-125"
+                      className="object-contain transition-all duration-500 ease-out group-hover:scale-[1.18]"
                       sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 14vw"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3 z-10">

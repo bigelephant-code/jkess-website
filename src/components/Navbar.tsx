@@ -132,7 +132,7 @@ export default function Navbar() {
             className="absolute inset-0 z-30 pointer-events-none overflow-hidden"
             style={{ borderRadius: 'inherit'}}
           >
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-black/25 to-transparent animate-navbar-sweep" />
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent animate-navbar-sweep" />
           </motion.div>
         )}
       </AnimatePresence>

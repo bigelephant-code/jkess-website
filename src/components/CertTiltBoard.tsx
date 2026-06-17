@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslate } from '@/i18n/client'
 
 interface Certificate {
   title: string
@@ -26,6 +27,7 @@ const certificates: Certificate[] = [
 ]
 
 export default function CertTiltBoard() {
+  const t = useTranslate()
   const [expandedIndex, setExpandedIndex] = useState(-1)
 
   return (
@@ -35,7 +37,7 @@ export default function CertTiltBoard() {
         {/* Module title */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
-            Certified <span className="text-green-600">Excellence</span>
+{t('certified.title')?.split(' ')?.[0]} <span className="text-green-600">{t('certified.title')?.split(' ')?.slice(1)?.join(' ')}</span>
           </h2>
         </div>
 

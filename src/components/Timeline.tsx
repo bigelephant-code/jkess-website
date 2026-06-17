@@ -1,49 +1,49 @@
 ﻿'use client'
-import { useTranslate } from '@/i18n/client'
-
 import { motion } from 'framer-motion'
 
-const milestones = [
-  {
-    year: '2017',
-    period: '2017-2019',
-    title: 'FOUNDATION',
-    content: [
-      'Established the team under Shandong Tunan, entering the new energy industry and commencing R&D of energy storage products.',
-      'Launched the first-generation products, earning positive feedback from customers.',
-    ],
-  },
-  {
-    year: '2020',
-    period: '2020-2022',
-    title: 'GROWTH',
-    content: [
-      'Established the Hangzhou R&D center for cutting-edge technology innovation. Founded JKBMS subsidiary, rapidly scaling technical capabilities and team size.',
-      'Successfully expanded into overseas markets. International market share surged rapidly, attracting significant industry attention.',
-    ],
-  },
-  {
-    year: '2023',
-    period: '2023-2024',
-    title: 'BREAKTHROUGH',
-    content: [
-      'Launched the JKESS brand covering more than 30 countries worldwide. A 5-hectare large-scale modern energy storage production base was completed and put into operation.',
-      'Successfully developed high-voltage commercial & industrial energy storage systems with active balancing technology, helping customers improve returns by 2-5 years.',
-    ],
-  },
-  {
-    year: '2026',
-    period: '2026-Future',
-    title: 'EXPANSION',
-    content: [
-      'From R&D design and production integration to backend testing and after-sales — JKESS now possesses full-chain capabilities in energy storage system development, manufacturing, and sales services.',
-      'Current production lines reach 2.1 GWh/year capacity, rising as a fast-growing star in the energy storage industry.',
-    ],
-  },
-]
+import { useTranslate } from '@/i18n/client'
 
 export default function Timeline() {
   const t = useTranslate()
+
+  const milestones = [
+    {
+      year: '2017',
+      period: '2017-2019',
+      title: t('timeline.2017.title'),
+      content: [
+        t('timeline.2017.line1'),
+        t('timeline.2017.line2'),
+      ],
+    },
+    {
+      year: '2020',
+      period: '2020-2022',
+      title: t('timeline.2020.title'),
+      content: [
+        t('timeline.2020.line1'),
+        t('timeline.2020.line2'),
+      ],
+    },
+    {
+      year: '2023',
+      period: '2023-2024',
+      title: t('timeline.2023.title'),
+      content: [
+        t('timeline.2023.line1'),
+        t('timeline.2023.line2'),
+      ],
+    },
+    {
+      year: '2026',
+      period: '2026-Future',
+      title: t('timeline.2026.title'),
+      content: [
+        t('timeline.2026.line1'),
+        t('timeline.2026.line2'),
+      ],
+    },
+  ]
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
       {/* Subtle world map background pattern */}
@@ -110,7 +110,7 @@ export default function Timeline() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-            Development <span className="text-green-600">History</span>
+{t('timeline.title.part1')} <span className="text-green-600">{t('timeline.title.part2')}</span>
           </h2>
         </motion.div>
 

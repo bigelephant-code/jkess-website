@@ -110,13 +110,15 @@ export default function Navbar() {
  }, [])
 
   return (
-    <nav
+    <motion.nav
       ref={navRef}
-      style={{
-        transition: 'all 0.25s ease-out',
-        transform: `translateX(${atTop ? '0' : '-50%'}) translateY(${visible ? '0' : '-120px'})`,
+      initial={false}
+      animate={{
+        x: atTop ? 0 : '-50%',
+        y: visible ? 0 : -120,
       }}
-      className={`fixed z-50 bg-black/50 border border-white/[0.04] ${
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className={`fixed z-50 bg-black/50 border border-white/[0.04] transition-[top,left,width,max-width,border-radius] duration-250 ease-out ${
         atTop
           ? 'top-0 left-0 w-full max-w-none rounded-none'
           : 'top-2 left-1/2 w-[97%] max-w-[1580px] rounded-[17px]'
@@ -358,6 +360,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   )
 }

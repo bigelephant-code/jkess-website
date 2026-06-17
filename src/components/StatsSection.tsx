@@ -100,7 +100,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
     },
     {
       key: 'base',
-      value: data?.manufacturingBase || '30,000',
+      value: data?.manufacturingBase || '30000',
       suffix: '\u33A1' as string | undefined,
       label: t('stats.manufacturing', 'Manufacturing Base'),
     },
@@ -143,7 +143,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                         <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                       </span>
                       {stat.suffix && (
-                        <span className="text-lg text-gray-400">{stat.suffix}</span>
+                        <span className="text-lg text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">{stat.suffix}</span>
                       )}
                     </div>
                     <StaggerText

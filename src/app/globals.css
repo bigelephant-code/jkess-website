@@ -116,3 +116,25 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #333 transparent;
 }
+
+/* Navbar energy sweep effect */
+@keyframes navbar-sweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-navbar-sweep {
+  animation: navbar-sweep 0.8s ease-out forwards;
+}

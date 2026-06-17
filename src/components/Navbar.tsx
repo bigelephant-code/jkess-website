@@ -122,49 +122,17 @@ export default function Navbar() {
           : 'top-2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
-      {/* ── Particle Rain Effect (on reappear) ── */}
+      {/* ── Energy Sweep Effect (on reappear, lightweight CSS animation) ── */}
       <AnimatePresence>
         {justAppeared && (
           <motion.div
             initial={{ opacity: 1}}
             exit={{ opacity: 0}}
-            transition={{ duration: 0.3}}
+            transition={{ duration: 0.3, delay: 0.5}}
             className="absolute inset-0 z-30 pointer-events-none overflow-hidden"
             style={{ borderRadius: 'inherit'}}
           >
-            {Array.from({ length: 40}).map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{
-                  x: Math.random() * 100 + '%',
-                  y: -20 - Math.random() * 30,
-                  scale: 0.3,
-                  opacity: 1,
-               }}
-                animate={{
-                  y: [null, 60 + Math.random() * 40 + '%', 100 + Math.random() * 30 + '%'],
-                  x: [null, (Math.random() - 0.5) * 80 + '%'],
-                  scale: [0.3, 1.2, 2.5],
-                  opacity: [1, 0.8, 0],
-               }}
-                transition={{
-                  duration: 0.6 + Math.random() * 0.3,
-                  delay: Math.random() * 0.15,
-                  ease: 'easeOut',
-               }}
-                className="absolute w-1.5 h-1.5 rounded-full bg-white/40"
-                style={{
-                  left: (i * 2.5) % 100 + '%',
-               }}
-              />
-            ))}
-            {/* Radial burst center */}
-            <motion.div
-              initial={{ scale: 0, opacity: 1}}
-              animate={{ scale: 20, opacity: 0}}
-              transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut'}}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/15"
-            />
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-green-500/15 to-transparent animate-navbar-sweep" />
           </motion.div>
         )}
       </AnimatePresence>

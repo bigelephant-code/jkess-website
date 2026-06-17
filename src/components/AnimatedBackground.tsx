@@ -373,16 +373,11 @@ export default function AnimatedBackground() {
 
     function initTravelers() {
       travelers = []
-      // Two travelers per edge for more energy flow
+      // One traveler per edge
       for (let i = 0; i < EDGE_DEFS.length; i++) {
         travelers.push({
           edgeIndex: i,
           progress: (i / EDGE_DEFS.length) % 1,
-          speed: 0.003 + Math.random() * 0.005,
-        })
-        travelers.push({
-          edgeIndex: i,
-          progress: ((i / EDGE_DEFS.length) + 0.5) % 1,
           speed: 0.003 + Math.random() * 0.005,
         })
       }

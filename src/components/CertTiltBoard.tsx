@@ -67,7 +67,7 @@ export default function CertTiltBoard() {
 
                 {/* Card */}
                 <motion.div
-                  className="relative w-full max-w-[160px] aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
+                  className="relative w-full max-w-[180px] aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
                   style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
                   whileHover={{ y: -6, scale: 1.06, borderColor: cert.color, boxShadow: `0 12px 48px rgba(0,0,0,0.1), 0 0 20px ${cert.color}20` }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}

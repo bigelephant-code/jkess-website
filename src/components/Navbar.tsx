@@ -118,8 +118,8 @@ export default function Navbar() {
       }}
       className={`fixed z-50 left-1/2 bg-black/50 border border-white/[0.04] ${
         atTop
-          ? 'top-0 w-full max-w-none rounded-none'
-          : 'top-2 w-[97%] max-w-[1580px] rounded-[17px]'
+          ? 'top-0 left-1/2 w-full max-w-[1580px] rounded-none'
+          : 'top-2 left-1/2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
       {/* ── Energy Sweep Effect (on reappear, lightweight CSS animation) ── */}

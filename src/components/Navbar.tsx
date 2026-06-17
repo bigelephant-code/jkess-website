@@ -167,7 +167,7 @@ export default function Navbar() {
                             className={`flex items-center gap-2 px-2 py-2 rounded-lg text-base transition-colors ${
                               isActive
                                 ? 'bg-green-500/15 text-green-400'
-                                : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                                : 'text-gray-200 hover:bg-white/10 hover:text-white'
                            }`}
                           >
                             <span className="text-2xl shrink-0 leading-none flex items-center self-center">{locale.flag}</span>
@@ -202,7 +202,7 @@ export default function Navbar() {
             <a
               key={link.key}
               href={`${prefix}${link.href}`}
-              className="relative text-xl tracking-wider font-medium text-white/80 transition-colors duration-200
+              className="relative text-xl tracking-wider font-medium text-white/95 transition-colors duration-200
                 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
                 before:bg-green-500 before:rounded-full before:transition-all before:duration-300
                 hover:before:w-full"
@@ -236,7 +236,7 @@ export default function Navbar() {
           {/* ── Language Switcher ── */}
           <button
             onClick={() => setLangOpen(!langOpen)}
-            className="flex items-center gap-1.5 text-white/60 hover:text-green-500 transition-colors duration-200 text-xl"
+            className="flex items-center gap-1.5 text-white/85 hover:text-green-500 transition-colors duration-200 text-xl"
           >
             <Globe size={24} />
             <span className="text-2xl leading-none">{currentLocale.flag}</span>
@@ -245,7 +245,7 @@ export default function Navbar() {
           {/* Cart icon */}
           <a
             href={`${prefix}/cart`}
-            className="relative text-white/60 hover:text-green-500 transition-colors duration-200"
+            className="relative text-white/85 hover:text-green-500 transition-colors duration-200"
           >
             <ShoppingCart size={24} />
             {itemCount > 0 && (
@@ -285,7 +285,7 @@ export default function Navbar() {
               <a
                 key={link.key}
                 href={`${prefix}${link.href}`}
-                className="block text-xl tracking-wider font-medium text-white/80 transition-colors duration-200"
+                className="block text-xl tracking-wider font-medium text-white/95 transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
               >
                 {t(link.key) || link.key.replace('nav.', '')}
@@ -318,7 +318,7 @@ export default function Navbar() {
 
             <a
               href={`${prefix}/#contact`}
-              className="block text-center border border-white/20 hover:border-green-500 text-white/80 hover:text-green-500 font-normal px-6 py-2.5 rounded-[8px] transition-all duration-200"
+              className="block text-center border border-white/20 hover:border-green-500 text-white/95 hover:text-green-500 font-normal px-6 py-2.5 rounded-[8px] transition-all duration-200"
               onClick={() => setIsOpen(false)}
             >
               {t('nav.getQuote', 'Get a Quote')}

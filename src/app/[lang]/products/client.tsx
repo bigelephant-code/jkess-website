@@ -24,7 +24,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
 
   return (
     <div className="relative min-h-screen bg-gray-50">
-      <div className="absolute top-0 left-0 right-0 h-20 bg-black z-0" />
+      <div className="absolute top-0 left-0 right-0 h-22 bg-black z-0" />
       <div className="relative pt-32 pb-8 z-10">
         <div className="max-w-7xl mx-auto px-6"><div className="h-0" /></div>
       </div>

@@ -552,11 +552,18 @@ export default function AnimatedBackground() {
         const jk = nodes[3]
         const jkY = jk.y + Math.sin(time * 0.8 + jk.phase) * 12
         const pulseR = ((time * 45) % 120) * 1.5
-        if (pulseR < 150) {
+        if (pulseR < 200 && pulseR > 6) {
+          // Outer halo ring
+          ctx!.beginPath()
+          ctx!.arc(jk.x, jkY, pulseR - 6, 0, Math.PI * 2)
+          ctx!.strokeStyle = `rgba(74, 222, 128, ${Math.max(0, 0.08 - pulseR / 1500)})`
+          ctx!.lineWidth = 8
+          ctx!.stroke()
+          // Inner sharp ring
           ctx!.beginPath()
           ctx!.arc(jk.x, jkY, pulseR, 0, Math.PI * 2)
-          ctx!.strokeStyle = `rgba(74, 222, 128, ${Math.max(0, 0.08 - pulseR / 2000)})`
-          ctx!.lineWidth = 2
+          ctx!.strokeStyle = `rgba(74, 222, 128, ${Math.max(0, 0.25 - pulseR / 800)})`
+          ctx!.lineWidth = 2.5
           ctx!.stroke()
         }
       }

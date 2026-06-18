@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { worldLand } from '@/data/world'
 
 const HUBS = [
   { name: 'China', lat: 30.5, lng: 104.0, color: '#22c55e', label: 'China' },
@@ -27,14 +28,7 @@ function geoToXY(lat: number, lng: number, w: number, h: number) {
 
 export default function DynamicGlobe() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const wdRef = useRef<[number, number][][] | null>(null)
-
-  useEffect(() => {
-    fetch('/data/world-land.json')
-      .then(r => r.json())
-      .then(d => { wdRef.current = d })
-      .catch(() => {})
-  }, [])
+  const wdRef = useRef(worldLand)
 
   useEffect(() => {
     const canvas = canvasRef.current

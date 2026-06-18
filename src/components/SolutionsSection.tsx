@@ -87,6 +87,16 @@ export default function SolutionsSection() {
     return () => clearInterval(interval)
   }, [switchTab])
 
+  // Preload scenario images for smooth switching
+  useEffect(() => {
+    scenarios.forEach((s) => {
+      if (s.image) {
+        const img = new Image()
+        img.src = s.image
+      }
+    })
+  }, [])
+
   // Reset timer when tab is manually clicked
   const handleTabClick = (idx: number) => {
     switchTab(idx)
@@ -186,13 +196,13 @@ export default function SolutionsSection() {
           {/* Right: Content + Photo */}
           <div className="flex-1 min-w-0 grid md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-2 space-y-4">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 <motion.div
                   key={activeTab}
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -18 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
                 >
                   <h3 className="text-lg md:text-2xl font-bold text-gray-900">
                     {scenarios[activeTab].title}
@@ -205,12 +215,12 @@ export default function SolutionsSection() {
             </div>
 
             <div className="md:col-span-3">
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 <motion.div
                   key={activeTab}
-                  initial={{ opacity: 0, y: -18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 18 }}
+                  initial={{ opacity: 0, y: -15, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 15, scale: 0.97 }}
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                   className="relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center"
                 >

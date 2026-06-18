@@ -17,9 +17,9 @@ const scenarios = [
     image: '/images/scenario-1.png',
   },
   {
-    id: 'special-vehicle',
-    title: 'Special Vehicle Energy Solutions',
-    desc: 'Custom energy storage and power supply solutions for electric vehicles, RVs, emergency vehicles, and mobile workstations. Reliable power on the move for any application.',
+    id: 'solar-pv',
+    title: 'Solar PV & Energy Storage Solution',
+    desc: 'Comprehensive solar photovoltaic power station solution — whether it\'s a residential rooftop PV system or a large-scale ground-mounted solar farm, JKESS has the right energy storage products to achieve perfect matching. For residential solar installations, JKESS battery kits (15KWh/16KWh compatible) paired with intelligent BMS protection boards and the optional HV kit create a seamless home energy storage system that stores daytime solar energy for nighttime use, maximizing self-consumption and energy independence. For commercial and utility-scale solar PV stations, JKESS offers scalable C&I energy storage solutions ranging from 64KWh to 265KWh with flexible split stacked or integrated cabinet configurations, supporting both air cooling and liquid cooling thermal management to suit any climate conditions. All JKESS storage systems feature active balancing BMS for optimal battery performance and lifespan, CAN/RS485 communication for seamless inverter integration, and remote cloud monitoring for real-time performance tracking. From residential rooftops to sprawling solar farms, JKESS core components ensure every watt of solar energy is captured, stored, and utilized efficiently.',
     image: '/images/scenario-3.png',
   },
   {

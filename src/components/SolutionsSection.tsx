@@ -29,9 +29,9 @@ const scenarios = [
     image: '/images/scenario-4.png',
   },
   {
-    id: 'ground-station',
-    title: 'Ground Power Station',
-    desc: 'Large-scale ground-mounted solar and energy storage stations for utility-level power generation. Covers plain, mountain, hill, desert and water surface applications with stable and efficient operation under extreme environmental conditions.',
+    id: 'low-speed-vehicle',
+    title: 'Low-Speed Vehicle Solution',
+    desc: 'Complete battery and electronic control solution tailored for low-speed electric vehicles, covering two-wheelers, three-wheelers, and small four-wheel vehicles used in daily commuting, last-mile delivery, campus shuttles, and community mobility. At the core of each solution, JKESS intelligent BMS protection boards with active balancing (2A~15A, 4S~32S) ensure safe and efficient battery management across all cells, extending cycle life and preventing overcharge, over-discharge, and short circuits. Paired with JKESS modular battery packs, the system delivers reliable and consistent power output tailored to each vehicle type — from lightweight two-wheeler batteries for urban commuting to higher-capacity packs for three-wheeled cargo vehicles and small four-wheeled passenger vehicles. The integrated electronic control system provides smooth acceleration, regenerative braking support, and real-time status monitoring via CAN bus communication. Designed for durability and safety, JKESS low-speed vehicle solutions meet European market standards, offering affordable, clean, and efficient electrification for short-distance transportation needs. Whether it\'s an e-bike for city streets, a cargo trike for last-mile logistics, or a compact neighborhood EV, JKESS delivers the power and control system that keeps you moving.',
     image: '',
   },
 ]

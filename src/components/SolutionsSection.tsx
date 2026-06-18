@@ -23,9 +23,9 @@ const scenarios = [
     image: '/images/scenario-3.png',
   },
   {
-    id: 'special-equipment',
-    title: 'Special Equipment Power Solutions',
-    desc: 'Tailored energy storage solutions for specialized industrial equipment, medical devices, telecom base stations, and critical infrastructure requiring stable, uninterrupted power supply.',
+    id: 'outdoor-emergency',
+    title: 'Outdoor & Emergency Power Solution',
+    desc: 'Reliable and portable energy storage solutions designed for outdoor adventures, emergency response, and off-grid scenarios where mains power is unavailable or unstable. For outdoor travel and camping enthusiasts, JKESS compact battery kits paired with intelligent BMS protection boards deliver clean, quiet, and portable power for charging devices, running small appliances, and powering lighting — a clean alternative to noisy gas generators. For small clinics, medical stations, and field hospitals in remote or disaster-affected areas, JKESS storage systems provide stable and uninterrupted power supply for critical medical equipment, refrigeration of vaccines and medicines, lighting, and communication devices, ensuring life-saving operations continue even during grid outages. For construction sites, engineering maintenance crews, and temporary workstations in remote locations, JKESS modular battery solutions offer flexible and scalable power that can be transported and deployed on demand. All systems feature JKESS active balancing BMS for extended battery life, multiple output interfaces for versatile device connectivity, CAN/RS485 communication for monitoring, and rugged construction designed to withstand challenging outdoor conditions. Wherever there is no grid, JKESS delivers the power you need.',
     image: '/images/scenario-4.png',
   },
   {

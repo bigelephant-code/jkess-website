@@ -97,8 +97,8 @@ export default function AboutPage() {
                   {t('warehouse.title', 'Global Warehouse & Logistics')}
                 </h2>
                 <div className="text-gray-600 leading-relaxed space-y-4">
-                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics for our growing customer base. Combined with our overseas warehouses in Poland (serving the European market) and the United States (covering North America), we offer a truly global distribution network that guarantees fast delivery, reduced shipping costs, and localized support for customers worldwide.')}</p>
-                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system ensures product availability, flexible dispatch options, and seamless cross-border logistics. With warehouses on three continents, JKESS is committed to delivering energy storage solutions to your doorstep — wherever you are.')}</p>
+                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics. Combined with our overseas warehouses in Poland (serving the European market), the United States (covering North America), and Brazil (covering South America), we offer a truly global distribution network that guarantees fast delivery, reduced shipping costs, and localized support for customers worldwide.')}</p>
+                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system ensures product availability, flexible dispatch options, and seamless cross-border logistics. With warehouses on four continents, JKESS is committed to delivering energy storage solutions to your doorstep — wherever you are.')}</p>
                 </div>
               </div>
             </Reveal>

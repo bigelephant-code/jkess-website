@@ -37,61 +37,27 @@ const scenarios = [
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
-const PATH_LENGTH = 500
-
-function getFlowPath(x1: number, y1: number, x2: number, y2: number) {
-  const midY = (y1 + y2) / 2
-  // Arc offset: bigger when distance is bigger
-  const dist = Math.abs(y2 - y1)
-  const arcOffset = Math.min(40, 15 + dist * 0.05)
-  return `M ${x1} ${y1} C ${x1 + arcOffset} ${midY} ${x2 + arcOffset} ${midY} ${x2} ${y2}`
-}
 
 export default function SolutionsSection() {
   const t = useTranslate()
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [flow, setFlow] = useState<{
-    fromIdx: number
-    path: string
-    vw: number
-    vh: number
-  } | null>(null)
+  const [relayFrom, setRelayFrom] = useState<number | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef(0)
   const startTimeRef = useRef(Date.now())
-  const containerRef = useRef<HTMLDivElement>(null)
-  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   const switchTab = useCallback((newIdx: number) => {
     const oldIdx = activeTabRef.current
     if (oldIdx === newIdx) return
     activeTabRef.current = newIdx
+
+    // Start relay: outgoing circle shrinks, incoming grows
+    setRelayFrom(oldIdx)
     setActiveTab(newIdx)
 
-    // Measure positions and draw energy flow path
-    const originEl = buttonRefs.current[oldIdx]
-    const targetEl = buttonRefs.current[newIdx]
-    const containerEl = containerRef.current
-
-    if (originEl && targetEl && containerEl) {
-      const cr = containerEl.getBoundingClientRect()
-      const or = originEl.getBoundingClientRect()
-      const tr = targetEl.getBoundingClientRect()
-
-      const x1 = or.left + or.width / 2 - cr.left
-      const y1 = or.top + or.height / 2 - cr.top
-      const x2 = tr.left + tr.width / 2 - cr.left
-      const y2 = tr.top + tr.height / 2 - cr.top
-
-      const path = getFlowPath(x1, y1, x2, y2)
-      setFlow({ fromIdx: oldIdx, path, vw: cr.width, vh: cr.height })
-    } else {
-      setFlow({ fromIdx: oldIdx, path: '', vw: 100, vh: 400 })
-    }
-
-    // Clear flow after animation
-    setTimeout(() => setFlow(null), 600)
+    // Clear relay state after animation completes
+    setTimeout(() => setRelayFrom(null), 500)
   }, [])
 
   // Need ref to activeTab for switchTab closure
@@ -153,42 +119,10 @@ export default function SolutionsSection() {
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">
           {/* Left: Vertical tab buttons with progress rings */}
-          <div ref={containerRef} className="relative w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
-            {/* Energy flow SVG overlay */}
-            {flow && flow.path && (
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none z-20"
-                viewBox={`0 0 ${flow.vw} ${flow.vh}`}
-                style={{ overflow: 'visible' }}
-              >
-                {/* Faint track line */}
-                <path
-                  d={flow.path}
-                  stroke="rgba(34,197,94,0.1)"
-                  strokeWidth="2.5"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                {/* Glowing energy flow - stroke draws in from source to destination */}
-                <path
-                  d={flow.path}
-                  stroke="#22c55e"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeDasharray={PATH_LENGTH}
-                  className="animate-energy-flow"
-                  style={{
-                    filter: 'drop-shadow(0 0 8px rgba(34,197,94,0.5))',
-                  }}
-                />
-              </svg>
-            )}
-
+          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
-                ref={(el) => { buttonRefs.current[i] = el }}
                 onClick={() => handleTabClick(i)}
                 className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full transition-all duration-300 group flex-shrink-0"
               >
@@ -197,7 +131,8 @@ export default function SolutionsSection() {
                   {/* Background circle */}
                   <circle cx="32" cy="32" r="28" fill="transparent"
                     stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(0,0,0,0.08)'}
-                    strokeWidth="6" />
+                    strokeWidth="6"
+                  />
                   {/* Progress circle */}
                   {i === activeTab && (
                     <circle cx="32" cy="32" r="28" fill="transparent"
@@ -210,6 +145,14 @@ export default function SolutionsSection() {
                     />
                   )}
                 </svg>
+
+                {/* Relay: outgoing circle shrinks, incoming circle grows */}
+                {relayFrom === i && (
+                  <div className="absolute inset-0 rounded-full border-[4px] border-green-500 animate-relay-shrink pointer-events-none z-20" />
+                )}
+                {relayFrom !== null && i === activeTab && (
+                  <div className="absolute inset-0 rounded-full border-[4px] border-green-400 animate-relay-grow pointer-events-none z-20" />
+                )}
 
                 {/* Icons: all use CSS mask */}
                 {(() => {

@@ -5,7 +5,7 @@ import { worldCountryRings } from '@/data/world'
 
 const HUBS = [
   { name: 'China',   lat: 30.5, lng: 104.0, color: '#22c55e', label: 'China' },
-  { name: 'Finland',  lat: 62.0, lng: 26.0, color: '#5b5bff', label: 'Finland' },
+  { name: 'Poland',  lat: 52.0, lng: 21.0, color: '#5b5bff', label: 'Poland' },
   { name: 'USA',     lat: 40.7, lng: -74.0, color: '#f58a8a', label: 'USA' },
 ]
 
@@ -17,8 +17,9 @@ const ALL_TARGETS = [...TARGETS_CN, ...TARGETS_FI, ...TARGETS_US]
 interface Shot { hubIdx: number; progress: number; speed: number }
 
 // ─── 3D orthographic globe projection ───
-function proj(lat: number, lng: number): { x: number; y: number; z: number } {
-  const phi = lat * Math.PI / 180, theta = lng * Math.PI / 180
+function proj(lat: number, lng: number, rotation: number = 0): { x: number; y: number; z: number } {
+  const phi = lat * Math.PI / 180
+  const theta = (lng + rotation) * Math.PI / 180
   return {
     x: Math.cos(phi) * Math.sin(theta),
     y: Math.sin(phi),
@@ -40,7 +41,7 @@ export default function DynamicGlobe() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     const cvs = canvas, c = ctx
-    let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0
+    let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0, globeRot = 0
     const shots: Shot[] = []
     let shotCounter = 0
     const colors = ['#22c55e', '#5b5bff', '#f58a8a']
@@ -91,7 +92,7 @@ export default function DynamicGlobe() {
         c.beginPath()
         for (let j = 0; j <= 30; j++) {
           const phi = (j / 30) * Math.PI - Math.PI/2
-          const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI), cx, cy, R)
+          const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI, globeRot), cx, cy, R)
           j === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
         }
         c.stroke()
@@ -101,7 +102,7 @@ export default function DynamicGlobe() {
         c.beginPath()
         for (let j = 0; j <= 30; j++) {
           const theta = (j / 30) * Math.PI * 2
-          const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI), cx, cy, R)
+          const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI, globeRot), cx, cy, R)
           j === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
         }
         c.stroke()
@@ -116,7 +117,7 @@ export default function DynamicGlobe() {
         rings.forEach(ring => {
           let started = false
           ring.forEach(([lat, lng]) => {
-            const p = toScreen(proj(lat, lng), cx, cy, R)
+            const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
             if (visible(p)) {
               if (!started) { c.moveTo(p.x, p.y); started = true } else { c.lineTo(p.x, p.y) }
             } else {
@@ -133,7 +134,7 @@ export default function DynamicGlobe() {
         rings.forEach(ring => {
           let started = false
           ring.forEach(([lat, lng]) => {
-            const p = toScreen(proj(lat, lng), cx, cy, R)
+            const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
             if (visible(p)) {
               if (!started) { c.moveTo(p.x, p.y); started = true } else { c.lineTo(p.x, p.y) }
             } else {
@@ -168,8 +169,8 @@ export default function DynamicGlobe() {
         ;[[0,3],[0,8],[0,15],[1,1],[1,5],[1,10],[2,2],[2,6],[2,12]].forEach(([hi, ti]) => {
           const hub = HUBS[hi]
           const target = ALL_TARGETS[hi * 26 + ti] || ALL_TARGETS[0]
-          const s = toScreen(proj(hub.lat, hub.lng), cx, cy, R)
-          const e = toScreen(proj(target[0], target[1]), cx, cy, R)
+          const s = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
+          const e = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
           if (!visible(s) || !visible(e)) return
           const mx = (s.x + e.x) / 2
           const my = (s.y + e.y) / 2 - R * 0.25
@@ -198,8 +199,8 @@ export default function DynamicGlobe() {
         const ti = s.hubIdx * 26 + (Math.floor(s.progress * 26) % 26)
         const target = ALL_TARGETS[Math.min(ti, ALL_TARGETS.length - 1)]
         if (!target) continue
-        const start = toScreen(proj(hub.lat, hub.lng), cx, cy, R)
-        const end = toScreen(proj(target[0], target[1]), cx, cy, R)
+        const start = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
+        const end = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
         if (!visible(start) || !visible(end)) continue
         const mx = (start.x + end.x) / 2
         const my = (start.y + end.y) / 2 - R * 0.3
@@ -219,7 +220,7 @@ export default function DynamicGlobe() {
       // ── Hub dots + labels ──
       const pulse = (Math.sin(frame * 0.05) + 1) / 2
       HUBS.forEach((hub, i) => {
-        const p = toScreen(proj(hub.lat, hub.lng), cx, cy, R)
+        const p = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
         if (!visible(p)) return
         // Pulse ring
         c.beginPath(); c.arc(p.x, p.y, 5 + pulse * 7, 0, Math.PI * 2)
@@ -236,6 +237,7 @@ export default function DynamicGlobe() {
       })
 
       frame++
+      globeRot += 0.12 // auto-rotation speed
       animId = requestAnimationFrame(drawGlobe)
     }
 
@@ -250,3 +252,4 @@ export default function DynamicGlobe() {
 
   return <canvas ref={canvasRef} className="w-full h-full" aria-hidden="true" />
 }
+

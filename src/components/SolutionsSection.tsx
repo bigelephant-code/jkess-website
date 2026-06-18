@@ -194,7 +194,7 @@ export default function SolutionsSection() {
             </div>
 
             <div className="md:col-span-3">
-              <div className="relative w-full aspect-[4/3] bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden flex items-center justify-center">
+              <div className="relative w-full aspect-[4/3] overflow-hidden flex items-center justify-center">
                 {scenarios[activeTab].image ? (
                   <img
                     src={scenarios[activeTab].image}

@@ -104,9 +104,9 @@ export default function DynamicGlobe() {
 
       // ── Ocean fill ──
       const ocean = c.createRadialGradient(cx - R*0.3, cy - R*0.3, 0, cx, cy, R)
-      ocean.addColorStop(0, '#0f2847')
-      ocean.addColorStop(0.6, '#0a1f30')
-      ocean.addColorStop(1, '#061218')
+      ocean.addColorStop(0, '#1e4d7a')
+      ocean.addColorStop(0.6, '#153a5e')
+      ocean.addColorStop(1, '#0f2a45')
       c.fillStyle = ocean
       c.fillRect(cx - R, cy - R, R*2, R*2)
 
@@ -148,7 +148,7 @@ export default function DynamicGlobe() {
         // Painter's algorithm: back first, then front
         ;[backRings, frontRings].forEach(rs => {
           if (rs.length === 0) return
-          c.fillStyle = '#1a4a4a'
+          c.fillStyle = '#2a6b5a'
           c.beginPath()
           rs.forEach(ring => {
             ring.forEach(([lat, lng], i) => {

@@ -12,8 +12,8 @@ const scenarios = [
   },
   {
     id: 'ci-storage',
-    title: 'Industrial & Commercial Power Station Solution',
-    desc: 'Large rooftop solar + energy storage for factories, office buildings, government facilities, schools and hospitals. Reduces electricity costs, ensures uninterrupted power, and maximizes return on investment through peak shaving and smart energy management.',
+    title: 'C&I Energy Storage Solution',
+    desc: 'Professional-grade commercial and industrial energy storage system ranging from 64KWh to 265KWh, built with JKESS core technology. Supports flexible split stacked configuration for modular expansion or integrated cabinet solution for space-saving deployment. Available with both air cooling and liquid cooling thermal management systems to match any operating environment. Equipped with intelligent JKESS BMS for active balancing, real-time monitoring via CAN/RS485, and seamless solar + grid integration. Ideal for factories, office buildings, EV charging stations, and commercial facilities seeking energy cost reduction, peak shaving, and backup power reliability.',
     image: '/images/scenario-1.png',
   },
   {

@@ -55,7 +55,7 @@ export default function TechLines() {
       ctx.clearRect(0, 0, w, h)
 
       // ── Layer 1: subtle horizontal tech grid lines ──
-      ctx.strokeStyle = 'rgba(74, 222, 128, 0.06)'
+      ctx.strokeStyle = 'rgba(74, 222, 128, 0.12)'
       ctx.lineWidth = 0.5
       const gridStep = 60
       const offsetY = (Math.sin(time) * 10 + Math.sin(time * 2.3) * 5) % gridStep
@@ -95,7 +95,7 @@ export default function TechLines() {
           const dist = Math.sqrt(dx * dx + dy * dy)
 
           if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.35
+            const alpha = (1 - dist / CONNECT_DIST) * 0.5
             ctx.beginPath()
             ctx.moveTo(points[i].x, points[i].y)
             ctx.lineTo(points[j].x, points[j].y)
@@ -111,13 +111,13 @@ export default function TechLines() {
         // glow
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(74, 222, 128, 0.06)'
+        ctx.fillStyle = 'rgba(74, 222, 128, 0.12)'
         ctx.fill()
 
         // core
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = 'rgba(74, 222, 128, 0.7)'
+        ctx.fillStyle = 'rgba(74, 222, 128, 0.9)'
         ctx.fill()
       }
 

@@ -19,7 +19,7 @@ const ALL_TARGETS: [number, number][] = [
   [20,-100],[15,-85],[10,-75],[-5,-80],[-15,-70],[-25,-65],[-35,-55],
 ]
 
-interface Shot { hubIdx: number; targetIdx: number; progress: number; speed: number }
+interface Shot { hubIdx: number; progress: number; speed: number }
 
 function geoToXY(lat: number, lng: number, w: number, h: number) {
   return { x: ((lng + 180) / 360) * w, y: ((90 - lat) / 180) * h }
@@ -27,18 +27,16 @@ function geoToXY(lat: number, lng: number, w: number, h: number) {
 
 export default function DynamicGlobe() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const [loaded, setLoaded] = useState(false)
-  const [worldData, setWorldData] = useState<[number, number][][] | null>(null)
+  const wdRef = useRef<[number, number][][] | null>(null)
 
   useEffect(() => {
     fetch('/data/world-land.json')
       .then(r => r.json())
-      .then(d => { setWorldData(d); setLoaded(true) })
-      .catch(() => setLoaded(true))
+      .then(d => { wdRef.current = d })
+      .catch(() => {})
   }, [])
 
   useEffect(() => {
-    if (!loaded || !worldData) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -52,8 +50,7 @@ export default function DynamicGlobe() {
     function resize() {
       const p = cvs.parentElement
       if (!p) return
-      w = p.offsetWidth
-      h = p.offsetHeight
+      w = p.offsetWidth; h = p.offsetHeight
       cvs.width = w * 2; cvs.height = h * 2
       cvs.style.width = w + 'px'; cvs.style.height = h + 'px'
       c.scale(2, 2)
@@ -62,66 +59,70 @@ export default function DynamicGlobe() {
     function draw() {
       c.clearRect(0, 0, w, h)
 
-      // Ocean background
-      c.clearRect(0, 0, w, h)
-
       // Grid
-      c.strokeStyle = 'rgba(74,222,128,0.04)'
-      c.lineWidth = 0.3
+      c.strokeStyle = 'rgba(74,222,128,0.06)'
+      c.lineWidth = 0.5
       for (let x = 0; x < w; x += 40) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke() }
       for (let y = 0; y < h; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke() }
 
-      const wd = worldData!
-      c.fillStyle = '#1a3a34'
-      wd.forEach(ring => {
-        c.beginPath()
-        ring.forEach(([lat, lng], i) => {
-          const p = geoToXY(lat, lng, w, h)
-          i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
-        })
-        c.closePath()
-        c.fill()
-      })
-
-      c.strokeStyle = 'rgba(74,222,128,0.3)'
+      // Equator
+      c.strokeStyle = 'rgba(74,222,128,0.15)'
       c.lineWidth = 0.8
-      wd.forEach(ring => {
-        c.beginPath()
-        ring.forEach(([lat, lng], i) => {
-          const p = geoToXY(lat, lng, w, h)
-          i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
-        })
-        c.closePath()
-        c.stroke()
-      })
+      c.beginPath(); c.moveTo(0, h/2); c.lineTo(w, h/2); c.stroke()
 
-      // Shots
+      // Country landmass (if loaded)
+      const wd = wdRef.current
+      if (wd && wd.length > 0) {
+        c.fillStyle = '#1a3a34'
+        wd.forEach(ring => {
+          c.beginPath()
+          ring.forEach(([lat, lng], i) => {
+            const p = geoToXY(lat, lng, w, h)
+            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+          })
+          c.closePath(); c.fill()
+        })
+        c.strokeStyle = 'rgba(74,222,128,0.3)'
+        c.lineWidth = 0.8
+        wd.forEach(ring => {
+          c.beginPath()
+          ring.forEach(([lat, lng], i) => {
+            const p = geoToXY(lat, lng, w, h)
+            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+          })
+          c.closePath(); c.stroke()
+        })
+      }
+
+      // Spawn shots
       if (frame % 10 === 0) {
         const hubIdx = shotCounter % 3
-        const targetIdx = Math.floor(Math.random() * 26)
-        shots.push({ hubIdx, targetIdx, progress: 0, speed: 0.012 + Math.random() * 0.008 })
+        shots.push({ hubIdx, progress: 0, speed: 0.012 + Math.random() * 0.008 })
         shotCounter++
       }
 
+      // Draw shots
       for (let si = shots.length - 1; si >= 0; si--) {
         const s = shots[si]
         s.progress += s.speed
         if (s.progress >= 1) { shots.splice(si, 1); continue }
         const hub = HUBS[s.hubIdx]
-        const target = ALL_TARGETS[s.hubIdx * 20 + (s.targetIdx % 20)] || ALL_TARGETS[0]
+        const targetIdx = s.hubIdx * 20 + (Math.floor(s.progress * 20) % 20)
+        const target = ALL_TARGETS[Math.min(targetIdx, ALL_TARGETS.length - 1)]
+        if (!target) continue
         const p1 = geoToXY(hub.lat, hub.lng, w, h)
         const p2 = geoToXY(target[0], target[1], w, h)
         const mx = (p1.x + p2.x) / 2
-        const my = (p1.y + p2.y) / 2 - 40 - Math.abs(p2.x - p1.x) * 0.12
+        const my = Math.min(p1.y, p2.y) - Math.abs(p2.x - p1.x) * 0.12 - 20
         const color = colMap[s.hubIdx]
         const t = s.progress
         const dx = (1 - t) * (1 - t) * p1.x + 2 * (1 - t) * t * mx + t * t * p2.x
         const dy = (1 - t) * (1 - t) * p1.y + 2 * (1 - t) * t * my + t * t * p2.y
-        c.beginPath()
-        c.arc(dx, dy, 4, 0, Math.PI * 2)
+
+        // Glow
+        c.beginPath(); c.arc(dx, dy, 4, 0, Math.PI * 2)
         const gg = c.createRadialGradient(dx, dy, 0, dx, dy, 4)
-        gg.addColorStop(0, color + '99')
-        gg.addColorStop(1, color + '00')
+        gg.addColorStop(0, color + '88'); gg.addColorStop(1, color + '00')
         c.fillStyle = gg; c.fill()
         c.beginPath(); c.arc(dx, dy, 2, 0, Math.PI * 2)
         c.fillStyle = color; c.fill()
@@ -131,10 +132,10 @@ export default function DynamicGlobe() {
       const pulse = (Math.sin(frame * 0.05) + 1) / 2
       HUBS.forEach((hub, i) => {
         const p = geoToXY(hub.lat, hub.lng, w, h)
-        c.beginPath(); c.arc(p.x, p.y, 7 + pulse * 10, 0, Math.PI * 2)
+        c.beginPath(); c.arc(p.x, p.y, 6 + pulse * 8, 0, Math.PI * 2)
         c.fillStyle = colMap[i]
-        c.globalAlpha = 0.15 + pulse * 0.15; c.fill(); c.globalAlpha = 1
-        c.beginPath(); c.arc(p.x, p.y, 3.5, 0, Math.PI * 2)
+        c.globalAlpha = 0.2 + pulse * 0.15; c.fill(); c.globalAlpha = 1
+        c.beginPath(); c.arc(p.x, p.y, 3, 0, Math.PI * 2)
         c.fillStyle = '#ffffff'; c.fill()
         c.fillStyle = '#ffffff'
         c.font = 'bold 11px sans-serif'
@@ -153,7 +154,7 @@ export default function DynamicGlobe() {
     const obs = new ResizeObserver(onResize)
     if (cvs.parentElement) obs.observe(cvs.parentElement)
     return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', onResize); obs.disconnect() }
-  }, [loaded, worldData])
+  }, [])
 
   return <canvas ref={canvasRef} className="w-full h-full" aria-hidden="true" />
 }

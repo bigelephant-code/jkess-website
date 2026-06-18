@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
@@ -196,48 +195,31 @@ export default function SolutionsSection() {
           {/* Right: Content + Photo */}
           <div className="flex-1 min-w-0 grid md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-2 space-y-4">
-              <AnimatePresence>
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                >
-                  <h3 className="text-lg md:text-2xl font-bold text-gray-900">
-                    {scenarios[activeTab].title}
-                  </h3>
-                  <p className="text-sm text-gray-700 leading-relaxed mt-4">
-                    {scenarios[activeTab].desc}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+              <div key={activeTab} className="animate-content-fade">
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900">
+                  {scenarios[activeTab].title}
+                </h3>
+                <p className="text-sm text-gray-700 leading-relaxed mt-4">
+                  {scenarios[activeTab].desc}
+                </p>
+              </div>
             </div>
 
             <div className="md:col-span-3">
-              <AnimatePresence>
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  className="relative w-full aspect-[4/3] overflow-hidden rounded-xl flex items-center justify-center"
-                >
-                  {scenarios[activeTab].image ? (
-                    <img
-                      src={scenarios[activeTab].image}
-                      alt={scenarios[activeTab].title}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <div className="text-3xl mb-2">🏗️</div>
-                      <p className="text-xs text-gray-400">Image coming soon</p>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+              <div key={activeTab} className="relative w-full aspect-[4/3] overflow-hidden rounded-xl flex items-center justify-center animate-content-fade">
+                {scenarios[activeTab].image ? (
+                  <img
+                    src={scenarios[activeTab].image}
+                    alt={scenarios[activeTab].title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <div className="text-3xl mb-2">🏗️</div>
+                    <p className="text-xs text-gray-400">Image coming soon</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

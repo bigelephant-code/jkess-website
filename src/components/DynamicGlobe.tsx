@@ -108,22 +108,18 @@ export default function DynamicGlobe() {
         c.stroke()
       }
 
-      // ── Countries ──
+      // ── Countries (no visible() check - clip handles backface hiding) ──
       const rings = dataRef.current
       if (rings && rings.length > 0) {
-        // Fill visible land
+        // Fill land
         c.fillStyle = '#1a4a4a'
         c.beginPath()
         rings.forEach(ring => {
-          let started = false
-          ring.forEach(([lat, lng]) => {
+          ring.forEach(([lat, lng], i) => {
             const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-            if (visible(p)) {
-              if (!started) { c.moveTo(p.x, p.y); started = true } else { c.lineTo(p.x, p.y) }
-            } else {
-              started = false // skip hidden segments
-            }
+            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
           })
+          c.closePath()
         })
         c.fill()
 
@@ -132,15 +128,11 @@ export default function DynamicGlobe() {
         c.lineWidth = 0.5
         c.beginPath()
         rings.forEach(ring => {
-          let started = false
-          ring.forEach(([lat, lng]) => {
+          ring.forEach(([lat, lng], i) => {
             const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-            if (visible(p)) {
-              if (!started) { c.moveTo(p.x, p.y); started = true } else { c.lineTo(p.x, p.y) }
-            } else {
-              started = false
-            }
+            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
           })
+          c.closePath()
         })
         c.stroke()
       }

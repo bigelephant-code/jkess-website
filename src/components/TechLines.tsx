@@ -29,8 +29,10 @@ export default function TechLines() {
 
     function resize() {
       if (!canvas) return
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      const parent = canvas.parentElement
+      if (!parent) return
+      canvas.width = parent.offsetWidth
+      canvas.height = parent.offsetHeight
     }
 
     function initPoints() {
@@ -124,20 +126,34 @@ export default function TechLines() {
       animId = requestAnimationFrame(draw)
     }
 
-    resize()
-    initPoints()
+    // Initial setup with a delay to ensure parent is laid out
+    setTimeout(() => {
+      resize()
+      initPoints()
+    }, 50)
     draw()
 
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       resize()
       for (const p of points) {
         p.x = Math.random() * canvas!.width
         p.y = Math.random() * canvas!.height
       }
-    })
+    }
+    window.addEventListener('resize', handleResize)
+
+    // Also observe parent for layout changes
+    const parent = canvas.parentElement
+    let observer: ResizeObserver | null = null
+    if (parent) {
+      observer = new ResizeObserver(handleResize)
+      observer.observe(parent)
+    }
 
     return () => {
       cancelAnimationFrame(animId)
+      window.removeEventListener('resize', handleResize)
+      observer?.disconnect()
     }
   }, [])
 

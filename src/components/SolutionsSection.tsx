@@ -12,8 +12,8 @@ const scenarios = [
   },
   {
     id: 'residential',
-    title: 'Residential Energy Storage Solution',
-    desc: 'Home solar + battery systems for energy independence. Store excess solar energy for nighttime use, reduce electricity bills, and keep critical appliances running during power outages. Available in 3-50kW capacities.',
+    title: 'Home Battery Storage Solution',
+    desc: 'Complete residential energy storage system built with JKESS core components: Intelligent BMS protection boards with active balancing (2A~15A, 4S~32S), modular battery kits (15KWh/16KWh compatible) on heavy-duty casters, and optional HV kit for high-voltage applications. Supports rack-mount 6U or freestanding installation with LCD display, CAN/RS485 communication, and seamless solar integration for energy independence and bill savings.',
     image: '/images/scenario-2.jpg',
   },
   {

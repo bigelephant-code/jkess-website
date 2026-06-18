@@ -7,7 +7,7 @@ const scenarios = [
   {
     id: 'residential',
     title: 'Home Battery Storage Solution',
-    desc: 'Complete residential energy storage system built with JKESS core components: Intelligent BMS protection boards with active balancing (2A~15A, 4S~32S), modular battery kits (15KWh/16KWh compatible) on heavy-duty casters, and optional HV kit for high-voltage applications. Supports rack-mount 6U or freestanding installation with LCD display, CAN/RS485 communication, and seamless solar integration for energy independence and bill savings.',
+    desc: 'Complete residential energy storage solution powered by JKESS core components — your one-stop system for true home energy independence. At its heart, JKESS intelligent BMS protection boards deliver active balancing from 2A to 15A across 4S to 32S configurations, ensuring every cell operates at peak performance and safety. Paired with our modular battery kits (compatible with both 15KWh and 16KWh LFP cells) mounted on heavy-duty caster wheels for effortless placement, plus an optional high-voltage kit for advanced applications requiring higher voltage stacks. Installation options include 6U rack-mount for tidy cabinet integration or freestanding setup with built-in LCD display for real-time system status. Communication via CAN bus and RS485 enables seamless integration with solar inverters, grid systems, and remote monitoring platforms. Designed for European homes seeking energy independence, the JKESS system stores excess solar energy for nighttime use, reduces grid dependency, lowers electricity bills, and keeps critical appliances running during power outages with automatic backup switching.',
     image: '/images/scenario-2.jpg',
   },
   {

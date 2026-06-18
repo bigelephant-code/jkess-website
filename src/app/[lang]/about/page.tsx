@@ -105,7 +105,7 @@ export default function AboutPage() {
 
             {/* Image - Right side */}
             <Reveal direction="right" delay={0.15}>
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-black">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden">
                 <DynamicGlobe />
               </div>
             </Reveal>

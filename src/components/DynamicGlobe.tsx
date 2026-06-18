@@ -62,9 +62,8 @@ export default function DynamicGlobe() {
     function draw() {
       c.clearRect(0, 0, w, h)
 
-      // Ocean background
-      c.fillStyle = '#0d1b2a'
-      c.fillRect(0, 0, w, h)
+      // Transparent background (ocean is now transparent)
+      c.clearRect(0, 0, w, h)
 
       // Grid
       c.strokeStyle = 'rgba(74,222,128,0.04)'

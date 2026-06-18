@@ -152,11 +152,15 @@ export default function SolutionsSection() {
                       strokeLinecap="round"
                       strokeDasharray={CIRCUMFERENCE}
                       strokeDashoffset={strokeDashoffset}
-                      className={startled ? 'animate-ring-thicken' : ''}
                       style={{ transform: 'rotate(-90deg)', transformOrigin: '32px 32px', transition: 'stroke-dashoffset 0.03s linear' }}
                     />
                   )}
                 </svg>
+
+                {/* Ring pulse: active border thickens then fades */}
+                {startled && i === activeTab && (
+                  <div className="absolute inset-0 rounded-full border-green-500 animate-ring-pulse pointer-events-none z-15" />
+                )}
 
                 {/* Icons */}
                 {(() => {

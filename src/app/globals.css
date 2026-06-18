@@ -55,7 +55,7 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Blue â†’ Purple â†’ Orange â†’ Purple â†’ Blue flowing gradient */
+/* Blue â†?Purple â†?Orange â†?Purple â†?Blue flowing gradient */
 .animate-gradient-vision {
   background: linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a, #a66cd9, #5b5bff);
   background-size: 400% 100%;
@@ -117,7 +117,7 @@ body {
   scrollbar-color: #333 transparent;
 }
 
-/* ğŸŒ¬ï¸ Breathing glow - gentle life pulse on all circles */
+/* ğŸŒ¬ï¸?Breathing glow - gentle life pulse on all circles */
 @keyframes breathe {
   0%, 100% { opacity: 0.15; transform: scale(0.85); }
   50% { opacity: 0.35; transform: scale(1.05); }
@@ -200,3 +200,4 @@ body {
 .animate-navbar-sweep {
   animation: navbar-sweep 0.8s ease-out forwards;
 }
+

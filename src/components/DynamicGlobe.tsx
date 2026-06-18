@@ -5,8 +5,8 @@ import { worldCountryRings } from '@/data/world'
 
 const HUBS = [
   { name: 'China',   lat: 30.5, lng: 104.0, color: '#22c55e', label: 'China' },
-  { name: 'Poland',  lat: 52.0, lng: 21.0, color: '#5b5bff', label: 'Poland' },
-  { name: 'USA',     lat: 40.7, lng: -74.0, color: '#f58a8a', label: 'USA' },
+  { name: 'Poland',  lat: 52.0, lng: 21.0, color: '#f58a8a', label: 'Poland' },
+  { name: 'USA',     lat: 40.7, lng: -74.0, color: '#5b5bff', label: 'USA' },
 ]
 
 const TARGETS_CN = [[55,135],[45,140],[35,125],[25,120],[20,115],[10,105],[0,110],[-10,120],[20,75],[30,90],[40,115],[50,100],[45,75],[50,85],[55,80],[60,100],[10,80],[25,90],[35,70],[45,70],[5,100],[-5,105],[-20,115],[-25,135],[-10,135],[-15,120]]
@@ -44,7 +44,7 @@ export default function DynamicGlobe() {
     let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0, globeRot = 0
     const shots: Shot[] = []
     let shotCounter = 0
-    const colors = ['#22c55e', '#5b5bff', '#f58a8a']
+    const colors = ['#22c55e', '#f58a8a', '#5b5bff']
 
     function resize() {
       const p = cvs.parentElement
@@ -237,7 +237,7 @@ export default function DynamicGlobe() {
       })
 
       frame++
-      globeRot += 0.12 // auto-rotation speed
+      globeRot += 0.3 // auto-rotation speed
       animId = requestAnimationFrame(drawGlobe)
     }
 

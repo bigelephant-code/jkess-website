@@ -108,33 +108,42 @@ export default function DynamicGlobe() {
         c.stroke()
       }
 
-      // ── Countries (no visible() check - clip handles backface hiding) ──
+      // ── Countries (backface culled by polygon center z) ──
       const rings = dataRef.current
       if (rings && rings.length > 0) {
-        // Fill land
-        c.fillStyle = '#1a4a4a'
-        c.beginPath()
+        const frontRings: typeof rings = []
+        const backRings: typeof rings = []
         rings.forEach(ring => {
-          ring.forEach(([lat, lng], i) => {
-            const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
-          })
-          c.closePath()
+          let sumZ = 0
+          ring.forEach(([lat, lng]) => { sumZ += proj(lat, lng, globeRot).z })
+          ;(sumZ / ring.length > 0 ? frontRings : backRings).push(ring)
         })
-        c.fill()
 
-        // Stroke borders
-        c.strokeStyle = 'rgba(74,222,128,0.2)'
-        c.lineWidth = 0.5
-        c.beginPath()
-        rings.forEach(ring => {
-          ring.forEach(([lat, lng], i) => {
-            const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+        // Painter's algorithm: back first, then front
+        ;[backRings, frontRings].forEach(rs => {
+          if (rs.length === 0) return
+          c.fillStyle = '#1a4a4a'
+          c.beginPath()
+          rs.forEach(ring => {
+            ring.forEach(([lat, lng], i) => {
+              const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
+              i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+            })
+            c.closePath()
           })
-          c.closePath()
+          c.fill()
+          c.strokeStyle = 'rgba(74,222,128,0.2)'
+          c.lineWidth = 0.5
+          c.beginPath()
+          rs.forEach(ring => {
+            ring.forEach(([lat, lng], i) => {
+              const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
+              i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+            })
+            c.closePath()
+          })
+          c.stroke()
         })
-        c.stroke()
       }
 
       c.restore() // remove clip

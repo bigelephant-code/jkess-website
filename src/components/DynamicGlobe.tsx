@@ -54,10 +54,10 @@ export default function DynamicGlobe() {
       // ── World map: fill + stroke each country ──
       const rings = dataRef.current
       if (rings && rings.length > 0) {
-        // Fill all countries
+        // Fill all countries (batch into one path)
         c.fillStyle = '#0d2b28'
+        c.beginPath()
         rings.forEach(ring => {
-          c.beginPath()
           ring.forEach(([lat, lng], i) => {
             const p = geoXY(lat, lng, w, h)
             i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
@@ -66,18 +66,18 @@ export default function DynamicGlobe() {
         })
         c.fill()
 
-        // Stroke all country borders
-        c.strokeStyle = 'rgba(74,222,128,0.25)'
-        c.lineWidth = 0.6
+        // Stroke all country borders (batch into one path)
+        c.strokeStyle = 'rgba(74,222,128,0.2)'
+        c.lineWidth = 0.5
+        c.beginPath()
         rings.forEach(ring => {
-          c.beginPath()
           ring.forEach(([lat, lng], i) => {
             const p = geoXY(lat, lng, w, h)
             i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
           })
           c.closePath()
-          c.stroke()
         })
+        c.stroke()
       }
 
       // ── Spawn shots ──

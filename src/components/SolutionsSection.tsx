@@ -5,16 +5,16 @@ import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
   {
-    id: 'ci-storage',
-    title: 'Industrial & Commercial Power Station Solution',
-    desc: 'Large rooftop solar + energy storage for factories, office buildings, government facilities, schools and hospitals. Reduces electricity costs, ensures uninterrupted power, and maximizes return on investment through peak shaving and smart energy management.',
-    image: '/images/scenario-1.png',
-  },
-  {
     id: 'residential',
     title: 'Home Battery Storage Solution',
     desc: 'Complete residential energy storage system built with JKESS core components: Intelligent BMS protection boards with active balancing (2A~15A, 4S~32S), modular battery kits (15KWh/16KWh compatible) on heavy-duty casters, and optional HV kit for high-voltage applications. Supports rack-mount 6U or freestanding installation with LCD display, CAN/RS485 communication, and seamless solar integration for energy independence and bill savings.',
     image: '/images/scenario-2.jpg',
+  },
+  {
+    id: 'ci-storage',
+    title: 'Industrial & Commercial Power Station Solution',
+    desc: 'Large rooftop solar + energy storage for factories, office buildings, government facilities, schools and hospitals. Reduces electricity costs, ensures uninterrupted power, and maximizes return on investment through peak shaving and smart energy management.',
+    image: '/images/scenario-1.png',
   },
   {
     id: 'special-vehicle',

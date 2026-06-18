@@ -42,7 +42,7 @@ export default function SolutionsSection() {
   const t = useTranslate()
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [relayFrom, setRelayFrom] = useState<number | null>(null)
+  const [startled, setStartled] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef(0)
   const startTimeRef = useRef(Date.now())
@@ -51,16 +51,13 @@ export default function SolutionsSection() {
     const oldIdx = activeTabRef.current
     if (oldIdx === newIdx) return
     activeTabRef.current = newIdx
-
-    // Start relay: outgoing circle shrinks, incoming grows
-    setRelayFrom(oldIdx)
     setActiveTab(newIdx)
 
-    // Clear relay state after animation completes
-    setTimeout(() => setRelayFrom(null), 500)
+    // All circles do a startled bounce like little creatures
+    setStartled(true)
+    setTimeout(() => setStartled(false), 600)
   }, [])
 
-  // Need ref to activeTab for switchTab closure
   const activeTabRef = useRef(activeTab)
   activeTabRef.current = activeTab
 
@@ -118,26 +115,40 @@ export default function SolutionsSection() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">
-          {/* Left: Vertical tab buttons with progress rings */}
+          {/* Left: living circle sprites */}
           <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
                 onClick={() => handleTabClick(i)}
-                className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full transition-all duration-300 group flex-shrink-0"
+                className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full group flex-shrink-0 transition-all duration-300"
               >
+                {/* 🌬️ Breathing glow - each circle breathes gently */}
+                <div
+                  className={`absolute inset-0 rounded-full pointer-events-none z-0 ${
+                    startled
+                      ? 'animate-startled'
+                      : i === activeTab
+                        ? 'animate-heartbeat'
+                        : 'animate-breathe'
+                  }`}
+                  style={{
+                    background: i === activeTab
+                      ? 'radial-gradient(circle, rgba(34,197,94,0.18) 0%, transparent 70%)'
+                      : 'radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)',
+                    animationDelay: startled || i === activeTab ? '0s' : `${i * 0.2}s`,
+                  }}
+                />
+
                 {/* Progress ring */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 64 64">
-                  {/* Background circle */}
+                <svg className="absolute inset-0 w-full h-full z-10" viewBox="0 0 64 64">
                   <circle cx="32" cy="32" r="28" fill="transparent"
-                    stroke={i === activeTab ? 'rgba(34,197,94,0.2)' : 'rgba(0,0,0,0.08)'}
-                    strokeWidth="6"
-                  />
-                  {/* Progress circle */}
+                    stroke={i === activeTab ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.06)'}
+                    strokeWidth="5" />
                   {i === activeTab && (
                     <circle cx="32" cy="32" r="28" fill="transparent"
                       stroke="#22c55e"
-                      strokeWidth="6"
+                      strokeWidth="5"
                       strokeLinecap="round"
                       strokeDasharray={CIRCUMFERENCE}
                       strokeDashoffset={strokeDashoffset}
@@ -146,20 +157,20 @@ export default function SolutionsSection() {
                   )}
                 </svg>
 
-                {/* Relay: outgoing circle shrinks, incoming circle grows */}
-                {relayFrom === i && (
-                  <div className="absolute inset-0 rounded-full border-[4px] border-green-500 animate-relay-shrink pointer-events-none z-20" />
-                )}
-                {relayFrom !== null && i === activeTab && (
-                  <div className="absolute inset-0 rounded-full border-[4px] border-green-400 animate-relay-grow pointer-events-none z-20" />
-                )}
-
-                {/* Icons: all use CSS mask */}
+                {/* Icons */}
                 {(() => {
                   const iconMap = ['1','5','3','4','2']
                   return (
                     <div
-                      className={`relative z-10 transition-all duration-300 bg-gray-600 ${i === 4 ? 'w-9 h-9' : 'w-7 h-7'} ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}
+                      className={`relative z-20 transition-all duration-500 bg-gray-600 ${
+                        i === 4 ? 'w-9 h-9' : 'w-7 h-7'
+                      } ${
+                        i === activeTab
+                          ? 'bg-green-500 scale-110'
+                          : 'group-hover:bg-gray-500'
+                      } ${
+                        startled ? 'animate-startled' : ''
+                      }`}
                       style={{
                         mask: `url(/images/goodwe-icon-${iconMap[i]}${iconMap[i] === '2' ? '.svg' : '.png'}) center/contain no-repeat`,
                         WebkitMask: `url(/images/goodwe-icon-${iconMap[i]}${iconMap[i] === '2' ? '.svg' : '.png'}) center/contain no-repeat`,
@@ -173,7 +184,6 @@ export default function SolutionsSection() {
 
           {/* Right: Content + Photo */}
           <div className="flex-1 min-w-0 grid md:grid-cols-5 gap-8 items-center">
-            {/* Text content */}
             <div className="md:col-span-2 space-y-4">
               <h3 className="text-lg md:text-2xl font-bold text-gray-900">
                 {scenarios[activeTab].title}
@@ -183,7 +193,6 @@ export default function SolutionsSection() {
               </p>
             </div>
 
-            {/* Photo */}
             <div className="md:col-span-3">
               <div className="relative w-full aspect-[4/3] bg-gray-100 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden flex items-center justify-center">
                 {scenarios[activeTab].image ? (

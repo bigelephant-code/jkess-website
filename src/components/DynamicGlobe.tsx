@@ -7,12 +7,14 @@ const HUBS = [
   { name: 'China',   lat: 30.5, lng: 104.0, color: '#22c55e', label: 'China' },
   { name: 'Poland',  lat: 52.0, lng: 21.0, color: '#f58a8a', label: 'Poland' },
   { name: 'USA',     lat: 40.7, lng: -74.0, color: '#5b5bff', label: 'USA' },
+  { name: 'Brazil',  lat: -15.8, lng: -47.9, color: '#fbbf24', label: 'Brazil' },
 ]
 
 const TARGETS_CN = [[55,135],[45,140],[35,125],[25,120],[20,115],[10,105],[0,110],[-10,120],[20,75],[30,90],[40,115],[50,100],[45,75],[50,85],[55,80],[60,100],[10,80],[25,90],[35,70],[45,70],[5,100],[-5,105],[-20,115],[-25,135],[-10,135],[-15,120]]
 const TARGETS_FI = [[55,10],[52,5],[50,10],[48,5],[45,10],[52,20],[50,25],[55,25],[48,25],[42,25],[44,10],[46,8],[40,-2],[52,-2],[56,-3],[60,8],[58,15],[50,-5],[44,-5],[38,-8],[42,15],[48,15],[55,20],[58,20],[60,25]]
 const TARGETS_US = [[35,-100],[30,-95],[45,-95],[40,-90],[35,-90],[30,-85],[45,-85],[40,-80],[35,-80],[30,-80],[50,-80],[45,-75],[40,-75],[35,-110],[40,-105],[50,-100],[55,-100],[55,-110],[48,-115],[40,-115],[20,-100],[15,-85],[10,-75],[-5,-80],[-15,-70],[-25,-65]]
-const ALL_TARGETS = [...TARGETS_CN, ...TARGETS_FI, ...TARGETS_US]
+const TARGETS_BR = [[-5,-40],[0,-42],[5,-45],[8,-48],[10,-50],[12,-55],[10,-60],[8,-65],[5,-70],[8,-72],[10,-75],[8,-78],[5,-80],[0,-80],[-5,-82],[-10,-80],[-15,-78],[-20,-75],[-22,-70],[-25,-68],[-30,-70],[-35,-65],[-40,-70],[-45,-72],[-48,-70],[-50,-72]]
+const ALL_TARGETS = [...TARGETS_CN, ...TARGETS_FI, ...TARGETS_US, ...TARGETS_BR]
 
 interface Shot { hubIdx: number; targetIdx: number; progress: number; speed: number }
 
@@ -44,7 +46,7 @@ export default function DynamicGlobe() {
     let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0, globeRot = 0
     const shots: Shot[] = []
     let shotCounter = 0
-    const colors = ['#22c55e', '#f58a8a', '#5b5bff']
+    const colors = ['#22c55e', '#f58a8a', '#5b5bff', '#fbbf24']
 
     function resize() {
       const p = cvs.parentElement
@@ -167,7 +169,7 @@ export default function DynamicGlobe() {
       // Show some static arcs to demonstrate global coverage
       if (frame % 2 === 0) {
         // Draw a few arcs
-        ;[[0,3],[0,8],[0,15],[1,1],[1,5],[1,10],[2,2],[2,6],[2,12]].forEach(([hi, ti]) => {
+        ;[[0,3],[0,8],[0,15],[1,1],[1,5],[1,10],[2,2],[2,6],[2,12],[3,3],[3,8],[3,13]].forEach(([hi, ti]) => {
           const hub = HUBS[hi]
           const target = ALL_TARGETS[hi * 26 + ti] || ALL_TARGETS[0]
           const s = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
@@ -188,9 +190,9 @@ export default function DynamicGlobe() {
 
       // ── Spawn animated shots (fewer, fixed target per shot) ──
       if (frame % 25 === 0) {
-        const hubIdx = shotCounter % 3
-        const maxT = Math.min(26, Math.floor(ALL_TARGETS.length / 3))
-        const targetIdx = hubIdx * 26 + Math.floor(Math.random() * maxT)
+        const hubIdx = shotCounter % 4
+        const maxT = 26
+        const targetIdx = hubIdx * 26 + Math.floor(Math.random() * Math.min(maxT, Math.floor(ALL_TARGETS.length / 4)))
         shots.push({ hubIdx, targetIdx, progress: 0, speed: 0.008 + Math.random() * 0.006 })
         shotCounter++
       }

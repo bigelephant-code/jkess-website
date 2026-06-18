@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
@@ -37,27 +37,66 @@ const scenarios = [
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
+const PATH_LENGTH = 500
+
+function getFlowPath(x1: number, y1: number, x2: number, y2: number) {
+  const midY = (y1 + y2) / 2
+  // Arc offset: bigger when distance is bigger
+  const dist = Math.abs(y2 - y1)
+  const arcOffset = Math.min(40, 15 + dist * 0.05)
+  return `M ${x1} ${y1} C ${x1 + arcOffset} ${midY} ${x2 + arcOffset} ${midY} ${x2} ${y2}`
+}
 
 export default function SolutionsSection() {
   const t = useTranslate()
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [rippleOrigin, setRippleOrigin] = useState<number | null>(null)
+  const [flow, setFlow] = useState<{
+    fromIdx: number
+    path: string
+    vw: number
+    vh: number
+  } | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef(0)
   const startTimeRef = useRef(Date.now())
-  // Switch tab with ripple effect
-  const switchTab = (newIdx: number) => {
-    const oldIdx = activeTab
-    if (oldIdx === newIdx) return
+  const containerRef = useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-    // Set ripple from the outgoing circle
-    setRippleOrigin(oldIdx)
+  const switchTab = useCallback((newIdx: number) => {
+    const oldIdx = activeTabRef.current
+    if (oldIdx === newIdx) return
+    activeTabRef.current = newIdx
     setActiveTab(newIdx)
 
-    // Clear ripple after animation completes
-    setTimeout(() => setRippleOrigin(null), 700)
-  }
+    // Measure positions and draw energy flow path
+    const originEl = buttonRefs.current[oldIdx]
+    const targetEl = buttonRefs.current[newIdx]
+    const containerEl = containerRef.current
+
+    if (originEl && targetEl && containerEl) {
+      const cr = containerEl.getBoundingClientRect()
+      const or = originEl.getBoundingClientRect()
+      const tr = targetEl.getBoundingClientRect()
+
+      const x1 = or.left + or.width / 2 - cr.left
+      const y1 = or.top + or.height / 2 - cr.top
+      const x2 = tr.left + tr.width / 2 - cr.left
+      const y2 = tr.top + tr.height / 2 - cr.top
+
+      const path = getFlowPath(x1, y1, x2, y2)
+      setFlow({ fromIdx: oldIdx, path, vw: cr.width, vh: cr.height })
+    } else {
+      setFlow({ fromIdx: oldIdx, path: '', vw: 100, vh: 400 })
+    }
+
+    // Clear flow after animation
+    setTimeout(() => setFlow(null), 600)
+  }, [])
+
+  // Need ref to activeTab for switchTab closure
+  const activeTabRef = useRef(activeTab)
+  activeTabRef.current = activeTab
 
   // Auto-rotation every 3 seconds
   useEffect(() => {
@@ -72,7 +111,7 @@ export default function SolutionsSection() {
       setProgress(newProgress)
 
       if (newProgress >= 100) {
-        const next = (activeTab + 1) % scenarios.length
+        const next = (activeTabRef.current + 1) % scenarios.length
         switchTab(next)
         startTimeRef.current = Date.now()
         progressRef.current = 0
@@ -82,7 +121,7 @@ export default function SolutionsSection() {
 
     timerRef.current = interval
     return () => clearInterval(interval)
-  }, [activeTab])
+  }, [switchTab])
 
   // Reset timer when tab is manually clicked
   const handleTabClick = (idx: number) => {
@@ -114,10 +153,42 @@ export default function SolutionsSection() {
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">
           {/* Left: Vertical tab buttons with progress rings */}
-          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
+          <div ref={containerRef} className="relative w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
+            {/* Energy flow SVG overlay */}
+            {flow && flow.path && (
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none z-20"
+                viewBox={`0 0 ${flow.vw} ${flow.vh}`}
+                style={{ overflow: 'visible' }}
+              >
+                {/* Faint track line */}
+                <path
+                  d={flow.path}
+                  stroke="rgba(34,197,94,0.1)"
+                  strokeWidth="2.5"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                {/* Glowing energy flow - stroke draws in from source to destination */}
+                <path
+                  d={flow.path}
+                  stroke="#22c55e"
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeDasharray={PATH_LENGTH}
+                  className="animate-energy-flow"
+                  style={{
+                    filter: 'drop-shadow(0 0 8px rgba(34,197,94,0.5))',
+                  }}
+                />
+              </svg>
+            )}
+
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
+                ref={(el) => { buttonRefs.current[i] = el }}
                 onClick={() => handleTabClick(i)}
                 className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full transition-all duration-300 group flex-shrink-0"
               >
@@ -139,11 +210,6 @@ export default function SolutionsSection() {
                     />
                   )}
                 </svg>
-
-                {/* Ripple wave from this circle */}
-                {rippleOrigin === i && (
-                  <div className="absolute inset-0 rounded-full border-[3px] border-green-400/60 animate-ripple pointer-events-none z-30" />
-                )}
 
                 {/* Icons: all use CSS mask */}
                 {(() => {

@@ -308,7 +308,7 @@ export default function Navbar() {
                         isActive ? 'bg-green-500/15 text-green-400' : 'text-gray-300 hover:bg-white/10 hover:text-white'
                      }`}
                     >
-                      <span>{locale.flag}</span>
+                      <span className="w-6 h-4 flex items-center justify-center text-[10px] font-bold rounded-sm bg-white/10 text-gray-400 uppercase">{locale.code.toUpperCase().substring(0,2)}</span>
                       <span className="truncate">{locale.name}</span>
                     </a>
                   )

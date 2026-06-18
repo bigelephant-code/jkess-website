@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, createElement } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
@@ -126,21 +126,15 @@ export default function SolutionsSection() {
                   )}
                 </svg>
 
-                {/* Icons: all use CSS mask - car uses inline SVG data URI */}
+                {/* Icons: all use CSS mask */}
                 {(() => {
-                  const carSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4"/><circle cx="9" cy="17" r="1"/><circle cx="15" cy="17" r="1"/></svg>'
-                  const carUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(carSvg)}`
-                  const iconMap = ['1','1','3','4','5']
+                  const iconMap = ['1','2','3','4','5']
                   return (
                     <div
                       className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}
                       style={{
-                        mask: i === 1
-                          ? `${carUrl} center/contain no-repeat`
-                          : `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,
-                        WebkitMask: i === 1
-                          ? `${carUrl} center/contain no-repeat`
-                          : `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,
+                        mask: `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,
+                        WebkitMask: `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,
                       }}
                     />
                   )

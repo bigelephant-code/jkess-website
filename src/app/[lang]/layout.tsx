@@ -6,7 +6,7 @@ import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
 
 // Pre-load translation files at build time
 async function getMessages(locale: string): Promise<Record<string, string>> {

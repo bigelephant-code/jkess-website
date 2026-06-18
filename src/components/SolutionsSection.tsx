@@ -97,12 +97,7 @@ export default function SolutionsSection() {
   const strokeDashoffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
 
   return (
-    <section className="relative bg-white py-20 md:py-28 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50" />
-      <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: 'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #3b82f6 0%, transparent 50%)'
-      }} />
-
+    <section className="relative py-20 md:py-28">
       <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">

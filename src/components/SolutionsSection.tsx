@@ -14,13 +14,13 @@ const scenarios = [
     id: 'ci-storage',
     title: 'C&I Energy Storage Solution',
     desc: 'Professional-grade commercial and industrial energy storage system built with JKESS core technology, covering a flexible capacity range from 64KWh to 265KWh to suit projects of any scale. Supports two deployment modes: split stacked configuration for modular expansion as energy needs grow, and integrated cabinet solution for space-efficient all-in-one installation. Thermal management is fully covered with both air cooling and liquid cooling options — air cooling for cost-effective standard operation, liquid cooling for high-density environments requiring consistent temperature control and extended cycle life. At the system\'s core, JKESS intelligent BMS delivers active balancing across all cells with real-time voltage and temperature monitoring, ensuring safety, efficiency, and long battery lifespan. Communication via CAN bus and RS485 enables seamless integration with solar PV systems, grid infrastructure, diesel generators, and remote cloud monitoring platforms. Ideal for factories, office buildings, EV charging stations, supermarkets, hospitals, and commercial parks looking to reduce peak electricity costs, participate in demand response programs, ensure uninterruptible power supply, and maximize return on investment through intelligent energy management.',
-    image: '/images/scenario-1.png',
+    image: '/images/scenario-3.png',
   },
   {
     id: 'solar-pv',
     title: 'Solar PV & Energy Storage Solution',
     desc: 'Comprehensive solar photovoltaic power station solution — whether it\'s a residential rooftop PV system or a large-scale ground-mounted solar farm, JKESS has the right energy storage products to achieve perfect matching. For residential solar installations, JKESS battery kits (15KWh/16KWh compatible) paired with intelligent BMS protection boards and the optional HV kit create a seamless home energy storage system that stores daytime solar energy for nighttime use, maximizing self-consumption and energy independence. For commercial and utility-scale solar PV stations, JKESS offers scalable C&I energy storage solutions ranging from 64KWh to 265KWh with flexible split stacked or integrated cabinet configurations, supporting both air cooling and liquid cooling thermal management to suit any climate conditions. All JKESS storage systems feature active balancing BMS for optimal battery performance and lifespan, CAN/RS485 communication for seamless inverter integration, and remote cloud monitoring for real-time performance tracking. From residential rooftops to sprawling solar farms, JKESS core components ensure every watt of solar energy is captured, stored, and utilized efficiently.',
-    image: '/images/scenario-3.png',
+    image: '/images/scenario-1.png',
   },
   {
     id: 'outdoor-emergency',

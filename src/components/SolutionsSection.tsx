@@ -131,7 +131,7 @@ export default function SolutionsSection() {
                   const iconMap = ['1','5','3','4','2']
                   return (
                     <div
-                      className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}
+                      className={`relative z-10 transition-all duration-300 bg-gray-600 ${i === 4 ? 'w-9 h-9' : 'w-7 h-7'} ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}
                       style={{
                         mask: `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,
                         WebkitMask: `url(/images/goodwe-icon-${iconMap[i]}.png) center/contain no-repeat`,

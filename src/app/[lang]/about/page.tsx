@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import AboutSection from "@/components/AboutSection"
 import TeamSlideshow from "@/components/TeamSlideshow"
+import DynamicGlobe from "@/components/DynamicGlobe"
 import { Reveal } from "@/components/ScrollReveal"
 import { useTranslate } from '@/i18n/client'
 
@@ -104,11 +105,8 @@ export default function AboutPage() {
 
             {/* Image - Right side */}
             <Reveal direction="right" delay={0.15}>
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-green-50 to-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-5xl mb-3">🏭</div>
-                  <p className="text-gray-400 text-sm">Warehouse Image Coming Soon</p>
-                </div>
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 bg-black">
+                <DynamicGlobe />
               </div>
             </Reveal>
           </div>

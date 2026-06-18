@@ -14,7 +14,7 @@ const TARGETS_FI = [[55,10],[52,5],[50,10],[48,5],[45,10],[52,20],[50,25],[55,25
 const TARGETS_US = [[35,-100],[30,-95],[45,-95],[40,-90],[35,-90],[30,-85],[45,-85],[40,-80],[35,-80],[30,-80],[50,-80],[45,-75],[40,-75],[35,-110],[40,-105],[50,-100],[55,-100],[55,-110],[48,-115],[40,-115],[20,-100],[15,-85],[10,-75],[-5,-80],[-15,-70],[-25,-65]]
 const ALL_TARGETS = [...TARGETS_CN, ...TARGETS_FI, ...TARGETS_US]
 
-interface Shot { hubIdx: number; progress: number; speed: number }
+interface Shot { hubIdx: number; targetIdx: number; progress: number; speed: number }
 
 // ─── 3D orthographic globe projection ───
 function proj(lat: number, lng: number, rotation: number = 0): { x: number; y: number; z: number } {
@@ -185,9 +185,12 @@ export default function DynamicGlobe() {
         })
       }
 
-      // ── Spawn animated shots ──
-      if (frame % 12 === 0) {
-        shots.push({ hubIdx: shotCounter % 3, progress: 0, speed: 0.012 + Math.random() * 0.008 })
+      // ── Spawn animated shots (fewer, fixed target per shot) ──
+      if (frame % 25 === 0) {
+        const hubIdx = shotCounter % 3
+        const maxT = Math.min(26, Math.floor(ALL_TARGETS.length / 3))
+        const targetIdx = hubIdx * 26 + Math.floor(Math.random() * maxT)
+        shots.push({ hubIdx, targetIdx, progress: 0, speed: 0.008 + Math.random() * 0.006 })
         shotCounter++
       }
 
@@ -196,8 +199,7 @@ export default function DynamicGlobe() {
         s.progress += s.speed
         if (s.progress >= 1) { shots.splice(si, 1); continue }
         const hub = HUBS[s.hubIdx]
-        const ti = s.hubIdx * 26 + (Math.floor(s.progress * 26) % 26)
-        const target = ALL_TARGETS[Math.min(ti, ALL_TARGETS.length - 1)]
+        const target = ALL_TARGETS[Math.min(s.targetIdx, ALL_TARGETS.length - 1)]
         if (!target) continue
         const start = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
         const end = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
@@ -209,10 +211,27 @@ export default function DynamicGlobe() {
         const dx = (1-t)*(1-t)*start.x + 2*(1-t)*t*mx + t*t*end.x
         const dy = (1-t)*(1-t)*start.y + 2*(1-t)*t*my + t*t*end.y
 
-        c.beginPath(); c.arc(dx, dy, 2.5, 0, Math.PI * 2)
-        const g = c.createRadialGradient(dx, dy, 0, dx, dy, 2.5)
+        // Trail: draw arc from near start to current position
+        const trailLen = 15
+        c.beginPath()
+        for (let i = 0; i <= trailLen; i++) {
+          const st = Math.max(0, t - 0.12) + (t - Math.max(0, t - 0.12)) * (i / trailLen)
+          const tx = (1-st)*(1-st)*start.x + 2*(1-st)*st*mx + st*st*end.x
+          const ty = (1-st)*(1-st)*start.y + 2*(1-st)*st*my + st*st*end.y
+          i === 0 ? c.moveTo(tx, ty) : c.lineTo(tx, ty)
+        }
+        c.strokeStyle = clr
+        c.globalAlpha = 0.3 * (1 - t) + 0.05
+        c.lineWidth = 1.5
+        c.stroke()
+        c.globalAlpha = 1
+
+        // Head glow
+        c.beginPath(); c.arc(dx, dy, 3, 0, Math.PI * 2)
+        const g = c.createRadialGradient(dx, dy, 0, dx, dy, 3)
         g.addColorStop(0, clr + 'cc'); g.addColorStop(1, clr + '00')
         c.fillStyle = g; c.fill()
+        // Head dot
         c.beginPath(); c.arc(dx, dy, 1.5, 0, Math.PI * 2)
         c.fillStyle = clr; c.fill()
       }

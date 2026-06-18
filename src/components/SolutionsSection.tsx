@@ -4,36 +4,11 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
-  {
-    id: 'residential',
-    title: 'Home Battery Storage Solution',
-    desc: 'Complete residential energy storage solution powered by JKESS core components — your one-stop system for true home energy independence. At its heart, JKESS intelligent BMS protection boards deliver active balancing from 2A to 15A across 4S to 32S configurations, ensuring every cell operates at peak performance and safety. Paired with our modular battery kits (compatible with both 15KWh and 16KWh LFP cells) mounted on heavy-duty caster wheels for effortless placement, plus an optional high-voltage kit for advanced applications requiring higher voltage stacks. Installation options include 6U rack-mount for tidy cabinet integration or freestanding setup with built-in LCD display for real-time system status. Communication via CAN bus and RS485 enables seamless integration with solar inverters, grid systems, and remote monitoring platforms. Designed for European homes seeking energy independence, the JKESS system stores excess solar energy for nighttime use, reduces grid dependency, lowers electricity bills, and keeps critical appliances running during power outages with automatic backup switching.',
-    image: '/images/scenario-2.jpg',
-  },
-  {
-    id: 'ci-storage',
-    title: 'C&I Energy Storage Solution',
-    desc: 'Professional-grade commercial and industrial energy storage system built with JKESS core technology, covering a flexible capacity range from 64KWh to 265KWh to suit projects of any scale. Supports two deployment modes: split stacked configuration for modular expansion as energy needs grow, and integrated cabinet solution for space-efficient all-in-one installation. Thermal management is fully covered with both air cooling and liquid cooling options — air cooling for cost-effective standard operation, liquid cooling for high-density environments requiring consistent temperature control and extended cycle life. At the system\'s core, JKESS intelligent BMS delivers active balancing across all cells with real-time voltage and temperature monitoring, ensuring safety, efficiency, and long battery lifespan. Communication via CAN bus and RS485 enables seamless integration with solar PV systems, grid infrastructure, diesel generators, and remote cloud monitoring platforms. Ideal for factories, office buildings, EV charging stations, supermarkets, hospitals, and commercial parks looking to reduce peak electricity costs, participate in demand response programs, ensure uninterruptible power supply, and maximize return on investment through intelligent energy management.',
-    image: '/images/scenario-3.png',
-  },
-  {
-    id: 'solar-pv',
-    title: 'Solar PV & Energy Storage Solution',
-    desc: 'Comprehensive solar photovoltaic power station solution — whether it\'s a residential rooftop PV system or a large-scale ground-mounted solar farm, JKESS has the right energy storage products to achieve perfect matching. For residential solar installations, JKESS battery kits (15KWh/16KWh compatible) paired with intelligent BMS protection boards and the optional HV kit create a seamless home energy storage system that stores daytime solar energy for nighttime use, maximizing self-consumption and energy independence. For commercial and utility-scale solar PV stations, JKESS offers scalable C&I energy storage solutions ranging from 64KWh to 265KWh with flexible split stacked or integrated cabinet configurations, supporting both air cooling and liquid cooling thermal management to suit any climate conditions. All JKESS storage systems feature active balancing BMS for optimal battery performance and lifespan, CAN/RS485 communication for seamless inverter integration, and remote cloud monitoring for real-time performance tracking. From residential rooftops to sprawling solar farms, JKESS core components ensure every watt of solar energy is captured, stored, and utilized efficiently.',
-    image: '/images/scenario-1.png',
-  },
-  {
-    id: 'outdoor-emergency',
-    title: 'Outdoor & Emergency Power Solution',
-    desc: 'Reliable and portable energy storage solutions designed for outdoor adventures, emergency response, and off-grid scenarios where mains power is unavailable or unstable. For outdoor travel and camping enthusiasts, JKESS compact battery kits paired with intelligent BMS protection boards deliver clean, quiet, and portable power for charging devices, running small appliances, and powering lighting — a clean alternative to noisy gas generators. For small clinics, medical stations, and field hospitals in remote or disaster-affected areas, JKESS storage systems provide stable and uninterrupted power supply for critical medical equipment, refrigeration of vaccines and medicines, lighting, and communication devices, ensuring life-saving operations continue even during grid outages. For construction sites, engineering maintenance crews, and temporary workstations in remote locations, JKESS modular battery solutions offer flexible and scalable power that can be transported and deployed on demand. All systems feature JKESS active balancing BMS for extended battery life, multiple output interfaces for versatile device connectivity, CAN/RS485 communication for monitoring, and rugged construction designed to withstand challenging outdoor conditions. Wherever there is no grid, JKESS delivers the power you need.',
-    image: '/images/scenario-4.png',
-  },
-  {
-    id: 'low-speed-vehicle',
-    title: 'Low-Speed Vehicle Solution',
-    desc: 'Complete battery and electronic control solution tailored for low-speed electric vehicles, covering two-wheelers, three-wheelers, and small four-wheel vehicles used in daily commuting, last-mile delivery, campus shuttles, and community mobility. At the core of each solution, JKESS intelligent BMS protection boards with active balancing (2A~15A, 4S~32S) ensure safe and efficient battery management across all cells, extending cycle life and preventing overcharge, over-discharge, and short circuits. Paired with JKESS modular battery packs, the system delivers reliable and consistent power output tailored to each vehicle type — from lightweight two-wheeler batteries for urban commuting to higher-capacity packs for three-wheeled cargo vehicles and small four-wheeled passenger vehicles. The integrated electronic control system provides smooth acceleration, regenerative braking support, and real-time status monitoring via CAN bus communication. Designed for durability and safety, JKESS low-speed vehicle solutions meet European market standards, offering affordable, clean, and efficient electrification for short-distance transportation needs. Whether it\'s an e-bike for city streets, a cargo trike for last-mile logistics, or a compact neighborhood EV, JKESS delivers the power and control system that keeps you moving.',
-    image: '/images/scenario-5.png',
-  },
+  { id: 'residential',      image: '/images/scenario-2.jpg' },
+  { id: 'ci-storage',       image: '/images/scenario-3.png' },
+  { id: 'solar-pv',         image: '/images/scenario-1.png' },
+  { id: 'outdoor-emergency', image: '/images/scenario-4.png' },
+  { id: 'low-speed-vehicle', image: '/images/scenario-5.png' },
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
@@ -115,7 +90,7 @@ export default function SolutionsSection() {
             <span className="text-green-600">{t('solutions.scenarios', 'Scenarios')}</span>
           </h2>
           <p className="mt-3 text-gray-500 text-sm">
-            C&I Storage · Residential · Special Vehicles · Special Equipment
+            {t('scenarios.subtitle', 'C&I Storage · Residential · Solar PV · Outdoor & Emergency · Low-Speed Vehicle')}
           </p>
         </div>
 
@@ -197,10 +172,10 @@ export default function SolutionsSection() {
             <div className="md:col-span-2 space-y-4">
               <div key={activeTab} className="animate-content-fade">
                 <h3 className="text-lg md:text-2xl font-bold text-gray-900">
-                  {scenarios[activeTab].title}
+                  {t(`scenarios.${scenarios[activeTab].id}.title`, scenarios[activeTab].id)}
                 </h3>
                 <p className="text-sm text-gray-700 leading-relaxed mt-4">
-                  {scenarios[activeTab].desc}
+                  {t(`scenarios.${scenarios[activeTab].id}.desc`, scenarios[activeTab].id)}
                 </p>
               </div>
             </div>
@@ -210,7 +185,7 @@ export default function SolutionsSection() {
                 {scenarios[activeTab].image ? (
                   <img
                     src={scenarios[activeTab].image}
-                    alt={scenarios[activeTab].title}
+                    alt={t(`scenarios.${scenarios[activeTab].id}.title`, scenarios[activeTab].id)}
                     className="w-full h-full object-contain"
                   />
                 ) : (

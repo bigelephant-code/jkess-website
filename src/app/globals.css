@@ -154,6 +154,16 @@ body {
   animation: startled 0.55s ease-out forwards;
 }
 
+/* 💚 Ring thicken - active circle border thickens then shrinks back */
+@keyframes ring-thicken {
+  0% { stroke-width: 10; }
+  100% { stroke-width: 5; }
+}
+
+.animate-ring-thicken {
+  animation: ring-thicken 0.4s ease-out forwards;
+}
+
 /* 🌊 Gentle floating - subtle up/down motion */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }

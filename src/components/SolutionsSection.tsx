@@ -152,6 +152,7 @@ export default function SolutionsSection() {
                       strokeLinecap="round"
                       strokeDasharray={CIRCUMFERENCE}
                       strokeDashoffset={strokeDashoffset}
+                      className={startled ? 'animate-ring-thicken' : ''}
                       style={{ transform: 'rotate(-90deg)', transformOrigin: '32px 32px', transition: 'stroke-dashoffset 0.03s linear' }}
                     />
                   )}

@@ -42,9 +42,22 @@ export default function SolutionsSection() {
   const t = useTranslate()
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
+  const [rippleOrigin, setRippleOrigin] = useState<number | null>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const progressRef = useRef(0)
   const startTimeRef = useRef(Date.now())
+  // Switch tab with ripple effect
+  const switchTab = (newIdx: number) => {
+    const oldIdx = activeTab
+    if (oldIdx === newIdx) return
+
+    // Set ripple from the outgoing circle
+    setRippleOrigin(oldIdx)
+    setActiveTab(newIdx)
+
+    // Clear ripple after animation completes
+    setTimeout(() => setRippleOrigin(null), 700)
+  }
 
   // Auto-rotation every 3 seconds
   useEffect(() => {
@@ -59,7 +72,8 @@ export default function SolutionsSection() {
       setProgress(newProgress)
 
       if (newProgress >= 100) {
-        setActiveTab((prev) => (prev + 1) % scenarios.length)
+        const next = (activeTab + 1) % scenarios.length
+        switchTab(next)
         startTimeRef.current = Date.now()
         progressRef.current = 0
         setProgress(0)
@@ -68,11 +82,11 @@ export default function SolutionsSection() {
 
     timerRef.current = interval
     return () => clearInterval(interval)
-  }, [])
+  }, [activeTab])
 
   // Reset timer when tab is manually clicked
   const handleTabClick = (idx: number) => {
-    setActiveTab(idx)
+    switchTab(idx)
     startTimeRef.current = Date.now()
     progressRef.current = 0
     setProgress(0)
@@ -125,6 +139,11 @@ export default function SolutionsSection() {
                     />
                   )}
                 </svg>
+
+                {/* Ripple wave from this circle */}
+                {rippleOrigin === i && (
+                  <div className="absolute inset-0 rounded-full border-[3px] border-green-400/60 animate-ripple pointer-events-none z-30" />
+                )}
 
                 {/* Icons: all use CSS mask */}
                 {(() => {

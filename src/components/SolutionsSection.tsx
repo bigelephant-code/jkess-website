@@ -116,7 +116,7 @@ export default function SolutionsSection() {
 
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">
           {/* Left: living circle sprites */}
-          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between">
+          <div className="w-full md:w-[100px] flex-shrink-0 flex flex-row md:flex-col items-center md:justify-between overflow-visible">
             {scenarios.map((s, i) => (
               <button
                 key={s.id}
@@ -157,9 +157,9 @@ export default function SolutionsSection() {
                   )}
                 </svg>
 
-                {/* Ring pulse: active border thickens then fades */}
+                {/* Ripple wave: green ring expands outward from new active circle */}
                 {startled && i === activeTab && (
-                  <div className="absolute inset-0 rounded-full border-green-500 animate-ring-pulse pointer-events-none z-15" />
+                  <div className="absolute inset-0 rounded-full border-green-400 animate-ripple-wave pointer-events-none z-15" />
                 )}
 
                 {/* Icons */}

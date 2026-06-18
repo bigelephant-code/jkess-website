@@ -23,7 +23,10 @@ const ALL_TARGETS: [number, number][] = [
 interface Shot { hubIdx: number; progress: number; speed: number }
 
 function geoToXY(lat: number, lng: number, w: number, h: number) {
-  return { x: ((lng + 180) / 360) * w, y: ((90 - lat) / 180) * h }
+  // Mercator projection: natural look, no polar compression
+  const x = ((lng + 180) / 360) * w
+  const y = (Math.PI - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360))) / (2 * Math.PI) * h
+  return { x, y }
 }
 
 export default function DynamicGlobe() {
@@ -53,39 +56,19 @@ export default function DynamicGlobe() {
     function draw() {
       c.clearRect(0, 0, w, h)
 
-      // Grid
-      c.strokeStyle = 'rgba(74,222,128,0.06)'
-      c.lineWidth = 0.5
-      for (let x = 0; x < w; x += 40) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke() }
-      for (let y = 0; y < h; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke() }
-
-      // Equator
-      c.strokeStyle = 'rgba(74,222,128,0.15)'
-      c.lineWidth = 0.8
-      c.beginPath(); c.moveTo(0, h/2); c.lineTo(w, h/2); c.stroke()
-
-      // Country landmass (if loaded)
+      // Country landmass (filled only, no strokes to avoid horizontal artifacts)
       const wd = wdRef.current
       if (wd && wd.length > 0) {
-        c.fillStyle = '#1a3a34'
+        c.fillStyle = '#1f4a41'
         wd.forEach(ring => {
           c.beginPath()
           ring.forEach(([lat, lng], i) => {
             const p = geoToXY(lat, lng, w, h)
             i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
           })
-          c.closePath(); c.fill()
+          c.closePath()
         })
-        c.strokeStyle = 'rgba(74,222,128,0.3)'
-        c.lineWidth = 0.8
-        wd.forEach(ring => {
-          c.beginPath()
-          ring.forEach(([lat, lng], i) => {
-            const p = geoToXY(lat, lng, w, h)
-            i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
-          })
-          c.closePath(); c.stroke()
-        })
+        c.fill()
       }
 
       // Spawn shots

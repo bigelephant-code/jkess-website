@@ -62,7 +62,7 @@ export default function DynamicGlobe() {
     function draw() {
       c.clearRect(0, 0, w, h)
 
-      // Transparent background (ocean is now transparent)
+      // Ocean background
       c.clearRect(0, 0, w, h)
 
       // Grid

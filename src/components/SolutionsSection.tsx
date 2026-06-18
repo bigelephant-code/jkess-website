@@ -128,7 +128,7 @@ export default function SolutionsSection() {
 
                 {/* Icons: all use CSS mask */}
                 {(() => {
-                  const iconMap = ['1','2','3','4','5']
+                  const iconMap = ['1','5','3','4','2']
                   return (
                     <div
                       className={`relative z-10 w-7 h-7 transition-all duration-300 bg-gray-600 ${i === activeTab ? 'bg-green-500 scale-110' : 'group-hover:bg-gray-500'}`}

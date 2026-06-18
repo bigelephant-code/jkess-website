@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60" fill="none">
+  <!-- Car body - sedan shape -->
+  <path d="M15,45 L15,38 L25,28 L40,20 L80,20 L88,28 L96,33 L98,38 L98,45 L92,48 L82,48 L77,45 L28,45 L23,48 L18,48 Z" stroke="black" stroke-width="3" fill="none" stroke-linejoin="round"/>
+  <!-- Windshield -->
+  <path d="M42,22 L36,32 L48,32 L48,22 Z" stroke="black" stroke-width="2" fill="none" stroke-linejoin="round"/>
+  <!-- Rear window -->
+  <path d="M52,22 L52,32 L76,32 L72,24 L66,20 Z" stroke="black" stroke-width="2" fill="none" stroke-linejoin="round"/>
+  <!-- Door line -->
+  <line x1="50" y1="24" x2="50" y2="42" stroke="black" stroke-width="2" stroke-linecap="round"/>
+  <!-- Front wheel -->
+  <circle cx="32" cy="45" r="8" stroke="black" stroke-width="3" fill="none"/>
+  <circle cx="32" cy="45" r="3" stroke="black" stroke-width="2" fill="none"/>
+  <!-- Rear wheel -->
+  <circle cx="72" cy="45" r="8" stroke="black" stroke-width="3" fill="none"/>
+  <circle cx="72" cy="45" r="3" stroke="black" stroke-width="2" fill="none"/>
+</svg>

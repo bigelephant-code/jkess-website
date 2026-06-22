@@ -55,8 +55,8 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                 </div>
                 <div>
                   <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">{t('contactSection.email', 'Email')}</p>
-                  <a href={`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}`} className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">
-                    {data?.contactEmail || 'chinaenergymall@163.com'}
+                  <a href={`mailto:${data?.contactEmail || 'zhou@jkess.com'}`} className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">
+                    {data?.contactEmail || 'zhou@jkess.com'}
                   </a>
                 </div>
               </div>
@@ -83,7 +83,7 @@ export default function ContactSection({ data }: { data?: FooterData }) {
             const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value || ''
             const subject = encodeURIComponent('JKESS Inquiry')
             const body = encodeURIComponent(`Name: ${name}\nCompany: ${company}\nMessage:\n${message}`)
-            window.open(`mailto:${data?.contactEmail || 'chinaenergymall@163.com'}?subject=${subject}&body=${body}`)
+            window.open(`mailto:${data?.contactEmail || 'zhou@jkess.com'}?subject=${subject}&body=${body}`)
           }}>
             <div className="grid grid-cols-2 gap-3">
               <input type="text" name="name" placeholder={t('contactSection.yourName', 'Your Name')} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors" />

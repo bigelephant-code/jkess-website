@@ -33,7 +33,7 @@ const orgJsonLd = {
     'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.',
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'chinaenergymall@163.com',
+    email: 'zhou@jkess.com',
     contactType: 'sales',
   },
 }

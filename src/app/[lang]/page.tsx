@@ -109,7 +109,7 @@ const siteContent = {
     },
   ],
   footer: {
-    contactEmail: "chinaenergymall@163.com",
+    contactEmail: "zhou@jkess.com",
   },
 };
 

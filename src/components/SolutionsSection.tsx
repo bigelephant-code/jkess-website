@@ -19,6 +19,7 @@ export default function SolutionsSection() {
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
   const [startled, setStartled] = useState(false)
+  const [autoPlay, setAutoPlay] = useState(true)
   const activeTabRef = useRef(0)
 
   const switchTab = useCallback((newIdx: number) => {
@@ -32,6 +33,8 @@ export default function SolutionsSection() {
   }, [])
 
   useEffect(() => {
+    if (!autoPlay) return
+
     const interval = setInterval(() => {
       setProgress((current) => {
         const nextProgress = Math.min(current + 1, 100)
@@ -44,7 +47,7 @@ export default function SolutionsSection() {
     }, 30)
 
     return () => clearInterval(interval)
-  }, [switchTab])
+  }, [autoPlay, switchTab])
 
   // Preload scenario images for smooth switching
   useEffect(() => {
@@ -56,8 +59,13 @@ export default function SolutionsSection() {
     })
   }, [])
 
-  // Reset timer when tab is manually clicked
+  const stopAutoPlay = useCallback(() => {
+    setAutoPlay(false)
+    setProgress(0)
+  }, [])
+
   const handleTabClick = (idx: number) => {
+    stopAutoPlay()
     switchTab(idx)
     setProgress(0)
   }
@@ -84,6 +92,8 @@ export default function SolutionsSection() {
               <button
                 key={s.id}
                 onClick={() => handleTabClick(i)}
+                onFocus={stopAutoPlay}
+                onPointerEnter={stopAutoPlay}
                 className="relative w-[72px] h-[72px] flex items-center justify-center rounded-full group flex-shrink-0 transition-all duration-300"
               >
                 {/* 🌬️ Breathing glow - each circle breathes gently */}

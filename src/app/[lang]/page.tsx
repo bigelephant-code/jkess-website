@@ -30,9 +30,9 @@ const siteContent = {
   },
   stats: {
     yearsEstablished: 10,
-    manufacturingBase: "30000",
-    countriesCovered: 30,
-    employees: "100+",
+    manufacturingBase: "70000",
+    countriesCovered: 200,
+    employees: "700+",
   },
   products: [
     {

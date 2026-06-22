@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, MessageCircle, Send, ArrowRight } from 'lucide-react'
+import { Phone, Mail, MapPin, MessageCircle, MessagesSquare, Send, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
@@ -95,22 +95,37 @@ export default function ContactPage() {
               </form>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}
-              className="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center mb-4">
-                <MessageCircle size={28} className="text-[#25D366]" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.whatsappTitle')}</h3>
-              <p className="text-gray-500 text-sm mb-5">{t('contactPage.whatsappDesc')}</p>
-              <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
-                <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR Code" fill className="object-contain p-2" sizes="144px" />
-              </div>
-              <span className="text-xs text-green-600 font-semibold tracking-wide mb-4">WhatsApp</span>
-              <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold px-6 py-2.5 rounded-lg transition-all text-sm">
-                {t('contactPage.startChat')} <ArrowRight size={15} />
-              </a>
-            </motion.div>
+            <div className="md:col-span-2 grid md:grid-cols-2 gap-4 content-start">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center mb-4">
+                  <MessageCircle size={28} className="text-[#25D366]" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.whatsappTitle', 'WhatsApp')}</h3>
+                <p className="text-gray-500 text-sm mb-5">{t('contactPage.whatsappDesc', 'Chat with us on WhatsApp')}</p>
+                <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
+                  <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR Code" fill className="object-contain p-2" sizes="144px" />
+                </div>
+                <span className="text-xs text-green-600 font-semibold tracking-wide mb-4">WhatsApp</span>
+                <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold px-6 py-2.5 rounded-lg transition-all text-sm">
+                  {t('contactPage.startChat', 'Start Chat')} <ArrowRight size={15} />
+                </a>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.6 }}
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 rounded-full bg-[#07C160]/10 flex items-center justify-center mb-4">
+                  <MessagesSquare size={28} className="text-[#07C160]" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.wechatTitle', 'WeChat')}</h3>
+                <p className="text-gray-500 text-sm mb-5">{t('contactPage.wechatDesc', 'Add me on WeChat for quick communication')}</p>
+                <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
+                  <Image src="/images/wechat-qr.png" alt="WeChat QR Code" fill className="object-contain p-2" sizes="144px" />
+                </div>
+                <span className="text-xs text-[#07C160] font-semibold tracking-wide mb-4">WeChat</span>
+                <p className="text-sm text-gray-400">{t('contactPage.wechatId', 'Scan to add contact')}</p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>

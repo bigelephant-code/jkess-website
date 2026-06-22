@@ -38,11 +38,19 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                     <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">{t('contactSection.phone', 'Phone')}</p>
                     <a href="tel:+8613162828868" className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">+86 131 6282 8868</a>
                   </div>
-                  <div className="flex flex-col items-center gap-0.5 shrink-0">
-                    <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden bg-white p-1 transition-transform hover:scale-110" title="WhatsApp">
-                      <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR" fill className="object-contain" sizes="64px" />
-                    </a>
-                    <span className="text-[10px] text-green-500 font-semibold tracking-wide">WhatsApp</span>
+                  <div className="flex items-start gap-3 shrink-0">
+                    <div className="flex flex-col items-center gap-0.5">
+                      <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden bg-white p-1 transition-transform hover:scale-110" title="WhatsApp">
+                        <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR" fill className="object-contain" sizes="64px" />
+                      </a>
+                      <span className="text-[10px] text-green-500 font-semibold tracking-wide">WhatsApp</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-0.5">
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-white p-1" title="WeChat">
+                        <Image src="/images/wechat-qr.png" alt="WeChat QR" fill className="object-contain" sizes="64px" />
+                      </div>
+                      <span className="text-[10px] text-green-500 font-semibold tracking-wide">WeChat</span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -87,8 +87,6 @@ export default function AboutPage() {
         </div>
       </TeamSlideshow>
 
-      <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
-
       {/* Our Offices Section */}
       <section className="bg-gradient-to-br from-gray-50 via-white to-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-6">
@@ -189,6 +187,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
     </div>
   )
 }

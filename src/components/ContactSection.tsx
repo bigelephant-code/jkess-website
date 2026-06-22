@@ -33,7 +33,7 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                 <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-green-500/20 group-hover:-translate-x-1">
                   <Phone size={20} className="text-green-400 transition-all duration-200 group-hover:text-green-300" />
                 </div>
-                <div className="flex-1 flex items-start justify-between gap-3">
+                <div className="flex-1 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">{t('contactSection.phone', 'Phone')}</p>
                     <a href="tel:+8613162828868" className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">+86 131 6282 8868</a>

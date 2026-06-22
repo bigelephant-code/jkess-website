@@ -102,7 +102,7 @@ export default function ContactPage() {
                   <MessageCircle size={28} className="text-[#25D366]" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.whatsappTitle', 'WhatsApp')}</h3>
-                <p className="text-gray-500 text-sm mb-5 min-h-[3rem]">{t('contactPage.whatsappDesc', 'Quickest way to get a response')}</p>
+                <p className="text-gray-500 text-sm mb-5 h-14 leading-5">{t('contactPage.whatsappDesc', 'Quickest way to get a response')}</p>
                 <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
                   <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR Code" fill className="object-contain p-2" sizes="144px" />
                 </div>
@@ -118,7 +118,7 @@ export default function ContactPage() {
                   <MessagesSquare size={28} className="text-[#07C160]" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.wechatTitle', 'WeChat')}</h3>
-                <p className="text-gray-500 text-sm mb-5 min-h-[3rem]">{t('contactPage.wechatDesc', 'Scan to add me on WeChat')}</p>
+                <p className="text-gray-500 text-sm mb-5 h-14 leading-5">{t('contactPage.wechatDesc', 'Scan to add me on WeChat')}</p>
                 <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
                   <Image src="/images/wechat-qr.png" alt="WeChat QR Code" fill className="object-contain p-2" sizes="144px" />
                 </div>

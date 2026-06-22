@@ -100,7 +100,7 @@ export const products: Product[] = [
       { key: 'Compatible Cells', value: '280Ah ~ 320Ah LFP (LiFePO4)' },
       { key: 'Enclosure', value: 'Sheet-metal, IP54 rated' },
       { key: 'Dimensions', value: '584 × 346 × 210 mm' },
-      { key: 'Weight', value: '~35 kg (empty)' },
+      { key: 'Weight', value: '~28 kg (empty)' },
       { key: 'Mobility', value: '4 heavy-duty caster wheels (2 with brakes)' },
       { key: 'Communication', value: 'CAN 2.0 / RS485' },
       { key: 'Display', value: 'LCD touch screen' },

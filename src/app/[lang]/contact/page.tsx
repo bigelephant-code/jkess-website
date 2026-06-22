@@ -97,12 +97,12 @@ export default function ContactPage() {
 
             <div className="md:col-span-2 grid md:grid-cols-2 gap-4 content-start">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-start text-center">
                 <div className="w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center mb-4">
                   <MessageCircle size={28} className="text-[#25D366]" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.whatsappTitle', 'WhatsApp')}</h3>
-                <p className="text-gray-500 text-sm mb-5">{t('contactPage.whatsappDesc', 'Chat with us on WhatsApp')}</p>
+                <p className="text-gray-500 text-sm mb-5">{t('contactPage.whatsappDesc', 'Quickest way to get a response')}</p>
                 <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
                   <Image src="/images/whatsapp-qr.png" alt="WhatsApp QR Code" fill className="object-contain p-2" sizes="144px" />
                 </div>
@@ -113,12 +113,12 @@ export default function ContactPage() {
                 </a>
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.6 }}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-center text-center">
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 flex flex-col items-center justify-start text-center">
                 <div className="w-16 h-16 rounded-full bg-[#07C160]/10 flex items-center justify-center mb-4">
                   <MessagesSquare size={28} className="text-[#07C160]" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-1">{t('contactPage.wechatTitle', 'WeChat')}</h3>
-                <p className="text-gray-500 text-sm mb-5">{t('contactPage.wechatDesc', 'Add me on WeChat for quick communication')}</p>
+                <p className="text-gray-500 text-sm mb-5">{t('contactPage.wechatDesc', 'Scan to add me on WeChat')}</p>
                 <div className="relative w-36 h-36 rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm mb-4">
                   <Image src="/images/wechat-qr.png" alt="WeChat QR Code" fill className="object-contain p-2" sizes="144px" />
                 </div>

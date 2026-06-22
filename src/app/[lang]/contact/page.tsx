@@ -17,13 +17,13 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Name: ${formData.name}\nCompany: ${formData.company}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     )
-    window.open(`mailto:chinaenergymall@163.com?subject=${subject}&body=${body}`)
+    window.open(`mailto:zhou@jkess.com?subject=${subject}&body=${body}`)
     setSubmitted(true)
   }
 
   const contactItems = [
     { icon: Phone, label: 'Phone', value: '+86 131 6282 8868', href: 'tel:+8613162828868', color: '#22c55e' },
-    { icon: Mail, label: 'Email', value: 'chinaenergymall@163.com', href: 'mailto:chinaenergymall@163.com', color: '#5b5bff' },
+    { icon: Mail, label: 'Email', value: 'zhou@jkess.com', href: 'mailto:zhou@jkess.com', color: '#5b5bff' },
     { icon: MapPin, label: 'Location', value: 'Building B4, Guangming, Shenzhen', color: '#f58a8a' },
   ]
 

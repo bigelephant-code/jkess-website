@@ -114,6 +114,80 @@ export default function AboutPage() {
       </section>
 
       <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
+
+      {/* Our Offices Section */}
+      <section className="bg-gradient-to-br from-gray-50 via-white to-gray-50 py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <Reveal>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('about.offices', 'Our Offices & Factory')}</h2>
+              <p className="text-gray-500 max-w-2xl mx-auto">{t('about.officesDesc', 'JKESS operates across three strategic locations in China to serve you better')}</p>
+            </div>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><path d="M3 21h18M3 10l9-7 9 7M5 10v11h5V13h4v8h5V10" /></svg>
+                ),
+                title: 'Shenzhen Office',
+                lines: [
+                  'Room 1008, Building B4,',
+                  'Yunzhi Science & Technology Park,',
+                  'Guangming Street, Guangming District,',
+                  'Shenzhen, Guangdong, China',
+                ],
+                color: '#22c55e',
+              },
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><path d="M3 21h18M3 10l9-7 9 7M5 10v11h5V13h4v8h5V10" /></svg>
+                ),
+                title: 'Hangzhou Office',
+                lines: [
+                  'Room 309-2, Building 11,',
+                  'Nanhu Future Science Park,',
+                  'No. 2 Tongshanxi Road, Zhongtai Street,',
+                  'Yuhang District, Hangzhou, Zhejiang, China',
+                ],
+                color: '#5b5bff',
+              },
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /></svg>
+                ),
+                title: 'Shandong Factory',
+                lines: [
+                  'No. 103 Binshi Road,',
+                  'Lize Subdistrict Office,',
+                  'Binzhou Economic & Technological',
+                  'Development Zone, Shandong, China',
+                ],
+                color: '#f58a8a',
+              },
+            ].map((office, i) => (
+              <motion.div
+                key={office.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow group"
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={{ background: `${office.color}12`, color: office.color }}>
+                  {office.icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{office.title}</h3>
+                <div className="text-gray-500 text-sm leading-relaxed">
+                  {office.lines.map((line, li) => (
+                    <p key={li}>{line}</p>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

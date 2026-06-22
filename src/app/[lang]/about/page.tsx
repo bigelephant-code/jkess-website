@@ -86,32 +86,6 @@ export default function AboutPage() {
           ))}
         </div>
       </TeamSlideshow>
-      {/* Warehouse & Global Logistics Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Content - Left side */}
-            <Reveal direction="left">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  {t('warehouse.title', 'Global Warehouse & Logistics')}
-                </h2>
-                <div className="text-gray-600 leading-relaxed space-y-4">
-                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics. Combined with our overseas warehouses in Poland (serving the European market), the United States (covering North America), and Brazil (covering South America), we offer a truly global distribution network that guarantees fast delivery, reduced shipping costs, and localized support for customers worldwide.')}</p>
-                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system ensures product availability, flexible dispatch options, and seamless cross-border logistics. With warehouses on four continents, JKESS is committed to delivering energy storage solutions to your doorstep — wherever you are.')}</p>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Image - Right side */}
-            <Reveal direction="right" delay={0.15}>
-              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#0d1b2a]">
-                <DynamicGlobe />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
 
       <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
 
@@ -185,6 +159,33 @@ export default function AboutPage() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Warehouse & Global Logistics Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Content - Left side */}
+            <Reveal direction="left">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  {t('warehouse.title', 'Global Warehouse & Logistics')}
+                </h2>
+                <div className="text-gray-600 leading-relaxed space-y-4">
+                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics. Combined with our overseas warehouses in Poland (serving the European market), the United States (covering North America), and Brazil (covering South America), we offer a truly global distribution network that guarantees fast delivery, reduced shipping costs, and localized support for customers worldwide.')}</p>
+                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system ensures product availability, flexible dispatch options, and seamless cross-border logistics. With warehouses on four continents, JKESS is committed to delivering energy storage solutions to your doorstep — wherever you are.')}</p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Image - Right side */}
+            <Reveal direction="right" delay={0.15}>
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#0d1b2a]">
+                <DynamicGlobe />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

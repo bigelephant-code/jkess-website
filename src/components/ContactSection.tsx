@@ -27,13 +27,13 @@ export default function ContactSection({ data }: { data?: FooterData }) {
         </Reveal>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <StaggerReveal staggerDelay={0.12} className="space-y-4">
+          <StaggerReveal staggerDelay={0.12} className="space-y-2">
             <StaggerItem>
               <div className="flex items-start gap-4 group cursor-pointer transition-all duration-200 hover:-translate-x-1">
                 <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-green-500/20 group-hover:-translate-x-1">
                   <Phone size={20} className="text-green-400 transition-all duration-200 group-hover:text-green-300" />
                 </div>
-                <div className="flex-1 flex items-center justify-between gap-3">
+                <div className="flex-1 flex items-end justify-between gap-3">
                   <div>
                     <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">{t('contactSection.phone', 'Phone')}</p>
                     <a href="tel:+8613162828868" className="text-gray-400 transition-colors duration-200 group-hover:text-green-400">+86 131 6282 8868</a>

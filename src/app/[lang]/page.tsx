@@ -36,20 +36,6 @@ const siteContent = {
   },
   products: [
     {
-      name: "BMS Protection Board",
-      slug: "bms-protection-board",
-      category: "bms",
-      description:
-        "Comprehensive BMS solutions: active balancers (2A~15A), protection boards (40A~300A, 4S~32S), and parallel boards with integrated limiter.",
-      features: [
-        "Active balancers: 2A~15A balancing, 4S~24S support",
-        "Protection boards: 40A~300A continuous, 4S~32S cell",
-        "Parallel boards with integrated 10A current limiter",
-        "CAN / RS485 / Bluetooth / isoSPI communication",
-      ],
-      image: "/images/bms-board/1.jpg",
-    },
-    {
       name: "Battery Kit (With Caster)",
       slug: "battery-kit",
       category: "battery-kit",

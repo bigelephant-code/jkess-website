@@ -1,7 +1,8 @@
 import { products, getProductBySlug } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
-import { locales, defaultLocale, localeMap, isValidLocale } from '@/i18n/config'
+import { locales, defaultLocale } from '@/i18n/config'
+import { absoluteUrl } from '@/lib/site'
 
 export function generateStaticParams() {
   const params: Array<{ lang: string; slug: string }> = []
@@ -14,15 +15,15 @@ export function generateStaticParams() {
 }
 
 function productJsonLd(p: Product, lang: string) {
-  const siteUrl = defaultLocale ? `https://jkess-energy.com` : `https://jkess-energy.com/${lang}`
+  const localePath = lang === defaultLocale ? '' : `/${lang}`
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: p.name,
     description: p.description,
     brand: { '@type': 'Brand', name: 'JKESS' },
-    image: p.images.map((img) => `https://jkess-energy.com${img}`),
-    url: `${siteUrl}/products/${p.slug}`,
+    image: p.images.map((img) => absoluteUrl(img)),
+    url: absoluteUrl(`${localePath}/products/${p.slug}`),
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'USD',
@@ -59,14 +60,14 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
   const product = getProductBySlug(slug)
   if (!product) return {}
   return {
-    title: `${product.name} — JKESS`,
+    title: `${product.name} - JKESS`,
     description: product.description.slice(0, 160),
     keywords: [product.name, 'JKESS', product.category, 'BMS', 'battery kit', 'energy storage'],
     openGraph: {
-      title: `${product.name} — JKESS`,
+      title: `${product.name} - JKESS`,
       description: product.description.slice(0, 160),
-      url: `https://jkess-energy.com${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`,
-      images: product.images[0] ? [`https://jkess-energy.com${product.images[0]}`] : [],
+      url: absoluteUrl(`${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`),
+      images: product.images[0] ? [absoluteUrl(product.images[0])] : [],
     },
   }
 }

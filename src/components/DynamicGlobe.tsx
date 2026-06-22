@@ -87,6 +87,11 @@ export default function DynamicGlobe() {
       return p.z > -0.1 // front face
     }
 
+    function drawPathPoint(index: number, x: number, y: number) {
+      if (index === 0) c.moveTo(x, y)
+      else c.lineTo(x, y)
+    }
+
     function drawGlobe() {
       c.clearRect(0, 0, w, h)
 
@@ -119,7 +124,7 @@ export default function DynamicGlobe() {
         for (let j = 0; j <= 30; j++) {
           const phi = (j / 30) * Math.PI - Math.PI/2
           const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI, globeRot), cx, cy, R)
-          j === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+          drawPathPoint(j, p.x, p.y)
         }
         c.stroke()
       }
@@ -129,7 +134,7 @@ export default function DynamicGlobe() {
         for (let j = 0; j <= 30; j++) {
           const theta = (j / 30) * Math.PI * 2
           const p = toScreen(proj(phi*180/Math.PI, theta*180/Math.PI, globeRot), cx, cy, R)
-          j === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+          drawPathPoint(j, p.x, p.y)
         }
         c.stroke()
       }
@@ -142,7 +147,8 @@ export default function DynamicGlobe() {
         rings.forEach(ring => {
           let sumZ = 0
           ring.forEach(([lat, lng]) => { sumZ += proj(lat, lng, globeRot).z })
-          ;(sumZ / ring.length > 0 ? frontRings : backRings).push(ring)
+          if (sumZ / ring.length > 0) frontRings.push(ring)
+          else backRings.push(ring)
         })
 
         // Painter's algorithm: back first, then front
@@ -153,7 +159,7 @@ export default function DynamicGlobe() {
           rs.forEach(ring => {
             ring.forEach(([lat, lng], i) => {
               const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-              i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+              drawPathPoint(i, p.x, p.y)
             })
             c.closePath()
           })
@@ -164,7 +170,7 @@ export default function DynamicGlobe() {
           rs.forEach(ring => {
             ring.forEach(([lat, lng], i) => {
               const p = toScreen(proj(lat, lng, globeRot), cx, cy, R)
-              i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)
+              drawPathPoint(i, p.x, p.y)
             })
             c.closePath()
           })
@@ -245,7 +251,7 @@ export default function DynamicGlobe() {
           const st = Math.max(0, t - 0.12) + (t - Math.max(0, t - 0.12)) * (i / trailLen)
           const tx = (1-st)*(1-st)*start.x + 2*(1-st)*st*mx + st*st*end.x
           const ty = (1-st)*(1-st)*start.y + 2*(1-st)*st*my + st*st*end.y
-          i === 0 ? c.moveTo(tx, ty) : c.lineTo(tx, ty)
+          drawPathPoint(i, tx, ty)
         }
         c.strokeStyle = clr
         c.globalAlpha = 0.3 * (1 - t) + 0.05

@@ -1,4 +1,4 @@
-export default {
+const siteStats = {
   name: 'siteStats',
   title: 'Site Statistics',
   type: 'document',
@@ -25,3 +25,5 @@ export default {
     },
   ],
 }
+
+export default siteStats

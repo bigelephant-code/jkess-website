@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
+import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
@@ -18,9 +19,7 @@ export default function SolutionsSection() {
   const [activeTab, setActiveTab] = useState(0)
   const [progress, setProgress] = useState(0)
   const [startled, setStartled] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const progressRef = useRef(0)
-  const startTimeRef = useRef(Date.now())
+  const activeTabRef = useRef(0)
 
   const switchTab = useCallback((newIdx: number) => {
     const oldIdx = activeTabRef.current
@@ -28,36 +27,22 @@ export default function SolutionsSection() {
     activeTabRef.current = newIdx
     setActiveTab(newIdx)
 
-    // All circles do a startled bounce like little creatures
     setStartled(true)
     setTimeout(() => setStartled(false), 600)
   }, [])
 
-  const activeTabRef = useRef(activeTab)
-  activeTabRef.current = activeTab
-
-  // Auto-rotation every 3 seconds
   useEffect(() => {
-    startTimeRef.current = Date.now()
-    progressRef.current = 0
-    setProgress(0)
-
     const interval = setInterval(() => {
-      const elapsed = Date.now() - startTimeRef.current
-      const newProgress = Math.min((elapsed / 3000) * 100, 100)
-      progressRef.current = newProgress
-      setProgress(newProgress)
-
-      if (newProgress >= 100) {
-        const next = (activeTabRef.current + 1) % scenarios.length
-        switchTab(next)
-        startTimeRef.current = Date.now()
-        progressRef.current = 0
-        setProgress(0)
-      }
+      setProgress((current) => {
+        const nextProgress = Math.min(current + 1, 100)
+        if (nextProgress >= 100) {
+          switchTab((activeTabRef.current + 1) % scenarios.length)
+          return 0
+        }
+        return nextProgress
+      })
     }, 30)
 
-    timerRef.current = interval
     return () => clearInterval(interval)
   }, [switchTab])
 
@@ -65,7 +50,7 @@ export default function SolutionsSection() {
   useEffect(() => {
     scenarios.forEach((s) => {
       if (s.image) {
-        const img = new Image()
+        const img = new window.Image()
         img.src = s.image
       }
     })
@@ -74,8 +59,6 @@ export default function SolutionsSection() {
   // Reset timer when tab is manually clicked
   const handleTabClick = (idx: number) => {
     switchTab(idx)
-    startTimeRef.current = Date.now()
-    progressRef.current = 0
     setProgress(0)
   }
 
@@ -183,10 +166,12 @@ export default function SolutionsSection() {
             <div className="md:col-span-3">
               <div key={activeTab} className="relative w-full aspect-[4/3] overflow-hidden rounded-xl flex items-center justify-center animate-content-fade">
                 {scenarios[activeTab].image ? (
-                  <img
+                  <Image
                     src={scenarios[activeTab].image}
                     alt={t(`scenarios.${scenarios[activeTab].id}.title`, scenarios[activeTab].id)}
-                    className="w-full h-full object-contain"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 60vw"
                   />
                 ) : (
                   <div className="text-center">

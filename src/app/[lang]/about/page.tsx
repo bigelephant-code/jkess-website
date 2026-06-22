@@ -7,33 +7,6 @@ import DynamicGlobe from "@/components/DynamicGlobe"
 import { Reveal } from "@/components/ScrollReveal"
 import { useTranslate } from '@/i18n/client'
 
-const cultures = [
-  {
-    title: 'Mission',
-    desc: 'To deliver safe, reliable, and intelligent energy storage solutions that power a cleaner, more sustainable future for everyone.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
-    ),
-    color: '#22c55e',
-  },
-  {
-    title: 'Vision',
-    desc: 'To become a globally recognized leader in new energy storage, driving innovation from BMS to complete battery systems.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
-    ),
-    color: '#5b5bff',
-  },
-  {
-    title: 'Values',
-    desc: 'Integrity, innovation, and customer focus define everything we do. We build trust through quality and long-term partnerships.',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-    ),
-    color: '#f58a8a',
-  },
-]
-
 export default function AboutPage() {
   const t = useTranslate()
 

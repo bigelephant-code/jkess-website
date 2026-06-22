@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
 interface NewsItem {
@@ -61,7 +62,7 @@ export default function NewsPage() {
     <div className="bg-white min-h-screen">
       <section className="relative bg-gray-900 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/images/news-banner-bg.png" alt="" className="w-full h-full object-cover" />
+          <Image src="/images/news-banner-bg.png" alt="" fill className="object-cover" priority sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-800/75 to-gray-900/85" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)' }} />
@@ -79,7 +80,7 @@ export default function NewsPage() {
 
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-6">
-          {['2026', '2025', '2024'].map((year, yi) => {
+          {['2026', '2025', '2024'].map((year) => {
             const yearNews = news.filter((n) => n.date.startsWith(year))
             if (yearNews.length === 0) return null
             return (

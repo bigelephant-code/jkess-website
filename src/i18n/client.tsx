@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useCallback } from 'react'
 import type { LangCode } from './config'
-import type enMessages from '../../messages/en.json'
 
 type Messages = Record<string, string>
 

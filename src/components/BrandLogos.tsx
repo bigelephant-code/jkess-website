@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
@@ -12,9 +12,7 @@ export default function BrandLogos() {
   return (
     <section className="relative bg-white py-20 overflow-hidden">
       <div className="space-y-0">
-        {/* Logo scroll area wrapper */}
         <div className="relative">
-          {/* Row 1: right to left */}
           <div className="relative overflow-hidden py-4">
             <div className="flex gap-16 animate-scroll-left">
               {[...brandLogos, ...brandLogos].map((logo, i) => (
@@ -37,7 +35,6 @@ export default function BrandLogos() {
             </div>
           </div>
 
-          {/* Row 2: left to right */}
           <div className="relative overflow-hidden py-4">
             <div className="flex gap-16 animate-scroll-right">
               {[...brandLogos, ...brandLogos].map((logo, i) => (
@@ -60,9 +57,7 @@ export default function BrandLogos() {
             </div>
           </div>
 
-          {/* 鈹€鈹€鈹€ Text overlay centered on top of both rows 鈹€鈹€鈹€ */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {/* Gradient mask: solid white center 鈫?transparent sides */}
             <div
               className="absolute inset-0"
               style={{
@@ -70,7 +65,6 @@ export default function BrandLogos() {
                   'linear-gradient(90deg, transparent 0%, white 35%, white 65%, transparent 100%)',
               }}
             />
-            {/* Text content */}
             <div className="relative z-10 text-center px-6">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
                 {t('brands.title')}

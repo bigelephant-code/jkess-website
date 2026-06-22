@@ -287,7 +287,14 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                 <div className="flex flex-col">
                   {product.detailImages.map((img, i) => (
                     <div key={i} className="w-full">
-                      <img src={img} alt={product.name + ' detail ' + (i + 1)} className="w-full h-auto block" loading={i < 2 ? 'eager' : 'lazy'} />
+                      <Image
+                        src={img}
+                        alt={product.name + ' detail ' + (i + 1)}
+                        width={1400}
+                        height={900}
+                        className="w-full h-auto block"
+                        loading={i < 2 ? 'eager' : 'lazy'}
+                      />
                     </div>
                   ))}
                 </div>

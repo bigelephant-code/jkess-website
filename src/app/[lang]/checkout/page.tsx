@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
@@ -9,21 +9,44 @@ import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 
-const PAYPAL_CLIENT_ID = 'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
+const PAYPAL_CLIENT_ID =
+  process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
+  'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
+
+type PayPalActions = {
+  order: {
+    create: (payload: unknown) => Promise<string>
+    capture: () => Promise<{ id: string }>
+  }
+}
+
+type PayPalButtons = {
+  render: (container: HTMLElement) => void
+}
+
+type PayPalNamespace = {
+  Buttons: (options: {
+    style: Record<string, string>
+    createOrder: (_data: unknown, actions: PayPalActions) => Promise<string>
+    onApprove: (_data: unknown, actions: PayPalActions) => Promise<void>
+    onError: (err: unknown) => void
+  }) => PayPalButtons
+}
 
 declare global {
   interface Window {
-    paypal: any
+    paypal?: PayPalNamespace
   }
 }
 
 export default function CheckoutPage() {
   const { lang, t } = useI18n()
-  const { items, total, clearCart, itemCount } = useCart()
+  const { items, clearCart } = useCart()
   const [submitted, setSubmitted] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [sdkReady, setSdkReady] = useState(false)
-  const [sdkError, setSdkError] = useState(false)
+  const [sdkError, setSdkError] = useState(!PAYPAL_CLIENT_ID)
+  const [paymentError, setPaymentError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,41 +62,54 @@ export default function CheckoutPage() {
     .reduce((sum, i) => sum + parseFloat(i.price.replace(/[$,]/g, '')) * i.quantity, 0)
     .toFixed(2)
 
-  // Load PayPal SDK once
-  useEffect(() => {
-    if (scriptLoaded.current) return
-    scriptLoaded.current = true
+  const formComplete = Boolean(
+    formData.name.trim() &&
+    formData.email.trim() &&
+    formData.phone.trim() &&
+    formData.address.trim()
+  )
 
+  useEffect(() => {
     if (window.paypal) {
-      setSdkReady(true)
+      window.setTimeout(() => setSdkReady(true), 0)
       return
     }
+
+    if (scriptLoaded.current || window.paypal || !PAYPAL_CLIENT_ID) return
+    scriptLoaded.current = true
 
     const script = document.createElement('script')
     script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`
     script.async = true
     script.onload = () => setSdkReady(true)
-    script.onerror = () => { setSdkError(true); setSdkReady(true) }
+    script.onerror = () => {
+      setSdkError(true)
+      setSdkReady(true)
+    }
     document.body.appendChild(script)
 
-    setTimeout(() => {
-      if (!window.paypal) { setSdkError(true); setSdkReady(true) }
+    const timeout = window.setTimeout(() => {
+      if (!window.paypal) {
+        setSdkError(true)
+        setSdkReady(true)
+      }
     }, 15000)
+
+    return () => {
+      window.clearTimeout(timeout)
+    }
   }, [])
 
-  // Render PayPal buttons
   useEffect(() => {
-    if (!sdkReady || submitted || !paypalRef.current) return
-    if (!window.paypal) return
+    if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError || !formComplete) return
 
     const container = paypalRef.current
     container.innerHTML = ''
-    if (sdkError) return
 
     try {
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
-        createOrder: function (_data: any, actions: any) {
+        createOrder: (_data, actions) => {
           return actions.order.create({
             purchase_units: [{
               description: 'JKESS Order',
@@ -81,7 +117,7 @@ export default function CheckoutPage() {
             }],
           })
         },
-        onApprove: async function (_data: any, actions: any) {
+        onApprove: async (_data, actions) => {
           const order = await actions.order.capture()
           setOrderId(order.id)
 
@@ -97,20 +133,17 @@ export default function CheckoutPage() {
           )
           window.open('mailto:chinaenergymall@163.com?subject=' + subject + '&body=' + body)
           setSubmitted(true)
-          setTimeout(clearCart, 500)
+          window.setTimeout(clearCart, 500)
         },
-        onError: function (err: any) {
-          console.error('[PayPal] Payment error:', err)
-          alert('Payment failed. Please try again or contact us.')
+        onError: () => {
+          setPaymentError('Payment failed. Please try again or contact us.')
         },
       }).render(container)
-    } catch (e) {
-      console.error('[PayPal] Render error:', e)
-      setSdkError(true)
+    } catch {
+      window.setTimeout(() => setSdkError(true), 0)
     }
-  }, [sdkReady, submitted, sdkError, formData, totalAmount, items, clearCart])
+  }, [sdkReady, submitted, sdkError, formComplete, formData, totalAmount, items, clearCart])
 
-  // ── Empty cart ──
   if (items.length === 0 && !submitted) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
@@ -125,7 +158,6 @@ export default function CheckoutPage() {
     )
   }
 
-  // ── Success ──
   if (submitted) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
@@ -143,7 +175,6 @@ export default function CheckoutPage() {
     )
   }
 
-  // ── Checkout form ──
   return (
     <div className="relative min-h-screen bg-gray-50"><div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
       <div className="pt-32 pb-16">
@@ -152,7 +183,6 @@ export default function CheckoutPage() {
 
           <Reveal>
             <div className="grid lg:grid-cols-5 gap-8">
-              {/* Left: Forms */}
               <div className="lg:col-span-3 space-y-6">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900">{t('checkout.contactInfo')}</h2>
@@ -183,7 +213,6 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Right: Order Summary + PayPal */}
               <div className="lg:col-span-2">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-24">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('checkout.orderSummary')}</h2>
@@ -209,16 +238,19 @@ export default function CheckoutPage() {
                     <span className="text-xl font-bold text-green-600">${totalAmount}</span>
                   </div>
 
-                  {/* PayPal area */}
                   <div className="space-y-3">
-                    {!sdkReady ? (
+                    {!formComplete ? (
+                      <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
+                        <p className="text-xs text-yellow-700">{t('checkout.fillFields')}</p>
+                      </div>
+                    ) : !sdkReady ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">
                         <Loader2 size={18} className="animate-spin text-green-500" />
                         <span className="text-sm text-gray-500">{t('checkout.paypalLoading')}</span>
                       </div>
                     ) : sdkError ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
-                        <p className="text-sm text-yellow-700 font-medium mb-2">{'⚠️ ' + t('checkout.paypalUnavailable')}</p>
+                        <p className="text-sm text-yellow-700 font-medium mb-2">{t('checkout.paypalUnavailable')}</p>
                         <p className="text-xs text-gray-500 mb-4">{t('checkout.paypalDesc')}</p>
                         <a href="mailto:chinaenergymall@163.com"
                           className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
@@ -229,15 +261,10 @@ export default function CheckoutPage() {
                       <div ref={paypalRef} id="paypal-container" />
                     )}
 
+                    {paymentError && <p className="text-xs text-red-600 text-center">{paymentError}</p>}
                     <p className="text-xs text-gray-400 text-center flex items-center justify-center gap-1">
                       <Lock size={12} /> {t('checkout.securePayment')}
                     </p>
-
-                    {(!formData.name || !formData.email || !formData.phone || !formData.address) && (
-                      <p className="text-xs text-yellow-600 text-center">
-                      {t('checkout.fillFields')}
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>

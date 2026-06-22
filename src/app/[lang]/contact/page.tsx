@@ -31,7 +31,7 @@ export default function ContactPage() {
     <div className="bg-white min-h-screen">
       <section className="relative bg-gray-900 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/images/contact-banner-bg.png" alt="" className="w-full h-full object-cover" />
+          <Image src="/images/contact-banner-bg.png" alt="" fill className="object-cover" priority sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-800/75 to-gray-900/85" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 25% 50%, #22c55e 0%, transparent 50%), radial-gradient(circle at 75% 50%, #5b5bff 0%, transparent 50%)' }} />

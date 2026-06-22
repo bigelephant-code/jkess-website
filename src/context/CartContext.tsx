@@ -24,26 +24,23 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
-  const [mounted, setMounted] = useState(false)
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    setMounted(true)
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') return []
     try {
       const saved = localStorage.getItem('jkess-cart')
-      if (saved) {
-        setItems(JSON.parse(saved))
-      }
-    } catch {}
-  }, [])
-
-  // Save to localStorage
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem('jkess-cart', JSON.stringify(items))
+      return saved ? JSON.parse(saved) : []
+    } catch {
+      return []
     }
-  }, [items, mounted])
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('jkess-cart', JSON.stringify(items))
+    } catch {
+      // Ignore storage failures so shopping remains usable.
+    }
+  }, [items])
 
   const addItem = useCallback((newItem: CartItem) => {
     setItems((prev) => {

@@ -43,14 +43,14 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
 }
 
 /* --- Animated counting number --- */
-function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
-  const [display, setDisplay] = useState('0')
+function AnimatedNumber({ value }: { value: string }) {
+  const numericValue = parseFloat(value.replace(/[+,]|k/g, ''))
+  const [display, setDisplay] = useState(Number.isNaN(numericValue) ? value : '0')
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
 
   useEffect(() => {
-    const num = parseFloat(value.replace(/[+,]|k/g, ''))
-    if (isNaN(num)) { setDisplay(value); return }
+    if (Number.isNaN(numericValue)) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -59,10 +59,10 @@ function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
           const isLarge = value.includes('+')
           const steps = isLarge ? 30 : 40
           let current = 0
-          const increment = num / steps
+          const increment = numericValue / steps
           const timer = setInterval(() => {
             current += increment
-            if (current >= num) {
+            if (current >= numericValue) {
               setDisplay(value)
               clearInterval(timer)
             } else {
@@ -77,7 +77,7 @@ function AnimatedNumber({ value, suffix }: { value: string; suffix?: string }) {
 
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
-  }, [value])
+  }, [numericValue, value])
 
   return <span ref={ref}>{display}</span>
 }
@@ -140,7 +140,7 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                     </motion.div>
                     <div className="flex items-baseline justify-center gap-1">
                       <span className="text-4xl md:text-5xl font-bold text-gray-900 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">
-                        <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                        <AnimatedNumber value={stat.value} />
                       </span>
                       {stat.suffix && (
                         <span className="text-lg text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">{stat.suffix}</span>

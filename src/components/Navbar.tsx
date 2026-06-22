@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef} from 'react'
-import { Menu, X, ShoppingCart, Globe, ChevronUp} from 'lucide-react'
+import Image from 'next/image'
+import { Menu, X, ShoppingCart, Globe} from 'lucide-react'
 import { useCart} from '@/context/CartContext'
 import { motion, AnimatePresence} from 'framer-motion'
 import { useI18n} from '@/i18n/client'
@@ -189,10 +190,13 @@ export default function Navbar() {
       <div className="px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <a href={prefix || '/'} className="flex items-center">
-          <img
+          <Image
             src="/images/jkess-logo-cropped.png"
             alt="JKESS"
+            width={160}
+            height={48}
             className="h-12 w-auto brightness-0 invert"
+            priority
           />
         </a>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { absoluteUrl, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -9,9 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "JKESS — Powering a Cleaner Future",
+  metadataBase: new URL(siteUrl),
+  title: "JKESS - Powering a Cleaner Future",
   description:
-    "JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
+    "JKBMS Electronic Technology Co.,Ltd - your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
   keywords: [
     "JKESS",
     "BMS",
@@ -24,19 +26,19 @@ export const metadata: Metadata = {
 };
 
 const orgJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'JKBMS Electronic Technology Co.,Ltd',
-  url: 'https://jkess-energy.com',
-  logo: 'https://jkess-energy.com/logo.png',
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "JKBMS Electronic Technology Co.,Ltd",
+  url: siteUrl,
+  logo: absoluteUrl("/images/jkess-logo.png"),
   description:
-    'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.',
+    "JKBMS Electronic Technology Co.,Ltd - your trusted partner in energy storage solutions, from BMS to complete battery systems.",
   contactPoint: {
-    '@type': 'ContactPoint',
-    email: 'zhou@jkess.com',
-    contactType: 'sales',
+    "@type": "ContactPoint",
+    email: "zhou@jkess.com",
+    contactType: "sales",
   },
-}
+};
 
 export default function RootLayout({
   children,

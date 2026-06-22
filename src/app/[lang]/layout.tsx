@@ -5,6 +5,7 @@ import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
+import { absoluteUrl } from '@/lib/site'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
 
@@ -22,15 +23,14 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(props: { params: Promise<{ lang: string }> }) {
-  const { lang: langParam } = await props.params
-  const lang = isValidLocale(langParam) ? langParam : defaultLocale
+  await props.params
 
   return {
     alternates: {
       languages: Object.fromEntries(
         locales.map((l) => [
           l.code === defaultLocale ? 'x-default' : l.code,
-          `https://jkess-energy.com${l.code === defaultLocale ? '' : `/${l.code}`}`,
+          absoluteUrl(l.code === defaultLocale ? '/' : `/${l.code}`),
         ])
       ),
     },

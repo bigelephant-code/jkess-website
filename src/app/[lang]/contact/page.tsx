@@ -24,7 +24,14 @@ export default function ContactPage() {
   const contactItems = [
     { icon: Phone, label: 'Phone', value: '+86 131 6282 8868', href: 'tel:+8613162828868', color: '#22c55e' },
     { icon: Mail, label: 'Email', value: 'zhou@jkess.com', href: 'mailto:zhou@jkess.com', color: '#5b5bff' },
-    { icon: MapPin, label: 'Location', value: 'Building B4, Guangming, Shenzhen', color: '#f58a8a' },
+    {
+      icon: MapPin, label: 'Location', color: '#f58a8a',
+      addresses: [
+        { name: 'Shenzhen (Office)', address: '广东省深圳市光明区光明街道云智科技园B4栋1008室' },
+        { name: 'Hangzhou (Office)', address: '浙江省杭州市余杭区中泰街道铜山溪路2号南湖未来科学园11号楼309-2室' },
+        { name: 'Shandong (Factory)', address: '山东省滨州经济技术开发区里则街道办事处滨石路103号' },
+      ]
+    },
   ]
 
   return (
@@ -59,7 +66,16 @@ export default function ContactPage() {
                     <Icon size={20} style={{ color: item.color }} />
                   </div>
                   <p className="text-sm text-gray-500 font-medium mb-1">{t('contactPage.' + item.label.toLowerCase())}</p>
-                  {item.href ? (
+                  {item.addresses ? (
+                    <div className="space-y-2">
+                      {item.addresses.map((addr, ai) => (
+                        <div key={ai}>
+                          <span className="text-xs font-semibold text-[#f58a8a]">{addr.name}</span>
+                          <p className="text-sm text-gray-700 leading-snug mt-0.5">{addr.address}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : item.href ? (
                     <a href={item.href} className="text-gray-900 font-semibold hover:text-green-600 transition-colors">{item.value}</a>
                   ) : (
                     <p className="text-gray-900 font-semibold">{item.value}</p>

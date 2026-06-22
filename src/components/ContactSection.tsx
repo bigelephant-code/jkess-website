@@ -77,7 +77,11 @@ export default function ContactSection({ data }: { data?: FooterData }) {
                 </div>
                 <div>
                   <p className="text-white font-semibold transition-colors duration-200 group-hover:text-green-500">{t('contactSection.location', 'Location')}</p>
-                  <p className="text-gray-400 leading-relaxed transition-colors duration-200 group-hover:text-green-400/80">Building B4, Guangming, Shenzhen, China</p>
+                  <div className="text-gray-400 text-sm leading-relaxed space-y-1.5 transition-colors duration-200 group-hover:text-green-400/80">
+                    <p><span className="text-green-400 font-medium">Shenzhen (Office):</span> 广东省深圳市光明区光明街道云智科技园B4栋1008室</p>
+                    <p><span className="text-green-400 font-medium">Hangzhou (Office):</span> 浙江省杭州市余杭区中泰街道铜山溪路2号南湖未来科学园11号楼309-2室</p>
+                    <p><span className="text-green-400 font-medium">Shandong (Factory):</span> 山东省滨州经济技术开发区里则街道办事处滨石路103号</p>
+                  </div>
                 </div>
               </div>
             </StaggerItem>

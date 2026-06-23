@@ -193,7 +193,6 @@ export const products: Product[] = [
       '/images/6u-kit-detail/10.webp',
       '/images/6u-kit-detail/11.webp',
       '/images/6u-kit-detail/12.webp',
-      '/images/6u-kit-detail/13.webp',
       '/images/6u-kit-detail/14.webp',
       '/images/6u-kit-detail/15.webp',
       '/images/6u-kit-detail/16.webp',

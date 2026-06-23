@@ -17,6 +17,7 @@ const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
   'battery-kit': 'Battery Kit',
   'high-voltage-kit': 'High Voltage Kit',
+  'commercial-ess': 'C&I ESS Cabinet',
 }
 
 export function ProductsPageClient({ products }: { products: Product[] }) {

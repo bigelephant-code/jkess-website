@@ -20,6 +20,7 @@ const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
   'battery-kit': 'Battery Kit',
   'high-voltage-kit': 'High Voltage Kit',
+  'commercial-ess': 'C&I ESS Cabinet',
 }
 
 function ProductCard({ product, idx }: { product: Product; idx: number }) {

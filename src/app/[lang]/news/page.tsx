@@ -168,7 +168,7 @@ export default function NewsPage() {
               </div>
             </div>
             <div className="relative min-h-64 border-t border-gray-200 bg-gray-950 lg:border-l lg:border-t-0">
-              <Image src="/images/news-banner-bg.png" alt="" fill className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 420px, 100vw" />
+              <Image src="/images/news-featured-energy-storage.jpg" alt="" fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 420px, 100vw" />
               <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/50 to-black/85" />
               <div className="absolute bottom-5 left-5 right-5 border border-white/10 bg-black/35 p-4 backdrop-blur-sm">
                 <p className="text-xs uppercase tracking-widest text-gray-400">Source</p>

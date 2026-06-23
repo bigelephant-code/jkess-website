@@ -79,8 +79,6 @@ export const products: Product[] = [
       '/images/battery-kit-detail/14.webp',
       '/images/battery-kit-detail/15.webp',
       '/images/battery-kit-detail/16.webp',
-      '/images/battery-kit-detail/17.webp',
-      '/images/battery-kit-detail/18.webp',
     ],
   },
   {

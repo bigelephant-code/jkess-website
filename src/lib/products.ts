@@ -169,7 +169,7 @@ export const products: Product[] = [
       { key: 'Operating Temp', value: '-20°C ~ 60°C' },
       { key: 'Protection Rating', value: 'IP20 (indoor)' },
       { key: 'Dimensions', value: '715 × 472 × 270 mm' },
-      { key: 'Weight', value: '~45 kg' },
+      { key: 'Weight', value: '~25 kg' },
       { key: 'Warranty', value: '1 years' },
     ],
     images: [

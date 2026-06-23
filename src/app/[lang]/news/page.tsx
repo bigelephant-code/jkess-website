@@ -1,7 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { ArrowUpRight, BarChart3, CalendarDays, Factory, Globe2, Landmark, Newspaper, Search, Zap } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
+import { useMemo, useState } from 'react'
+import type { ComponentType } from 'react'
 import { useTranslate } from '@/i18n/client'
 
 interface NewsItem {
@@ -24,7 +27,7 @@ const news: NewsItem[] = [
   { date: '2026-02-25', title: 'IEA: 108 GW of New Battery Storage Deployed Globally in 2025, 40% Increase YoY', summary: 'The International Energy Agency confirms a record 108 GW of battery storage was added worldwide in 2025, with total installed capacity now eleven times higher than in 2021.', source: 'IEA', url: 'https://www.iea.org/reports/global-energy-review-2026/technology-battery-storage', category: 'Industry', region: 'Global' },
   { date: '2026-02-10', title: 'Data Center Energy Storage Emerges as Billion-Dollar Market', summary: 'Hyperscalers including Google, Microsoft, and Amazon are deploying massive battery storage systems alongside data centers, with over $5 billion in announced projects for behind-the-meter BESS.', source: 'Latitude Media', url: 'https://www.latitudemedia.com/news/the-unexpected-clean-energy-winner-of-2025-energy-storage', category: 'Market', region: 'USA' },
   { date: '2026-01-22', title: 'BMS Market Surpasses $13.6 Billion in 2025, Asia Pacific Dominates with 71% Share', summary: 'Fortune Business Insights reports the global BMS market reached $13.64 billion in 2025, with Asia Pacific accounting for 71.4% of revenue driven by massive EV and ESS production in China.', source: 'Fortune Business Insights', url: 'https://www.fortunebusinessinsights.com/industry-reports/battery-management-system-market-101311', category: 'Market', region: 'Asia' },
-  { date: '2025-12-19', title: 'Energy Storage in 2025: Year in Review — Record Installations and Falling Costs', summary: 'ESS News reviews a landmark year: global battery storage installations smashed records and system costs continued to tumble, with core Chinese equipment now around $75/kWh.', source: 'ESS News', url: 'https://www.ess-news.com/2025/12/19/energy-storage-in-2025-year-in-review-part-1', category: 'Industry', region: 'Global' },
+  { date: '2025-12-19', title: 'Energy Storage in 2025: Year in Review - Record Installations and Falling Costs', summary: 'ESS News reviews a landmark year: global battery storage installations smashed records and system costs continued to tumble, with core Chinese equipment now around $75/kWh.', source: 'ESS News', url: 'https://www.ess-news.com/2025/12/19/energy-storage-in-2025-year-in-review-part-1', category: 'Industry', region: 'Global' },
   { date: '2025-12-10', title: 'U.S. Adds Record 57.6 GWh of New Energy Storage Capacity in 2025', summary: 'According to SEIA and Benchmark Mineral Intelligence, the U.S. installed a record 57.6 GWh of new battery capacity in 2025, the largest single year on record, bringing total utility-scale storage to 137 GWh.', source: 'SEIA', url: 'https://seia.org/news/united-states-installs-58-gwh-of-new-energy-storage-in-2025', category: 'Market', region: 'USA' },
   { date: '2025-11-20', title: 'Tesla Megapack Factory in Shanghai Reaches 40 GWh Annual Capacity', summary: 'Tesla\'s Shanghai Megapack factory achieves full production capacity of 40 GWh per year, significantly reducing costs and lead times for large-scale energy storage projects across Asia-Pacific.', source: 'Reuters', url: 'https://www.reuters.com', category: 'Industry', region: 'China' },
   { date: '2025-10-20', title: 'Global Energy Storage Additions to Exceed 92 GW in 2025, Up 23% YoY: BNEF', summary: 'BloombergNEF forecasts more than 92 GW/247 GWh of energy storage additions worldwide in 2025, with China and the U.S. leading despite policy changes and trade hurdles.', source: 'BloombergNEF', url: 'https://www.utilitydive.com/news/us-energy-storage-market-looks-resilient-amid-global-growth-bnef/803368', category: 'Market', region: 'Global' },
@@ -49,78 +52,287 @@ const news: NewsItem[] = [
   { date: '2024-01-10', title: 'Global Battery Storage Investment Crosses $40 Billion Mark for First Time', summary: 'BloombergNEF reports global investment in battery energy storage exceeded $40 billion in 2023, with projections for 2024 to reach $50 billion as costs fall and deployment accelerates.', source: 'BloombergNEF', url: 'https://about.bnef.com', category: 'Market', region: 'Global' },
 ]
 
-const categoryColors: Record<string, string> = {
-  Market: '#5b5bff',
-  Technology: '#22c55e',
-  Policy: '#f97316',
-  Industry: '#a66cd9',
+const categoryMeta: Record<NewsItem['category'], { color: string; icon: ComponentType<{ size?: number; className?: string }> }> = {
+  Market: { color: '#5b5bff', icon: BarChart3 },
+  Technology: { color: '#22c55e', icon: Zap },
+  Policy: { color: '#f97316', icon: Landmark },
+  Industry: { color: '#a66cd9', icon: Factory },
+}
+
+const categoryOptions = ['All', 'Market', 'Technology', 'Policy', 'Industry'] as const
+const yearOptions = ['All', ...Array.from(new Set(news.map((item) => item.date.slice(0, 4))))] as const
+
+function formatDate(dateText: string) {
+  return new Intl.DateTimeFormat('en', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(dateText))
 }
 
 export default function NewsPage() {
   const t = useTranslate()
+  const [activeCategory, setActiveCategory] = useState<(typeof categoryOptions)[number]>('All')
+  const [activeYear, setActiveYear] = useState<(typeof yearOptions)[number]>('All')
+  const [query, setQuery] = useState('')
+
+  const featured = news[0]
+  const normalizedQuery = query.trim().toLowerCase()
+  const filteredNews = useMemo(() => {
+    return news.filter((item) => {
+      const matchesCategory = activeCategory === 'All' || item.category === activeCategory
+      const matchesYear = activeYear === 'All' || item.date.startsWith(activeYear)
+      const matchesQuery = !normalizedQuery
+        || item.title.toLowerCase().includes(normalizedQuery)
+        || item.summary.toLowerCase().includes(normalizedQuery)
+        || item.source.toLowerCase().includes(normalizedQuery)
+        || item.region.toLowerCase().includes(normalizedQuery)
+
+      return matchesCategory && matchesYear && matchesQuery
+    })
+  }, [activeCategory, activeYear, normalizedQuery])
+
+  const groupedNews = yearOptions
+    .filter((year) => year !== 'All')
+    .map((year) => ({
+      year,
+      items: filteredNews.filter((item) => item.date.startsWith(year)),
+    }))
+    .filter((group) => group.items.length > 0)
+
   return (
-    <div className="bg-white min-h-screen">
-      <section className="relative bg-gray-900 overflow-hidden">
+    <div className="min-h-screen bg-[#f5f7f6]">
+      <section className="relative overflow-hidden bg-black">
         <div className="absolute inset-0">
           <Image src="/images/news-banner-bg.png" alt="" fill className="object-cover" priority sizes="100vw" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/85 via-gray-800/75 to-gray-900/85" />
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #22c55e 0%, transparent 50%), radial-gradient(circle at 70% 60%, #5b5bff 0%, transparent 50%)' }} />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-20 md:pt-40 md:pb-28 text-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/92 via-black/78 to-gray-900/86" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-green-400/60 to-transparent" />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-28 pb-16 md:pt-36 md:pb-24">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
-              {t('news.title')?.split(' ')?.slice(0, -1)?.join(' ')} <span className="text-green-400">{t('news.title')?.split(' ')?.slice(-1)}</span>
-            </h1>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
-{t('news.desc')}
-            </p>
+            <div className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-green-300">
+              <Newspaper size={14} />
+              Industry Watch
+            </div>
+            <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-tight text-white md:text-6xl">{t('news.title')}</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-gray-300 md:text-base">{t('news.desc')}</p>
+
+            <div className="mt-8 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3 md:max-w-2xl">
+              <div className="bg-black/45 px-5 py-4">
+                <p className="text-2xl font-bold text-white">{news.length}</p>
+                <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">News Items</p>
+              </div>
+              <div className="bg-black/45 px-5 py-4">
+                <p className="text-2xl font-bold text-white">{categoryOptions.length - 1}</p>
+                <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">Topics</p>
+              </div>
+              <div className="bg-black/45 px-5 py-4">
+                <p className="text-2xl font-bold text-white">{yearOptions.length - 1}</p>
+                <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">Years</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6">
-          {['2026', '2025', '2024'].map((year) => {
-            const yearNews = news.filter((n) => n.date.startsWith(year))
-            if (yearNews.length === 0) return null
-            return (
-              <div key={year}>
-                <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex items-center gap-4 mb-6 mt-10 first:mt-0">
-                  <div className="h-px flex-1 bg-gray-200" /><h2 className="text-2xl font-bold text-gray-900">{year}</h2><div className="h-px flex-1 bg-gray-200" />
-                </motion.div>
-                <div className="space-y-0">
-                  {yearNews.map((item, i) => {
-                    const date = new Date(item.date)
-                    const monthDay = `${date.getMonth() + 1}.${date.getDate()}`
-                    const isLast = i === yearNews.length - 1
-                    return (
-                      <motion.a key={item.date + item.title} href={item.url} target="_blank" rel="noopener noreferrer"
-                        initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: i * 0.04 }}
-                        className="group flex gap-5 py-4 hover:bg-gray-50 rounded-lg -mx-4 px-4 transition-colors">
-                        <div className="flex flex-col items-center shrink-0 pt-1">
-                          <div className="w-3.5 h-3.5 rounded-full border-[2.5px] bg-white z-10 shrink-0 transition-colors" style={{ borderColor: categoryColors[item.category] || '#22c55e' }} />
-                          {!isLast && <div className="w-0.5 flex-1 bg-gray-100 group-hover:bg-gray-200 transition-colors" />}
-                        </div>
-                        <div className="flex-1 min-w-0 pb-4" style={{ borderBottom: isLast ? 'none' : '1px solid #f3f4f6' }}>
-                          <div className="flex items-center gap-3 mb-1.5">
-                            <span className="text-[12px] text-gray-400 font-medium shrink-0">{monthDay}</span>
-                            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0" style={{ background: `${categoryColors[item.category]}12`, color: categoryColors[item.category] }}>{item.category}</span>
-                            <span className="text-[11px] text-gray-400">{item.region}</span>
-                          </div>
-                          <h3 className="text-[15px] font-semibold text-gray-900 group-hover:text-green-600 transition-colors leading-snug mb-1">{item.title}</h3>
-                          <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">{item.summary}</p>
-                          <span className="text-[11px] text-gray-400 mt-1.5 inline-block group-hover:text-green-500 transition-colors">{item.source} →</span>
-                        </div>
-                      </motion.a>
-                    )
-                  })}
+      <section className="py-12 md:py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.a
+            href={featured.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.45 }}
+            className="group grid gap-0 overflow-hidden border border-gray-200 bg-white shadow-sm lg:grid-cols-[1fr_420px]"
+          >
+            <div className="p-6 md:p-8 lg:p-10">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 bg-gray-900 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-white">
+                  <CalendarDays size={14} />
+                  Latest Insight
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{formatDate(featured.date)}</span>
+              </div>
+              <h2 className="mt-6 max-w-3xl text-2xl font-bold leading-tight text-gray-950 transition-colors group-hover:text-green-700 md:text-4xl">
+                {featured.title}
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-500 md:text-base">{featured.summary}</p>
+              <div className="mt-7 flex flex-wrap items-center gap-3">
+                <CategoryPill category={featured.category} />
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  <Globe2 size={14} />
+                  {featured.region}
+                </span>
+                <span className="ml-auto inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-900 transition-colors group-hover:text-green-700">
+                  Read Source
+                  <ArrowUpRight size={16} />
+                </span>
+              </div>
+            </div>
+            <div className="relative min-h-64 border-t border-gray-200 bg-gray-950 lg:border-l lg:border-t-0">
+              <Image src="/images/news-banner-bg.png" alt="" fill className="object-cover opacity-70 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 420px, 100vw" />
+              <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/50 to-black/85" />
+              <div className="absolute bottom-5 left-5 right-5 border border-white/10 bg-black/35 p-4 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-widest text-gray-400">Source</p>
+                <p className="mt-2 text-lg font-bold text-white">{featured.source}</p>
+              </div>
+            </div>
+          </motion.a>
+
+          <div className="mt-8 grid gap-6 lg:grid-cols-[300px_1fr]">
+            <aside className="lg:sticky lg:top-28 lg:self-start">
+              <div className="border border-gray-200 bg-white p-4 shadow-sm">
+                <div className="relative">
+                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="Search energy news"
+                    className="w-full border border-gray-200 bg-gray-50 py-3 pl-9 pr-3 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-green-500 focus:bg-white"
+                  />
+                </div>
+
+                <div className="mt-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">Topic</p>
+                  <div className="space-y-1">
+                    {categoryOptions.map((category) => {
+                      const isActive = activeCategory === category
+                      const count = category === 'All' ? news.length : news.filter((item) => item.category === category).length
+                      return (
+                        <button
+                          key={category}
+                          onClick={() => setActiveCategory(category)}
+                          className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm transition-colors ${
+                            isActive ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          }`}
+                        >
+                          <span className="font-semibold">{category === 'All' ? 'All Topics' : category}</span>
+                          <span className="text-xs opacity-70">{count}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="mt-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">Year</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {yearOptions.map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => setActiveYear(year)}
+                        className={`px-3 py-2 text-sm font-semibold transition-colors ${
+                          activeYear === year ? 'bg-green-600 text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                        }`}
+                      >
+                        {year === 'All' ? 'All Years' : year}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            )
-          })}
+            </aside>
+
+            <div className="min-w-0">
+              <div className="mb-5 flex flex-col gap-3 border border-gray-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Showing</p>
+                  <p className="mt-1 text-lg font-bold text-gray-950">{filteredNews.length} updates</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {categoryOptions.filter((category) => category !== 'All').map((category) => (
+                    <CategoryPill key={category} category={category} compact />
+                  ))}
+                </div>
+              </div>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${activeCategory}-${activeYear}-${query}`}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25 }}
+                  className="space-y-8"
+                >
+                  {groupedNews.length === 0 ? (
+                    <div className="border border-dashed border-gray-300 bg-white px-6 py-14 text-center">
+                      <p className="text-sm font-semibold text-gray-900">No matching news</p>
+                      <p className="mt-2 text-sm text-gray-500">Try another topic, year, or keyword.</p>
+                    </div>
+                  ) : (
+                    groupedNews.map((group) => (
+                      <section key={group.year}>
+                        <div className="mb-4 flex items-center gap-4">
+                          <h2 className="text-2xl font-bold text-gray-950">{group.year}</h2>
+                          <div className="h-px flex-1 bg-gray-200" />
+                          <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{group.items.length} items</span>
+                        </div>
+                        <div className="grid gap-4 xl:grid-cols-2">
+                          {group.items.map((item, index) => (
+                            <NewsCard key={item.date + item.title} item={item} index={index} />
+                          ))}
+                        </div>
+                      </section>
+                    ))
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </section>
     </div>
+  )
+}
+
+function CategoryPill({ category, compact = false }: { category: NewsItem['category']; compact?: boolean }) {
+  const meta = categoryMeta[category]
+  const Icon = meta.icon
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 font-semibold uppercase tracking-widest ${compact ? 'px-2 py-1 text-[10px]' : 'px-3 py-1.5 text-xs'}`}
+      style={{ background: `${meta.color}14`, color: meta.color }}
+    >
+      <Icon size={compact ? 12 : 14} />
+      {category}
+    </span>
+  )
+}
+
+function NewsCard({ item, index }: { item: NewsItem; index: number }) {
+  const meta = categoryMeta[item.category]
+
+  return (
+    <motion.a
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.035, 0.18) }}
+      className="group relative overflow-hidden border border-gray-200 bg-white p-5 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50"
+    >
+      <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" style={{ backgroundColor: meta.color }} />
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryPill category={item.category} compact />
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+              <Globe2 size={12} />
+              {item.region}
+            </span>
+          </div>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-400">{formatDate(item.date)}</p>
+        </div>
+        <ArrowUpRight size={18} className="shrink-0 text-gray-300 transition-colors group-hover:text-green-600" />
+      </div>
+      <h3 className="mt-4 text-base font-bold leading-snug text-gray-950 transition-colors group-hover:text-green-700">{item.title}</h3>
+      <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">{item.summary}</p>
+      <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
+        <span className="text-xs font-semibold text-gray-500">{item.source}</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-gray-400 transition-colors group-hover:text-green-700">Read More</span>
+      </div>
+    </motion.a>
   )
 }

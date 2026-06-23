@@ -156,7 +156,7 @@ export const products: Product[] = [
       'CAN / RS485 communication — seamless integration with inverters and monitoring systems',
       'Modular parallel design — expandable up to 30KWh or more for larger capacity',
       'Compatible with leading inverters — works with Victron, Growatt, Deye, Sofar, and more',
-      '5-year warranty — backed by JKBMS quality assurance',
+      '1-year warranty — backed by JKBMS quality assurance',
     ],
     specs: [
       { key: 'Model', value: 'JKLU015' },
@@ -164,13 +164,13 @@ export const products: Product[] = [
       { key: 'Nominal Voltage', value: '51.2V' },
       { key: 'Form Factor', value: '6U Rack-mount (19-inch)' },
       { key: 'Cell Chemistry', value: 'LiFePO4 (LFP)' },
-      { key: 'Cycle Life', value: '6000+ cycles @ 80% DOD' },
       { key: 'Communication', value: 'CAN 2.0 / RS485' },
       { key: 'Display', value: '4.3-inch LCD Touch' },
       { key: 'Operating Temp', value: '-20°C ~ 60°C' },
       { key: 'Protection Rating', value: 'IP20 (indoor)' },
+      { key: 'Dimensions', value: '715 × 472 × 270 mm' },
       { key: 'Weight', value: '~45 kg' },
-      { key: 'Warranty', value: '5 years' },
+      { key: 'Warranty', value: '1 years' },
     ],
     images: [
       '/images/6u-kit/1.webp',
@@ -200,8 +200,8 @@ export const products: Product[] = [
     ],
     type: 'shop',
     variants: [
-      { label: 'BOX and LCDBMS', price: '$400.00' },
-      { label: 'OnlyBOX', price: '$250.00' },
+      { label: 'BOX and LCD+BMS', price: '$380.00' },
+      { label: 'OnlyBOX', price: '$280.00' },
     ],
   },
 ]

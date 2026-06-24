@@ -147,12 +147,12 @@ const productCatalog: Product[] = [
   },
   {
     slug: 'tness-ci-ess-cabinet',
-    name: 'TNESS C&I High Voltage ESS Cabinet',
+    name: 'C&I High Voltage ESS Cabinet',
     category: 'commercial-ess',
     categoryLabel: 'C&I ESS Cabinet',
     tagline: 'Outdoor commercial and industrial energy storage cabinets for solar, backup, and peak shaving',
     description:
-      'The TNESS C&I High Voltage ESS Cabinet series is designed for commercial and industrial energy storage projects, covering small high-voltage cabinets from 64kWh to 120kWh and larger air-cooled or liquid-cooled systems up to 261kWh. It supports peak shaving, demand management, dynamic capacity expansion, emergency backup, and renewable energy self-consumption for hotels, hospitals, commercial centers, industrial parks, and premium residential projects.',
+      'The C&I High Voltage ESS Cabinet series is designed for commercial and industrial energy storage projects, covering small high-voltage cabinets from 64kWh to 120kWh and larger air-cooled or liquid-cooled systems up to 261kWh. It supports peak shaving, demand management, dynamic capacity expansion, emergency backup, and renewable energy self-consumption for hotels, hospitals, commercial centers, industrial parks, and premium residential projects.',
     features: [
       'Wide capacity coverage from 64kWh to 261kWh for different C&I project scales',
       'Modular cabinet architecture with quick-connect battery modules for easier deployment and maintenance',
@@ -180,11 +180,11 @@ const productCatalog: Product[] = [
       { key: 'Weight Range', value: '≤850 kg to approx. 2700 kg, configuration dependent' },
     ],
     images: [
-      '/images/tness-ci-ess/hero.webp',
-      '/images/tness-ci-ess/air-64-80.webp',
-      '/images/tness-ci-ess/air-120.webp',
-      '/images/tness-ci-ess/solar-scene.webp',
-      '/images/tness-ci-ess/liquid-cabinet.webp',
+      '/images/tness-ci-ess/main-1.webp',
+      '/images/tness-ci-ess/main-2.webp',
+      '/images/tness-ci-ess/main-3.webp',
+      '/images/tness-ci-ess/main-4.webp',
+      '/images/tness-ci-ess/main-5.webp',
     ],
     detailImages: [
       '/images/tness-ci-ess/hero.webp',

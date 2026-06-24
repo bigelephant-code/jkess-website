@@ -105,13 +105,14 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-1 mb-2">{product.name}</h1>
               <p className="text-sm text-gray-500 mb-4">{product.tagline}</p>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2 mb-5">
-                <div className="flex text-yellow-400">
-                  <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
+              {isShop && (
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="flex text-yellow-400">
+                    <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
+                  </div>
+                  <span className="text-sm text-gray-400">4.8 (128 {t('product.reviews', 'reviews')})</span>
                 </div>
-                <span className="text-sm text-gray-400">4.8 (128 {t('product.reviews', 'reviews')})</span>
-              </div>
+              )}
 
               {isShop && currentPrice && (
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-5">
@@ -210,58 +211,59 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
         </div>
       </section>
 
-      {/* Customer Reviews */}
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-1 h-6 bg-green-500 rounded-full" />
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">{t('product.customerReviews', 'Customer Reviews')}</h2>
-          </div>
-          <div className="flex flex-col md:flex-row gap-6 mb-8 bg-white border border-gray-200 rounded-2xl p-6">
-            <div className="text-center md:text-left md:min-w-[160px]">
-              <div className="text-4xl font-bold text-gray-900">4.8</div>
-              <div className="flex justify-center md:justify-start text-yellow-500 my-1">
-                <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
-              </div>
-              <p className="text-sm text-gray-500">128 {t('product.reviews', 'Reviews')}</p>
+      {isShop && (
+        <section className="bg-gray-50 py-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-green-500 rounded-full" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{t('product.customerReviews', 'Customer Reviews')}</h2>
             </div>
-            <div className="flex-1 space-y-1.5">
-              {[5, 4, 3, 2, 1].map((star) => (
-                <div key={star} className="flex items-center gap-2 text-sm">
-                  <span className="text-gray-500 w-4 text-right">{star}</span>
-                  <Star size={12} className="text-yellow-500 fill-yellow-500" />
-                  <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-yellow-500 rounded-full" style={{ width: (star === 5 ? 72 : star === 4 ? 18 : star === 3 ? 6 : 3) + '%' }} />
-                  </div>
-                  <span className="text-gray-400 w-10 text-xs text-right">{star === 5 ? '92' : star === 4 ? '23' : star === 3 ? '8' : '3'}</span>
+            <div className="flex flex-col md:flex-row gap-6 mb-8 bg-white border border-gray-200 rounded-2xl p-6">
+              <div className="text-center md:text-left md:min-w-[160px]">
+                <div className="text-4xl font-bold text-gray-900">4.8</div>
+                <div className="flex justify-center md:justify-start text-yellow-500 my-1">
+                  <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><StarHalf size={16} fill="currentColor" />
                 </div>
+                <p className="text-sm text-gray-500">128 {t('product.reviews', 'Reviews')}</p>
+              </div>
+              <div className="flex-1 space-y-1.5">
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <div key={star} className="flex items-center gap-2 text-sm">
+                    <span className="text-gray-500 w-4 text-right">{star}</span>
+                    <Star size={12} className="text-yellow-500 fill-yellow-500" />
+                    <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-yellow-500 rounded-full" style={{ width: (star === 5 ? 72 : star === 4 ? 18 : star === 3 ? 6 : 3) + '%' }} />
+                    </div>
+                    <span className="text-gray-400 w-10 text-xs text-right">{star === 5 ? '92' : star === 4 ? '23' : star === 3 ? '8' : '3'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-4">
+              {reviews.map((review, i) => (
+                <StaggerItem key={i}>
+                  <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-sm transition-shadow">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-sm font-bold text-white">{review.name.charAt(0)}</div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{review.name}</p>
+                          <p className="text-xs text-gray-400">{review.date}</p>
+                        </div>
+                      </div>
+                      <div className="flex text-yellow-500">
+                        {Array.from({ length: review.rating }).map((_, j) => (<Star key={j} size={14} fill="currentColor" />))}
+                      </div>
+                    </div>
+                    {review.variant && <span className="inline-block text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded mb-2">{t('product.model', 'Model')}: {review.variant}</span>}
+                    <p className="text-sm text-gray-700 leading-relaxed">{review.content}</p>
+                  </div>
+                </StaggerItem>
               ))}
             </div>
           </div>
-          <div className="space-y-4">
-            {reviews.map((review, i) => (
-              <StaggerItem key={i}>
-                <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-sm transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-sm font-bold text-white">{review.name.charAt(0)}</div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{review.name}</p>
-                        <p className="text-xs text-gray-400">{review.date}</p>
-                      </div>
-                    </div>
-                    <div className="flex text-yellow-500">
-                      {Array.from({ length: review.rating }).map((_, j) => (<Star key={j} size={14} fill="currentColor" />))}
-                    </div>
-                  </div>
-                  {review.variant && <span className="inline-block text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded mb-2">{t('product.model', 'Model')}: {review.variant}</span>}
-                  <p className="text-sm text-gray-700 leading-relaxed">{review.content}</p>
-                </div>
-              </StaggerItem>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Product Details */}
       <section className="bg-white py-16">

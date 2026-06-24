@@ -22,17 +22,24 @@ export function generateStaticParams() {
   return locales.map((l) => ({ lang: l.code }))
 }
 
+function languageAlternates() {
+  return {
+    ...Object.fromEntries(
+      locales.map((l) => [
+        l.code,
+        absoluteUrl(l.code === defaultLocale ? '/' : `/${l.code}`),
+      ])
+    ),
+    'x-default': absoluteUrl('/'),
+  }
+}
+
 export async function generateMetadata(props: { params: Promise<{ lang: string }> }) {
   await props.params
 
   return {
     alternates: {
-      languages: Object.fromEntries(
-        locales.map((l) => [
-          l.code === defaultLocale ? 'x-default' : l.code,
-          absoluteUrl(l.code === defaultLocale ? '/' : `/${l.code}`),
-        ])
-      ),
+      languages: languageAlternates(),
     },
   }
 }

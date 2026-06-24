@@ -3,6 +3,11 @@ export interface ProductSpec {
   value: string
 }
 
+export interface ProductFaq {
+  question: string
+  answer: string
+}
+
 export interface Product {
   slug: string
   name: string
@@ -16,6 +21,83 @@ export interface Product {
   type: 'shop' | 'inquiry'
   variants?: { label: string; price?: string }[]
   detailImages?: string[]
+}
+
+export function getProductFaqs(product: Product): ProductFaq[] {
+  if (product.slug === 'battery-kit') {
+    return [
+      {
+        question: 'What battery cells are compatible with the Battery Kit (With Caster)?',
+        answer: 'The kit is designed for 280Ah to 320Ah LiFePO4 cells and supports 15KWh or 16KWh energy storage configurations.',
+      },
+      {
+        question: 'Does this battery kit include BMS and LCD options?',
+        answer: 'Yes. Customers can choose the BOX and LCD+BMS option for a complete monitored system, or the OnlyBOX option when they only need the enclosure.',
+      },
+      {
+        question: 'Where is the caster battery kit typically used?',
+        answer: 'It is suitable for home backup, mobile power, small commercial storage, and semi-outdoor energy storage projects that need easy movement and positioning.',
+      },
+    ]
+  }
+
+  if (product.slug === '6u-battery-kit') {
+    return [
+      {
+        question: 'What is the application of the 6U Battery Kit?',
+        answer: 'The 6U Battery Kit is built for 19-inch rack installations, residential solar storage, telecom backup, commercial backup power, and off-grid energy storage systems.',
+      },
+      {
+        question: 'What communication interfaces does the 6U Battery Kit support?',
+        answer: 'It supports CAN 2.0 and RS485 communication, making it easier to integrate with compatible inverters and monitoring systems.',
+      },
+      {
+        question: 'Can the 6U Battery Kit be expanded in parallel?',
+        answer: 'Yes. The kit is designed for modular parallel expansion, allowing installers to scale capacity for larger energy storage projects.',
+      },
+    ]
+  }
+
+  if (product.slug === 'high-voltage-kit') {
+    return [
+      {
+        question: 'What current options are available for the High Voltage Kit?',
+        answer: 'The High Voltage Kit is available in 100A and 200A options, with separate master control box and slave control box selections.',
+      },
+      {
+        question: 'What is the High Voltage Kit used for?',
+        answer: 'It is used for high-voltage energy storage systems that require BCU master control, BMU slave monitoring, active balancing, and communication with PCS or EMS equipment.',
+      },
+      {
+        question: 'Does the High Voltage Kit support remote monitoring?',
+        answer: 'Yes. The system supports remote OTA upgrades and real-time IoT cloud monitoring depending on the final system configuration.',
+      },
+    ]
+  }
+
+  if (product.slug === 'tness-ci-ess-cabinet') {
+    return [
+      {
+        question: 'What capacity range does the C&I High Voltage ESS Cabinet cover?',
+        answer: 'The cabinet series covers configurations from 64.3kWh to 261kWh, including air-cooled and liquid-cooled commercial and industrial storage systems.',
+      },
+      {
+        question: 'Is the C&I High Voltage ESS Cabinet suitable for outdoor projects?',
+        answer: 'Yes. It uses an IP55 outdoor cabinet design with up to C4 anti-corrosion protection, making it suitable for commercial and industrial outdoor energy storage projects.',
+      },
+      {
+        question: 'How do customers order the C&I High Voltage ESS Cabinet?',
+        answer: 'This product is handled through inquiry because the final configuration depends on project capacity, cooling method, PCS requirements, site conditions, and communication needs.',
+      },
+    ]
+  }
+
+  return [
+    {
+      question: `What is ${product.name} used for?`,
+      answer: product.description,
+    },
+  ]
 }
 
 const productCatalog: Product[] = [

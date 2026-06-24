@@ -1,4 +1,4 @@
-import { products, getProductBySlug } from '@/lib/products'
+import { products, getProductBySlug, getProductFaqs } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
@@ -14,44 +14,137 @@ export function generateStaticParams() {
   return params
 }
 
+function productPath(product: Product, lang: string) {
+  return `${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`
+}
+
+function productKeywords(product: Product) {
+  const base = [
+    product.name,
+    product.categoryLabel,
+    'JKESS',
+    'JKBMS',
+    'energy storage',
+    'LiFePO4',
+    'battery storage system',
+  ]
+
+  const bySlug: Record<string, string[]> = {
+    'battery-kit': [
+      'battery kit with caster',
+      'portable energy storage kit',
+      '15kWh battery kit',
+      '16kWh battery kit',
+      'LiFePO4 battery enclosure',
+    ],
+    '6u-battery-kit': [
+      '6U battery kit',
+      'rack mount battery kit',
+      '19 inch battery storage',
+      'telecom backup battery',
+      'rack LiFePO4 battery',
+    ],
+    'high-voltage-kit': [
+      'high voltage battery kit',
+      'high voltage BMS',
+      'BCU master control box',
+      'BMU slave control box',
+      '100A high voltage kit',
+      '200A high voltage kit',
+    ],
+    'tness-ci-ess-cabinet': [
+      'C&I energy storage cabinet',
+      'commercial energy storage cabinet',
+      'industrial battery cabinet',
+      '215kWh energy storage',
+      '261kWh energy storage',
+      'liquid cooled energy storage cabinet',
+    ],
+  }
+
+  return [...base, ...(bySlug[product.slug] || [])]
+}
+
+function productLanguageAlternates(product: Product) {
+  return {
+    ...Object.fromEntries(
+      locales.map((locale) => [
+        locale.code,
+        absoluteUrl(productPath(product, locale.code)),
+      ])
+    ),
+    'x-default': absoluteUrl(productPath(product, defaultLocale)),
+  }
+}
+
 function productJsonLd(p: Product, lang: string) {
   const localePath = lang === defaultLocale ? '' : `/${lang}`
-  const schema: Record<string, unknown> = {
+  const url = absoluteUrl(`${localePath}/products/${p.slug}`)
+  const faqs = getProductFaqs(p)
+  const productSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: p.name,
+    sku: p.slug,
     description: p.description,
     brand: { '@type': 'Brand', name: 'JKESS' },
+    manufacturer: { '@type': 'Organization', name: 'JKBMS Electronic Technology Co.,Ltd' },
     image: p.images.map((img) => absoluteUrl(img)),
-    url: absoluteUrl(`${localePath}/products/${p.slug}`),
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'USD',
-      offerCount: p.variants?.length || 1,
-      offers: (p.variants?.length
-        ? p.variants.map((v) => ({
-            '@type': 'Offer',
-            name: v.label,
-            price: v.price ? parseFloat(v.price.replace(/[$,]/g, '')) : undefined,
-            priceCurrency: 'USD',
-            availability: 'https://schema.org/InStock',
-          }))
-        : [{
-            '@type': 'Offer',
-            priceCurrency: 'USD',
-            availability: 'https://schema.org/InStock',
-          }]
-      ),
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '128',
-    },
+    url,
+    additionalProperty: p.specs.map((spec) => ({
+      '@type': 'PropertyValue',
+      name: spec.key,
+      value: spec.value,
+    })),
     category: p.categoryLabel,
   }
   const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
-  if (mpn) schema.mpn = mpn.value
+  if (mpn) productSchema.mpn = mpn.value
+
+  if (p.type === 'shop' && p.variants?.length) {
+    productSchema.offers = {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: Math.min(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
+      highPrice: Math.max(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
+      offerCount: p.variants.length,
+      offers: p.variants.map((v) => ({
+        '@type': 'Offer',
+        name: v.label,
+        price: v.price ? parseFloat(v.price.replace(/[$,]/g, '')) : undefined,
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        url,
+      })),
+    }
+  }
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      productSchema,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl(localePath || '/') },
+          { '@type': 'ListItem', position: 2, name: 'Shop', item: absoluteUrl(`${localePath}/products`) },
+          { '@type': 'ListItem', position: 3, name: p.name, item: url },
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        })),
+      },
+    ],
+  }
+
   return JSON.stringify(schema, null, 2)
 }
 
@@ -59,14 +152,27 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
   const { lang, slug } = await props.params
   const product = getProductBySlug(slug)
   if (!product) return {}
+  const canonicalPath = productPath(product, lang)
+  const description = `${product.tagline}. ${product.description}`.slice(0, 158)
   return {
-    title: `${product.name} - JKESS`,
-    description: product.description.slice(0, 160),
-    keywords: [product.name, 'JKESS', product.category, 'BMS', 'battery kit', 'energy storage'],
+    title: `${product.name} | ${product.categoryLabel} | JKESS`,
+    description,
+    keywords: productKeywords(product),
+    alternates: {
+      canonical: absoluteUrl(canonicalPath),
+      languages: productLanguageAlternates(product),
+    },
     openGraph: {
-      title: `${product.name} - JKESS`,
-      description: product.description.slice(0, 160),
-      url: absoluteUrl(`${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`),
+      title: `${product.name} | JKESS`,
+      description,
+      url: absoluteUrl(canonicalPath),
+      type: 'website',
+      images: product.images[0] ? [absoluteUrl(product.images[0])] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | JKESS`,
+      description,
       images: product.images[0] ? [absoluteUrl(product.images[0])] : [],
     },
   }

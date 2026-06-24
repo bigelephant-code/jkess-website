@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Check, Minus, Plus, ShoppingCart, Send, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
 import type { Product } from '@/lib/products'
+import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 
@@ -18,6 +19,7 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
+  const faqs = getProductFaqs(product)
 
   const handleAddToCart = () => {
     addItem({
@@ -219,6 +221,19 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                 </div>
               ))}
             </div>
+            {faqs.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-gray-900 font-semibold mb-4">Frequently Asked Questions</h3>
+                <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
+                  {faqs.map((faq) => (
+                    <div key={faq.question} className="bg-white px-5 py-4">
+                      <h4 className="text-sm font-semibold text-gray-900">{faq.question}</h4>
+                      <p className="mt-2 text-sm leading-6 text-gray-600">{faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {product.detailImages && product.detailImages.length > 0 && (
               <div>
                 <h3 className="text-gray-900 font-semibold mb-4">{t('product.productGallery', 'Product Gallery')}</h3>

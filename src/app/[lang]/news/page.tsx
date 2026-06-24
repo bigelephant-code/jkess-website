@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpRight, BarChart3, CalendarDays, Factory, Filter, Globe2, Landmark, Search, Sparkles, TrendingUp, Zap } from 'lucide-react'
+import { ArrowUpRight, BarChart3, CalendarDays, Factory, Filter, Globe2, Landmark, Search, TrendingUp, Zap } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
@@ -125,11 +125,7 @@ export default function NewsPage() {
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 pt-28 pb-24 md:pt-36 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
-            <div className="inline-flex items-center gap-2 border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-200 backdrop-blur">
-              <Sparkles size={14} />
-              Industry Intelligence
-            </div>
-            <h1 className="mt-6 max-w-4xl text-5xl font-bold tracking-tight text-white md:text-7xl">{t('news.title')}</h1>
+            <h1 className="max-w-4xl text-5xl font-bold tracking-tight text-white md:text-7xl">{t('news.title')}</h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">{t('news.desc')}</p>
 
             <div className="mt-10 grid max-w-3xl gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3">

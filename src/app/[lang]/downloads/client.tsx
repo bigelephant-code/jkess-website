@@ -1,6 +1,6 @@
 'use client'
 
-import { BatteryCharging, BookOpen, Boxes, Cpu, Download, FileText, Search, Wrench, Zap } from 'lucide-react'
+import { BatteryCharging, Boxes, Cpu, Download, FileText, Search, Wrench, Zap } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -122,11 +122,7 @@ export function DownloadsPageClient() {
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-green-400/60 to-transparent" />
         <div className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-16 md:pt-32 md:pb-20">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-green-300">
-              <BookOpen size={14} />
-              Technical Library
-            </div>
-            <h1 className="mt-5 text-4xl md:text-6xl font-bold text-white tracking-tight">{t('downloads.title')}</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">{t('downloads.title')}</h1>
             <p className="mt-4 max-w-2xl text-sm md:text-base leading-7 text-gray-300">{t('downloads.desc')}</p>
             <div className="mt-8 grid grid-cols-3 gap-px overflow-hidden border border-white/10 bg-white/10 md:max-w-xl">
               <div className="bg-black/45 px-4 py-4">

@@ -18,7 +18,7 @@ export interface Product {
   detailImages?: string[]
 }
 
-export const products: Product[] = [
+const productCatalog: Product[] = [
   {
     slug: 'battery-kit',
     name: 'Battery Kit (With Caster)',
@@ -259,6 +259,16 @@ export const products: Product[] = [
     ],
   },
 ]
+
+const productDisplayOrder = ['battery-kit', '6u-battery-kit', 'tness-ci-ess-cabinet', 'high-voltage-kit']
+const getProductDisplayIndex = (slug: string) => {
+  const index = productDisplayOrder.indexOf(slug)
+  return index === -1 ? productDisplayOrder.length : index
+}
+
+export const products: Product[] = [...productCatalog].sort(
+  (a, b) => getProductDisplayIndex(a.slug) - getProductDisplayIndex(b.slug)
+)
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug)

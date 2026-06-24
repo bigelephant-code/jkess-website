@@ -267,7 +267,7 @@ const productCatalog: Product[] = [
   },
 ]
 
-const productDisplayOrder = ['battery-kit', '6u-battery-kit', 'tness-ci-ess-cabinet', 'high-voltage-kit']
+const productDisplayOrder = ['battery-kit', '6u-battery-kit', 'high-voltage-kit', 'tness-ci-ess-cabinet']
 const getProductDisplayIndex = (slug: string) => {
   const index = productDisplayOrder.indexOf(slug)
   return index === -1 ? productDisplayOrder.length : index

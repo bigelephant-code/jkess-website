@@ -118,7 +118,6 @@ export const products: Product[] = [
       '/images/hv-kit/6.jpg',
     ],
     detailImages: [
-      '/images/hv-kit-detail/20.jpg',
       '/images/hv-kit-detail/1.jpg',
       '/images/hv-kit-detail/2.jpg',
       '/images/hv-kit-detail/3.jpg',
@@ -138,7 +137,13 @@ export const products: Product[] = [
       '/images/hv-kit-detail/18.jpg',
       '/images/hv-kit-detail/19.jpg',
     ],
-    type: 'inquiry',
+    type: 'shop',
+    variants: [
+      { label: '100A Master Control Box', price: '$1020.00' },
+      { label: '100A Slave Control Box', price: '$390.00' },
+      { label: '200A Master Control Box', price: '$1180.00' },
+      { label: '200A Slave Control Box', price: '$420.00' },
+    ],
   },
   {
     slug: 'tness-ci-ess-cabinet',

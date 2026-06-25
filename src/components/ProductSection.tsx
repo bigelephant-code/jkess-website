@@ -1,5 +1,6 @@
 'use client'
-import { useTranslate } from '@/i18n/client'
+import { useI18n, useTranslate } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 import { useState } from 'react'
 import Image from 'next/image'
@@ -25,6 +26,7 @@ const categoryLabels: Record<string, string> = {
 
 function ProductCard({ product, idx }: { product: Product; idx: number }) {
   const t = useTranslate()
+  const { lang } = useI18n()
   const allImages = product.images && product.images.length > 0
     ? product.images
     : product.image
@@ -110,7 +112,7 @@ function ProductCard({ product, idx }: { product: Product; idx: number }) {
         )}
 
         <a
-          href={product.slug ? `/products/${product.slug}` : "#contact"}
+          href={product.slug ? localizedPath(lang, `/products/${product.slug}`) : localizedPath(lang, '/#contact')}
           className="inline-flex items-center gap-2 text-green-600 hover:text-green-500 font-semibold transition-colors"
         >
           {t('productsSection.viewDetails', 'View Details')} <ArrowRight size={16} />

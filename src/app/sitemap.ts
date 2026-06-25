@@ -6,6 +6,14 @@ import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
 const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact']
 const siteLastModified = new Date('2026-06-25')
+const staticImages: Record<string, string[]> = {
+  '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
+  '/about': ['/images/company-building.webp'],
+  '/products': products.flatMap((product) => product.images.slice(0, 1)),
+  '/downloads': ['/images/downloads-banner-bg.webp'],
+  '/news': ['/images/news-featured-energy-storage.jpg'],
+  '/contact': ['/images/contact-banner-bg.webp'],
+}
 
 function localizedPath(locale: string, path: string) {
   return `${locale === defaultLocale ? '' : `/${locale}`}${path || '/'}`
@@ -38,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: siteLastModified,
         changeFrequency: staticChangeFrequency(path),
         priority: staticPriority(path),
+        images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
         alternates: {
           languages: pageLanguageAlternates(sitemapPath(path)),
         },
@@ -51,6 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: siteLastModified,
         changeFrequency: 'weekly',
         priority: product.type === 'shop' ? 0.9 : 0.85,
+        images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
         alternates: {
           languages: pageLanguageAlternates(productPath),
         },

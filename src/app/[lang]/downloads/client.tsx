@@ -11,6 +11,7 @@ import { localizedPath } from '@/lib/lang'
 import { downloadCategories, getDownloadFileType } from '@/lib/downloads'
 import PageFaqSection from '@/components/PageFaqSection'
 import { pageFaqs } from '@/lib/page-faqs'
+import { trackEvent } from '@/lib/analytics'
 
 const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?: number; className?: string }> }> = {
   'BMS Protection Board': { accent: '#22c55e', icon: Cpu },
@@ -18,14 +19,6 @@ const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?
   Kits: { accent: '#f58a8a', icon: Boxes },
   'Accessory Manuals': { accent: '#a66cd9', icon: Wrench },
   'High Voltage': { accent: '#f97316', icon: BatteryCharging },
-}
-
-function trackDownload(fileName: string, category: string) {
-  const analytics = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
-  analytics?.('event', 'download_document', {
-    file_name: fileName,
-    file_category: category,
-  })
 }
 
 export function DownloadsPageClient() {
@@ -186,7 +179,7 @@ export function DownloadsPageClient() {
                                 href={file.url}
                                 download
                                 aria-label={`Download ${file.name}`}
-                                onClick={() => trackDownload(file.name, cat.label)}
+                                onClick={() => trackEvent('download_document', { file_name: file.name, file_category: cat.label })}
                                 initial={{ opacity: 0, x: -12 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}

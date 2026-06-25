@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { absoluteUrl, siteUrl } from "@/lib/site";
 import { jkessOrganization, jsonLd } from "@/lib/structured-data";
@@ -27,6 +27,25 @@ export const metadata: Metadata = {
     "high voltage kit",
     "JKBMS",
   ],
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     siteName: "JKESS",
@@ -50,6 +69,10 @@ export const metadata: Metadata = {
       "LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
     images: [absoluteUrl("/images/news-featured-energy-storage.jpg")],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#22c55e",
 };
 
 const websiteJsonLd = {
@@ -76,6 +99,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="preconnect" href="https://www.paypal.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLd(siteJsonLd) }}

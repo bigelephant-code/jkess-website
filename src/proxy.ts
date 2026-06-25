@@ -10,6 +10,9 @@ const PUBLIC_PATHS = [
   '/studio',
   '/robots.txt',
   '/sitemap.xml',
+  '/manifest.webmanifest',
+  '/apple-touch-icon.png',
+  '/icon-',
 ]
 
 function isPublicPath(pathname: string): boolean {

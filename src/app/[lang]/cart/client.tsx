@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import { trackEvent } from '@/lib/analytics'
 
 export default function CartPage() {
   const { lang, t } = useI18n()
@@ -71,7 +72,7 @@ export default function CartPage() {
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <Link
-                      href={`/products/${item.slug}`}
+                      href={localizedPath(lang, `/products/${item.slug}`)}
                       className="text-gray-900 font-semibold hover:text-green-600 transition-colors"
                     >
                       {item.name}
@@ -126,6 +127,7 @@ export default function CartPage() {
               </p>
               <Link
                 href={localizedPath(lang, '/checkout')}
+                onClick={() => trackEvent('begin_checkout', { items: itemCount, value: parseFloat(total.replace(/[$,]/g, '')), currency: 'USD' })}
                 className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-full text-lg transition-all"
               >
                 {t('cart.checkout')}

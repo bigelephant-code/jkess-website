@@ -4,6 +4,7 @@ import { useTranslate } from '@/i18n/client'
 import { Mail, MapPin, Phone, Send } from 'lucide-react'
 import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
 import Image from 'next/image'
+import { trackEvent } from '@/lib/analytics'
 
 interface FooterData {
   contactEmail?: string
@@ -91,9 +92,13 @@ export default function ContactSection({ data }: { data?: FooterData }) {
             const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value || ''
             const subject = encodeURIComponent('JKESS Inquiry')
             const body = encodeURIComponent(`Name: ${name}\nCompany: ${company}\nMessage:\n${message}`)
+            trackEvent('footer_contact_submit', {
+              has_company: Boolean(company),
+              has_message: Boolean(message),
+            })
             window.open(`mailto:${data?.contactEmail || 'zhou@jkess.com'}?subject=${subject}&body=${body}`)
           }}>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <input type="text" name="name" placeholder={t('contactSection.yourName', 'Your Name')} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors" />
               <input type="text" name="company" placeholder={t('contactSection.company', 'Company')} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-colors" />
             </div>

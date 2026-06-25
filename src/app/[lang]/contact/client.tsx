@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 import PageFaqSection from '@/components/PageFaqSection'
 import { pageFaqs } from '@/lib/page-faqs'
+import { trackEvent } from '@/lib/analytics'
 
 export default function ContactPage() {
   const t = useTranslate()
@@ -39,6 +40,12 @@ export default function ContactPage() {
         formData.message,
       ].join('\n')
     )
+    trackEvent('contact_form_submit', {
+      product_type: formData.productType || 'unspecified',
+      destination_country: formData.country || 'unspecified',
+      has_quantity: Boolean(formData.quantity),
+      has_timeline: Boolean(formData.timeline),
+    })
     window.open(`mailto:zhou@jkess.com?subject=${subject}&body=${body}`)
     setSubmitted(true)
   }

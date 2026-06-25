@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import { trackEvent } from '@/lib/analytics'
 
 const PAYPAL_CLIENT_ID =
   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
@@ -120,6 +121,12 @@ export default function CheckoutPage() {
         onApprove: async (_data, actions) => {
           const order = await actions.order.capture()
           setOrderId(order.id)
+          trackEvent('purchase', {
+            transaction_id: order.id,
+            value: Number(totalAmount),
+            currency: 'USD',
+            items: items.length,
+          })
 
           const subject = encodeURIComponent('New Paid Order - JKESS (PayPal: ' + order.id + ')')
           const itemsStr = items.map((i) => i.name + ' (' + i.variant + ') x' + i.quantity + ' = ' + i.price).join('\n')
@@ -186,10 +193,10 @@ export default function CheckoutPage() {
               <div className="lg:col-span-3 space-y-6">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900">{t('checkout.contactInfo')}</h2>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <input type="text" aria-label="Full name" placeholder={t('checkout.fullName')} value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                      className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
                     <input type="email" aria-label="Email address" placeholder={t('checkout.email')} value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
@@ -198,7 +205,7 @@ export default function CheckoutPage() {
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
                     <input type="text" aria-label="Company name" placeholder={t('checkout.company')} value={formData.company}
                       onChange={(e) => setFormData({...formData, company: e.target.value})}
-                      className="col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                      className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
                   </div>
                 </div>
 
@@ -253,6 +260,7 @@ export default function CheckoutPage() {
                         <p className="text-sm text-yellow-700 font-medium mb-2">{t('checkout.paypalUnavailable')}</p>
                         <p className="text-xs text-gray-500 mb-4">{t('checkout.paypalDesc')}</p>
                         <a href="mailto:chinaenergymall@163.com"
+                          onClick={() => trackEvent('checkout_contact_to_pay', { value: Number(totalAmount), currency: 'USD' })}
                           className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
                           <ExternalLink size={16} /> {t('checkout.contactToPay')}
                         </a>

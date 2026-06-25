@@ -240,6 +240,8 @@ export default function Navbar() {
           {/* ── Language Switcher ── */}
           <button
             onClick={() => setLangOpen(!langOpen)}
+            aria-label="Change language"
+            aria-expanded={langOpen}
             className="flex items-center gap-1.5 text-white hover:text-green-500 transition-colors duration-200 text-xl"
           >
             <Globe size={24} />
@@ -249,6 +251,7 @@ export default function Navbar() {
           {/* Cart icon */}
           <a
             href={`${prefix}/cart`}
+            aria-label={`View cart with ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`}
             className="relative text-white hover:text-green-500 transition-colors duration-200"
           >
             <ShoppingCart size={24} />
@@ -262,7 +265,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-3">
-          <a href={`${prefix}/cart`} className="relative text-white">
+          <a href={`${prefix}/cart`} aria-label={`View cart with ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`} className="relative text-white">
             <ShoppingCart size={24} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -270,7 +273,7 @@ export default function Navbar() {
               </span>
             )}
           </a>
-          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+          <button className="text-white" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle navigation menu" aria-expanded={isOpen}>
             {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>

@@ -8,6 +8,7 @@ import type { Product, ProductSeoContent, ProductUseCases } from '@/lib/products
 import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
+import { trackEvent } from '@/lib/analytics'
 
 export function ProductDetailClient({
   product,
@@ -34,24 +35,44 @@ export function ProductDetailClient({
   const faqs = getProductFaqs(product)
 
   const handleAddToCart = () => {
+    const variant = product.variants?.[selectedVariant]
     addItem({
       slug: product.slug,
       name: product.name,
-      variant: product.variants?.[selectedVariant]?.label || 'Standard',
+      variant: variant?.label || 'Standard',
       quantity,
-      price: product.variants?.[selectedVariant]?.price || '$0.00',
+      price: variant?.price || '$0.00',
       image: product.images[0] || '',
+    })
+    trackEvent('add_to_cart', {
+      item_id: product.slug,
+      item_name: product.name,
+      item_variant: variant?.label || 'Standard',
+      quantity,
+      value: variant?.price ? parseFloat(variant.price.replace(/[$,]/g, '')) * quantity : undefined,
+      currency: 'USD',
     })
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 2000)
   }
 
   const handleBuyNow = () => {
+    trackEvent('buy_now_click', {
+      item_id: product.slug,
+      item_name: product.name,
+      quantity,
+    })
     handleAddToCart()
     setTimeout(() => { window.location.href = `${prefix}/cart` }, 300)
   }
 
   const handleInquiry = () => {
+    trackEvent('product_inquiry_click', {
+      item_id: product.slug,
+      item_name: product.name,
+      item_variant: product.variants?.[selectedVariant]?.label || 'Standard',
+      quantity,
+    })
     const subject = encodeURIComponent('Inquiry: ' + product.name)
     const body = encodeURIComponent(
       'Product: ' + product.name + '\n' +

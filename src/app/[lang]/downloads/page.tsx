@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         'energy storage datasheet',
         'ESS technical documents',
       ],
-      image: '/images/downloads-banner-bg.png',
+      image: '/images/downloads-banner-bg.webp',
     })
   )
 }

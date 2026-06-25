@@ -116,7 +116,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         "commercial energy storage system",
         "battery storage cabinet",
       ],
-      image: "/images/mountain-bg.png",
+      image: "/images/mountain-bg.webp",
     })
   );
 }

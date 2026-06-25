@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Check, Minus, Plus, ShoppingCart, Send, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
+import { Check, FileText, Minus, Newspaper, Plus, ShoppingCart, Send, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
 import type { Product } from '@/lib/products'
 import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
@@ -234,6 +234,23 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                 </div>
               </div>
             )}
+            <div className="mb-8 grid gap-3 md:grid-cols-3">
+              <Link href={`${prefix}/downloads`} className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 transition-colors hover:border-green-200 hover:bg-green-50">
+                <FileText size={18} className="mb-3 text-green-600" />
+                <h3 className="text-sm font-semibold text-gray-900">Technical Downloads</h3>
+                <p className="mt-2 text-xs leading-5 text-gray-500">Datasheets, manuals, and product resources.</p>
+              </Link>
+              <Link href={`${prefix}/news`} className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 transition-colors hover:border-green-200 hover:bg-green-50">
+                <Newspaper size={18} className="mb-3 text-green-600" />
+                <h3 className="text-sm font-semibold text-gray-900">Industry Insights</h3>
+                <p className="mt-2 text-xs leading-5 text-gray-500">Battery storage market and BMS technology updates.</p>
+              </Link>
+              <Link href={`${prefix}/contact`} className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 transition-colors hover:border-green-200 hover:bg-green-50">
+                <Send size={18} className="mb-3 text-green-600" />
+                <h3 className="text-sm font-semibold text-gray-900">Project Inquiry</h3>
+                <p className="mt-2 text-xs leading-5 text-gray-500">Ask for configuration support or a quotation.</p>
+              </Link>
+            </div>
             {product.detailImages && product.detailImages.length > 0 && (
               <div>
                 <h3 className="text-gray-900 font-semibold mb-4">{t('product.productGallery', 'Product Gallery')}</h3>

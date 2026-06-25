@@ -116,7 +116,7 @@ export function DownloadsPageClient() {
     <div className="min-h-screen bg-[#f6f8f7]">
       <section className="relative bg-black overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/downloads-banner-bg.png" alt="" fill className="object-cover" priority sizes="100vw" />
+          <Image src="/images/downloads-banner-bg.webp" alt="" fill className="object-cover" priority sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/78 to-gray-900/88" />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-green-400/60 to-transparent" />

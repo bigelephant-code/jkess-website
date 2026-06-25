@@ -117,7 +117,7 @@ export default function NewsPage() {
     <div className="min-h-screen bg-[#f3f6f5] text-gray-950">
       <section className="relative min-h-[680px] overflow-hidden bg-[#07110d]">
         <div className="absolute inset-0">
-          <Image src="/images/news-banner-bg.png" alt="" fill className="object-cover opacity-70" priority sizes="100vw" />
+          <Image src="/images/news-banner-bg.webp" alt="" fill className="object-cover opacity-70" priority sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(0,0,0,0.96)_0%,rgba(2,18,12,0.92)_43%,rgba(4,33,38,0.72)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f3f6f5] to-transparent" />

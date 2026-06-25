@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         'BMS supplier China',
         'commercial ESS quote',
       ],
-      image: '/images/contact-banner-bg.png',
+      image: '/images/contact-banner-bg.webp',
     })
   )
 }

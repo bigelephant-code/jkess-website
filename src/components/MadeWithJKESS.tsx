@@ -6,18 +6,18 @@ import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
 const projectImages = [
-  { src: '/images/projects/project-1.jpg' },
-  { src: '/images/projects/project-2.png' },
-  { src: '/images/projects/project-3.png' },
-  { src: '/images/projects/project-4.jpg' },
-  { src: '/images/projects/project-5.jpg' },
-  { src: '/images/projects/project-6.jpg' },
-  { src: '/images/projects/project-7.png' },
-  { src: '/images/projects/project-8.png' },
-  { src: '/images/projects/project-9.png' },
-  { src: '/images/projects/project-10.png' },
-  { src: '/images/projects/project-11.png' },
-  { src: '/images/projects/project-12.png' },
+  { src: '/images/projects/project-1.webp' },
+  { src: '/images/projects/project-2.webp' },
+  { src: '/images/projects/project-3.webp' },
+  { src: '/images/projects/project-4.webp' },
+  { src: '/images/projects/project-5.webp' },
+  { src: '/images/projects/project-6.webp' },
+  { src: '/images/projects/project-7.webp' },
+  { src: '/images/projects/project-8.webp' },
+  { src: '/images/projects/project-9.webp' },
+  { src: '/images/projects/project-10.webp' },
+  { src: '/images/projects/project-11.webp' },
+  { src: '/images/projects/project-12.webp' },
 ]
 
 export default function MadeWithJKESS() {

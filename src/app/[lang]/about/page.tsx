@@ -2,6 +2,7 @@ import { buildPageMetadata } from '@/lib/seo'
 import { localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jkessOrganization, jsonLd, organizationId } from '@/lib/structured-data'
+import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
 import AboutPageClient from './client'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -126,6 +127,7 @@ function aboutJsonLd(lang: string) {
           { '@type': 'ListItem', position: 2, name: 'About', item: pageUrl },
         ],
       },
+      faqJsonLd(pageFaqs.about),
     ],
   })
 }

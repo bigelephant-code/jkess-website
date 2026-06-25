@@ -2,6 +2,7 @@ import { products } from '@/lib/products'
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
+import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
 import { ProductsPageClient } from './client'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -66,6 +67,7 @@ function productsCollectionJsonLd(lang: string) {
           { '@type': 'ListItem', position: 2, name: 'Products', item: url },
         ],
       },
+      faqJsonLd(pageFaqs.products),
     ],
   })
 }

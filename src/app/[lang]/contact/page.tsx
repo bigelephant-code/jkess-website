@@ -1,6 +1,7 @@
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jkessOrganization, jsonLd, organizationId } from '@/lib/structured-data'
+import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
 import ContactPageClient from './client'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -47,6 +48,7 @@ function contactJsonLd(lang: string) {
           { '@type': 'ListItem', position: 2, name: 'Contact', item: contactUrl },
         ],
       },
+      faqJsonLd(pageFaqs.contact),
     ],
   })
 }

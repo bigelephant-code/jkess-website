@@ -3,6 +3,7 @@ import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { downloadFiles } from '@/lib/downloads'
 import { jsonLd, organizationId } from '@/lib/structured-data'
+import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   return params.then(({ lang }) =>
@@ -63,6 +64,7 @@ function downloadsJsonLd(lang: string) {
           { '@type': 'ListItem', position: 2, name: 'Downloads', item: pageUrl },
         ],
       },
+      faqJsonLd(pageFaqs.downloads),
     ],
   })
 }

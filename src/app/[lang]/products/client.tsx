@@ -7,6 +7,8 @@ import type { Product } from '@/lib/products'
 import { StaggerReveal, StaggerItem } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import PageFaqSection from '@/components/PageFaqSection'
+import { pageFaqs } from '@/lib/page-faqs'
 
 const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
@@ -78,6 +80,11 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
           </StaggerReveal>
         </div>
       </section>
+      <PageFaqSection
+        faqs={pageFaqs.products}
+        title="Product Selection FAQ"
+        description="A quick guide to choosing between JKESS battery kits, high voltage kits, and commercial energy storage cabinets."
+      />
       <div className="pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide">

@@ -5,17 +5,39 @@ import { motion } from 'framer-motion'
 import { Phone, Mail, MapPin, MessageCircle, MessagesSquare, Send, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
+import PageFaqSection from '@/components/PageFaqSection'
+import { pageFaqs } from '@/lib/page-faqs'
 
 export default function ContactPage() {
   const t = useTranslate()
-  const [formData, setFormData] = useState({ name: '', company: '', email: '', message: '' })
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    productType: '',
+    country: '',
+    quantity: '',
+    timeline: '',
+    message: '',
+  })
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const subject = encodeURIComponent('JKESS Inquiry')
     const body = encodeURIComponent(
-      `Name: ${formData.name}\nCompany: ${formData.company}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      [
+        `Name: ${formData.name}`,
+        `Company: ${formData.company}`,
+        `Email: ${formData.email}`,
+        `Product Type: ${formData.productType}`,
+        `Destination Country: ${formData.country}`,
+        `Estimated Quantity: ${formData.quantity}`,
+        `Timeline: ${formData.timeline}`,
+        '',
+        'Message:',
+        formData.message,
+      ].join('\n')
     )
     window.open(`mailto:zhou@jkess.com?subject=${subject}&body=${body}`)
     setSubmitted(true)
@@ -117,6 +139,47 @@ export default function ContactPage() {
                 <input type="email" aria-label="Email address" placeholder={t('contactPage.emailPlaceholder')} required value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <select
+                    aria-label="Product type"
+                    value={formData.productType}
+                    onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
+                    className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
+                  >
+                    <option value="">Product type</option>
+                    <option value="Battery Kit (With Caster)">Battery Kit (With Caster)</option>
+                    <option value="6U Battery Kit">6U Battery Kit</option>
+                    <option value="High Voltage Kit">High Voltage Kit</option>
+                    <option value="C&I High Voltage ESS Cabinet">C&I High Voltage ESS Cabinet</option>
+                    <option value="Custom project">Custom project</option>
+                  </select>
+                  <input
+                    type="text"
+                    aria-label="Destination country"
+                    placeholder="Destination country"
+                    value={formData.country}
+                    onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                    className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <input
+                    type="text"
+                    aria-label="Estimated quantity"
+                    placeholder="Estimated quantity"
+                    value={formData.quantity}
+                    onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                    className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
+                  />
+                  <input
+                    type="text"
+                    aria-label="Project timeline"
+                    placeholder="Project timeline"
+                    value={formData.timeline}
+                    onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                    className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
+                  />
+                </div>
                 <textarea aria-label="Message" placeholder={t('contactPage.messagePlaceholder')} required rows={5} value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors resize-none" />
@@ -160,6 +223,11 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+      <PageFaqSection
+        faqs={pageFaqs.contact}
+        title="Contact and Quotation FAQ"
+        description="Prepare the right details before contacting JKESS so the sales and engineering team can respond faster."
+      />
     </div>
   )
 }

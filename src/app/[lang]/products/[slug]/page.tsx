@@ -1,4 +1,4 @@
-import { products, getProductBySlug, getProductFaqs, getProductUseCases, getRelatedProducts } from '@/lib/products'
+import { products, getProductBySlug, getProductFaqs, getProductSeoContent, getProductUseCases, getRelatedProducts } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
@@ -83,6 +83,7 @@ function productJsonLd(p: Product, lang: string) {
   const url = absoluteUrl(`${localePath}/products/${p.slug}`)
   const faqs = getProductFaqs(p)
   const useCases = getProductUseCases(p)
+  const seoContent = getProductSeoContent(p)
   const productSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -113,6 +114,16 @@ function productJsonLd(p: Product, lang: string) {
         '@type': 'PropertyValue',
         name: 'Selection Notes',
         value: useCases.selectionNotes.join('; '),
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Project Fit',
+        value: seoContent.projectFit,
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Installation Notes',
+        value: seoContent.installationNotes.join('; '),
       },
     ],
     category: p.categoryLabel,
@@ -218,6 +229,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         lang={lang}
         relatedProducts={getRelatedProducts(product)}
         useCases={getProductUseCases(product)}
+        seoContent={getProductSeoContent(product)}
       />
     </>
   )

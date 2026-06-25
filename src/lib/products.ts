@@ -14,6 +14,12 @@ export interface ProductUseCases {
   selectionNotes: string[]
 }
 
+export interface ProductSeoContent {
+  projectFit: string
+  installationNotes: string[]
+  procurementNotes: string[]
+}
+
 export interface Product {
   slug: string
   name: string
@@ -27,6 +33,78 @@ export interface Product {
   type: 'shop' | 'inquiry'
   variants?: { label: string; price?: string }[]
   detailImages?: string[]
+}
+
+export function getProductSeoContent(product: Product): ProductSeoContent {
+  if (product.slug === 'battery-kit') {
+    return {
+      projectFit:
+        'This caster battery kit is best suited for low-voltage LiFePO4 storage projects where installers need a movable enclosure, integrated monitoring, and fast onsite positioning. It is commonly selected for residential backup, small commercial storage, outdoor work power, and demonstration systems.',
+      installationNotes: [
+        'Confirm inverter communication compatibility before selecting CAN or RS485 wiring.',
+        'Reserve enough floor clearance for caster movement, cable bend radius, and ventilation.',
+        'Use the BOX and LCD+BMS option when the system needs integrated protection and local monitoring.',
+      ],
+      procurementNotes: [
+        'Share target capacity, cell brand, inverter model, and destination country for a faster quote.',
+        'For repeat projects, confirm whether the same enclosure color, logo, and wiring layout should be maintained.',
+      ],
+    }
+  }
+
+  if (product.slug === '6u-battery-kit') {
+    return {
+      projectFit:
+        'The 6U Battery Kit is designed for 19-inch rack energy storage systems that need a compact LiFePO4 module format, front access, and modular expansion. It fits residential solar backup, telecom rooms, small commercial backup systems, and off-grid equipment rooms.',
+      installationNotes: [
+        'Confirm rack depth, front service clearance, and cabinet airflow before installation.',
+        'Plan parallel capacity, breaker sizing, and communication addresses before scaling multiple units.',
+        'Use compatible inverter protocols and verify CAN or RS485 settings during commissioning.',
+      ],
+      procurementNotes: [
+        'Provide rack layout, target battery capacity, inverter brand, and required quantity.',
+        'Select BOX and LCD+BMS for a monitored module, or OnlyBOX for projects with separate electronics.',
+      ],
+    }
+  }
+
+  if (product.slug === 'high-voltage-kit') {
+    return {
+      projectFit:
+        'The High Voltage Kit is built for commercial and industrial battery racks where a BCU master box and BMU slave boxes coordinate voltage sampling, current detection, insulation monitoring, active balancing, and communication with PCS or EMS equipment.',
+      installationNotes: [
+        'Confirm total pack voltage, cell count, current rating, and master/slave box quantity before ordering.',
+        'Reserve isolated wiring routes for high-voltage detection, communication, and safety interlock circuits.',
+        'Match CAN, RS485, or isoSPI communication requirements with the PCS and EMS design.',
+      ],
+      procurementNotes: [
+        'Choose 100A for moderate-current racks and 200A when the project requires higher current capability.',
+        'Share single-line diagrams, pack configuration, PCS model, and protection requirements for engineering review.',
+      ],
+    }
+  }
+
+  if (product.slug === 'tness-ci-ess-cabinet') {
+    return {
+      projectFit:
+        'The C&I High Voltage ESS Cabinet is intended for turnkey commercial energy storage projects such as peak shaving, backup power, solar self-consumption, demand management, and industrial park energy optimization.',
+      installationNotes: [
+        'Confirm outdoor placement, foundation, ventilation clearance, ambient temperature, and fire protection requirements.',
+        'Choose air cooling or liquid cooling according to power density, duty cycle, and site thermal conditions.',
+        'Coordinate PCS, EMS, grid connection, and monitoring interfaces during project design.',
+      ],
+      procurementNotes: [
+        'Share capacity target, AC power, PV input needs, grid standard, site photos, and delivery country.',
+        'Final quotation depends on cooling method, cabinet configuration, monitoring options, and certification needs.',
+      ],
+    }
+  }
+
+  return {
+    projectFit: product.description,
+    installationNotes: ['Confirm system voltage, communication method, installation environment, and safety requirements.'],
+    procurementNotes: ['Contact JKESS with project drawings and quantity requirements for configuration support.'],
+  }
 }
 
 export function getProductUseCases(product: Product): ProductUseCases {

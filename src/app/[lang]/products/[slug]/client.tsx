@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Check, FileText, Minus, Newspaper, Plus, ShoppingCart, Send, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
-import type { Product, ProductUseCases } from '@/lib/products'
+import type { Product, ProductSeoContent, ProductUseCases } from '@/lib/products'
 import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
@@ -14,11 +14,13 @@ export function ProductDetailClient({
   lang,
   relatedProducts,
   useCases,
+  seoContent,
 }: {
   product: Product
   lang: string
   relatedProducts: Product[]
   useCases: ProductUseCases
+  seoContent: ProductSeoContent
 }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(0)
@@ -238,6 +240,7 @@ export function ProductDetailClient({
               <ProductUseCasePanel title="Compatible Systems" items={useCases.compatibleSystems} />
               <ProductUseCasePanel title="Selection Notes" items={useCases.selectionNotes} />
             </div>
+            <ProductSeoPanel product={product} seoContent={seoContent} />
             <ProductDecisionPanel product={product} prefix={prefix} />
             {faqs.length > 0 && (
               <div className="mb-8">
@@ -332,6 +335,36 @@ function ProductUseCasePanel({ title, items }: { title: string; items: string[] 
         {items.map((item) => (
           <div key={item} className="flex items-start gap-3">
             <Check size={16} className="mt-0.5 shrink-0 text-green-500" />
+            <p className="text-sm leading-6 text-gray-600">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ProductSeoPanel({ product, seoContent }: { product: Product; seoContent: ProductSeoContent }) {
+  return (
+    <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
+      <p className="text-xs font-semibold uppercase tracking-widest text-green-600">Project Fit</p>
+      <h3 className="mt-2 text-lg font-bold text-gray-900">{product.name} selection guidance</h3>
+      <p className="mt-3 text-sm leading-7 text-gray-600">{seoContent.projectFit}</p>
+      <div className="mt-6 grid gap-5 md:grid-cols-2">
+        <SeoNoteList title="Installation notes" items={seoContent.installationNotes} />
+        <SeoNoteList title="Procurement notes" items={seoContent.procurementNotes} />
+      </div>
+    </div>
+  )
+}
+
+function SeoNoteList({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <h4 className="text-sm font-semibold text-gray-900">{title}</h4>
+      <div className="mt-3 space-y-2">
+        {items.map((item) => (
+          <div key={item} className="flex items-start gap-2">
+            <Check size={15} className="mt-1 shrink-0 text-green-500" />
             <p className="text-sm leading-6 text-gray-600">{item}</p>
           </div>
         ))}

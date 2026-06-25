@@ -4,8 +4,10 @@ import { motion } from 'framer-motion'
 import AboutSection from "@/components/AboutSection"
 import TeamSlideshow from "@/components/TeamSlideshow"
 import DynamicGlobe from "@/components/DynamicGlobe"
+import PageFaqSection from "@/components/PageFaqSection"
 import { Reveal } from "@/components/ScrollReveal"
 import { useTranslate } from '@/i18n/client'
+import { pageFaqs } from '@/lib/page-faqs'
 
 export default function AboutPage() {
   const t = useTranslate()
@@ -160,6 +162,12 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <PageFaqSection
+        faqs={pageFaqs.about}
+        title="About JKESS FAQ"
+        description="Key information about JKESS manufacturing, offices, logistics, and international project support."
+      />
 
       <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
     </div>

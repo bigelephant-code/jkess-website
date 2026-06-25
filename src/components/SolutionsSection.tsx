@@ -5,11 +5,11 @@ import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
 const scenarios = [
-  { id: 'residential',      image: '/images/scenario-2.jpg' },
-  { id: 'ci-storage',       image: '/images/scenario-3.png' },
-  { id: 'solar-pv',         image: '/images/scenario-1.png' },
-  { id: 'outdoor-emergency', image: '/images/scenario-4.png' },
-  { id: 'low-speed-vehicle', image: '/images/scenario-5.png' },
+  { id: 'residential',      image: '/images/scenario-2.webp' },
+  { id: 'ci-storage',       image: '/images/scenario-3.webp' },
+  { id: 'solar-pv',         image: '/images/scenario-1.webp' },
+  { id: 'outdoor-emergency', image: '/images/scenario-4.webp' },
+  { id: 'low-speed-vehicle', image: '/images/scenario-5.webp' },
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28

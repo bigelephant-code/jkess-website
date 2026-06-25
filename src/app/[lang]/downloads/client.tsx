@@ -9,6 +9,8 @@ import type { ComponentType } from 'react'
 import { useI18n, useTranslate } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { downloadCategories, getDownloadFileType } from '@/lib/downloads'
+import PageFaqSection from '@/components/PageFaqSection'
+import { pageFaqs } from '@/lib/page-faqs'
 
 const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?: number; className?: string }> }> = {
   'BMS Protection Board': { accent: '#22c55e', icon: Cpu },
@@ -223,6 +225,11 @@ export function DownloadsPageClient() {
           </div>
         </div>
       </section>
+      <PageFaqSection
+        faqs={pageFaqs.downloads}
+        title="Technical Library FAQ"
+        description="Common questions about JKESS manuals, datasheets, and technical document support."
+      />
     </div>
   )
 }

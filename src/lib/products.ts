@@ -8,6 +8,12 @@ export interface ProductFaq {
   answer: string
 }
 
+export interface ProductUseCases {
+  applications: string[]
+  compatibleSystems: string[]
+  selectionNotes: string[]
+}
+
 export interface Product {
   slug: string
   name: string
@@ -21,6 +27,94 @@ export interface Product {
   type: 'shop' | 'inquiry'
   variants?: { label: string; price?: string }[]
   detailImages?: string[]
+}
+
+export function getProductUseCases(product: Product): ProductUseCases {
+  if (product.slug === 'battery-kit') {
+    return {
+      applications: [
+        'Home backup power and residential solar storage projects',
+        'Mobile energy storage for workshops, cabins, and outdoor work sites',
+        'Small commercial backup systems that need easy movement and positioning',
+      ],
+      compatibleSystems: [
+        '51.2V low-voltage LiFePO4 battery systems',
+        'CAN 2.0 / RS485 inverter communication environments',
+        '280Ah to 320Ah LFP cell configurations',
+      ],
+      selectionNotes: [
+        'Choose BOX and LCD+BMS when you need an integrated monitoring and protection system.',
+        'Choose OnlyBOX when you already have cells, BMS, and display hardware prepared.',
+        'Use multiple units when the project needs higher storage capacity or staged expansion.',
+      ],
+    }
+  }
+
+  if (product.slug === '6u-battery-kit') {
+    return {
+      applications: [
+        '19-inch rack solar battery storage for homes and commercial sites',
+        'Telecom backup power and equipment room energy storage',
+        'Off-grid and hybrid inverter systems needing modular rack expansion',
+      ],
+      compatibleSystems: [
+        'Standard 19-inch cabinet and rack installations',
+        '51.2V LiFePO4 battery storage platforms',
+        'CAN 2.0 / RS485 compatible inverter and monitoring systems',
+      ],
+      selectionNotes: [
+        'Choose BOX and LCD+BMS for a ready-to-integrate monitored rack module.',
+        'Choose OnlyBOX when the project already specifies a separate BMS and display.',
+        'Plan cabinet space and airflow before scaling multiple 6U units in parallel.',
+      ],
+    }
+  }
+
+  if (product.slug === 'high-voltage-kit') {
+    return {
+      applications: [
+        'Commercial and industrial high-voltage energy storage systems',
+        'PCS and EMS integrated battery racks requiring BCU and BMU coordination',
+        'High-voltage battery clusters with active balancing and remote monitoring',
+      ],
+      compatibleSystems: [
+        '100A or 200A high-voltage battery control architectures',
+        'PCS / EMS systems using CAN, RS485, or isoSPI communication',
+        'LFP, NMC, LMO, and LTO battery chemistry configurations',
+      ],
+      selectionNotes: [
+        'Select the 100A series for moderate current high-voltage storage racks.',
+        'Select the 200A series when the project requires higher current capability.',
+        'Confirm master and slave box quantities based on pack count, voltage, and EMS design.',
+      ],
+    }
+  }
+
+  if (product.slug === 'tness-ci-ess-cabinet') {
+    return {
+      applications: [
+        'Commercial peak shaving, demand management, and time-of-use optimization',
+        'Industrial park, hospital, hotel, and commercial center backup power',
+        'Solar self-consumption and renewable energy storage projects',
+      ],
+      compatibleSystems: [
+        '30kW to 125kW AC power commercial and industrial projects',
+        'Outdoor IP55 ESS installations with air-cooled or liquid-cooled design',
+        'WiFi, 4G, LAN, CAN, RS485, and Ethernet monitoring environments',
+      ],
+      selectionNotes: [
+        'Request a quote when final capacity, PCS power, cooling method, and site conditions are defined.',
+        'Choose liquid cooling for higher-density installations or stricter thermal requirements.',
+        'Confirm fire suppression, anti-corrosion, and communication options during project design.',
+      ],
+    }
+  }
+
+  return {
+    applications: [product.description],
+    compatibleSystems: ['JKESS energy storage projects'],
+    selectionNotes: ['Contact JKESS for configuration support.'],
+  }
 }
 
 export function getProductFaqs(product: Product): ProductFaq[] {

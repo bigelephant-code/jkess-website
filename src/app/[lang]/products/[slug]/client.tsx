@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Check, FileText, Minus, Newspaper, Plus, ShoppingCart, Send, ArrowLeft, Shield, Truck, RotateCcw } from 'lucide-react'
-import type { Product } from '@/lib/products'
+import type { Product, ProductUseCases } from '@/lib/products'
 import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
@@ -13,10 +13,12 @@ export function ProductDetailClient({
   product,
   lang,
   relatedProducts,
+  useCases,
 }: {
   product: Product
   lang: string
   relatedProducts: Product[]
+  useCases: ProductUseCases
 }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(0)
@@ -231,6 +233,11 @@ export function ProductDetailClient({
                 </div>
               ))}
             </div>
+            <div className="mb-8 grid gap-4 lg:grid-cols-3">
+              <ProductUseCasePanel title="Applications" items={useCases.applications} />
+              <ProductUseCasePanel title="Compatible Systems" items={useCases.compatibleSystems} />
+              <ProductUseCasePanel title="Selection Notes" items={useCases.selectionNotes} />
+            </div>
             {faqs.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-gray-900 font-semibold mb-4">Frequently Asked Questions</h3>
@@ -312,6 +319,22 @@ export function ProductDetailClient({
           </div>
         </div>
       </section>
+    </div>
+  )
+}
+
+function ProductUseCasePanel({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+      <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+      <div className="mt-4 space-y-3">
+        {items.map((item) => (
+          <div key={item} className="flex items-start gap-3">
+            <Check size={16} className="mt-0.5 shrink-0 text-green-500" />
+            <p className="text-sm leading-6 text-gray-600">{item}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

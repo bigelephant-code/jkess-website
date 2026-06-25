@@ -1,4 +1,4 @@
-import { products, getProductBySlug, getProductFaqs, getRelatedProducts } from '@/lib/products'
+import { products, getProductBySlug, getProductFaqs, getProductUseCases, getRelatedProducts } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
@@ -81,6 +81,7 @@ function productJsonLd(p: Product, lang: string) {
   const localePath = lang === defaultLocale ? '' : `/${lang}`
   const url = absoluteUrl(`${localePath}/products/${p.slug}`)
   const faqs = getProductFaqs(p)
+  const useCases = getProductUseCases(p)
   const productSchema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -91,11 +92,28 @@ function productJsonLd(p: Product, lang: string) {
     manufacturer: { '@type': 'Organization', name: 'JKBMS Electronic Technology Co.,Ltd' },
     image: p.images.map((img) => absoluteUrl(img)),
     url,
-    additionalProperty: p.specs.map((spec) => ({
-      '@type': 'PropertyValue',
-      name: spec.key,
-      value: spec.value,
-    })),
+    additionalProperty: [
+      ...p.specs.map((spec) => ({
+        '@type': 'PropertyValue',
+        name: spec.key,
+        value: spec.value,
+      })),
+      {
+        '@type': 'PropertyValue',
+        name: 'Applications',
+        value: useCases.applications.join('; '),
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Compatible Systems',
+        value: useCases.compatibleSystems.join('; '),
+      },
+      {
+        '@type': 'PropertyValue',
+        name: 'Selection Notes',
+        value: useCases.selectionNotes.join('; '),
+      },
+    ],
     category: p.categoryLabel,
   }
   const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
@@ -194,7 +212,12 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: productJsonLd(product, lang) }}
       />
-      <ProductDetailClient product={product} lang={lang} relatedProducts={getRelatedProducts(product)} />
+      <ProductDetailClient
+        product={product}
+        lang={lang}
+        relatedProducts={getRelatedProducts(product)}
+        useCases={getProductUseCases(product)}
+      />
     </>
   )
 }

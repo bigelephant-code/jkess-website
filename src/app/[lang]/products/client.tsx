@@ -7,12 +7,6 @@ import type { Product } from '@/lib/products'
 import { StaggerReveal, StaggerItem } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 
-const categoryIcons: Record<string, string> = {
-  bms: '⚡',
-  'battery-kit': '🔋',
-  'high-voltage-kit': '🔌',
-}
-
 const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
   'battery-kit': 'Battery Kit',
@@ -43,14 +37,14 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                       {product.images[0] ? (
                         <Image
                           src={product.images[0]}
-                          alt={product.name}
+                          alt={`${product.name} energy storage product`}
                           fill
                           className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                           sizes="(max-width: 768px) 100vw, 50vw"
                         />
                       ) : (
-                        <div className="flex items-center justify-center h-full text-6xl">
-                          {categoryIcons[product.category] || '📦'}
+                        <div className="flex h-full items-center justify-center text-lg font-semibold text-gray-400">
+                          JKESS
                         </div>
                       )}
                       <span className="absolute top-4 left-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
@@ -67,7 +61,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                       <div className="space-y-1.5 mb-4">
                         {product.features.slice(0, 3).map((feat, i) => (
                           <div key={i} className="flex items-start gap-2">
-                            <span className="text-green-500 text-xs mt-1">●</span>
+                            <span className="mt-1 text-xs text-green-500">•</span>
                             <span className="text-xs text-gray-600">{feat}</span>
                           </div>
                         ))}

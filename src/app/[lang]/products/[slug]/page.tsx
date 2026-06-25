@@ -1,4 +1,4 @@
-import { products, getProductBySlug, getProductFaqs } from '@/lib/products'
+import { products, getProductBySlug, getProductFaqs, getRelatedProducts } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
@@ -194,7 +194,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: productJsonLd(product, lang) }}
       />
-      <ProductDetailClient product={product} lang={lang} />
+      <ProductDetailClient product={product} lang={lang} relatedProducts={getRelatedProducts(product)} />
     </>
   )
 }

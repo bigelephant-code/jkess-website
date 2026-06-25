@@ -354,3 +354,10 @@ export const products: Product[] = [...productCatalog].sort(
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug)
 }
+
+export function getRelatedProducts(product: Product, limit = 3): Product[] {
+  const sameCategory = products.filter((item) => item.slug !== product.slug && item.category === product.category)
+  const otherProducts = products.filter((item) => item.slug !== product.slug && item.category !== product.category)
+
+  return [...sameCategory, ...otherProducts].slice(0, limit)
+}

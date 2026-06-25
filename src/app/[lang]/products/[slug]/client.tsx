@@ -9,7 +9,15 @@ import { getProductFaqs } from '@/lib/products'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 
-export function ProductDetailClient({ product, lang }: { product: Product; lang: string }) {
+export function ProductDetailClient({
+  product,
+  lang,
+  relatedProducts,
+}: {
+  product: Product
+  lang: string
+  relatedProducts: Product[]
+}) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [quantity, setQuantity] = useState(1)
@@ -91,6 +99,7 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                     <button
                       key={i}
                       onClick={() => setSelectedImage(i)}
+                      aria-label={`Show ${product.name} image ${i + 1}`}
                       className={'relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-xl overflow-hidden border-2 bg-[#0d0d0d] transition-all ' + (selectedImage === i ? 'border-green-400 ring-1 ring-green-400/50' : 'border-white/10 hover:border-white/30')}
                     >
                       <Image src={img} alt={product.name + ' view ' + (i + 1)} fill className="object-contain p-1" sizes="80px" />
@@ -124,6 +133,7 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                   <div className="flex flex-wrap gap-2">
                     {product.variants.map((v, i) => (
                       <button key={i} onClick={() => setSelectedVariant(i)}
+                        aria-label={`Select ${v.label}`}
                         className={'px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ' + (selectedVariant === i ? 'border-green-500 bg-green-500/10 text-green-400' : 'border-white/10 text-gray-300 hover:border-white/30')}>
                         {v.label}
                         <span className="ml-1.5 text-xs opacity-60">{v.price}</span>
@@ -138,9 +148,9 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                 <p className="text-sm text-gray-400 mb-2">Quantity:</p>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center border border-white/10 rounded-xl bg-white/5">
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2.5 text-gray-400 hover:text-white"><Minus size={16} /></button>
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity" className="px-4 py-2.5 text-gray-400 hover:text-white"><Minus size={16} /></button>
                     <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">{quantity}</span>
-                    <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2.5 text-gray-400 hover:text-white"><Plus size={16} /></button>
+                    <button onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity" className="px-4 py-2.5 text-gray-400 hover:text-white"><Plus size={16} /></button>
                   </div>
                 </div>
               </div>
@@ -251,6 +261,35 @@ export function ProductDetailClient({ product, lang }: { product: Product; lang:
                 <p className="mt-2 text-xs leading-5 text-gray-500">Ask for configuration support or a quotation.</p>
               </Link>
             </div>
+            {relatedProducts.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-gray-900 font-semibold mb-4">Related Products</h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {relatedProducts.map((item) => (
+                    <Link
+                      key={item.slug}
+                      href={`${prefix}/products/${item.slug}`}
+                      className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-colors hover:border-green-200 hover:bg-green-50"
+                    >
+                      <div className="relative aspect-[4/3] bg-gray-50">
+                        <Image
+                          src={item.images[0] || '/placeholder.svg'}
+                          alt={`${item.name} product image`}
+                          fill
+                          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                      <div className="p-4">
+                        <p className="text-xs font-semibold uppercase tracking-widest text-green-600">{item.categoryLabel}</p>
+                        <h4 className="mt-2 text-sm font-semibold text-gray-900">{item.name}</h4>
+                        <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-500">{item.tagline}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
             {product.detailImages && product.detailImages.length > 0 && (
               <div>
                 <h3 className="text-gray-900 font-semibold mb-4">{t('product.productGallery', 'Product Gallery')}</h3>

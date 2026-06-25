@@ -1,34 +1,7 @@
 import { DownloadsPageClient } from './client'
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl } from '@/lib/site'
-
-const featuredDownloads = [
-  {
-    name: 'JK-B15A24S Active Balancer Protection Board Manual V11.6.1',
-    category: 'BMS Protection Board',
-    url: '/downloads/BMS-Protection-Board/JK-B15A24S-Active-Balancer-Protection-Board-Manual-V11.6.1.pdf',
-  },
-  {
-    name: '6U Lithium Battery Kit Specification 3.2',
-    category: 'Kits',
-    url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf',
-  },
-  {
-    name: 'Roller Lithium Battery Sheet Metal Kit Manual',
-    category: 'Kits',
-    url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf',
-  },
-  {
-    name: 'EMS-E2 Energy Management Unit Specification',
-    category: 'High Voltage',
-    url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf',
-  },
-  {
-    name: 'HV-BC250 Specification (2026.05.20)',
-    category: 'High Voltage',
-    url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf',
-  },
-]
+import { downloadFiles } from '@/lib/downloads'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   return params.then(({ lang }) =>
@@ -62,7 +35,7 @@ function downloadsJsonLd(lang: string) {
     url: pageUrl,
     mainEntity: {
       '@type': 'ItemList',
-      itemListElement: featuredDownloads.map((file, index) => ({
+      itemListElement: downloadFiles.map((file, index) => ({
         '@type': 'ListItem',
         position: index + 1,
         url: absoluteUrl(file.url),

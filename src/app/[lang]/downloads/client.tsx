@@ -6,85 +6,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import type { ComponentType } from 'react'
 import { useTranslate } from '@/i18n/client'
-
-interface FileItem {
-  name: string
-  url: string
-}
-
-interface CategoryGroup {
-  label: string
-  files: FileItem[]
-}
-
-const categories: CategoryGroup[] = [
-  {
-    label: 'BMS Protection Board',
-    files: [
-      { name: 'JK-B15A24S Active Balancer Protection Board Manual V11.6.1', url: '/downloads/BMS-Protection-Board/JK-B15A24S-Active-Balancer-Protection-Board-Manual-V11.6.1.pdf' },
-      { name: 'JK-B2A16S-TH Active Balancer Manual V11.5.1', url: '/downloads/BMS-Protection-Board/JK-B2A16S-TH-Active-Balancer-Manual-V11.5.1.pdf' },
-      { name: 'JK-B2A24S Active Balancer Manual V11.5.1', url: '/downloads/BMS-Protection-Board/JK-B2A24S-Active-Balancer-Manual-V11.5.1.pdf' },
-      { name: 'JK-B2A25S-RP Active Balancer Relay Protection Board Manual V1.4', url: '/downloads/BMS-Protection-Board/JK-B2A25S-RP-Active-Balancer-Relay-Protection-Board-Manual-V1.4.pdf' },
-      { name: 'JK-B2A8S Active Balancer Manual V11.6.2', url: '/downloads/BMS-Protection-Board/JK-B2A8S-Active-Balancer-Manual-V11.6.2.pdf' },
-      { name: 'JK-B4A24S Active Balancer Manual V11.1.1', url: '/downloads/BMS-Protection-Board/JK-B4A24S-Active-Balancer-Manual-V11.1.1.pdf' },
-      { name: 'JK-B5A24S Active Balancer Protection Board Manual V11.0.1', url: '/downloads/BMS-Protection-Board/JK-B5A24S-Active-Balancer-Protection-Board-Manual-V11.0.1.pdf' },
-      { name: 'JK-B5A25S-60P Manual V8.0', url: '/downloads/BMS-Protection-Board/JK-B5A25S-60P-Manual-V8.0.pdf' },
-      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V15.1.2', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V15.1.2.pdf' },
-      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V15.1.3 (Mounting Ears)', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V15.1.3-wiht-Mounting-Ears.pdf' },
-      { name: 'JK-BD4AxxS-6PRG Active Balancer Protection Board Manual V17.1.1', url: '/downloads/BMS-Protection-Board/JK-BD4AxxS-6PRG-Active-Balancer-Protection-Board-Manual-V17.1.1.pdf' },
-      { name: 'JK-WB2A8S-10P-15P-20P-30P Active Balancer Protection Board Manual V1.0', url: '/downloads/BMS-Protection-Board/JK-WB2A8S-10P-15P-20P-30P-Active-Balancer-Protection-Board-Manual-V1.0.pdf' },
-      { name: 'JK-WB2A8S-30P Active Balancer Protection Board Manual V15.0.1', url: '/downloads/BMS-Protection-Board/JK-WB2A8S-30P-Active-Balancer-Protection-Board-Manual-V15.0.1.pdf' },
-      { name: 'JK-WBD6AxxS-15P Active Balancer External Protection Board Specification', url: '/downloads/BMS-Protection-Board/JK-WBD6AxxS-15P-Active-Balancer-External-Protection-Board-Specification.pdf' },
-      { name: 'NY-B2A16S-TH Active Balancer Manual V16.0.2', url: '/downloads/BMS-Protection-Board/NY-B2A16S-TH-Active-Balancer-Manual-V16.0.2.pdf' },
-      { name: 'Active Balancer Manual JK-B2A4S V2.1 (Independent Power)', url: '/downloads/BMS-Protection-Board/Active-Balancer-Manual-JK-B2A4S-V2.1-Independent-Power.pdf' },
-      { name: 'Protection Board Parameter Settings Manual V2.0', url: '/downloads/BMS-Protection-Board/Protection-Board-Parameter-Settings-Manual-V2.0.pdf' },
-      { name: 'Protection Board Parameter Settings Manual V2.2', url: '/downloads/BMS-Protection-Board/Protection-Board-Parameter-Settings-Manual-V2.2.pdf' },
-    ],
-  },
-  {
-    label: 'Balancing Capacitors',
-    files: [
-      { name: 'EK-24S10EB Balancing Capacitor Manual V1.2.1', url: '/downloads/Balancing-Capacitors/EK-24S10EB-Balancing-Capacitor-Manual-V1.2.1.pdf' },
-      { name: 'EK-24S15EB Balancing Capacitor Manual V1.61', url: '/downloads/Balancing-Capacitors/EK-24S15EB-Balancing-Capacitor-Manual-V1.61.pdf' },
-      { name: 'EK-24S4EB Balancing Capacitor Manual V1.0', url: '/downloads/Balancing-Capacitors/EK-24S4EB-Balancing-Capacitor-Manual-V1.0.pdf' },
-      { name: 'EK-24S8EB Balancing Capacitor Manual V1.2.1', url: '/downloads/Balancing-Capacitors/EK-24S8EB-Balancing-Capacitor-Manual-V1.2.1.pdf' },
-      { name: 'NEEY Smart Active Balancer Specification', url: '/downloads/Balancing-Capacitors/NEEY-Smart-Active-Balancer-Specification.pdf' },
-      { name: 'Capacitor Manual', url: '/downloads/Balancing-Capacitors/Capacitor-Manual.pdf' },
-    ],
-  },
-  {
-    label: 'Kits',
-    files: [
-      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf' },
-      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf' },
-    ],
-  },
-  {
-    label: 'Accessory Manuals',
-    files: [
-      { name: '3.2-Inch Display Manual V1.0', url: '/downloads/Accessory-Manuals/3.2-Inch-Display-Manual-V1.0.pdf' },
-      { name: '4.3-Inch Display DW Manual V1.1', url: '/downloads/Accessory-Manuals/4.3-Inch-Display-DW-Manual-V1.1.pdf' },
-      { name: '4.3-Inch Display ZX Manual V2.0 (2024.04.09)', url: '/downloads/Accessory-Manuals/4.3-Inch-Display-ZX-Manual-V2.0-20240409.pdf' },
-      { name: 'JK-BLMK-5A V3.0 Battery Parallel Module Manual', url: '/downloads/Accessory-Manuals/JK-BLMK-5A-V3.0-Battery-Parallel-Module-Manual.pdf' },
-      { name: 'JK-QB2A8S-20P Active Balancer Protection Board Manual V17.0.2', url: '/downloads/Accessory-Manuals/JK-QB2A8S-20P-Active-Balancer-Protection-Board-Manual-V17.0.2.pdf' },
-      { name: 'LCD-2.0-LY Display Manual V1.1', url: '/downloads/Accessory-Manuals/LCD-2.0-LY-Display-Manual-V1.1.pdf' },
-      { name: 'MK-30V-P2.5FDS Product Specification', url: '/downloads/Accessory-Manuals/MK-30V-P2.5FDS-Product-Specification.pdf' },
-      { name: 'P-Link-CR Communication Interface Board Manual V1.0', url: '/downloads/Accessory-Manuals/P-Link-CR-Communication-Interface-Board-Manual-V1.0.pdf' },
-      { name: 'USB-TTL Isolation Module Manual', url: '/downloads/Accessory-Manuals/USB-TTL-Isolation-Module-Manual.pdf' },
-      { name: 'Smart Positioning Terminal ZX03 Zhixun Specification', url: '/downloads/Accessory-Manuals/Smart-Positioning-Terminal-ZX03-Zhixun-Specification.pdf' },
-      { name: 'Voice Alarm Manual V1.0', url: '/downloads/Accessory-Manuals/Voice-Alarm-Manual-V1.0.pdf' },
-    ],
-  },
-  {
-    label: 'High Voltage',
-    files: [
-      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx' },
-      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf' },
-      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx' },
-      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf' },
-    ],
-  },
-]
+import { downloadCategories, getDownloadFileType } from '@/lib/downloads'
 
 const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?: number; className?: string }> }> = {
   'BMS Protection Board': { accent: '#22c55e', icon: Cpu },
@@ -94,17 +16,13 @@ const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?
   'High Voltage': { accent: '#f97316', icon: BatteryCharging },
 }
 
-function getFileType(url: string) {
-  return url.split('.').pop()?.toUpperCase() || 'FILE'
-}
-
 export function DownloadsPageClient() {
   const t = useTranslate()
   const [activeCategory, setActiveCategory] = useState('All')
   const [query, setQuery] = useState('')
   const normalizedQuery = query.trim().toLowerCase()
-  const totalFiles = categories.reduce((sum, cat) => sum + cat.files.length, 0)
-  const visibleCategories = categories
+  const totalFiles = downloadCategories.reduce((sum, cat) => sum + cat.files.length, 0)
+  const visibleCategories = downloadCategories
     .filter((cat) => activeCategory === 'All' || cat.label === activeCategory)
     .map((cat) => ({
       ...cat,
@@ -130,7 +48,7 @@ export function DownloadsPageClient() {
                 <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">Documents</p>
               </div>
               <div className="bg-black/45 px-4 py-4">
-                <p className="text-2xl font-bold text-white">{categories.length}</p>
+                <p className="text-2xl font-bold text-white">{downloadCategories.length}</p>
                 <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">Categories</p>
               </div>
               <div className="bg-black/45 px-4 py-4">
@@ -170,7 +88,7 @@ export function DownloadsPageClient() {
                     <span className="text-xs opacity-70">{totalFiles}</span>
                   </button>
 
-                  {categories.map((cat) => {
+                  {downloadCategories.map((cat) => {
                     const meta = categoryMeta[cat.label]
                     const Icon = meta?.icon || FileText
                     const isActive = activeCategory === cat.label
@@ -254,7 +172,7 @@ export function DownloadsPageClient() {
                                 </div>
                                 <div className="min-w-0">
                                   <p className="truncate text-sm font-semibold text-gray-800 transition-colors group-hover:text-green-700">{file.name}</p>
-                                  <p className="mt-1 text-xs text-gray-400">{getFileType(file.url)} document</p>
+                                  <p className="mt-1 text-xs text-gray-400">{getDownloadFileType(file.url)} document</p>
                                 </div>
                                 <div className="flex items-center gap-3">
                                   <span className="hidden text-xs font-semibold uppercase tracking-widest text-gray-400 group-hover:text-green-600 md:inline">Download</span>

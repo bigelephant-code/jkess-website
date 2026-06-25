@@ -1,6 +1,7 @@
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
-import { absoluteUrl } from '@/lib/site'
+import { absoluteUrl, siteUrl } from '@/lib/site'
 import { news } from '@/lib/news'
+import { jsonLd, organizationId } from '@/lib/structured-data'
 import NewsPageClient from './client'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -26,46 +27,52 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
 function newsJsonLd(lang: string) {
   const pageUrl = absoluteUrl(localizedSeoPath(lang, '/news'))
 
-  return JSON.stringify({
+  return jsonLd({
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'Energy Storage News and Battery Market Insights',
-    description:
-      'JKESS industry intelligence on energy storage, battery management systems, policy, ESS cost trends, and high voltage battery technology.',
-    url: pageUrl,
-    mainEntity: {
-      '@type': 'ItemList',
-      itemListElement: news.map((item, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        url: item.url,
-        item: {
-          '@type': 'Article',
-          headline: item.title,
-          description: item.summary,
-          articleSection: item.category,
-          datePublished: item.date,
-          dateModified: item.date,
-          isPartOf: pageUrl,
-          spatialCoverage: {
-            '@type': 'Place',
-            name: item.region,
-          },
-          author: {
-            '@type': 'Organization',
-            name: item.source,
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'JKESS',
-            logo: {
-              '@type': 'ImageObject',
-              url: absoluteUrl('/images/jkess-logo.png'),
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'Energy Storage News and Battery Market Insights',
+        description:
+          'JKESS industry intelligence on energy storage, battery management systems, policy, ESS cost trends, and high voltage battery technology.',
+        url: pageUrl,
+        publisher: { '@id': organizationId },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: news.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: item.url,
+            item: {
+              '@type': 'Article',
+              headline: item.title,
+              description: item.summary,
+              articleSection: item.category,
+              datePublished: item.date,
+              dateModified: item.date,
+              isPartOf: pageUrl,
+              image: absoluteUrl('/images/news-featured-energy-storage.jpg'),
+              spatialCoverage: {
+                '@type': 'Place',
+                name: item.region,
+              },
+              author: {
+                '@type': 'Organization',
+                name: item.source,
+              },
+              publisher: { '@id': organizationId },
             },
-          },
+          })),
         },
-      })),
-    },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'News', item: pageUrl },
+        ],
+      },
+    ],
   })
 }
 

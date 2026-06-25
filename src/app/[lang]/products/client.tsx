@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react'
 import type { Product } from '@/lib/products'
 import { StaggerReveal, StaggerItem } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
@@ -30,7 +31,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
               {products.map((product) => (
                 <StaggerItem key={product.slug}>
                   <Link
-                    href={`/${lang === 'en' ? '' : lang + '/'}products/${product.slug}`}
+                    href={localizedPath(lang, `/products/${product.slug}`)}
                     className="group block bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1"
                   >
                     <div className="relative aspect-[16/10] bg-gray-100 overflow-hidden">
@@ -79,7 +80,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
       </section>
       <div className="pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide whitespace-nowrap">
+          <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide">
             Comprehensive energy storage solutions engineered for reliability and performance
           </p>
         </div>

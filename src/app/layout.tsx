@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { absoluteUrl, siteUrl } from "@/lib/site";
+import { jkessOrganization, jsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 const inter = Inter({
@@ -35,10 +36,10 @@ export const metadata: Metadata = {
       "JKESS supplies LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
     images: [
       {
-        url: absoluteUrl("/images/jkess-logo.png"),
+        url: absoluteUrl("/images/news-featured-energy-storage.jpg"),
         width: 1200,
         height: 630,
-        alt: "JKESS energy storage systems",
+        alt: "JKESS energy storage systems and battery solutions",
       },
     ],
   },
@@ -47,23 +48,7 @@ export const metadata: Metadata = {
     title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
     description:
       "LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
-    images: [absoluteUrl("/images/jkess-logo.png")],
-  },
-};
-
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "JKBMS Electronic Technology Co.,Ltd",
-  url: siteUrl,
-  logo: absoluteUrl("/images/jkess-logo.png"),
-  description:
-    "JKBMS Electronic Technology Co.,Ltd - your trusted partner in energy storage solutions, from BMS to complete battery systems.",
-  contactPoint: {
-    "@type": "ContactPoint",
-    email: "zhou@jkess.com",
-    contactType: "sales",
-    availableLanguage: ["English", "Chinese"],
+    images: [absoluteUrl("/images/news-featured-energy-storage.jpg")],
   },
 };
 
@@ -80,7 +65,7 @@ const websiteJsonLd = {
 
 const siteJsonLd = {
   "@context": "https://schema.org",
-  "@graph": [orgJsonLd, websiteJsonLd],
+  "@graph": [jkessOrganization, websiteJsonLd],
 };
 
 export default function RootLayout({
@@ -93,7 +78,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd(siteJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-black text-white">

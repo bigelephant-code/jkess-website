@@ -238,6 +238,7 @@ export function ProductDetailClient({
               <ProductUseCasePanel title="Compatible Systems" items={useCases.compatibleSystems} />
               <ProductUseCasePanel title="Selection Notes" items={useCases.selectionNotes} />
             </div>
+            <ProductDecisionPanel product={product} prefix={prefix} />
             {faqs.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-gray-900 font-semibold mb-4">Frequently Asked Questions</h3>
@@ -336,5 +337,59 @@ function ProductUseCasePanel({ title, items }: { title: string; items: string[] 
         ))}
       </div>
     </div>
+  )
+}
+
+function ProductDecisionPanel({ product, prefix }: { product: Product; prefix: string }) {
+  const specSummary = product.specs.slice(0, 3).map((spec) => `${spec.key}: ${spec.value}`)
+
+  return (
+    <div className="mb-8 overflow-hidden rounded-2xl border border-gray-200 bg-gray-950 text-white">
+      <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="bg-gray-950 p-5 md:p-6">
+          <p className="text-xs font-semibold uppercase tracking-widest text-green-300">Buyer Notes</p>
+          <h3 className="mt-3 text-lg font-bold">Configure {product.name} for your project</h3>
+          <p className="mt-3 text-sm leading-6 text-gray-300">
+            Share the target voltage, capacity, inverter or PCS model, installation environment, and expected order quantity so JKESS can confirm the right configuration before production.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {specSummary.map((item) => (
+              <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="grid gap-px bg-white/10 sm:grid-cols-3 lg:grid-cols-1">
+          <DecisionLink href={`${prefix}/contact`} icon={Send} title="Request quote" text="Get configuration support and pricing." />
+          <DecisionLink href={`${prefix}/downloads`} icon={FileText} title="Check documents" text="Review manuals and datasheets." />
+          <DecisionLink href={`${prefix}/news`} icon={Newspaper} title="Read insights" text="Follow BMS and ESS market updates." />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DecisionLink({
+  href,
+  icon: Icon,
+  title,
+  text,
+}: {
+  href: string
+  icon: typeof Send
+  title: string
+  text: string
+}) {
+  return (
+    <Link href={href} className="group flex items-center gap-4 bg-gray-900 p-5 transition-colors hover:bg-gray-800">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-400/10 text-green-300">
+        <Icon size={18} />
+      </div>
+      <div>
+        <p className="text-sm font-semibold text-white">{title}</p>
+        <p className="mt-1 text-xs leading-5 text-gray-400 group-hover:text-gray-300">{text}</p>
+      </div>
+    </Link>
   )
 }

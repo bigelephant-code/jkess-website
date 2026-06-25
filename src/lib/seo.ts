@@ -35,7 +35,7 @@ export function buildPageMetadata({
   title,
   description,
   keywords = [],
-  image = '/images/jkess-logo.png',
+  image = '/images/news-featured-energy-storage.jpg',
 }: PageMetadataOptions): Metadata {
   const canonicalPath = localizedSeoPath(lang, path)
   const imageUrl = absoluteUrl(image)
@@ -44,6 +44,9 @@ export function buildPageMetadata({
     title,
     description,
     keywords,
+    applicationName: 'JKESS',
+    creator: 'JKBMS Electronic Technology Co.,Ltd',
+    publisher: 'JKBMS Electronic Technology Co.,Ltd',
     alternates: {
       canonical: absoluteUrl(canonicalPath),
       languages: pageLanguageAlternates(path),

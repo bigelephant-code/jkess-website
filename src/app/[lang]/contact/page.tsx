@@ -1,5 +1,6 @@
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
+import { jkessOrganization, jsonLd, organizationId } from '@/lib/structured-data'
 import ContactPageClient from './client'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -25,7 +26,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
 function contactJsonLd(lang: string) {
   const contactUrl = absoluteUrl(localizedSeoPath(lang, '/contact'))
 
-  return JSON.stringify({
+  return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
       {
@@ -35,40 +36,15 @@ function contactJsonLd(lang: string) {
           'Contact JKESS for battery kit, BMS, high voltage kit, and commercial energy storage cabinet project inquiries.',
         url: contactUrl,
         mainEntity: {
-          '@id': `${siteUrl}/#organization`,
+          '@id': organizationId,
         },
       },
+      jkessOrganization,
       {
-        '@id': `${siteUrl}/#organization`,
-        '@type': ['Organization', 'LocalBusiness'],
-        name: 'JKBMS Electronic Technology Co.,Ltd',
-        alternateName: 'JKESS',
-        url: siteUrl,
-        logo: absoluteUrl('/images/jkess-logo.png'),
-        image: absoluteUrl('/images/contact-banner-bg.webp'),
-        email: 'zhou@jkess.com',
-        telephone: '+86 131 6282 8868',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Room 1008, Building B4, Yunzhi Science & Technology Park, Guangming Street',
-          addressLocality: 'Shenzhen',
-          addressRegion: 'Guangdong',
-          addressCountry: 'CN',
-        },
-        contactPoint: [
-          {
-            '@type': 'ContactPoint',
-            contactType: 'sales',
-            email: 'zhou@jkess.com',
-            telephone: '+86 131 6282 8868',
-            availableLanguage: ['English', 'Chinese'],
-          },
-          {
-            '@type': 'ContactPoint',
-            contactType: 'customer support',
-            url: 'https://wa.me/8613162828868',
-            availableLanguage: ['English', 'Chinese'],
-          },
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Contact', item: contactUrl },
         ],
       },
     ],

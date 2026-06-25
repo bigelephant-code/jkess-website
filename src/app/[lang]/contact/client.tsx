@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, MessageCircle, MessagesSquare, Send, ArrowRight } from 'lucide-react'
+import { Phone, Mail, MapPin, MessageCircle, MessagesSquare, Send, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
 
@@ -25,6 +25,12 @@ export default function ContactPage() {
     { icon: Phone, label: 'Phone', value: '+86 131 6282 8868', href: 'tel:+8613162828868', color: '#22c55e' },
     { icon: Mail, label: 'Email', value: 'zhou@jkess.com', href: 'mailto:zhou@jkess.com', color: '#5b5bff' },
     { icon: MapPin, label: 'Location', value: 'Building B4, Guangming, Shenzhen', color: '#f58a8a' },
+  ]
+  const inquiryChecklist = [
+    'Product model or application scenario',
+    'Target voltage, capacity, and quantity',
+    'Inverter, PCS, or EMS communication requirements',
+    'Delivery country, timeline, and certification needs',
   ]
 
   return (
@@ -69,13 +75,38 @@ export default function ContactPage() {
             })}
           </div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.35 }}
+            className="mb-8 rounded-2xl border border-green-100 bg-green-50/70 p-5 md:p-6"
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-green-700">Faster Quotation</p>
+                <h2 className="mt-2 text-xl font-bold text-gray-950">Include these details in your inquiry</h2>
+              </div>
+              <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
+                WhatsApp now <ArrowRight size={15} />
+              </a>
+            </div>
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              {inquiryChecklist.map((item) => (
+                <div key={item} className="flex items-start gap-3 rounded-xl bg-white px-4 py-3 text-sm text-gray-700 shadow-sm">
+                  <CheckCircle2 size={17} className="mt-0.5 shrink-0 text-green-600" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
           <div className="grid md:grid-cols-5 gap-8">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}
               className="md:col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 p-8">
               <h2 className="text-xl font-bold text-gray-900 mb-1">{t('contactPage.formTitle')}</h2>
               <p className="text-gray-500 text-sm mb-6">{t('contactPage.formDesc')}</p>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <input type="text" aria-label="Name" placeholder={t('contactPage.namePlaceholder')} required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />

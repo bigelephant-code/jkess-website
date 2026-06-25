@@ -3,6 +3,7 @@ import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
+import { jsonLd, organizationId } from '@/lib/structured-data'
 
 export function generateStaticParams() {
   const params: Array<{ lang: string; slug: string }> = []
@@ -89,7 +90,7 @@ function productJsonLd(p: Product, lang: string) {
     sku: p.slug,
     description: p.description,
     brand: { '@type': 'Brand', name: 'JKESS' },
-    manufacturer: { '@type': 'Organization', name: 'JKBMS Electronic Technology Co.,Ltd' },
+    manufacturer: { '@id': organizationId },
     image: p.images.map((img) => absoluteUrl(img)),
     url,
     additionalProperty: [
@@ -163,7 +164,7 @@ function productJsonLd(p: Product, lang: string) {
     ],
   }
 
-  return JSON.stringify(schema, null, 2)
+  return jsonLd(schema)
 }
 
 export async function generateMetadata(props: { params: Promise<{ lang: string; slug: string }> }) {

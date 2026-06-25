@@ -3,9 +3,11 @@
 import { BatteryCharging, Boxes, Cpu, Download, FileText, Search, Wrench, Zap } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import type { ComponentType } from 'react'
-import { useTranslate } from '@/i18n/client'
+import { useI18n, useTranslate } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 import { downloadCategories, getDownloadFileType } from '@/lib/downloads'
 
 const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?: number; className?: string }> }> = {
@@ -16,8 +18,17 @@ const categoryMeta: Record<string, { accent: string; icon: ComponentType<{ size?
   'High Voltage': { accent: '#f97316', icon: BatteryCharging },
 }
 
+function trackDownload(fileName: string, category: string) {
+  const analytics = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
+  analytics?.('event', 'download_document', {
+    file_name: fileName,
+    file_category: category,
+  })
+}
+
 export function DownloadsPageClient() {
   const t = useTranslate()
+  const { lang } = useI18n()
   const [activeCategory, setActiveCategory] = useState('All')
   const [query, setQuery] = useState('')
   const normalizedQuery = query.trim().toLowerCase()
@@ -109,6 +120,17 @@ export function DownloadsPageClient() {
                   })}
                 </div>
               </div>
+              <div className="mt-4 border border-gray-200 bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Next Step</p>
+                <div className="mt-3 grid gap-2">
+                  <Link href={localizedPath(lang, '/products')} className="rounded-lg bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-green-50 hover:text-green-700">
+                    Browse matching products
+                  </Link>
+                  <Link href={localizedPath(lang, '/contact')} className="rounded-lg bg-gray-950 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
+                    Ask for document support
+                  </Link>
+                </div>
+              </div>
             </aside>
 
             <div className="min-w-0">
@@ -161,6 +183,8 @@ export function DownloadsPageClient() {
                                 key={file.name}
                                 href={file.url}
                                 download
+                                aria-label={`Download ${file.name}`}
+                                onClick={() => trackDownload(file.name, cat.label)}
                                 initial={{ opacity: 0, x: -12 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}

@@ -3,9 +3,11 @@
 import { ArrowUpRight, BarChart3, CalendarDays, Factory, Filter, Globe2, Landmark, Search, TrendingUp, Zap } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import type { ComponentType } from 'react'
-import { useTranslate } from '@/i18n/client'
+import { useI18n, useTranslate } from '@/i18n/client'
+import { localizedPath } from '@/lib/lang'
 
 import { news, type NewsItem } from '@/lib/news'
 
@@ -35,6 +37,7 @@ function formatDate(dateText: string) {
 
 export default function NewsPage() {
   const t = useTranslate()
+  const { lang } = useI18n()
   const [activeCategory, setActiveCategory] = useState<(typeof categoryOptions)[number]>('All')
   const [activeYear, setActiveYear] = useState<(typeof yearOptions)[number]>('All')
   const [query, setQuery] = useState('')
@@ -203,7 +206,7 @@ export default function NewsPage() {
               </div>
             </div>
             <div className="relative min-h-72 border-t border-gray-200 bg-gray-950 lg:border-l lg:border-t-0">
-              <Image src="/images/news-featured-energy-storage.jpg" alt="" fill className="object-cover opacity-85 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 440px, 100vw" />
+              <Image src="/images/news-featured-energy-storage.jpg" alt="Battery energy storage system cabinets for energy storage industry news" fill className="object-cover opacity-85 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 440px, 100vw" />
               <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/50 to-black/85" />
               <div className="absolute bottom-5 left-5 right-5 border border-white/10 bg-black/40 p-4 backdrop-blur-sm">
                 <p className="text-xs uppercase tracking-widest text-gray-400">Source</p>
@@ -269,6 +272,20 @@ export default function NewsPage() {
                       </button>
                     ))}
                   </div>
+                </div>
+              </div>
+              <div className="mt-4 border border-gray-200 bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Apply the Insight</p>
+                <div className="mt-3 grid gap-2">
+                  <Link href={localizedPath(lang, '/products/high-voltage-kit')} className="rounded-lg bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700">
+                    High Voltage Kit
+                  </Link>
+                  <Link href={localizedPath(lang, '/products/tness-ci-ess-cabinet')} className="rounded-lg bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700">
+                    C&I ESS Cabinet
+                  </Link>
+                  <Link href={localizedPath(lang, '/contact')} className="rounded-lg bg-gray-950 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
+                    Discuss a project
+                  </Link>
                 </div>
               </div>
             </aside>

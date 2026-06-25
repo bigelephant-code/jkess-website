@@ -1,7 +1,8 @@
 import { DownloadsPageClient } from './client'
 import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
-import { absoluteUrl } from '@/lib/site'
+import { absoluteUrl, siteUrl } from '@/lib/site'
 import { downloadFiles } from '@/lib/downloads'
+import { jsonLd, organizationId } from '@/lib/structured-data'
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   return params.then(({ lang }) =>
@@ -26,35 +27,43 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
 function downloadsJsonLd(lang: string) {
   const pageUrl = absoluteUrl(localizedSeoPath(lang, '/downloads'))
 
-  return JSON.stringify({
+  return jsonLd({
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'JKESS Technical Library',
-    description:
-      'Download JKESS technical documents, datasheets, manuals, and product resources for battery kits, BMS, and energy storage systems.',
-    url: pageUrl,
-    mainEntity: {
-      '@type': 'ItemList',
-      itemListElement: downloadFiles.map((file, index) => ({
-        '@type': 'ListItem',
-        position: index + 1,
-        url: absoluteUrl(file.url),
-        item: {
-          '@type': 'DigitalDocument',
-          name: file.name,
-          url: absoluteUrl(file.url),
-          fileFormat: file.url.endsWith('.docx')
-            ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            : 'application/pdf',
-          about: file.category,
-          publisher: {
-            '@type': 'Organization',
-            name: 'JKESS',
-            logo: absoluteUrl('/images/jkess-logo.png'),
-          },
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'JKESS Technical Library',
+        description:
+          'Download JKESS technical documents, datasheets, manuals, and product resources for battery kits, BMS, and energy storage systems.',
+        url: pageUrl,
+        publisher: { '@id': organizationId },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: downloadFiles.map((file, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: absoluteUrl(file.url),
+            item: {
+              '@type': 'DigitalDocument',
+              name: file.name,
+              url: absoluteUrl(file.url),
+              fileFormat: file.url.endsWith('.docx')
+                ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                : 'application/pdf',
+              about: file.category,
+              publisher: { '@id': organizationId },
+            },
+          })),
         },
-      })),
-    },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Downloads', item: pageUrl },
+        ],
+      },
+    ],
   })
 }
 

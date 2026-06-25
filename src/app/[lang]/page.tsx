@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 import StatsSection from "@/components/StatsSection";
 import Timeline from "@/components/Timeline";
-import CertTiltBoard from "@/components/CertTiltBoard";
 import SolutionsSection from "@/components/SolutionsSection";
 import TechLines from "@/components/TechLines";
 import { localizedPath } from "@/lib/lang";
@@ -17,6 +16,9 @@ const ReviewsWall = dynamic(() => import("@/components/ReviewsWall"), {
   loading: () => null,
 });
 const BrandLogos = dynamic(() => import("@/components/BrandLogos"), {
+  loading: () => null,
+});
+const CertTiltBoard = dynamic(() => import("@/components/CertTiltBoard"), {
   loading: () => null,
 });
 const ContactSection = dynamic(() => import("@/components/ContactSection"), {

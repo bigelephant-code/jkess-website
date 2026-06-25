@@ -6,6 +6,7 @@ import CertTiltBoard from "@/components/CertTiltBoard";
 import SolutionsSection from "@/components/SolutionsSection";
 import TechLines from "@/components/TechLines";
 import { localizedPath } from "@/lib/lang";
+import { buildPageMetadata } from "@/lib/seo";
 import type { LangCode } from "@/i18n/config";
 
 // Lazy-load below-fold components
@@ -98,6 +99,27 @@ const siteContent = {
     contactEmail: "zhou@jkess.com",
   },
 };
+
+export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  return params.then(({ lang }) =>
+    buildPageMetadata({
+      lang,
+      path: "/",
+      title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+      description:
+        "JKESS supplies LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions for residential, industrial, and backup power projects.",
+      keywords: [
+        "JKESS",
+        "JKBMS",
+        "LiFePO4 battery kit",
+        "high voltage BMS",
+        "commercial energy storage system",
+        "battery storage cabinet",
+      ],
+      image: "/images/mountain-bg.png",
+    })
+  );
+}
 
 export default async function Home(props: { params: Promise<{ lang: string }> }) {
   const { lang } = await props.params;

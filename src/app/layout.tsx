@@ -11,7 +11,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "JKESS - Powering a Cleaner Future",
+  title: {
+    default: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+    template: "%s",
+  },
   description:
     "JKBMS Electronic Technology Co.,Ltd - your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
   keywords: [
@@ -23,6 +26,29 @@ export const metadata: Metadata = {
     "high voltage kit",
     "JKBMS",
   ],
+  openGraph: {
+    type: "website",
+    siteName: "JKESS",
+    url: siteUrl,
+    title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+    description:
+      "JKESS supplies LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
+    images: [
+      {
+        url: absoluteUrl("/images/jkess-logo.png"),
+        width: 1200,
+        height: 630,
+        alt: "JKESS energy storage systems",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+    description:
+      "LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
+    images: [absoluteUrl("/images/jkess-logo.png")],
+  },
 };
 
 const orgJsonLd = {
@@ -37,7 +63,24 @@ const orgJsonLd = {
     "@type": "ContactPoint",
     email: "zhou@jkess.com",
     contactType: "sales",
+    availableLanguage: ["English", "Chinese"],
   },
+};
+
+const websiteJsonLd = {
+  "@type": "WebSite",
+  name: "JKESS",
+  url: siteUrl,
+  publisher: {
+    "@type": "Organization",
+    name: "JKBMS Electronic Technology Co.,Ltd",
+    logo: absoluteUrl("/images/jkess-logo.png"),
+  },
+};
+
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [orgJsonLd, websiteJsonLd],
 };
 
 export default function RootLayout({
@@ -50,7 +93,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-black text-white">

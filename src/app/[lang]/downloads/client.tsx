@@ -152,6 +152,7 @@ export function DownloadsPageClient() {
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    aria-label="Search technical documents"
                     placeholder="Search manuals"
                     className="w-full border border-gray-200 bg-gray-50 py-3 pl-9 pr-3 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-green-500 focus:bg-white"
                   />
@@ -160,6 +161,7 @@ export function DownloadsPageClient() {
                 <div className="mt-5 space-y-1">
                   <button
                     onClick={() => setActiveCategory('All')}
+                    aria-label="Show all technical documents"
                     className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm transition-colors ${
                       activeCategory === 'All' ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
@@ -176,6 +178,7 @@ export function DownloadsPageClient() {
                       <button
                         key={cat.label}
                         onClick={() => setActiveCategory(cat.label)}
+                        aria-label={`Show ${cat.label} documents`}
                         className={`group flex w-full items-center gap-3 px-3 py-3 text-left text-sm transition-colors ${
                           isActive ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                         }`}

@@ -76,17 +76,17 @@ export default function ContactPage() {
               <p className="text-gray-500 text-sm mb-6">{t('contactPage.formDesc')}</p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <input type="text" placeholder={t('contactPage.namePlaceholder')} required value={formData.name}
+                  <input type="text" aria-label="Name" placeholder={t('contactPage.namePlaceholder')} required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
-                  <input type="text" placeholder={t('contactPage.companyPlaceholder')} value={formData.company}
+                  <input type="text" aria-label="Company" placeholder={t('contactPage.companyPlaceholder')} value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
                 </div>
-                <input type="email" placeholder={t('contactPage.emailPlaceholder')} required value={formData.email}
+                <input type="email" aria-label="Email address" placeholder={t('contactPage.emailPlaceholder')} required value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
-                <textarea placeholder={t('contactPage.messagePlaceholder')} required rows={5} value={formData.message}
+                <textarea aria-label="Message" placeholder={t('contactPage.messagePlaceholder')} required rows={5} value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors resize-none" />
                 <button type="submit" className="w-full inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-semibold px-6 py-3 rounded-lg transition-all text-sm">

@@ -3,42 +3,66 @@
 import { useEffect, useRef } from 'react'
 import { worldCountryRings } from '@/data/world'
 
-const HUBS = [
-  { name: 'China',   lat: 30.5, lng: 104.0, color: '#22c55e', label: 'China' },
-  { name: 'Poland',  lat: 52.0, lng: 21.0, color: '#f58a8a', label: 'Poland' },
-  { name: 'USA',     lat: 40.7, lng: -74.0, color: '#5b5bff', label: 'USA' },
-  { name: 'Brazil',  lat: -15.8, lng: -47.9, color: '#fbbf24', label: 'Brazil' },
+type Target = [number, number]
+
+interface Hub {
+  name: string
+  lat: number
+  lng: number
+  color: string
+  label: string
+  labelDx?: number
+  labelDy?: number
+  targets: Target[]
+}
+
+const TARGETS_CHENGDU: Target[] = [
+  [27.7, 85.3], [23.8, 90.4], [16.8, 96.2], [13.8, 100.5],
+  [28.6, 77.2], [21.0, 105.9], [17.9, 102.6], [3.1, 101.7],
+  [24.9, 67.0], [25.2, 55.3],
 ]
 
-// Real city coordinates - each point is 100% on land
-const TARGETS_CN = [
-  // Asia Pacific
-  [35.7,139.7],[37.6,127.0],[13.8,100.5],[1.4,103.8],[-6.2,106.8],[14.6,121.0],[21.0,105.9],[3.1,101.7],[19.1,72.9],[25.2,55.3],
-  // Africa
-  [-1.3,36.8],[6.5,3.4],[30.0,31.2],[-33.9,18.4],[9.0,38.7],[-26.2,28.0],[-18.9,47.5],[14.7,-17.5],[5.6,-0.2],[-34.0,151.0],
-  // Middle East / South Asia
-  [-33.9,151.2],[24.5,54.4],[28.6,77.2],[13.7,100.6],[22.3,114.2],[31.2,121.5]
+const TARGETS_SHANDONG: Target[] = [
+  [37.6, 127.0], [35.7, 139.7], [34.7, 135.5], [43.1, 131.9],
+  [25.0, 121.5], [47.9, 106.9], [39.0, 125.8], [22.3, 114.2],
+  [31.2, 121.5], [37.5, 126.7],
 ]
-const TARGETS_FI = [
-  // Europe
-  [52.5,13.4],[48.9,2.4],[51.5,-0.1],[40.4,-3.7],[41.9,12.5],[48.2,16.4],[50.1,14.4],[52.2,21.0],[59.3,18.1],[59.9,10.8],
-  [60.2,24.9],[55.7,12.6],[50.8,4.4],[52.4,4.9],[47.4,8.5],[53.3,-6.2],[52.4,-1.8],[51.1,-1.4],[44.8,20.5],[46.1,14.8],
-  [55.9,-3.2],[57.7,-4.1],[53.1,-0.1],[48.7,2.4],[50.9,4.4],[55.9,-4.4]
+
+const TARGETS_SHENZHEN: Target[] = [
+  [22.3, 114.2], [14.6, 121.0], [10.8, 106.7], [11.6, 104.9],
+  [1.4, 103.8], [-6.2, 106.8], [13.8, 100.5], [25.0, 121.5],
+  [3.1, 101.7], [-8.7, 115.2],
 ]
-const TARGETS_US = [
-  // North America
-  [49.3,-123.1],[45.5,-73.6],[40.7,-74.0],[43.7,-79.4],[51.0,-114.1],[47.6,-122.3],[37.8,-122.4],[34.1,-118.2],[41.9,-87.6],[29.8,-95.4],
-  [25.8,-80.2],[39.1,-84.5],[39.7,-105.0],[38.9,-77.0],[42.4,-71.0],[32.8,-96.8],[33.4,-112.1],[45.5,-122.7],[35.1,-106.6],[38.6,-121.5],
-  // Central America + Caribbean
-  [19.4,-99.1],[14.6,-90.5],[9.4,-84.1],[8.9,-79.5],[18.5,-69.9],[18.0,-66.9]
+
+const TARGETS_PL: Target[] = [
+  [52.5, 13.4], [48.9, 2.4], [51.5, -0.1], [40.4, -3.7], [41.9, 12.5],
+  [48.2, 16.4], [50.1, 14.4], [52.2, 21.0], [59.3, 18.1], [59.9, 10.8],
+  [60.2, 24.9], [55.7, 12.6], [50.8, 4.4], [52.4, 4.9], [47.4, 8.5],
+  [53.3, -6.2], [44.8, 20.5], [46.1, 14.8],
 ]
-const TARGETS_BR = [
-  // South America
-  [-23.6,-46.6],[-22.9,-43.2],[-15.8,-47.9],[-12.9,-38.5],[-8.1,-34.9],[-3.1,-60.0],[-1.4,-48.5],[3.7,-67.3],[4.6,-74.1],[6.2,-75.6],
-  [10.5,-66.9],[-16.5,-68.1],[-33.5,-70.7],[-34.6,-58.4],[-32.9,-71.3],[-25.3,-57.7],[-23.6,-58.4],[-27.5,-59.0],[-31.4,-64.2],[-36.9,-73.0],
-  [-38.7,-72.6],[-41.5,-73.1],[-46.4,-67.9],[-54.8,-68.3],[-51.6,-69.2],[-53.8,-67.7]
+
+const TARGETS_US: Target[] = [
+  [49.3, -123.1], [45.5, -73.6], [40.7, -74.0], [43.7, -79.4], [51.0, -114.1],
+  [47.6, -122.3], [37.8, -122.4], [34.1, -118.2], [41.9, -87.6], [29.8, -95.4],
+  [25.8, -80.2], [39.1, -84.5], [39.7, -105.0], [38.9, -77.0], [42.4, -71.0],
+  [19.4, -99.1], [14.6, -90.5], [9.4, -84.1], [18.5, -69.9],
 ]
-const ALL_TARGETS = [...TARGETS_CN, ...TARGETS_FI, ...TARGETS_US, ...TARGETS_BR]
+
+const TARGETS_BR: Target[] = [
+  [-23.6, -46.6], [-22.9, -43.2], [-15.8, -47.9], [-12.9, -38.5], [-8.1, -34.9],
+  [-3.1, -60.0], [-1.4, -48.5], [4.6, -74.1], [6.2, -75.6], [10.5, -66.9],
+  [-16.5, -68.1], [-33.5, -70.7], [-34.6, -58.4], [-32.9, -71.3], [-25.3, -57.7],
+  [-36.9, -73.0],
+]
+
+const HUBS = [
+  { name: 'Chengdu', lat: 30.57, lng: 104.07, color: '#22c55e', label: 'Chengdu', labelDx: -24, labelDy: 22, targets: TARGETS_CHENGDU },
+  { name: 'Shandong', lat: 36.65, lng: 117.12, color: '#38bdf8', label: 'Shandong', labelDx: 30, labelDy: -10, targets: TARGETS_SHANDONG },
+  { name: 'Shenzhen', lat: 22.54, lng: 114.06, color: '#f97316', label: 'Shenzhen', labelDx: 34, labelDy: 20, targets: TARGETS_SHENZHEN },
+  { name: 'Poland', lat: 52.0, lng: 21.0, color: '#f58a8a', label: 'Poland', targets: TARGETS_PL },
+  { name: 'USA', lat: 40.7, lng: -74.0, color: '#5b5bff', label: 'USA', targets: TARGETS_US },
+  { name: 'Brazil', lat: -15.8, lng: -47.9, color: '#fbbf24', label: 'Brazil', targets: TARGETS_BR },
+] satisfies Hub[]
 
 interface Shot { hubIdx: number; targetIdx: number; progress: number; speed: number }
 
@@ -67,10 +91,9 @@ export default function DynamicGlobe() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     const cvs = canvas, c = ctx
-    let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0, globeRot = 0
+    let w = 0, h = 0, cx = 0, cy = 0, R = 0, animId = 0, frame = 0, globeRot = -105
     const shots: Shot[] = []
     let shotCounter = 0
-    const colors = ['#22c55e', '#f58a8a', '#5b5bff', '#fbbf24']
 
     function resize() {
       const p = cvs.parentElement
@@ -198,31 +221,31 @@ export default function DynamicGlobe() {
       // ── Connection arcs (dotted glow lines between hubs and targets) ──
       // Show some static arcs to demonstrate global coverage
       if (frame % 2 === 0) {
-        // Draw a few arcs
-        ;[[0,3],[0,8],[0,15],[1,1],[1,5],[1,10],[2,2],[2,6],[2,12],[3,3],[3,8],[3,13]].forEach(([hi, ti]) => {
-          const hub = HUBS[hi]
-          const target = ALL_TARGETS[hi * 26 + ti] || ALL_TARGETS[0]
-          const s = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
-          const e = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
-          if (!visible(s) || !visible(e)) return
-          const mx = (s.x + e.x) / 2
-          const my = (s.y + e.y) / 2 - R * 0.25
-          c.beginPath()
-          c.moveTo(s.x, s.y)
-          c.quadraticCurveTo(mx, my, e.x, e.y)
-          c.strokeStyle = colors[hi]
-          c.globalAlpha = 0.08
-          c.lineWidth = 1
-          c.stroke()
-          c.globalAlpha = 1
+        HUBS.forEach((hub) => {
+          const staticTargetIndexes = [1, Math.floor(hub.targets.length / 2), hub.targets.length - 2]
+          staticTargetIndexes.forEach((ti) => {
+            const target = hub.targets[Math.max(0, Math.min(ti, hub.targets.length - 1))]
+            const s = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
+            const e = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
+            if (!visible(s) || !visible(e)) return
+            const mx = (s.x + e.x) / 2
+            const my = (s.y + e.y) / 2 - R * 0.25
+            c.beginPath()
+            c.moveTo(s.x, s.y)
+            c.quadraticCurveTo(mx, my, e.x, e.y)
+            c.strokeStyle = hub.color
+            c.globalAlpha = hub.name === 'Chengdu' || hub.name === 'Shandong' || hub.name === 'Shenzhen' ? 0.14 : 0.08
+            c.lineWidth = hub.name === 'Chengdu' || hub.name === 'Shandong' || hub.name === 'Shenzhen' ? 1.2 : 1
+            c.stroke()
+            c.globalAlpha = 1
+          })
         })
       }
 
       // ── Spawn animated shots (fewer, fixed target per shot) ──
-      if (frame % 25 === 0) {
-        const hubIdx = shotCounter % 4
-        const maxT = 26
-        const targetIdx = hubIdx * 26 + Math.floor(Math.random() * Math.min(maxT, Math.floor(ALL_TARGETS.length / 4)))
+      if (frame % 14 === 0) {
+        const hubIdx = shotCounter % HUBS.length
+        const targetIdx = Math.floor(Math.random() * HUBS[hubIdx].targets.length)
         shots.push({ hubIdx, targetIdx, progress: 0, speed: 0.008 + Math.random() * 0.006 })
         shotCounter++
       }
@@ -232,14 +255,14 @@ export default function DynamicGlobe() {
         s.progress += s.speed
         if (s.progress >= 1) { shots.splice(si, 1); continue }
         const hub = HUBS[s.hubIdx]
-        const target = ALL_TARGETS[Math.min(s.targetIdx, ALL_TARGETS.length - 1)]
+        const target = hub.targets[s.targetIdx % hub.targets.length]
         if (!target) continue
         const start = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
         const end = toScreen(proj(target[0], target[1], globeRot), cx, cy, R)
         if (!visible(start) || !visible(end)) continue
         const mx = (start.x + end.x) / 2
         const my = (start.y + end.y) / 2 - R * 0.3
-        const clr = colors[s.hubIdx]
+        const clr = hub.color
         const t = s.progress
         const dx = (1-t)*(1-t)*start.x + 2*(1-t)*t*mx + t*t*end.x
         const dy = (1-t)*(1-t)*start.y + 2*(1-t)*t*my + t*t*end.y
@@ -271,21 +294,23 @@ export default function DynamicGlobe() {
 
       // ── Hub dots + labels ──
       const pulse = (Math.sin(frame * 0.05) + 1) / 2
-      HUBS.forEach((hub, i) => {
+      HUBS.forEach((hub) => {
         const p = toScreen(proj(hub.lat, hub.lng, globeRot), cx, cy, R)
         if (!visible(p)) return
         // Pulse ring
         c.beginPath(); c.arc(p.x, p.y, 5 + pulse * 7, 0, Math.PI * 2)
-        c.fillStyle = colors[i]
+        c.fillStyle = hub.color
         c.globalAlpha = 0.2 + pulse * 0.15; c.fill(); c.globalAlpha = 1
         // Solid dot
-        c.beginPath(); c.arc(p.x, p.y, 2.5, 0, Math.PI * 2)
+        c.beginPath(); c.arc(p.x, p.y, 3.2, 0, Math.PI * 2)
+        c.fillStyle = hub.color; c.fill()
+        c.beginPath(); c.arc(p.x, p.y, 1.3, 0, Math.PI * 2)
         c.fillStyle = '#ffffff'; c.fill()
         // Label
-        c.fillStyle = '#ffffff'
+        c.fillStyle = hub.color
         c.font = 'bold 10px sans-serif'
         c.textAlign = 'center'
-        c.fillText(hub.label, p.x, p.y + 14)
+        c.fillText(hub.label, p.x + (hub.labelDx ?? 0), p.y + (hub.labelDy ?? 14))
       })
 
       frame++

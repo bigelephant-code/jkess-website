@@ -41,23 +41,32 @@ function productsCollectionJsonLd(lang: string) {
         publisher: { '@id': organizationId },
         mainEntity: {
           '@type': 'ItemList',
-          itemListElement: products.map((product, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            url: absoluteUrl(localizedSeoPath(lang, `/products/${product.slug}`)),
-            item: {
-              '@type': 'Product',
+          numberOfItems: products.length,
+          itemListElement: products.map((product, index) => {
+            const productUrl = absoluteUrl(
+              localizedSeoPath(lang, `/products/${product.slug}`)
+            )
+
+            return {
+              '@type': 'ListItem',
+              position: index + 1,
               name: product.name,
-              description: product.description,
-              image: product.images[0] ? absoluteUrl(product.images[0]) : undefined,
-              brand: {
-                '@type': 'Brand',
-                name: 'JKESS',
+              url: productUrl,
+              item: {
+                '@type': 'WebPage',
+                '@id': productUrl,
+                name: product.name,
+                description: product.description,
+                url: productUrl,
+                primaryImageOfPage: product.images[0]
+                  ? {
+                      '@type': 'ImageObject',
+                      contentUrl: absoluteUrl(product.images[0]),
+                    }
+                  : undefined,
               },
-              manufacturer: { '@id': organizationId },
-              category: product.categoryLabel,
-            },
-          })),
+            }
+          }),
         },
       },
       {

@@ -7,10 +7,7 @@ export const dynamic = 'force-dynamic'
 function secretsMatch(received: string, expected: string) {
   const receivedBytes = Buffer.from(received)
   const expectedBytes = Buffer.from(expected)
-  return (
-    receivedBytes.length === expectedBytes.length &&
-    timingSafeEqual(receivedBytes, expectedBytes)
-  )
+  return receivedBytes.length === expectedBytes.length && timingSafeEqual(receivedBytes, expectedBytes)
 }
 
 export async function POST(request: Request) {
@@ -40,6 +37,7 @@ export async function POST(request: Request) {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
+      'User-Agent': 'JKESS-Website/1.0',
     },
     body: JSON.stringify({
       from,

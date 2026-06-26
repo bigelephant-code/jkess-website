@@ -4,8 +4,16 @@ import { products } from '@/lib/products'
 import { absoluteUrl } from '@/lib/site'
 import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
-const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact']
-const siteLastModified = new Date('2026-06-25')
+const policyPaths = [
+  '/shipping-policy',
+  '/returns-refunds',
+  '/warranty',
+  '/terms-of-sale',
+  '/safety',
+  '/privacy-policy',
+]
+const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
+const siteLastModified = new Date('2026-06-27')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],
@@ -28,11 +36,13 @@ function staticPriority(path: string) {
   if (path === '/products') return 0.9
   if (path === '/contact') return 0.85
   if (path === '/downloads' || path === '/news') return 0.75
+  if (policyPaths.includes(path)) return 0.5
   return 0.7
 }
 
 function staticChangeFrequency(path: string): MetadataRoute.Sitemap[number]['changeFrequency'] {
   if (path === '' || path === '/products' || path === '/news') return 'weekly'
+  if (policyPaths.includes(path)) return 'yearly'
   return 'monthly'
 }
 

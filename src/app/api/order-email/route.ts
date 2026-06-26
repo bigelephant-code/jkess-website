@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getProductBySlug } from '@/lib/products'
 import { sendPaidOrderEmail } from '@/lib/paid-order-email'
+import { getStoredOrder, savePaidOrder, type StoredOrderRecord } from '@/lib/order-store'
 import { verifyCompletedPayPalOrder } from '@/lib/paypal-server'
 
 export const runtime = 'nodejs'
@@ -52,32 +53,102 @@ export async function POST(request: Request) {
       }
 
       return {
+        slug,
         name: product.name,
         variant: variant.label,
         quantity,
+        unitPriceCents,
         lineTotalCents: unitPriceCents * quantity,
       }
     })
 
     const expectedTotalCents = items.reduce((sum, item) => sum + item.lineTotalCents, 0)
     const verified = await verifyCompletedPayPalOrder({ paypalOrderId, orderNumber, expectedTotalCents })
+    const purchaseUnit = verified.order.purchase_units?.[0]
+    const paypalAddress = purchaseUnit?.shipping?.address
+    const existing = await getStoredOrder(orderNumber).catch(() => null)
+    const now = new Date().toISOString()
+    const payerName = [
+      clean(verified.order.payer?.name?.given_name, 100),
+      clean(verified.order.payer?.name?.surname, 100),
+    ].filter(Boolean).join(' ')
 
-    await sendPaidOrderEmail({
+    const baseRecord: StoredOrderRecord = {
       orderNumber,
       paypalOrderId: verified.paypalOrderId,
       paypalCaptureId: verified.paypalCaptureId,
-      payerEmail: verified.payerEmail,
+      paypalEventId: existing?.paypalEventId || '',
+      status: 'COMPLETED',
+      amount: (expectedTotalCents / 100).toFixed(2),
+      currency: 'USD',
+      payerEmail: verified.payerEmail.toLowerCase(),
+      payerName,
       customer,
+      shippingAddress: existing?.shippingAddress || {
+        addressLine1: clean(paypalAddress?.address_line_1, 300),
+        addressLine2: clean(paypalAddress?.address_line_2, 300),
+        city: clean(paypalAddress?.admin_area_2, 160),
+        state: clean(paypalAddress?.admin_area_1, 160),
+        postalCode: clean(paypalAddress?.postal_code, 40),
+        countryCode: clean(paypalAddress?.country_code, 8),
+      },
       items: items.map((item) => ({
-        name: item.name,
-        variant: item.variant,
+        name: `${item.name} - ${item.variant}`,
+        sku: `${item.slug}-${item.variant}`.slice(0, 180),
         quantity: item.quantity,
-        lineTotal: item.lineTotalCents / 100,
+        unitAmount: (item.unitPriceCents / 100).toFixed(2),
+        currency: 'USD',
       })),
-      total: expectedTotalCents / 100,
+      paypalCustomId: clean(purchaseUnit?.custom_id, 500),
+      paypalDescription: clean(purchaseUnit?.description, 500),
+      internalEmailStatus: 'pending',
+      customerEmailStatus: existing?.customerEmailStatus || 'pending',
+      source: existing?.source || 'browser-verified',
+      createdAt: existing?.createdAt || clean(verified.order.create_time, 80) || now,
+      paidAt:
+        clean(verified.capture.update_time, 80) ||
+        clean(verified.capture.create_time, 80) ||
+        now,
+      updatedAt: now,
+    }
+
+    await savePaidOrder(baseRecord).catch((error) => {
+      console.error('Unable to save the pending paid order record:', error)
     })
 
-    return NextResponse.json({ sent: true, verified: true })
+    try {
+      await sendPaidOrderEmail({
+        orderNumber,
+        paypalOrderId: verified.paypalOrderId,
+        paypalCaptureId: verified.paypalCaptureId,
+        payerEmail: verified.payerEmail,
+        customer,
+        items: items.map((item) => ({
+          name: item.name,
+          variant: item.variant,
+          quantity: item.quantity,
+          lineTotal: item.lineTotalCents / 100,
+        })),
+        total: expectedTotalCents / 100,
+      })
+    } catch (error) {
+      await savePaidOrder({
+        ...baseRecord,
+        internalEmailStatus: 'failed',
+        updatedAt: new Date().toISOString(),
+      }).catch(() => undefined)
+      throw error
+    }
+
+    await savePaidOrder({
+      ...baseRecord,
+      internalEmailStatus: 'sent',
+      updatedAt: new Date().toISOString(),
+    }).catch((error) => {
+      console.error('Unable to mark the order email as sent:', error)
+    })
+
+    return NextResponse.json({ sent: true, verified: true, stored: true })
   } catch (error) {
     console.error('Order verification or email failed:', error)
     return NextResponse.json({ error: 'Unable to verify and email this order.' }, { status: 409 })

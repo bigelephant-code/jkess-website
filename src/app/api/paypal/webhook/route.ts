@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
 import {
   acquireWebhookLock,
   getStoredOrder,
@@ -194,7 +195,11 @@ export async function POST(request: Request) {
       internalEmailStatus: existing?.internalEmailStatus || 'pending',
       customerEmailStatus: existing?.customerEmailStatus || 'pending',
       source: 'paypal-webhook',
-      createdAt: existing?.createdAt || clean(order.create_time, 80) || clean(event.create_time, 80) || now,
+      createdAt:
+        existing?.createdAt ||
+        clean(order.create_time, 80) ||
+        clean(event.create_time, 80) ||
+        now,
       paidAt:
         clean(capture.update_time, 80) ||
         clean(capture.create_time, 80) ||
@@ -205,9 +210,20 @@ export async function POST(request: Request) {
     }
 
     await savePaidOrder(record)
+    const delivery = await deliverPaidOrderEmails(orderNumber)
+    if (delivery.processing) {
+      throw new Error('Order email delivery is already in progress.')
+    }
+
     await markWebhookProcessed(eventId)
 
-    return NextResponse.json({ received: true, stored: true, orderNumber })
+    return NextResponse.json({
+      received: true,
+      stored: true,
+      orderNumber,
+      internalEmailStatus: delivery.internalEmailStatus,
+      customerEmailStatus: delivery.customerEmailStatus,
+    })
   } catch (error) {
     console.error('PayPal webhook processing failed:', error)
     await releaseWebhookLock(eventId).catch(() => undefined)

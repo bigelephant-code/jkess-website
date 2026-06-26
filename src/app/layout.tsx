@@ -1,39 +1,40 @@
-import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import { absoluteUrl, siteUrl } from "@/lib/site";
-import { jkessOrganization, jsonLd } from "@/lib/structured-data";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import { absoluteUrl, siteUrl } from '@/lib/site'
+import { companyProfile } from '@/lib/company-profile'
+import { jkessOrganization, jsonLd } from '@/lib/structured-data'
+import './globals.css'
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
+  variable: '--font-inter',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "JKESS | BMS, Battery Kits and Energy Storage Systems",
-    template: "%s",
+    default: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
+    template: '%s',
   },
   description:
-    "JKBMS Electronic Technology Co.,Ltd - your trusted partner in energy storage solutions, from BMS to complete battery systems. Serving 30+ countries worldwide.",
+    'JKBMS Electronic Technology Co.,Ltd develops BMS control hardware, battery enclosure kits, high-voltage battery management systems, and configured commercial energy storage solutions for customers across 200+ countries and regions.',
   keywords: [
-    "JKESS",
-    "BMS",
-    "battery storage",
-    "energy storage",
-    "battery kit",
-    "high voltage kit",
-    "JKBMS",
+    'JKESS',
+    'BMS',
+    'battery storage',
+    'energy storage',
+    'battery enclosure kit',
+    'high voltage BMS',
+    'JKBMS',
   ],
-  manifest: "/manifest.webmanifest",
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   robots: {
     index: true,
@@ -41,60 +42,60 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
   openGraph: {
-    type: "website",
-    siteName: "JKESS",
+    type: 'website',
+    siteName: 'JKESS',
     url: siteUrl,
-    title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+    title: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
     description:
-      "JKESS supplies LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
+      'JKESS supplies battery management hardware, LiFePO4 battery enclosure kits, and configured commercial and industrial energy storage cabinet solutions.',
     images: [
       {
-        url: absoluteUrl("/images/news-featured-energy-storage.jpg"),
+        url: absoluteUrl('/images/news-featured-energy-storage.jpg'),
         width: 1200,
         height: 630,
-        alt: "JKESS energy storage systems and battery solutions",
+        alt: 'JKESS energy storage systems and battery management solutions',
       },
     ],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+    card: 'summary_large_image',
+    title: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
     description:
-      "LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions.",
-    images: [absoluteUrl("/images/news-featured-energy-storage.jpg")],
+      'Battery management hardware, LiFePO4 battery enclosure kits, and configured commercial energy storage solutions.',
+    images: [absoluteUrl('/images/news-featured-energy-storage.jpg')],
   },
-};
+}
 
 export const viewport: Viewport = {
-  themeColor: "#22c55e",
-};
+  themeColor: '#22c55e',
+}
 
 const websiteJsonLd = {
-  "@type": "WebSite",
-  name: "JKESS",
+  '@type': 'WebSite',
+  name: companyProfile.brandName,
   url: siteUrl,
   publisher: {
-    "@type": "Organization",
-    name: "JKBMS Electronic Technology Co.,Ltd",
-    logo: absoluteUrl("/images/jkess-logo.png"),
+    '@type': 'Organization',
+    name: companyProfile.companyName,
+    logo: absoluteUrl('/images/jkess-logo.png'),
   },
-};
+}
 
 const siteJsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [jkessOrganization, websiteJsonLd],
-};
+  '@context': 'https://schema.org',
+  '@graph': [jkessOrganization, websiteJsonLd],
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
@@ -107,9 +108,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: jsonLd(siteJsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-black text-white">
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col bg-black text-white">{children}</body>
     </html>
-  );
+  )
 }

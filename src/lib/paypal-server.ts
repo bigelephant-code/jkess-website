@@ -12,21 +12,45 @@ export class PayPalVerificationError extends Error {
   }
 }
 
-type PayPalCapture = {
-  id?: string
-  status?: string
-  amount?: {
-    currency_code?: string
-    value?: string
-  }
+export type PayPalMoney = {
+  currency_code?: string
+  value?: string
 }
 
-type PayPalPurchaseUnit = {
+export type PayPalCapture = {
+  id?: string
+  status?: string
+  amount?: PayPalMoney
+  create_time?: string
+  update_time?: string
+}
+
+export type PayPalOrderItem = {
+  name?: string
+  sku?: string
+  quantity?: string
+  unit_amount?: PayPalMoney
+}
+
+export type PayPalPurchaseUnit = {
   reference_id?: string
   invoice_id?: string
-  amount?: {
-    currency_code?: string
-    value?: string
+  custom_id?: string
+  description?: string
+  amount?: PayPalMoney
+  items?: PayPalOrderItem[]
+  shipping?: {
+    name?: {
+      full_name?: string
+    }
+    address?: {
+      address_line_1?: string
+      address_line_2?: string
+      admin_area_1?: string
+      admin_area_2?: string
+      postal_code?: string
+      country_code?: string
+    }
   }
   payments?: {
     captures?: PayPalCapture[]
@@ -36,20 +60,26 @@ type PayPalPurchaseUnit = {
 export type PayPalOrderDetails = {
   id?: string
   status?: string
+  create_time?: string
+  update_time?: string
   payer?: {
     email_address?: string
     payer_id?: string
+    name?: {
+      given_name?: string
+      surname?: string
+    }
   }
   purchase_units?: PayPalPurchaseUnit[]
 }
 
-function paypalBaseUrl() {
+export function paypalBaseUrl() {
   return process.env.PAYPAL_ENVIRONMENT === 'sandbox'
     ? 'https://api-m.sandbox.paypal.com'
     : 'https://api-m.paypal.com'
 }
 
-async function getAccessToken() {
+export async function getPayPalAccessToken() {
   const clientId = process.env.PAYPAL_CLIENT_ID || process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
   const clientSecret = process.env.PAYPAL_CLIENT_SECRET
 
@@ -82,7 +112,7 @@ async function getAccessToken() {
 }
 
 export async function getPayPalOrder(paypalOrderId: string) {
-  const accessToken = await getAccessToken()
+  const accessToken = await getPayPalAccessToken()
   const response = await fetch(
     `${paypalBaseUrl()}/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`,
     {
@@ -104,7 +134,7 @@ export async function getPayPalOrder(paypalOrderId: string) {
   return body
 }
 
-function amountToCents(value: string | undefined) {
+export function amountToCents(value: string | undefined) {
   if (!value || !/^\d+(\.\d{1,2})?$/.test(value)) return null
   return Math.round(Number(value) * 100)
 }

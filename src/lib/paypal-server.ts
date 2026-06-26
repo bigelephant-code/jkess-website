@@ -170,5 +170,7 @@ export async function verifyCompletedPayPalOrder(input: {
     paypalOrderId: order.id,
     paypalCaptureId: capture.id,
     payerEmail: order.payer?.email_address || '',
+    order,
+    capture,
   }
 }

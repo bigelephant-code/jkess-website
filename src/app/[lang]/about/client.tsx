@@ -163,13 +163,13 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
+
       <PageFaqSection
         faqs={pageFaqs.about}
         title="About JKESS FAQ"
         description="Key information about JKESS manufacturing, offices, logistics, and international project support."
       />
-
-      <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
     </div>
   )
 }

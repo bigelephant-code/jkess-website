@@ -13,6 +13,15 @@ export type StoredOrderItem = {
   currency: string
 }
 
+export type StoredOrderCustomer = {
+  name: string
+  email: string
+  phone: string
+  company: string
+  address: string
+  notes: string
+}
+
 export type StoredOrderRecord = {
   orderNumber: string
   paypalOrderId: string
@@ -23,13 +32,14 @@ export type StoredOrderRecord = {
   currency: string
   payerEmail: string
   payerName: string
+  customer: StoredOrderCustomer
   shippingAddress: Record<string, string>
   items: StoredOrderItem[]
   paypalCustomId: string
   paypalDescription: string
   internalEmailStatus: 'pending' | 'sent' | 'failed'
   customerEmailStatus: 'pending' | 'sent' | 'failed'
-  source: 'paypal-webhook'
+  source: 'paypal-webhook' | 'browser-verified'
   createdAt: string
   paidAt: string
   updatedAt: string

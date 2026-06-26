@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
 import { getProductBySlug } from '@/lib/products'
 import { sendPaidOrderEmail } from '@/lib/paid-order-email'
+import {
+  PayPalConfigurationError,
+  PayPalVerificationError,
+  verifyCompletedPayPalOrder,
+} from '@/lib/paypal-server'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -20,9 +25,6 @@ export async function POST(request: Request) {
 
     const orderNumber = clean(body.orderNumber, 80)
     const paypalOrderId = clean(body.paypalOrderId, 120)
-    const paypalCaptureId = clean(body.paypalCaptureId, 120)
-    const paypalStatus = clean(body.paypalStatus, 40).toUpperCase()
-    const payerEmail = clean(body.payerEmail, 200)
     const customer = {
       name: clean(customerRaw.name, 120),
       email: clean(customerRaw.email, 200).toLowerCase(),
@@ -32,8 +34,8 @@ export async function POST(request: Request) {
       notes: clean(customerRaw.notes, 1500),
     }
 
-    if (!orderNumber || !paypalOrderId || paypalStatus !== 'COMPLETED') {
-      return NextResponse.json({ error: 'Completed payment references are required.' }, { status: 400 })
+    if (!orderNumber || !paypalOrderId) {
+      return NextResponse.json({ error: 'PayPal order references are required.' }, { status: 400 })
     }
     if (!customer.name || !customer.email || !customer.phone || !customer.address) {
       return NextResponse.json({ error: 'Customer information is incomplete.' }, { status: 400 })
@@ -49,7 +51,9 @@ export async function POST(request: Request) {
       const quantity = Number(item.quantity)
       const product = getProductBySlug(slug)
       const variant = product?.variants?.find((entry) => entry.label === variantLabel)
-      const unitPrice = Number.parseFloat((variant?.price || '').replace(/[$,]/g, ''))
+      const unitPriceCents = Math.round(
+        Number.parseFloat((variant?.price || '').replace(/[$,]/g, '')) * 100
+      )
 
       if (
         !product ||
@@ -58,8 +62,8 @@ export async function POST(request: Request) {
         !Number.isInteger(quantity) ||
         quantity < 1 ||
         quantity > 50 ||
-        !Number.isFinite(unitPrice) ||
-        unitPrice <= 0
+        !Number.isInteger(unitPriceCents) ||
+        unitPriceCents <= 0
       ) {
         throw new Error(`Invalid order item ${index + 1}.`)
       }
@@ -68,22 +72,43 @@ export async function POST(request: Request) {
         name: product.name,
         variant: variant.label,
         quantity,
-        lineTotal: unitPrice * quantity,
+        lineTotalCents: unitPriceCents * quantity,
       }
+    })
+
+    const expectedTotalCents = items.reduce((sum, item) => sum + item.lineTotalCents, 0)
+    const verified = await verifyCompletedPayPalOrder({
+      paypalOrderId,
+      orderNumber,
+      expectedTotalCents,
     })
 
     await sendPaidOrderEmail({
       orderNumber,
-      paypalOrderId,
-      paypalCaptureId,
-      payerEmail,
+      paypalOrderId: verified.paypalOrderId,
+      paypalCaptureId: verified.paypalCaptureId,
+      payerEmail: verified.payerEmail,
       customer,
-      items,
-      total: items.reduce((sum, item) => sum + item.lineTotal, 0),
+      items: items.map((item) => ({
+        name: item.name,
+        variant: item.variant,
+        quantity: item.quantity,
+        lineTotal: item.lineTotalCents / 100,
+      })),
+      total: expectedTotalCents / 100,
     })
 
-    return NextResponse.json({ sent: true })
+    return NextResponse.json({ sent: true, verified: true })
   } catch (error) {
+    if (error instanceof PayPalConfigurationError) {
+      console.error('PayPal server credentials are missing.')
+      return NextResponse.json({ error: 'Payment verification is not configured.' }, { status: 503 })
+    }
+    if (error instanceof PayPalVerificationError) {
+      console.error('PayPal payment verification failed:', error.message)
+      return NextResponse.json({ error: 'PayPal payment verification failed.' }, { status: 409 })
+    }
+
     console.error('Order email endpoint error:', error)
     return NextResponse.json({ error: 'Unable to send the order email.' }, { status: 400 })
   }

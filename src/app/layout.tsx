@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
 import { jkessOrganization, jsonLd } from '@/lib/structured-data'
@@ -108,7 +109,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: jsonLd(siteJsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-black text-white">{children}</body>
+      <body className="min-h-full flex flex-col bg-black text-white">
+        <PaidOrderEmailBridge />
+        {children}
+      </body>
     </html>
   )
 }

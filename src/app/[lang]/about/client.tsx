@@ -1,13 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import AboutSection from "@/components/AboutSection"
-import TeamSlideshow from "@/components/TeamSlideshow"
-import DynamicGlobe from "@/components/DynamicGlobe"
-import PageFaqSection from "@/components/PageFaqSection"
-import { Reveal } from "@/components/ScrollReveal"
+import AboutSection from '@/components/AboutSection'
+import TeamSlideshow from '@/components/TeamSlideshow'
+import DynamicGlobe from '@/components/DynamicGlobe'
+import PageFaqSection from '@/components/PageFaqSection'
+import { Reveal } from '@/components/ScrollReveal'
 import { useTranslate } from '@/i18n/client'
 import { pageFaqs } from '@/lib/page-faqs'
+import { companyFacts, companyProfile } from '@/lib/company-profile'
 
 export default function AboutPage() {
   const t = useTranslate()
@@ -52,23 +53,51 @@ export default function AboutPage() {
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight animate-gradient-text">{t('about.ourTeam')}</h2>
         </motion.div>
         <div className="grid md:grid-cols-3 gap-8">
-          {cultures.map((item, i) => (
-            <motion.div key={item.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.15 }} className="group text-center">
+          {cultures.map((item, index) => (
+            <motion.div key={item.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.15 }} className="group text-center">
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 backdrop-blur-md transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-1" style={{ background: `${item.color}25`, color: item.color }}>{item.icon}</div>
-              <h3 className="text-xl font-bold text-white mb-3">{t('about.' + item.title.toLowerCase())}</h3>
-              <p className="text-gray-300 leading-relaxed max-w-xs mx-auto">{t('about.' + item.title.toLowerCase() + 'Desc')}</p>
+              <h3 className="text-xl font-bold text-white mb-3">{t(`about.${item.title.toLowerCase()}`)}</h3>
+              <p className="text-gray-300 leading-relaxed max-w-xs mx-auto">{t(`about.${item.title.toLowerCase()}Desc`)}</p>
             </motion.div>
           ))}
         </div>
       </TeamSlideshow>
 
-      {/* Our Offices Section */}
+      <section className="bg-white py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <Reveal>
+            <div className="text-center mb-14">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-600">Verified Company Profile</p>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Company at a Glance</h2>
+              <p className="mt-4 text-gray-500 max-w-3xl mx-auto">
+                The following figures use the company&apos;s current unified public information and are applied consistently across the JKESS website.
+              </p>
+            </div>
+          </Reveal>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {companyFacts.map((fact, index) => (
+              <motion.div
+                key={fact.label}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="rounded-2xl border border-gray-200 bg-gray-50 p-5 text-center shadow-sm"
+              >
+                <p className="text-2xl md:text-3xl font-bold text-gray-900">{fact.value}</p>
+                <p className="mt-2 text-xs leading-5 uppercase tracking-wider text-gray-500">{fact.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-gradient-to-br from-gray-50 via-white to-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-6">
           <Reveal>
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('about.offices', 'Our Offices & Factory')}</h2>
-              <p className="text-gray-500 max-w-2xl mx-auto">{t('about.officesDesc', 'JKESS operates across three strategic locations in China to serve you better')}</p>
+              <p className="text-gray-500 max-w-2xl mx-auto">{t('about.officesDesc', 'JKESS operates across three strategic locations in China to serve customers and projects worldwide.')}</p>
             </div>
           </Reveal>
           <div className="grid md:grid-cols-3 gap-6">
@@ -112,13 +141,13 @@ export default function AboutPage() {
                 ],
                 color: '#f58a8a',
               },
-            ].map((office, i) => (
+            ].map((office, index) => (
               <motion.div
                 key={office.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
+                transition={{ duration: 0.5, delay: index * 0.12 }}
                 className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow group"
               >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110" style={{ background: `${office.color}12`, color: office.color }}>
@@ -126,9 +155,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">{office.title}</h3>
                 <div className="text-gray-500 text-sm leading-relaxed">
-                  {office.lines.map((line, li) => (
-                    <p key={li}>{line}</p>
-                  ))}
+                  {office.lines.map((line) => <p key={line}>{line}</p>)}
                 </div>
               </motion.div>
             ))}
@@ -136,24 +163,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Warehouse & Global Logistics Section */}
       <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Content - Left side */}
             <Reveal direction="left">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                   {t('warehouse.title', 'Global Warehouse & Logistics')}
                 </h2>
                 <div className="text-gray-600 leading-relaxed space-y-4">
-                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics. Combined with our overseas warehouses in Poland (serving the European market), the United States (covering North America), and Brazil (covering South America), we offer a truly global distribution network that guarantees fast delivery, reduced shipping costs, and localized support for customers worldwide.')}</p>
-                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system ensures product availability, flexible dispatch options, and seamless cross-border logistics. With warehouses on four continents, JKESS is committed to delivering energy storage solutions to your doorstep — wherever you are.')}</p>
+                  <p>{t('warehouse.desc1', 'JKESS maintains strategically located warehouses across three major regions in China — Sichuan, Shandong, and Shenzhen — ensuring rapid fulfillment and cost-effective domestic logistics. Combined with our overseas warehouses in Poland, the United States, and Brazil, we support international distribution and localized delivery for customers worldwide.')}</p>
+                  <p>{t('warehouse.desc2', 'Whether you are placing a small sample order or a large-volume container shipment, our multi-warehouse inventory system supports product availability, flexible dispatch options, and cross-border logistics for energy storage products and projects.')}</p>
                 </div>
               </div>
             </Reveal>
 
-            {/* Image - Right side */}
             <Reveal direction="right" delay={0.15}>
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#0d1b2a]">
                 <DynamicGlobe />
@@ -163,12 +187,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <AboutSection data={{ title: t('about.title'), image: "/images/company-building.webp" }} />
+      <AboutSection
+        data={{
+          title: t('about.title'),
+          image: '/images/company-building.webp',
+          content: companyProfile.aboutParagraphs.join('\n\n'),
+        }}
+      />
 
       <PageFaqSection
         faqs={pageFaqs.about}
         title="About JKESS FAQ"
-        description="Key information about JKESS manufacturing, offices, logistics, and international project support."
+        description="Key information about JKESS company history, manufacturing scale, offices, logistics, and international project support."
       />
     </div>
   )

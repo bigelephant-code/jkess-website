@@ -1,5 +1,4 @@
-import { buildPageMetadata } from '@/lib/seo'
-import { localizedSeoPath } from '@/lib/seo'
+import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jkessOrganization, jsonLd, organizationId } from '@/lib/structured-data'
 import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
@@ -10,15 +9,17 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
     buildPageMetadata({
       lang,
       path: '/about',
-      title: 'About JKESS | Energy Storage and BMS Manufacturer',
+      title: 'About JKESS | JKBMS Energy Storage Manufacturer',
       description:
-        'Learn about JKESS, a manufacturer of BMS, battery kits, high voltage energy storage systems, and commercial ESS cabinet solutions.',
+        'The JKESS team began in 2017, JKBMS was established in 2023, and the JKESS brand launched in 2024. Learn about our 70,000 m² factory, 700+ employees, 100+ R&D team, and 2.1 GWh annual capacity.',
       keywords: [
         'about JKESS',
         'JKBMS manufacturer',
         'energy storage manufacturer',
         'BMS factory',
         'battery storage company',
+        '70,000 square meter battery factory',
+        '2.1 GWh production capacity',
       ],
       image: '/images/company-building.webp',
     })
@@ -51,7 +52,7 @@ function aboutJsonLd(lang: string) {
         name: 'About JKESS',
         url: pageUrl,
         description:
-          'Learn about JKESS manufacturing, offices, factory, and global energy storage logistics network.',
+          'JKESS company history, verified manufacturing scale, R&D team, offices, factory, production capacity, and global energy storage logistics network.',
         mainEntity: {
           '@id': organizationId,
         },
@@ -84,7 +85,7 @@ function aboutJsonLd(lang: string) {
               name: 'JKESS Hangzhou Office',
               address: {
                 '@type': 'PostalAddress',
-                streetAddress: 'Room 309-2, Building 11, Nanhu Future Science Park, Zhongtai Street',
+                streetAddress: 'Room 309-2, Building 11, Nanhu Future Science Park, No. 2 Tongshanxi Road, Zhongtai Street',
                 addressLocality: 'Hangzhou',
                 addressRegion: 'Zhejiang',
                 addressCountry: 'CN',
@@ -98,6 +99,7 @@ function aboutJsonLd(lang: string) {
             item: {
               '@type': 'Place',
               name: 'JKESS Shandong Factory',
+              description: '70,000 m² manufacturing facility on a 120-mu site.',
               address: {
                 '@type': 'PostalAddress',
                 streetAddress: 'No. 103 Binshi Road, Lize Subdistrict Office',
@@ -115,7 +117,7 @@ function aboutJsonLd(lang: string) {
               '@type': 'Place',
               name: 'JKESS global warehouse and logistics network',
               description:
-                'Warehouses and logistics coverage across China, Poland, the United States, and Brazil for energy storage products.',
+                'Warehouses and logistics coverage across China, Poland, the United States, and Brazil for international energy storage products and projects.',
             },
           },
         ],

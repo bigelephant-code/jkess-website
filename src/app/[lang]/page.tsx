@@ -1,136 +1,66 @@
-import dynamic from "next/dynamic";
-import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
-import Timeline from "@/components/Timeline";
-import SolutionsSection from "@/components/SolutionsSection";
-import TechLines from "@/components/TechLines";
-import { localizedPath } from "@/lib/lang";
-import { buildPageMetadata } from "@/lib/seo";
-import type { LangCode } from "@/i18n/config";
+import dynamic from 'next/dynamic'
+import HeroSection from '@/components/HeroSection'
+import StatsSection from '@/components/StatsSection'
+import Timeline from '@/components/Timeline'
+import SolutionsSection from '@/components/SolutionsSection'
+import TechLines from '@/components/TechLines'
+import { localizedPath } from '@/lib/lang'
+import { buildPageMetadata } from '@/lib/seo'
+import type { LangCode } from '@/i18n/config'
+import { companyProfile, companyStats } from '@/lib/company-profile'
 
-// Lazy-load below-fold components
-const MadeWithJKESS = dynamic(() => import("@/components/MadeWithJKESS"), {
+const MadeWithJKESS = dynamic(() => import('@/components/MadeWithJKESS'), {
   loading: () => null,
-});
-const ReviewsWall = dynamic(() => import("@/components/ReviewsWall"), {
+})
+const ReviewsWall = dynamic(() => import('@/components/ReviewsWall'), {
   loading: () => null,
-});
-const BrandLogos = dynamic(() => import("@/components/BrandLogos"), {
+})
+const BrandLogos = dynamic(() => import('@/components/BrandLogos'), {
   loading: () => null,
-});
-const CertTiltBoard = dynamic(() => import("@/components/CertTiltBoard"), {
+})
+const CertTiltBoard = dynamic(() => import('@/components/CertTiltBoard'), {
   loading: () => null,
-});
-const ContactSection = dynamic(() => import("@/components/ContactSection"), {
+})
+const ContactSection = dynamic(() => import('@/components/ContactSection'), {
   loading: () => null,
-});
+})
 
-// Hardcoded English content — translations via i18n for hero only in this pass
 const siteContent = {
   hero: {
-    // title & subtitle are now loaded from i18n translations
-    ctaLink: "/products",
+    ctaLink: '/products',
   },
-  stats: {
-    yearsEstablished: 10,
-    manufacturingBase: "70000",
-    countriesCovered: 200,
-    employees: "700+",
-  },
-  products: [
-    {
-      name: "Battery Kit (With Caster)",
-      slug: "battery-kit",
-      category: "battery-kit",
-      description:
-        "Portable energy storage system on heavy-duty caster wheels. Sheet-metal enclosure, IP54 rated.",
-      features: [
-        "Heavy-duty caster wheels for easy mobility",
-        "Sheet-metal enclosure, IP54 rated",
-        "Supports 15KWh & 16KWh LFP cells",
-        "Integrated BMS + LCD + CAN/RS485",
-      ],
-      image: "/images/battery-kit-hero.webp",
-      images: [
-        "/images/battery-kit-hero.webp",
-        "/images/battery-kit-system.webp",
-        "/images/battery-kit-front.webp",
-        "/images/battery-kit-side.webp",
-        "/images/battery-kit-rear.webp",
-        "/images/battery-kit-display.webp",
-      ],
-    },
-    {
-      name: "6U Battery Kit",
-      slug: "6u-battery-kit",
-      category: "battery-kit",
-      description:
-        "Professional rack-mount energy storage system (JKLU015) with 15KWh LFP capacity.",
-      features: [
-        "6U rack-mount — fits 19-inch cabinets",
-        "Modular expandable — parallel up to 30KWh+",
-        "Intelligent BMS with active balancing",
-        "4.3\" LCD + CAN/RS485 communication",
-      ],
-      image: "/images/6u-kit/1.webp",
-      images: [
-        "/images/6u-kit/1.webp",
-        "/images/6u-kit/2.webp",
-        "/images/6u-kit/3.webp",
-        "/images/6u-kit/4.webp",
-        "/images/6u-kit/5.webp",
-        "/images/6u-kit/6.webp",
-      ],
-    },
-    {
-      name: "High Voltage Kit",
-      slug: "high-voltage-kit",
-      category: "high-voltage-kit",
-      description:
-        "Complete HV BMS solution: BCU-B3 master control (ISO 26262, 1500V) & BMU-H5-16.",
-      features: [
-        "BCU-B3 Master: ISO 26262 functional safety, 1500V detection",
-        "BMU-H5-16 Slave: ±5mV accuracy, 2A bidirectional active balancing",
-        "SOC/SOH/SOP smart estimation + 16-cell voltage collection",
-        "Remote OTA & real-time IoT cloud monitoring",
-      ],
-      image: "",
-    },
-  ],
   footer: {
-    contactEmail: "zhou@jkess.com",
+    contactEmail: companyProfile.salesEmail,
   },
-};
+}
 
 export function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   return params.then(({ lang }) =>
     buildPageMetadata({
       lang,
-      path: "/",
-      title: "JKESS | BMS, Battery Kits and Energy Storage Systems",
+      path: '/',
+      title: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
       description:
-        "JKESS supplies LiFePO4 battery kits, high voltage BMS kits, and commercial energy storage cabinet solutions for residential, industrial, and backup power projects.",
+        'JKESS supplies BMS control hardware, LiFePO4 battery enclosure kits, high voltage battery management systems, and configured commercial energy storage cabinet solutions.',
       keywords: [
-        "JKESS",
-        "JKBMS",
-        "LiFePO4 battery kit",
-        "high voltage BMS",
-        "commercial energy storage system",
-        "battery storage cabinet",
+        'JKESS',
+        'JKBMS',
+        'LiFePO4 battery enclosure kit',
+        'high voltage BMS',
+        'commercial energy storage system',
+        'battery storage cabinet',
       ],
-      image: "/images/mountain-bg.webp",
+      image: '/images/mountain-bg.webp',
     })
-  );
+  )
 }
 
 export default async function Home(props: { params: Promise<{ lang: string }> }) {
-  const { lang } = await props.params;
-
-  // Localize hero CTA link
+  const { lang } = await props.params
   const heroData = {
     ...siteContent.hero,
     ctaLink: localizedPath(lang as LangCode, siteContent.hero.ctaLink),
-  };
+  }
 
   return (
     <>
@@ -140,7 +70,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
           <TechLines />
         </div>
         <div className="relative z-10">
-          <StatsSection data={siteContent.stats} />
+          <StatsSection data={companyStats} />
           <Timeline />
           <SolutionsSection />
           <CertTiltBoard />
@@ -151,5 +81,5 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
       <BrandLogos />
       <ContactSection data={siteContent.footer} />
     </>
-  );
+  )
 }

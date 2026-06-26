@@ -6,26 +6,36 @@ export interface PageFaq {
 export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads', PageFaq[]> = {
   about: [
     {
+      question: 'When were the JKESS team, JKBMS company, and JKESS brand established?',
+      answer:
+        'The team began working in the new energy sector in 2017. JKBMS Electronic Technology Co.,Ltd was formally established in 2023, and the JKESS energy storage brand was launched in 2024.',
+    },
+    {
+      question: 'What is the current JKESS manufacturing and team scale?',
+      answer:
+        'JKESS operates a 70,000-square-meter manufacturing facility on a 120-mu site, with more than 700 full-time employees, including over 100 R&D professionals. Current annual production capacity reaches 2.1 GWh.',
+    },
+    {
       question: 'What does JKESS manufacture?',
       answer:
-        'JKESS manufactures BMS solutions, LiFePO4 battery kits, high voltage energy storage kits, and commercial and industrial ESS cabinet systems.',
+        'JKESS supplies BMS control hardware, LiFePO4 battery enclosure kits, high-voltage battery management systems, and configured commercial and industrial ESS cabinet solutions.',
     },
     {
       question: 'Where are JKESS offices and manufacturing resources located?',
       answer:
-        'JKESS operates across strategic locations in Shenzhen, Hangzhou, and Shandong, with warehouse and logistics coverage across China and overseas markets.',
+        'JKESS operates across strategic locations in Shenzhen, Hangzhou, and Shandong. The office and factory addresses shown on the website are official public business locations.',
     },
     {
       question: 'Can JKESS support international energy storage projects?',
       answer:
-        'Yes. JKESS supports international customers with technical documents, product configuration support, and logistics coverage for residential, commercial, and industrial energy storage projects.',
+        'Yes. JKESS products and solutions are supplied across more than 200 countries and regions, with technical documentation, product configuration support, and international logistics coverage for residential, commercial, and industrial projects.',
     },
   ],
   products: [
     {
       question: 'How do I choose the right JKESS product?',
       answer:
-        'Choose low-voltage battery kits for residential and rack systems, high voltage kits for battery rack control, and C&I ESS cabinets for larger commercial storage projects.',
+        'Choose low-voltage battery enclosure kits for residential and rack assembly projects, high-voltage BMS kits for battery rack control, and configured C&I ESS cabinets for larger commercial storage projects.',
     },
     {
       question: 'Can JKESS help confirm inverter or PCS compatibility?',
@@ -35,7 +45,7 @@ export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads', Pa
     {
       question: 'Which products can be ordered directly?',
       answer:
-        'Battery Kit, 6U Battery Kit, and High Voltage Kit options can be selected directly, while the C&I ESS Cabinet is quoted by project configuration.',
+        'Battery Kit, 6U Battery Kit, and High Voltage Kit hardware options can be selected directly, while the C&I ESS Cabinet is quoted according to the final project configuration.',
     },
   ],
   contact: [
@@ -52,14 +62,14 @@ export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads', Pa
     {
       question: 'Can JKESS review a custom energy storage project?',
       answer:
-        'Yes. JKESS can review project requirements for battery kits, high voltage BMS kits, and commercial energy storage cabinet configurations.',
+        'Yes. JKESS can review project requirements for battery enclosure kits, high-voltage BMS control systems, and commercial energy storage cabinet configurations.',
     },
   ],
   downloads: [
     {
       question: 'What documents are available in the JKESS technical library?',
       answer:
-        'The library includes datasheets, manuals, product specifications, and technical documents for JKESS battery kits, BMS products, accessories, and high voltage systems.',
+        'The library includes datasheets, manuals, product specifications, and technical documents for JKESS battery kits, BMS products, accessories, and high-voltage systems.',
     },
     {
       question: 'Can I request a missing datasheet or manual?',

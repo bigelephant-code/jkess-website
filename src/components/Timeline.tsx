@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useTranslate } from '@/i18n/client'
+import { companyMilestones } from '@/lib/company-profile'
 
 export default function Timeline() {
   const t = useTranslate()
@@ -13,45 +14,6 @@ export default function Timeline() {
   })
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1])
   const glowLeft = useTransform(scrollYProgress, [0, 1], ['2%', '88%'])
-
-  const milestones = [
-    {
-      year: '2017',
-      period: '2017-2019',
-      title: t('timeline.2017.title'),
-      content: [
-        t('timeline.2017.line1'),
-        t('timeline.2017.line2'),
-      ],
-    },
-    {
-      year: '2020',
-      period: '2020-2022',
-      title: t('timeline.2020.title'),
-      content: [
-        t('timeline.2020.line1'),
-        t('timeline.2020.line2'),
-      ],
-    },
-    {
-      year: '2023',
-      period: '2023-2024',
-      title: t('timeline.2023.title'),
-      content: [
-        t('timeline.2023.line1'),
-        t('timeline.2023.line2'),
-      ],
-    },
-    {
-      year: '2026',
-      period: '2026-Future',
-      title: t('timeline.2026.title'),
-      content: [
-        t('timeline.2026.line1'),
-        t('timeline.2026.line2'),
-      ],
-    },
-  ]
 
   return (
     <section ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden">
@@ -64,7 +26,8 @@ export default function Timeline() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-            {t('timeline.title.part1')} <span className="text-green-600">{t('timeline.title.part2')}</span>
+            {t('timeline.title.part1', 'Development')}{' '}
+            <span className="text-green-600">{t('timeline.title.part2', 'History')}</span>
           </h2>
         </motion.div>
 
@@ -80,8 +43,8 @@ export default function Timeline() {
           />
 
           <div className="grid grid-cols-4 gap-8">
-            {milestones.map((item, i) => {
-              const isTop = i % 2 === 0
+            {companyMilestones.map((item, index) => {
+              const isTop = index % 2 === 0
 
               return (
                 <motion.div
@@ -89,7 +52,7 @@ export default function Timeline() {
                   initial={{ opacity: 0, y: isTop ? -28 : 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-80px' }}
-                  transition={{ duration: 0.55, delay: i * 0.12, ease: [0.23, 1, 0.32, 1] }}
+                  transition={{ duration: 0.55, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
                   className="relative min-h-[360px] flex flex-col items-center justify-center"
                 >
                   <div className={`absolute w-full ${isTop ? 'bottom-[calc(50%+54px)]' : 'top-[calc(50%+54px)]'}`}>
@@ -107,9 +70,9 @@ export default function Timeline() {
                       </div>
                       <div className="h-px w-full bg-gradient-to-r from-green-500/50 via-gray-200 to-transparent mb-3" />
                       <div className="space-y-2">
-                        {item.content.map((p, pi) => (
-                          <p key={pi} className="text-[12px] text-gray-600 leading-relaxed">
-                            {p}
+                        {item.content.map((paragraph) => (
+                          <p key={paragraph} className="text-[12px] text-gray-600 leading-relaxed">
+                            {paragraph}
                           </p>
                         ))}
                       </div>
@@ -120,13 +83,13 @@ export default function Timeline() {
                     initial={{ scale: 0.86, opacity: 0.45 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: '-120px' }}
-                    transition={{ duration: 0.45, delay: i * 0.12 }}
+                    transition={{ duration: 0.45, delay: index * 0.12 }}
                     className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full border border-green-200 bg-white shadow-[0_0_0_8px_rgba(34,197,94,0.06)]"
                   >
                     <motion.span
                       className="absolute inset-[-8px] rounded-full border border-green-400/50"
                       animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0, 0.35] }}
-                      transition={{ duration: 2.2, repeat: Infinity, delay: i * 0.25 }}
+                      transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.25 }}
                     />
                     <span className="absolute h-[3px] w-7 bg-green-500 -left-7" />
                     <span className="absolute h-[3px] w-7 bg-green-500 -right-7" />
@@ -145,13 +108,13 @@ export default function Timeline() {
             className="absolute left-[18px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-green-300 via-green-500 to-emerald-300"
             style={{ scaleY: lineScale }}
           />
-          {milestones.map((item, i) => (
+          {companyMilestones.map((item, index) => (
             <motion.div
               key={item.year}
               initial={{ opacity: 0, x: -18 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
               className="relative pl-12"
             >
               <div className="absolute left-0 top-1 flex h-9 w-9 items-center justify-center rounded-full border border-green-200 bg-white shadow-sm">
@@ -166,8 +129,10 @@ export default function Timeline() {
                   <span className="text-[11px] text-gray-400">{item.period}</span>
                 </div>
                 <div className="space-y-1.5">
-                  {item.content.map((p, pi) => (
-                    <p key={pi} className="text-xs text-gray-600 leading-relaxed">{p}</p>
+                  {item.content.map((paragraph) => (
+                    <p key={paragraph} className="text-xs text-gray-600 leading-relaxed">
+                      {paragraph}
+                    </p>
                   ))}
                 </div>
               </div>

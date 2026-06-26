@@ -1,19 +1,18 @@
 'use client'
-import { useTranslate } from '@/i18n/client'
 
-import { useEffect, useState, useRef } from 'react'
-import { Factory, Globe, Users, Building2 } from 'lucide-react'
-import { Reveal, StaggerReveal, StaggerItem } from './ScrollReveal'
+import { useEffect, useRef, useState } from 'react'
+import { Building2, Factory, Globe, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTranslate } from '@/i18n/client'
+import { Reveal, StaggerItem, StaggerReveal } from './ScrollReveal'
 
 interface StatsData {
-  yearsEstablished?: number
+  established?: string
   manufacturingBase?: string
-  countriesCovered?: number
+  marketsReached?: string
   employees?: string
 }
 
-/* --- Per-character stagger text --- */
 function StaggerText({ text, className }: { text: string; className?: string }) {
   return (
     <motion.span
@@ -26,9 +25,9 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
       }}
       whileHover="hover"
     >
-      {(text || '').split('').map((char, i) => (
+      {(text || '').split('').map((char, index) => (
         <motion.span
-          key={i}
+          key={`${char}-${index}`}
           className="inline-block transition-all duration-200 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent group-hover:opacity-100 opacity-50"
           variants={{
             rest: { y: 0, transition: { duration: 0.2 } },
@@ -42,9 +41,8 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
   )
 }
 
-/* --- Animated counting number --- */
 function AnimatedNumber({ value }: { value: string }) {
-  const numericValue = parseFloat(value.replace(/[+,]|k/g, ''))
+  const numericValue = Number.parseFloat(value.replace(/[+,]|k/g, ''))
   const [display, setDisplay] = useState(Number.isNaN(numericValue) ? value : '0')
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
@@ -56,15 +54,14 @@ function AnimatedNumber({ value }: { value: string }) {
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
           hasAnimated.current = true
-          const isLarge = value.includes('+')
-          const steps = isLarge ? 30 : 40
+          const steps = value.includes('+') ? 30 : 40
           let current = 0
           const increment = numericValue / steps
-          const timer = setInterval(() => {
+          const timer = window.setInterval(() => {
             current += increment
             if (current >= numericValue) {
               setDisplay(value)
-              clearInterval(timer)
+              window.clearInterval(timer)
             } else {
               const rounded = Math.round(current)
               setDisplay(`${rounded}${value.includes('+') ? '+' : ''}`)
@@ -82,39 +79,39 @@ function AnimatedNumber({ value }: { value: string }) {
   return <span ref={ref}>{display}</span>
 }
 
-const iconMap: Record<string, { icon: React.ReactNode; label: string }> = {
-  years: { icon: <Building2 size={28} />, label: 'Years Established' },
-  base: { icon: <Factory size={28} />, label: 'Manufacturing Base' },
-  countries: { icon: <Globe size={28} />, label: 'Countries Covered' },
-  employees: { icon: <Users size={28} />, label: 'Employees' },
+const iconMap: Record<string, React.ReactNode> = {
+  established: <Building2 size={28} />,
+  base: <Factory size={28} />,
+  markets: <Globe size={28} />,
+  employees: <Users size={28} />,
 }
 
 export default function StatsSection({ data }: { data?: StatsData }) {
   const t = useTranslate()
   const stats = [
     {
-      key: 'years',
-      value: data?.yearsEstablished ? `${data.yearsEstablished}` : '4',
+      key: 'established',
+      value: data?.established || '2017',
       suffix: undefined as string | undefined,
-      label: t('stats.years', 'Years Established'),
+      label: t('stats.established', 'Team Established'),
     },
     {
       key: 'base',
-      value: data?.manufacturingBase || '30000',
-      suffix: '\u33A1' as string | undefined,
-      label: t('stats.manufacturing', 'Manufacturing Base'),
+      value: data?.manufacturingBase || '70000',
+      suffix: '㎡' as string | undefined,
+      label: t('stats.manufacturing', 'Factory Building Area'),
     },
     {
-      key: 'countries',
-      value: data?.countriesCovered ? `${data.countriesCovered}+` : '30+',
+      key: 'markets',
+      value: data?.marketsReached || '200+',
       suffix: undefined as string | undefined,
-      label: t('stats.countries', 'Countries Covered'),
+      label: t('stats.markets', 'Countries & Regions Served'),
     },
     {
       key: 'employees',
-      value: data?.employees || '100+',
+      value: data?.employees || '700+',
       suffix: undefined as string | undefined,
-      label: t('stats.employees', 'Employees'),
+      label: t('stats.employees', 'Full-time Employees'),
     },
   ]
 
@@ -124,8 +121,8 @@ export default function StatsSection({ data }: { data?: StatsData }) {
         <Reveal>
           <StaggerReveal staggerDelay={0.15}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, idx) => (
-                <StaggerItem key={idx}>
+              {stats.map((stat) => (
+                <StaggerItem key={stat.key}>
                   <motion.div
                     className="text-center space-y-3 group cursor-default"
                     whileHover={{ y: -2 }}
@@ -136,20 +133,19 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                       whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
                       transition={{ duration: 0.3 }}
                     >
-                      {iconMap[stat.key]?.icon || iconMap.years.icon}
+                      {iconMap[stat.key] || iconMap.established}
                     </motion.div>
                     <div className="flex items-baseline justify-center gap-1">
                       <span className="text-4xl md:text-5xl font-bold text-gray-900 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">
                         <AnimatedNumber value={stat.value} />
                       </span>
                       {stat.suffix && (
-                        <span className="text-lg text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">{stat.suffix}</span>
+                        <span className="text-lg text-gray-400 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:via-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">
+                          {stat.suffix}
+                        </span>
                       )}
                     </div>
-                    <StaggerText
-                      text={stat.label}
-                      className="justify-center text-sm uppercase tracking-wider text-gray-500"
-                    />
+                    <StaggerText text={stat.label} className="justify-center text-sm uppercase tracking-wider text-gray-500" />
                   </motion.div>
                 </StaggerItem>
               ))}

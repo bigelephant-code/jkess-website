@@ -19,6 +19,10 @@ function productPath(product: Product, lang: string) {
   return `${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`
 }
 
+function isBatteryEnclosureKit(product: Product) {
+  return product.slug === 'battery-kit' || product.slug === '6u-battery-kit'
+}
+
 function productKeywords(product: Product) {
   const base = [
     product.name,
@@ -95,6 +99,15 @@ function productJsonLd(p: Product, lang: string) {
     image: p.images.map((img) => absoluteUrl(img)),
     url,
     additionalProperty: [
+      ...(isBatteryEnclosureKit(p)
+        ? [
+            {
+              '@type': 'PropertyValue',
+              name: 'Battery Cells Included',
+              value: 'No — compatible LiFePO4 battery cells are sold separately',
+            },
+          ]
+        : []),
       ...p.specs.map((spec) => ({
         '@type': 'PropertyValue',
         name: spec.key,
@@ -183,7 +196,8 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
   const product = getProductBySlug(slug)
   if (!product) return {}
   const canonicalPath = productPath(product, lang)
-  const description = `${product.tagline}. ${product.description}`.slice(0, 158)
+  const cellsNotice = isBatteryEnclosureKit(product) ? ' Battery cells are not included.' : ''
+  const description = `${product.tagline}.${cellsNotice} ${product.description}`.slice(0, 158)
   return {
     title: `${product.name} | ${product.categoryLabel} | JKESS`,
     description,
@@ -218,19 +232,45 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
       </div>
     )
   }
+
+  const showCellsNotice = isBatteryEnclosureKit(product)
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: productJsonLd(product, lang) }}
       />
-      <ProductDetailClient
-        product={product}
-        lang={lang}
-        relatedProducts={getRelatedProducts(product)}
-        useCases={getProductUseCases(product)}
-        seoContent={getProductSeoContent(product)}
-      />
+      <div className="relative bg-black">
+        {showCellsNotice && (
+          <div className="absolute inset-x-0 top-24 z-30">
+            <div className="mx-auto max-w-7xl px-4 md:px-6">
+              <div className="rounded-2xl border border-amber-300/40 bg-amber-300/10 px-5 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.28)] backdrop-blur-md md:px-6">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+                  <div className="shrink-0">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-300">
+                      Important purchase notice
+                    </p>
+                    <h2 className="mt-1 text-lg font-bold text-white">Battery cells are not included</h2>
+                  </div>
+                  <p className="text-sm leading-6 text-amber-50/80">
+                    This listing is for the battery kit hardware only. The displayed price covers the enclosure and only the BMS/LCD hardware specified by the selected option. Compatible LiFePO4 cells must be purchased separately.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className={showCellsNotice ? 'pt-32' : ''}>
+          <ProductDetailClient
+            product={product}
+            lang={lang}
+            relatedProducts={getRelatedProducts(product)}
+            useCases={getProductUseCases(product)}
+            seoContent={getProductSeoContent(product)}
+          />
+        </div>
+      </div>
     </>
   )
 }

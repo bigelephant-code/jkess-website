@@ -51,8 +51,8 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
 
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:720px;margin:auto;color:#111827;line-height:1.55;">
-      <h1 style="color:#16a34a;">PayPal payment completed</h1>
-      <p style="padding:12px;background:#fff7ed;border:1px solid #fed7aa;">Confirm this transaction in the PayPal merchant account before arranging delivery.</p>
+      <h1 style="color:#16a34a;">PayPal payment verified</h1>
+      <p style="padding:12px;background:#fff7ed;border:1px solid #fed7aa;">The JKESS server verified this transaction with PayPal. Confirm it in the PayPal merchant account before arranging delivery.</p>
       <p><strong>JKESS order:</strong> ${escapeHtml(order.orderNumber)}</p>
       <p><strong>PayPal order ID:</strong> ${escapeHtml(order.paypalOrderId)}</p>
       <p><strong>PayPal capture ID:</strong> ${escapeHtml(order.paypalCaptureId || '-')}</p>
@@ -65,7 +65,7 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
       <p><strong>Delivery address:</strong><br>${escapeHtml(order.customer.address).replace(/\n/g, '<br>')}</p>
       <p><strong>Notes:</strong><br>${escapeHtml(order.customer.notes || '-').replace(/\n/g, '<br>')}</p>
       <table style="width:100%;border-collapse:collapse;margin:20px 0;"><tbody>${rows}</tbody></table>
-      <p style="font-size:18px;"><strong>Catalog total: $${order.total.toFixed(2)} USD</strong></p>
+      <p style="font-size:18px;"><strong>Verified catalog total: $${order.total.toFixed(2)} USD</strong></p>
     </div>`
 
   const response = await fetch('https://api.resend.com/emails', {
@@ -73,11 +73,12 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
+      'User-Agent': 'JKESS-Website/1.0',
     },
     body: JSON.stringify({
       from,
       to: [to],
-      subject: `Paid JKESS order — ${order.orderNumber}`,
+      subject: `Verified JKESS order — ${order.orderNumber}`,
       html,
     }),
     cache: 'no-store',

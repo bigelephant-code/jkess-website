@@ -106,6 +106,7 @@ const key = {
   capture: (captureId: string) => `jkess:paypal-capture:${captureId}`,
   webhookLock: (eventId: string) => `jkess:webhook-lock:${eventId}`,
   webhookProcessed: (eventId: string) => `jkess:webhook-processed:${eventId}`,
+  emailLock: (orderNumber: string) => `jkess:email-lock:${orderNumber}`,
   paidOrders: 'jkess:orders:paid',
 }
 
@@ -134,6 +135,22 @@ export async function markWebhookProcessed(eventId: string) {
     ['SET', key.webhookProcessed(eventId), '1', 'EX', 60 * 60 * 24 * 90],
     ['DEL', key.webhookLock(eventId)],
   ])
+}
+
+export async function acquireOrderEmailLock(orderNumber: string) {
+  const result = await redisCommand<string | null>([
+    'SET',
+    key.emailLock(orderNumber),
+    '1',
+    'NX',
+    'EX',
+    300,
+  ])
+  return result === 'OK'
+}
+
+export async function releaseOrderEmailLock(orderNumber: string) {
+  await redisCommand<number>(['DEL', key.emailLock(orderNumber)])
 }
 
 export async function savePaidOrder(record: StoredOrderRecord) {

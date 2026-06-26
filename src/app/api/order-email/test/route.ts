@@ -4,23 +4,39 @@ import { NextResponse } from 'next/server'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+function normalizeSecret(value: string) {
+  let normalized = value
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .trim()
+
+  const first = normalized.at(0)
+  const last = normalized.at(-1)
+  if (normalized.length >= 2 && ((first === '"' && last === '"') || (first === "'" && last === "'"))) {
+    normalized = normalized.slice(1, -1).trim()
+  }
+
+  return normalized
+}
+
 function secretsMatch(received: string, expected: string) {
-  const receivedBytes = Buffer.from(received)
-  const expectedBytes = Buffer.from(expected)
+  const receivedBytes = Buffer.from(normalizeSecret(received))
+  const expectedBytes = Buffer.from(normalizeSecret(expected))
   return receivedBytes.length === expectedBytes.length && timingSafeEqual(receivedBytes, expectedBytes)
 }
 
 export async function POST(request: Request) {
-  const expectedSecret = process.env.ORDER_TEST_SECRET
+  const expectedSecret = process.env.ORDER_TEST_SECRET || ''
   const authorization = request.headers.get('authorization') || ''
-  const receivedSecret = authorization.startsWith('Bearer ')
-    ? authorization.slice(7).trim()
+  const bearerSecret = authorization.toLowerCase().startsWith('bearer ')
+    ? authorization.slice(7)
     : ''
+  const receivedSecret = request.headers.get('x-order-test-secret') || bearerSecret
 
-  if (!expectedSecret) {
+  if (!normalizeSecret(expectedSecret)) {
     return NextResponse.json({ error: 'Test endpoint is not configured.' }, { status: 503 })
   }
-  if (!receivedSecret || !secretsMatch(receivedSecret, expectedSecret)) {
+  if (!normalizeSecret(receivedSecret) || !secretsMatch(receivedSecret, expectedSecret)) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 

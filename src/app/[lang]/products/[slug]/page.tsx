@@ -116,84 +116,104 @@ function productJsonLd(p: Product, lang: string) {
   const useCases = getProductUseCases(p)
   const seoContent = getProductSeoContent(p)
   const purchaseNotice = getPurchaseNotice(p)
-  const productSchema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: p.name,
-    sku: p.slug,
-    description: p.description,
-    brand: { '@type': 'Brand', name: 'JKESS' },
-    manufacturer: { '@id': organizationId },
-    image: p.images.map((img) => absoluteUrl(img)),
-    url,
-    additionalProperty: [
-      ...(purchaseNotice
-        ? [
-            {
-              '@type': 'PropertyValue',
-              name: 'Battery Included',
-              value: purchaseNotice.schemaValue,
-            },
-          ]
-        : []),
-      ...p.specs.map((spec) => ({
-        '@type': 'PropertyValue',
-        name: spec.key,
-        value: spec.value,
-      })),
-      {
-        '@type': 'PropertyValue',
-        name: 'Applications',
-        value: useCases.applications.join('; '),
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Compatible Systems',
-        value: useCases.compatibleSystems.join('; '),
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Selection Notes',
-        value: useCases.selectionNotes.join('; '),
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Project Fit',
-        value: seoContent.projectFit,
-      },
-      {
-        '@type': 'PropertyValue',
-        name: 'Installation Notes',
-        value: seoContent.installationNotes.join('; '),
-      },
-    ],
-    category: p.categoryLabel,
-  }
-  const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
-  if (mpn) productSchema.mpn = mpn.value
+  const additionalProperty = [
+    ...(purchaseNotice
+      ? [
+          {
+            '@type': 'PropertyValue',
+            name: 'Battery Included',
+            value: purchaseNotice.schemaValue,
+          },
+        ]
+      : []),
+    ...p.specs.map((spec) => ({
+      '@type': 'PropertyValue',
+      name: spec.key,
+      value: spec.value,
+    })),
+    {
+      '@type': 'PropertyValue',
+      name: 'Applications',
+      value: useCases.applications.join('; '),
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Compatible Systems',
+      value: useCases.compatibleSystems.join('; '),
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Selection Notes',
+      value: useCases.selectionNotes.join('; '),
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Project Fit',
+      value: seoContent.projectFit,
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Installation Notes',
+      value: seoContent.installationNotes.join('; '),
+    },
+  ]
 
-  if (p.type === 'shop' && p.variants?.length) {
-    productSchema.offers = {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'USD',
-      lowPrice: Math.min(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
-      highPrice: Math.max(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
-      offerCount: p.variants.length,
-      offers: p.variants.map((v) => ({
-        '@type': 'Offer',
-        name: v.label,
-        price: v.price ? parseFloat(v.price.replace(/[$,]/g, '')) : undefined,
+  const primaryEntity: Record<string, unknown> =
+    p.type === 'shop'
+      ? {
+          '@type': 'Product',
+          name: p.name,
+          sku: p.slug,
+          description: p.description,
+          brand: { '@type': 'Brand', name: 'JKESS' },
+          manufacturer: { '@id': organizationId },
+          image: p.images.map((img) => absoluteUrl(img)),
+          url,
+          mainEntityOfPage: url,
+          additionalProperty,
+          category: p.categoryLabel,
+        }
+      : {
+          '@type': 'Service',
+          name: p.name,
+          description: p.description,
+          provider: { '@id': organizationId },
+          image: p.images.map((img) => absoluteUrl(img)),
+          url,
+          mainEntityOfPage: url,
+          serviceType: p.categoryLabel,
+          category: p.categoryLabel,
+          areaServed: 'Worldwide',
+          additionalProperty,
+        }
+
+  if (p.type === 'shop') {
+    const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
+    if (mpn) primaryEntity.mpn = mpn.value
+
+    if (p.variants?.length) {
+      primaryEntity.offers = {
+        '@type': 'AggregateOffer',
         priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        url,
-      })),
+        lowPrice: Math.min(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
+        highPrice: Math.max(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
+        offerCount: p.variants.length,
+        offers: p.variants.map((v) => ({
+          '@type': 'Offer',
+          name: v.label,
+          price: v.price ? parseFloat(v.price.replace(/[$,]/g, '')) : undefined,
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          url,
+        })),
+      }
     }
   }
 
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
-      productSchema,
+      primaryEntity,
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

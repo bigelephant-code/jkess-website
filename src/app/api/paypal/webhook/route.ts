@@ -45,7 +45,10 @@ function clean(value: unknown, maxLength = 500) {
 function payerName(order: Awaited<ReturnType<typeof getPayPalOrder>>) {
   const givenName = clean(order.payer?.name?.given_name, 100)
   const surname = clean(order.payer?.name?.surname, 100)
-  return [givenName, surname].filter(Boolean).join(' ') || clean(order.purchase_units?.[0]?.shipping?.name?.full_name, 200)
+  return (
+    [givenName, surname].filter(Boolean).join(' ') ||
+    clean(order.purchase_units?.[0]?.shipping?.name?.full_name, 200)
+  )
 }
 
 function shippingAddress(order: Awaited<ReturnType<typeof getPayPalOrder>>) {
@@ -58,6 +61,19 @@ function shippingAddress(order: Awaited<ReturnType<typeof getPayPalOrder>>) {
     postalCode: clean(address?.postal_code, 40),
     countryCode: clean(address?.country_code, 8),
   }
+}
+
+function formattedShippingAddress(address: Record<string, string>) {
+  return [
+    address.addressLine1,
+    address.addressLine2,
+    address.city,
+    address.state,
+    address.postalCode,
+    address.countryCode,
+  ]
+    .filter(Boolean)
+    .join(', ')
 }
 
 function orderItems(order: Awaited<ReturnType<typeof getPayPalOrder>>): StoredOrderItem[] {
@@ -132,7 +148,12 @@ export async function POST(request: Request) {
     const amount = clean(capture?.amount?.value || purchaseUnit?.amount?.value, 40)
     const currency = clean(capture?.amount?.currency_code || purchaseUnit?.amount?.currency_code, 8)
 
-    if (!orderNumber || order.id !== paypalOrderId || order.status?.toUpperCase() !== 'COMPLETED' || !capture) {
+    if (
+      !orderNumber ||
+      order.id !== paypalOrderId ||
+      order.status?.toUpperCase() !== 'COMPLETED' ||
+      !capture
+    ) {
       throw new Error('PayPal order verification failed.')
     }
     if (
@@ -145,6 +166,9 @@ export async function POST(request: Request) {
 
     const existing = await getStoredOrder(orderNumber)
     const now = new Date().toISOString()
+    const payerEmail = clean(order.payer?.email_address, 320).toLowerCase()
+    const name = payerName(order)
+    const address = shippingAddress(order)
     const record: StoredOrderRecord = {
       orderNumber,
       paypalOrderId,
@@ -153,16 +177,24 @@ export async function POST(request: Request) {
       status: 'COMPLETED',
       amount,
       currency,
-      payerEmail: clean(order.payer?.email_address, 320).toLowerCase(),
-      payerName: payerName(order),
-      shippingAddress: shippingAddress(order),
+      payerEmail,
+      payerName: name,
+      customer: {
+        name: existing?.customer.name || name,
+        email: existing?.customer.email || payerEmail,
+        phone: existing?.customer.phone || '',
+        company: existing?.customer.company || '',
+        address: existing?.customer.address || formattedShippingAddress(address),
+        notes: existing?.customer.notes || '',
+      },
+      shippingAddress: address,
       items: orderItems(order),
       paypalCustomId: clean(purchaseUnit?.custom_id, 500),
       paypalDescription: clean(purchaseUnit?.description, 500),
       internalEmailStatus: existing?.internalEmailStatus || 'pending',
       customerEmailStatus: existing?.customerEmailStatus || 'pending',
       source: 'paypal-webhook',
-      createdAt: clean(order.create_time, 80) || clean(event.create_time, 80) || now,
+      createdAt: existing?.createdAt || clean(order.create_time, 80) || clean(event.create_time, 80) || now,
       paidAt:
         clean(capture.update_time, 80) ||
         clean(capture.create_time, 80) ||

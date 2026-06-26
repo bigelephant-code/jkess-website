@@ -15,6 +15,7 @@ const PAYPAL_CLIENT_ID =
   'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
 
 const SALES_EMAIL = 'zhou@jkess.com'
+const POLICY_VERSION = '2026-06-27'
 
 interface PayPalCapturedOrder {
   id: string
@@ -74,6 +75,7 @@ export default function CheckoutPage() {
   const [sdkReady, setSdkReady] = useState(false)
   const [sdkError, setSdkError] = useState(!PAYPAL_CLIENT_ID)
   const [paymentError, setPaymentError] = useState('')
+  const [acceptedPolicies, setAcceptedPolicies] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -87,12 +89,13 @@ export default function CheckoutPage() {
     .reduce((sum, item) => sum + priceNumber(item.price) * item.quantity, 0)
     .toFixed(2)
 
-  const formComplete = Boolean(
+  const contactComplete = Boolean(
     formData.name.trim() &&
     formData.email.trim() &&
     formData.phone.trim() &&
     formData.address.trim()
   )
+  const formComplete = contactComplete && acceptedPolicies
 
   useEffect(() => {
     if (window.paypal) {
@@ -124,10 +127,11 @@ export default function CheckoutPage() {
   }, [])
 
   useEffect(() => {
-    if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError || !formComplete) return
+    if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError) return
 
     const container = paypalRef.current
     container.innerHTML = ''
+    if (!formComplete) return
 
     const contactReference = compactReference(
       `Name:${formData.name} | Email:${formData.email} | Phone:${formData.phone} | Company:${formData.company || '-'}`
@@ -187,6 +191,8 @@ export default function CheckoutPage() {
             currency: 'USD',
             items,
             customer: formData,
+            policyVersion: POLICY_VERSION,
+            policiesAcceptedAt: new Date().toISOString(),
             createdAt: new Date().toISOString(),
           }
 
@@ -314,15 +320,37 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mb-6 flex items-center justify-between">
+                  <div className="border-t border-gray-200 pt-4 mb-5 flex items-center justify-between">
                     <span className="text-gray-900 font-semibold">{t('checkout.total')}</span>
                     <span className="text-xl font-bold text-green-600">${totalAmount}</span>
                   </div>
 
+                  <label className="mb-5 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
+                    <input
+                      type="checkbox"
+                      checked={acceptedPolicies}
+                      onChange={(event) => setAcceptedPolicies(event.target.checked)}
+                      className="mt-1 h-4 w-4 shrink-0 accent-green-500"
+                    />
+                    <span className="text-xs leading-5 text-gray-600">
+                      I agree to the{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/terms-of-sale')}>Terms of Sale</Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/shipping-policy')}>Shipping Policy</Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/returns-refunds')}>Returns & Refunds Policy</Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/warranty')}>Warranty Policy</Link>, and{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/safety')}>Safety Notice</Link>, and acknowledge the{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/privacy-policy')}>Privacy Policy</Link>.
+                    </span>
+                  </label>
+
                   <div className="space-y-3">
-                    {!formComplete ? (
+                    {!contactComplete ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
                         <p className="text-xs text-yellow-700">{t('checkout.fillFields')}</p>
+                      </div>
+                    ) : !acceptedPolicies ? (
+                      <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
+                        <p className="text-xs text-yellow-700">Please review and accept the order policies before payment.</p>
                       </div>
                     ) : !sdkReady ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">

@@ -1,0 +1,219 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { localizedSeoPath } from '@/lib/seo'
+import { getProductBySlug } from '@/lib/products'
+import { specSeoJsonLd } from '@/lib/spec-seo-utils'
+import type { SpecSeoPage } from '@/lib/spec-seo-pages'
+
+interface SpecSeoLandingPageProps {
+  page: SpecSeoPage
+  lang: string
+}
+
+export default function SpecSeoLandingPage({ page, lang }: SpecSeoLandingPageProps) {
+  const products = page.products
+    .map((item) => ({ item, product: getProductBySlug(item.slug) }))
+    .filter((entry) => entry.product)
+
+  const contactHref = localizedSeoPath(lang, '/contact')
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: specSeoJsonLd(page) }}
+      />
+      <div className="min-h-screen bg-white text-gray-950">
+        <header className="relative isolate overflow-hidden bg-gray-950 pt-24">
+          <Image
+            src={page.image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-black/90 to-black/55" />
+          <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-28">
+            <div className="max-w-4xl">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-green-400">
+                {page.eyebrow}
+              </p>
+              <h1 className="mt-5 text-4xl font-bold tracking-tight text-white md:text-6xl">
+                {page.title}
+              </h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-300 md:text-xl">
+                {page.intro}
+              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href={contactHref}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-bold text-black transition hover:bg-green-400"
+                >
+                  Request technical confirmation <ArrowRight size={17} />
+                </Link>
+                <Link
+                  href={localizedSeoPath(lang, '/products')}
+                  className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/15"
+                >
+                  Browse matching products
+                </Link>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main>
+          <section className="border-b border-gray-100 bg-gray-50">
+            <div className="mx-auto grid max-w-7xl gap-px bg-gray-200 px-6 py-px sm:grid-cols-2 lg:grid-cols-4 lg:px-0">
+              {page.highlights.map((highlight) => (
+                <div key={highlight.label} className="bg-white px-6 py-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                    {highlight.label}
+                  </p>
+                  <p className="mt-2 text-base font-bold text-gray-950">{highlight.value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
+              <article className="space-y-16">
+                {page.sections.map((section) => (
+                  <section key={section.title}>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-950">
+                      {section.title}
+                    </h2>
+                    <div className="mt-5 space-y-4 text-base leading-8 text-gray-600">
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                    {section.bullets && (
+                      <ul className="mt-6 grid gap-3">
+                        {section.bullets.map((bullet) => (
+                          <li
+                            key={bullet}
+                            className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm leading-6 text-gray-700"
+                          >
+                            <CheckCircle2 className="mt-0.5 shrink-0 text-green-600" size={18} />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                ))}
+              </article>
+
+              <aside className="h-fit rounded-2xl border border-gray-200 bg-gray-950 p-6 text-white lg:sticky lg:top-28">
+                <p className="text-xs font-bold uppercase tracking-widest text-green-400">
+                  Quote preparation
+                </p>
+                <h2 className="mt-3 text-2xl font-bold">Send the right inputs</h2>
+                <p className="mt-4 text-sm leading-6 text-gray-300">
+                  Include the target capacity, voltage, current, application, compatible equipment,
+                  destination country, site conditions, required scope, and delivery timeline.
+                </p>
+                <Link
+                  href={contactHref}
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
+                >
+                  Ask for configuration support <ArrowRight size={16} />
+                </Link>
+              </aside>
+            </div>
+          </section>
+
+          <section className="bg-gray-950 py-20 text-white md:py-24">
+            <div className="mx-auto max-w-7xl px-6">
+              <div className="max-w-3xl">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-400">
+                  Relevant products
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
+                  Match the specification with a real product page
+                </h2>
+              </div>
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
+                {products.map(({ item, product }) => {
+                  if (!product) return null
+                  return (
+                    <Link
+                      key={product.slug}
+                      href={localizedSeoPath(lang, `/products/${product.slug}`)}
+                      className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition hover:border-green-400/50 hover:bg-white/[0.07]"
+                    >
+                      <div className="relative aspect-[16/8] overflow-hidden bg-black">
+                        {product.images[0] && (
+                          <Image
+                            src={product.images[0]}
+                            alt={product.name}
+                            fill
+                            sizes="(min-width: 768px) 50vw, 100vw"
+                            className="object-contain p-6 transition duration-500 group-hover:scale-[1.03]"
+                          />
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold">{item.label}</h3>
+                        <p className="mt-3 text-sm leading-6 text-gray-300">{item.description}</p>
+                        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-green-400">
+                          View product details <ArrowRight size={15} />
+                        </span>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-700">
+                  FAQ
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight">Common selection questions</h2>
+              </div>
+              <div className="divide-y divide-gray-200 border-y border-gray-200">
+                {page.faqs.map((faq) => (
+                  <details key={faq.question} className="group py-5">
+                    <summary className="cursor-pointer list-none pr-8 text-base font-bold text-gray-950">
+                      {faq.question}
+                    </summary>
+                    <p className="mt-3 text-sm leading-7 text-gray-600">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="border-t border-gray-100 bg-gray-50 py-16">
+            <div className="mx-auto max-w-7xl px-6">
+              <h2 className="text-2xl font-bold text-gray-950">Related pages</h2>
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {page.related.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={localizedSeoPath(lang, link.href)}
+                    className="group rounded-2xl border border-gray-200 bg-white p-6 transition hover:border-green-400 hover:shadow-sm"
+                  >
+                    <h3 className="flex items-center justify-between gap-4 text-lg font-bold text-gray-950">
+                      {link.label}
+                      <ArrowRight className="shrink-0 text-green-600 transition group-hover:translate-x-1" size={18} />
+                    </h3>
+                    <p className="mt-3 text-sm leading-6 text-gray-600">{link.description}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </>
+  )
+}

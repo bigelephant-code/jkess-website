@@ -17,6 +17,49 @@ const categoryLabels: Record<string, string> = {
   'commercial-ess': 'C&I ESS Cabinet',
 }
 
+const technicalSearchPages = [
+  {
+    href: '/battery-enclosures',
+    title: 'LiFePO4 battery enclosures',
+    text: 'Compare 51.2V enclosure formats, included scope, cell fit, and inverter communication requirements.',
+  },
+  {
+    href: '/battery-enclosures/15kwh-lifepo4',
+    title: '15kWh battery enclosure',
+    text: 'Review the 15kWh-class floor-standing enclosure, cell inputs, package scope, and installation questions.',
+  },
+  {
+    href: '/battery-enclosures/16kwh-lifepo4',
+    title: '16kWh battery enclosure',
+    text: 'Compare the higher-capacity assembly class, usable-energy limits, movement, and cell compatibility.',
+  },
+  {
+    href: '/rack-battery-enclosures',
+    title: '6U rack battery enclosures',
+    text: 'Plan 19-inch rack depth, airflow, service clearance, module expansion, and communication.',
+  },
+  {
+    href: '/high-voltage-bms/100a',
+    title: '100A high-voltage BMS',
+    text: 'Review the moderate-current BCU and BMU option and the system information required before selection.',
+  },
+  {
+    href: '/high-voltage-bms/200a',
+    title: '200A high-voltage BMS',
+    text: 'Review higher-current control hardware, conductor and protection requirements, and supply boundaries.',
+  },
+  {
+    href: '/commercial-energy-storage/215kwh',
+    title: '215kWh C&I ESS cabinet',
+    text: 'Evaluate a 215.04kWh configuration for peak shaving, solar self-consumption, and selected backup loads.',
+  },
+  {
+    href: '/commercial-energy-storage/261kwh',
+    title: '261kWh C&I ESS cabinet',
+    text: 'Review the larger cabinet energy class, logistics, cooling, duty cycle, and multi-cabinet planning.',
+  },
+]
+
 export function ProductsPageClient({ products }: { products: Product[] }) {
   const { lang } = useI18n()
 
@@ -82,6 +125,39 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
           </StaggerReveal>
         </div>
       </section>
+
+      {lang === 'en' && (
+        <section className="border-y border-gray-200 bg-white py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-700">
+              Search by technical requirement
+            </p>
+            <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-gray-950 md:text-4xl">
+              Compare capacity, current, enclosure format, and application before choosing a product
+            </h2>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">
+              These pages explain what each specification means, what is included, what must be confirmed,
+              and which project information is needed for a reliable quotation.
+            </p>
+            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {technicalSearchPages.map((page) => (
+                <Link
+                  key={page.href}
+                  href={page.href}
+                  className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 transition hover:border-green-400 hover:bg-green-50"
+                >
+                  <h3 className="flex items-start justify-between gap-4 text-base font-bold text-gray-950">
+                    {page.title}
+                    <ArrowRight className="mt-0.5 shrink-0 text-green-600 transition group-hover:translate-x-1" size={17} />
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">{page.text}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <div className="defer-render">
         <PageFaqSection
           faqs={pageFaqs.products}

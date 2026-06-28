@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import HeroEnergyBackground from './HeroEnergyBackground'
+import AnimatedBackground from './AnimatedBackground'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 
@@ -17,7 +17,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      <HeroEnergyBackground />
+      <AnimatedBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">

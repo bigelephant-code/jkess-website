@@ -10,10 +10,7 @@ import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { trackEvent } from '@/lib/analytics'
 
-const PAYPAL_CLIENT_ID =
-  process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
-  'AaR-dWE_jGLO3En53T2iUBs1dbCrhVsFBPxbcnPUkCzGEwQdAbCxW5cTkukeMoy9gt-uHza0Gccs8qWX'
-
+const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''
 const SALES_EMAIL = 'zhou@jkess.com'
 const POLICY_VERSION = '2026-06-27'
 
@@ -65,7 +62,7 @@ function createInvoiceNumber() {
 
 export default function CheckoutPage() {
   const { lang, t } = useI18n()
-  const { items, clearCart } = useCart()
+  const { items, clearCart, inventoryLoaded, refreshInventory } = useCart()
   const invoiceNumber = useRef(createInvoiceNumber())
   const paypalRef = useRef<HTMLDivElement>(null)
   const scriptLoaded = useRef(false)
@@ -85,6 +82,10 @@ export default function CheckoutPage() {
     notes: '',
   })
 
+  useEffect(() => {
+    void refreshInventory()
+  }, [refreshInventory])
+
   const totalAmount = items
     .reduce((sum, item) => sum + priceNumber(item.price) * item.quantity, 0)
     .toFixed(2)
@@ -95,7 +96,7 @@ export default function CheckoutPage() {
     formData.phone.trim() &&
     formData.address.trim()
   )
-  const formComplete = contactComplete && acceptedPolicies
+  const formComplete = contactComplete && acceptedPolicies && inventoryLoaded
 
   useEffect(() => {
     if (!formComplete || scriptLoaded.current || !PAYPAL_CLIENT_ID) return
@@ -328,10 +329,13 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mb-5 flex items-center justify-between">
-                    <span className="text-gray-900 font-semibold">{t('checkout.total')}</span>
+                  <div className="border-t border-gray-200 pt-4 mb-2 flex items-center justify-between">
+                    <span className="text-gray-900 font-semibold">Product total</span>
                     <span className="text-xl font-bold text-green-600">${totalAmount}</span>
                   </div>
+                  <p className="mb-5 text-xs leading-5 text-gray-500">
+                    This payment covers the listed products only. Destination-dependent shipping, import duty, and applicable taxes are not included and will be confirmed separately before dispatch.
+                  </p>
 
                   <label className="mb-5 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
                     <input
@@ -359,6 +363,11 @@ export default function CheckoutPage() {
                     ) : !acceptedPolicies ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
                         <p className="text-xs text-yellow-700">Please review and accept the order policies before payment.</p>
+                      </div>
+                    ) : !inventoryLoaded ? (
+                      <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">
+                        <Loader2 size={18} className="animate-spin text-green-500" />
+                        <span className="text-sm text-gray-500">Checking current inventory…</span>
                       </div>
                     ) : !sdkReady ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">

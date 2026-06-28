@@ -1,8 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import AnimatedBackground from './AnimatedBackground'
-import { motion } from 'framer-motion'
+import HeroEnergyBackground from './HeroEnergyBackground'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 
@@ -18,7 +17,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      <AnimatedBackground />
+      <HeroEnergyBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
@@ -37,30 +36,10 @@ export default function HeroSection({ data }: { data?: HeroData }) {
           >
             <span className="absolute inset-0 bg-gradient-to-r from-green-600 via-green-300 to-green-600 animate-shimmer bg-[length:200%_100%]" />
             <span className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-green-300 to-emerald-600 opacity-0 group-hover:opacity-100 animate-shimmer bg-[length:200%_100%] transition-opacity duration-300" />
-            <motion.span
-              className="relative z-10 flex items-center gap-[1px]"
-              initial="rest"
-              animate="rest"
-              variants={{
-                rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
-                hover: { transition: { staggerChildren: 0.025 } },
-              }}
-              whileHover="hover"
-            >
-              {(data?.ctaText || t('hero.cta', 'Explore Products')).split('').map((char, i) => (
-                <motion.span
-                  key={i}
-                  className="inline-block"
-                  variants={{
-                    rest: { y: 0, transition: { duration: 0.2 } },
-                    hover: { y: -4, transition: { duration: 0.2 } },
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
-              <ArrowRight size={20} className="ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </motion.span>
+            <span className="relative z-10 inline-flex items-center gap-2 transition-transform duration-200 group-hover:-translate-y-0.5">
+              {data?.ctaText || t('hero.cta', 'Explore Products')}
+              <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
           </a>
           <a
             href={localizedPath(lang, '/about')}

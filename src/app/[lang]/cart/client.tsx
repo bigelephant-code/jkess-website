@@ -7,13 +7,22 @@ import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { trackEvent } from '@/lib/analytics'
 
 export default function CartPage() {
   const { lang, t } = useI18n()
-  const { items, removeItem, updateQuantity, clearCart, itemCount, total } = useCart()
+  const {
+    items,
+    removeItem,
+    updateQuantity,
+    clearCart,
+    inventory,
+    inventoryLoaded,
+    itemCount,
+    total,
+  } = useCart()
 
-  // ── Empty cart ──
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
@@ -34,10 +43,8 @@ export default function CartPage() {
     )
   }
 
-  // ── Cart with items ──
   return (
     <div className="relative min-h-screen bg-gray-50"><div className="absolute top-0 left-0 right-0 h-24 bg-black z-0" />
-      {/* ═══════ CONTENT ═══════ */}
       <div className="pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center justify-between mb-8">
@@ -53,68 +60,80 @@ export default function CartPage() {
 
           <Reveal>
             <div className="space-y-4 mb-8">
-              {items.map((item) => (
-                <div
-                  key={`${item.slug}-${item.variant}`}
-                  className="flex gap-4 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm"
-                >
-                  {/* Image */}
-                  <div className="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
-                    <Image
-                      src={item.image || '/placeholder.svg'}
-                      alt={item.name}
-                      fill
-                      className="object-contain p-2"
-                      sizes="96px"
-                    />
-                  </div>
+              {items.map((item) => {
+                const stock = isManagedInventorySlug(item.slug) ? inventory[item.slug] : null
+                const totalForProduct = items
+                  .filter((cartItem) => cartItem.slug === item.slug)
+                  .reduce((sum, cartItem) => sum + cartItem.quantity, 0)
+                const atInventoryLimit = stock !== null && totalForProduct >= stock
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <Link
-                      href={localizedPath(lang, `/products/${item.slug}`)}
-                      className="text-gray-900 font-semibold hover:text-green-600 transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                    <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
-                    <p className="text-green-600 font-semibold mt-2">{item.price}</p>
-                  </div>
+                return (
+                  <div
+                    key={`${item.slug}-${item.variant}`}
+                    className="flex gap-4 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm"
+                  >
+                    <div className="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                      <Image
+                        src={item.image || '/placeholder.svg'}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-2"
+                        sizes="96px"
+                      />
+                    </div>
 
-                  {/* Quantity controls */}
-                  <div className="flex flex-col items-end gap-3">
-                    <button
-                      onClick={() => removeItem(item.slug, item.variant)}
-                      aria-label={`Remove ${item.name} from cart`}
-                      className="text-gray-400 hover:text-red-500 transition-colors"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                    <div className="flex items-center border border-gray-200 rounded-lg bg-white">
-                      <button
-                        onClick={() => updateQuantity(item.slug, item.variant, item.quantity - 1)}
-                        aria-label={`Decrease quantity for ${item.name}`}
-                        className="px-3 py-1.5 text-gray-500 hover:text-gray-900"
+                    <div className="flex-1 min-w-0">
+                      <Link
+                        href={localizedPath(lang, `/products/${item.slug}`)}
+                        className="text-gray-900 font-semibold hover:text-green-600 transition-colors"
                       >
-                        <Minus size={14} />
-                      </button>
-                      <span className="px-4 py-1.5 text-gray-900 text-sm min-w-[2rem] text-center">
-                        {item.quantity}
-                      </span>
+                        {item.name}
+                      </Link>
+                      <p className="text-sm text-gray-500 mt-1">{item.variant}</p>
+                      <p className="text-green-600 font-semibold mt-2">{item.price}</p>
+                      {stock !== null && (
+                        <p className="mt-2 text-xs text-gray-400">
+                          {inventoryLoaded
+                            ? `${stock.toLocaleString('en-US')} units currently in stock across all options`
+                            : 'Checking current inventory…'}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col items-end gap-3">
                       <button
-                        onClick={() => updateQuantity(item.slug, item.variant, item.quantity + 1)}
-                        aria-label={`Increase quantity for ${item.name}`}
-                        className="px-3 py-1.5 text-gray-500 hover:text-gray-900"
+                        onClick={() => removeItem(item.slug, item.variant)}
+                        aria-label={`Remove ${item.name} from cart`}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
                       >
-                        <Plus size={14} />
+                        <Trash2 size={18} />
                       </button>
+                      <div className="flex items-center border border-gray-200 rounded-lg bg-white">
+                        <button
+                          onClick={() => updateQuantity(item.slug, item.variant, item.quantity - 1)}
+                          aria-label={`Decrease quantity for ${item.name}`}
+                          className="px-3 py-1.5 text-gray-500 hover:text-gray-900"
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className="px-4 py-1.5 text-gray-900 text-sm min-w-[2rem] text-center">
+                          {item.quantity}
+                        </span>
+                        <button
+                          onClick={() => updateQuantity(item.slug, item.variant, item.quantity + 1)}
+                          aria-label={`Increase quantity for ${item.name}`}
+                          disabled={atInventoryLimit}
+                          className="px-3 py-1.5 text-gray-500 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
-            {/* Summary */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-500">
@@ -122,8 +141,11 @@ export default function CartPage() {
                 </span>
                 <span className="text-gray-900 font-semibold">{total}</span>
               </div>
+              <p className="text-xs text-gray-400 mb-2">
+                Product prices do not include destination-dependent shipping, import duty, or applicable taxes.
+              </p>
               <p className="text-xs text-gray-400 mb-6">
-                {t('cart.shippingNote')}
+                Inventory is shared across product options and is deducted after verified payment.
               </p>
               <Link
                 href={localizedPath(lang, '/checkout')}

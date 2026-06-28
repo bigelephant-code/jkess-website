@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import type { Product, ProductSeoContent, ProductUseCases } from '@/lib/products'
 import { getProductFaqs } from '@/lib/products'
+import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 import { trackEvent } from '@/lib/analytics'
@@ -39,21 +40,39 @@ export function ProductDetailClient({
   const [selectedVariant, setSelectedVariant] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
-  const { addItem, itemCount } = useCart()
+  const { addItem, itemCount, items, inventory, inventoryLoaded } = useCart()
   const { t } = useI18n()
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
   const faqs = getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
+  const managedStock = isManagedInventorySlug(product.slug) ? inventory[product.slug] : null
+  const productQuantityInCart = items
+    .filter((item) => item.slug === product.slug)
+    .reduce((sum, item) => sum + item.quantity, 0)
+  const availableToAdd = managedStock === null
+    ? null
+    : Math.max(0, managedStock - productQuantityInCart)
+  const soldOut = isShop && managedStock !== null && managedStock <= 0
+  const noMoreAvailable = isShop && availableToAdd !== null && availableToAdd <= 0
+
+  useEffect(() => {
+    if (availableToAdd === null || availableToAdd <= 0) return
+    setQuantity((current) => Math.min(current, availableToAdd))
+  }, [availableToAdd])
 
   const handleAddToCart = () => {
+    if (soldOut || noMoreAvailable) return
     const variant = product.variants?.[selectedVariant]
+    const allowedQuantity = availableToAdd === null ? quantity : Math.min(quantity, availableToAdd)
+    if (allowedQuantity <= 0) return
+
     addItem({
       slug: product.slug,
       name: product.name,
       variant: variant?.label || 'Standard',
-      quantity,
+      quantity: allowedQuantity,
       price: variant?.price || '$0.00',
       image: product.images[0] || '',
     })
@@ -61,8 +80,8 @@ export function ProductDetailClient({
       item_id: product.slug,
       item_name: product.name,
       item_variant: variant?.label || 'Standard',
-      quantity,
-      value: variant?.price ? parseFloat(variant.price.replace(/[$,]/g, '')) * quantity : undefined,
+      quantity: allowedQuantity,
+      value: variant?.price ? parseFloat(variant.price.replace(/[$,]/g, '')) * allowedQuantity : undefined,
       currency: 'USD',
     })
     setAddedToCart(true)
@@ -70,6 +89,7 @@ export function ProductDetailClient({
   }
 
   const handleBuyNow = () => {
+    if (soldOut || noMoreAvailable) return
     trackEvent('buy_now_click', {
       item_id: product.slug,
       item_name: product.name,
@@ -101,6 +121,16 @@ export function ProductDetailClient({
     )
     window.open(`mailto:zhou@jkess.com?subject=${subject}&body=${body}`)
   }
+
+  const stockLabel = !isShop
+    ? t('product.customOrder', 'Custom Order')
+    : !inventoryLoaded
+      ? 'Checking stock…'
+      : soldOut
+        ? 'Out of stock'
+        : managedStock !== null
+          ? `${managedStock.toLocaleString('en-US')} units in stock`
+          : t('product.inStock', 'In Stock')
 
   return (
     <div className="min-h-screen bg-black">
@@ -135,8 +165,8 @@ export function ProductDetailClient({
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
                 />
-                <span className="absolute top-4 left-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-                  {isShop ? t('product.inStock', 'In Stock') : t('product.customOrder', 'Custom Order')}
+                <span className={`absolute top-4 left-4 text-black text-xs font-bold px-3 py-1 rounded-full ${soldOut ? 'bg-gray-300' : 'bg-green-500'}`}>
+                  {stockLabel}
                 </span>
               </div>
 
@@ -169,10 +199,14 @@ export function ProductDetailClient({
               {isShop && currentPrice && (
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-5">
                   <span className="text-3xl md:text-4xl font-bold text-green-400">{currentPrice}</span>
-                  <span className="text-sm text-gray-500 ml-2 line-through">
-                    ${' '}{(parseFloat(currentPrice.replace(/[$,]/g, '')) * 1.15).toFixed(2)}
-                  </span>
-                  <span className="ml-2 text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">-15% OFF</span>
+                  <p className="mt-2 text-xs leading-5 text-gray-500">
+                    Product price only. Shipping, import duty, and applicable taxes are confirmed separately for the destination and order quantity.
+                  </p>
+                  {managedStock !== null && (
+                    <p className="mt-2 text-xs leading-5 text-gray-400">
+                      Inventory is shared across this product’s options and is deducted after verified payment.
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -203,13 +237,30 @@ export function ProductDetailClient({
               )}
 
               <div className="mb-6">
-                <p className="text-sm text-gray-400 mb-2">Quantity:</p>
+                <p className="text-sm text-gray-400 mb-2">
+                  Quantity:
+                  {availableToAdd !== null && (
+                    <span className="ml-2 text-xs text-gray-500">{availableToAdd.toLocaleString('en-US')} available to add</span>
+                  )}
+                </p>
                 <div className="flex items-center border border-white/10 rounded-xl bg-white/5 w-fit">
-                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity" className="px-4 py-2.5 text-gray-400 hover:text-white">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    aria-label="Decrease quantity"
+                    disabled={quantity <= 1 || soldOut}
+                    className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                  >
                     <Minus size={16} />
                   </button>
                   <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">{quantity}</span>
-                  <button type="button" onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity" className="px-4 py-2.5 text-gray-400 hover:text-white">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((current) => availableToAdd === null ? current + 1 : Math.min(current + 1, Math.max(1, availableToAdd)))}
+                    aria-label="Increase quantity"
+                    disabled={soldOut || noMoreAvailable || (availableToAdd !== null && quantity >= availableToAdd)}
+                    className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                  >
                     <Plus size={16} />
                   </button>
                 </div>
@@ -222,15 +273,27 @@ export function ProductDetailClient({
                       <button
                         type="button"
                         onClick={handleAddToCart}
-                        className={`flex items-center justify-center gap-2 font-semibold px-6 py-3.5 rounded-xl text-base transition-all ${
+                        disabled={soldOut || noMoreAvailable}
+                        className={`flex items-center justify-center gap-2 font-semibold px-6 py-3.5 rounded-xl text-base transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
                           addedToCart
                             ? 'bg-green-400 text-black'
                             : 'bg-green-500/20 border border-green-500 text-green-400 hover:bg-green-500/30'
                         }`}
                       >
-                        {addedToCart ? t('product.added', 'Added') : <><ShoppingCart size={18} /> {t('product.addToCart', 'Add to Cart')}</>}
+                        {soldOut
+                          ? 'Out of stock'
+                          : noMoreAvailable
+                            ? 'Available stock in cart'
+                            : addedToCart
+                              ? t('product.added', 'Added')
+                              : <><ShoppingCart size={18} /> {t('product.addToCart', 'Add to Cart')}</>}
                       </button>
-                      <button type="button" onClick={handleBuyNow} className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3.5 rounded-xl text-base transition-all">
+                      <button
+                        type="button"
+                        onClick={handleBuyNow}
+                        disabled={soldOut || noMoreAvailable}
+                        className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3.5 rounded-xl text-base transition-all disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-300"
+                      >
                         {t('product.buyNow', 'Buy Now')}
                       </button>
                     </div>
@@ -251,9 +314,9 @@ export function ProductDetailClient({
               </div>
 
               <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
-                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.freeShipping', 'Free Shipping')}</p></div>
+                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Shipping & taxes confirmed separately</p></div>
                 <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.warranty', '1-Year Warranty')}</p></div>
-                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.returns', '7-Day Returns')}</p></div>
+                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Returns subject to policy</p></div>
               </div>
             </div>
           </div>

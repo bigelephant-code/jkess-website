@@ -30,7 +30,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
         <div className="max-w-7xl mx-auto px-6">
           <StaggerReveal staggerDelay={0.12}>
             <div className="grid md:grid-cols-2 gap-8">
-              {products.map((product) => (
+              {products.map((product, index) => (
                 <StaggerItem key={product.slug}>
                   <Link
                     href={localizedPath(lang, `/products/${product.slug}`)}
@@ -43,7 +43,9 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                           alt={`${product.name} energy storage product`}
                           fill
                           className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, 50vw"
+                          sizes="(max-width: 767px) calc(100vw - 3rem), 46vw"
+                          quality={72}
+                          priority={index === 0}
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center text-lg font-semibold text-gray-400">
@@ -80,12 +82,14 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
           </StaggerReveal>
         </div>
       </section>
-      <PageFaqSection
-        faqs={pageFaqs.products}
-        title="Product Selection FAQ"
-        description="A quick guide to choosing between JKESS battery kits, high voltage kits, and commercial energy storage cabinets."
-      />
-      <div className="pb-20">
+      <div className="defer-render">
+        <PageFaqSection
+          faqs={pageFaqs.products}
+          title="Product Selection FAQ"
+          description="A quick guide to choosing between JKESS battery kits, high voltage kits, and commercial energy storage cabinets."
+        />
+      </div>
+      <div className="defer-render pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide">
             Comprehensive energy storage solutions engineered for reliability and performance

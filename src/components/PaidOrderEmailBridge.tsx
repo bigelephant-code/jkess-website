@@ -10,6 +10,10 @@ type StoredOrder = {
   customer?: Record<string, unknown>
 }
 
+type IdleWindow = Window & {
+  requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number
+}
+
 const ORDER_PREFIX = 'jkess-order-'
 const SENT_PREFIX = 'jkess-order-email-sent-'
 const RETRY_DELAYS = [5_000, 15_000, 60_000, 300_000]
@@ -104,8 +108,9 @@ export default function PaidOrderEmailBridge() {
     }
 
     const runWhenIdle = () => {
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => void sendPendingOrders(), { timeout: 2_000 })
+      const idleWindow = window as IdleWindow
+      if (idleWindow.requestIdleCallback) {
+        idleWindow.requestIdleCallback(() => void sendPendingOrders(), { timeout: 2_000 })
       } else {
         window.setTimeout(() => void sendPendingOrders(), 500)
       }

@@ -1,0 +1,52 @@
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(74, 222, 128, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 222, 128, 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.7) 65%, transparent 100%);
+}
+
+@keyframes hero-energy-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -52; }
+}
+
+@keyframes hero-energy-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50% { opacity: 0.55; transform: scale(1.18); }
+}
+
+.hero-energy-line {
+  stroke-dasharray: 8 18;
+  animation: hero-energy-flow 6s linear infinite;
+}
+
+.hero-energy-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hero-energy-pulse 4s ease-in-out infinite;
+}
+
+.defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-energy-line,
+  .hero-energy-pulse,
+  .animate-gradient-text,
+  .animate-gradient-green,
+  .animate-gradient-vision,
+  .animate-shimmer,
+  .animate-scroll-left,
+  .animate-scroll-right,
+  .animate-breathe,
+  .animate-heartbeat,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-bounce,
+  .animate-pulse {
+    animation: none !important;
+  }
+}

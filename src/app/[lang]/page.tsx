@@ -65,7 +65,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
   return (
     <>
       <HeroSection data={heroData} />
-      <section className="relative">
+      <section className="relative defer-render">
         <div className="absolute inset-0 bg-white">
           <TechLines />
         </div>
@@ -76,10 +76,10 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
           <CertTiltBoard />
         </div>
       </section>
-      <MadeWithJKESS />
-      <ReviewsWall />
-      <BrandLogos />
-      <ContactSection data={siteContent.footer} />
+      <div className="defer-render"><MadeWithJKESS /></div>
+      <div className="defer-render"><ReviewsWall /></div>
+      <div className="defer-render"><BrandLogos /></div>
+      <div className="defer-render"><ContactSection data={siteContent.footer} /></div>
     </>
   )
 }

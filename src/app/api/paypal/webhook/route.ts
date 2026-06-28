@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
 import {
   acquireWebhookLock,
+  decrementInventoryForPaidOrder,
   getStoredOrder,
   markWebhookProcessed,
   releaseWebhookLock,
@@ -170,6 +171,7 @@ export async function POST(request: Request) {
     const payerEmail = clean(order.payer?.email_address, 320).toLowerCase()
     const name = payerName(order)
     const address = shippingAddress(order)
+    const items = orderItems(order)
     const record: StoredOrderRecord = {
       orderNumber,
       paypalOrderId,
@@ -189,7 +191,7 @@ export async function POST(request: Request) {
         notes: existing?.customer.notes || '',
       },
       shippingAddress: address,
-      items: orderItems(order),
+      items,
       paypalCustomId: clean(purchaseUnit?.custom_id, 500),
       paypalDescription: clean(purchaseUnit?.description, 500),
       internalEmailStatus: existing?.internalEmailStatus || 'pending',
@@ -210,6 +212,11 @@ export async function POST(request: Request) {
     }
 
     await savePaidOrder(record)
+    const inventory = await decrementInventoryForPaidOrder(orderNumber, items)
+    if (inventory.processed) {
+      console.info('Inventory deducted for paid order:', orderNumber, inventory.remaining)
+    }
+
     const delivery = await deliverPaidOrderEmails(orderNumber)
     if (delivery.processing) {
       throw new Error('Order email delivery is already in progress.')
@@ -220,6 +227,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       received: true,
       stored: true,
+      inventoryUpdated: inventory.processed || inventory.duplicate,
       orderNumber,
       internalEmailStatus: delivery.internalEmailStatus,
       customerEmailStatus: delivery.customerEmailStatus,

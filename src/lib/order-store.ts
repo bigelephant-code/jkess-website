@@ -1,3 +1,12 @@
+import {
+  INITIAL_INVENTORY,
+  inventorySlugFromSku,
+  managedInventorySlugs,
+  normalizedInventory,
+  type InventorySnapshot,
+  type ManagedInventorySlug,
+} from '@/lib/inventory-catalog'
+
 export class OrderStoreConfigurationError extends Error {
   constructor(message: string) {
     super(message)
@@ -107,7 +116,85 @@ const key = {
   webhookLock: (eventId: string) => `jkess:webhook-lock:${eventId}`,
   webhookProcessed: (eventId: string) => `jkess:webhook-processed:${eventId}`,
   emailLock: (orderNumber: string) => `jkess:email-lock:${orderNumber}`,
+  inventory: (slug: ManagedInventorySlug) => `jkess:inventory:${slug}`,
+  inventoryOrder: (orderNumber: string) => `jkess:inventory-order:${orderNumber}`,
   paidOrders: 'jkess:orders:paid',
+}
+
+async function ensureInventoryInitialized() {
+  await Promise.all(
+    managedInventorySlugs.map((slug) =>
+      redisCommand<string | null>([
+        'SET',
+        key.inventory(slug),
+        INITIAL_INVENTORY[slug],
+        'NX',
+      ])
+    )
+  )
+}
+
+export async function getInventorySnapshot(): Promise<InventorySnapshot> {
+  await ensureInventoryInitialized()
+  const values = await redisCommand<Array<string | number | null>>([
+    'MGET',
+    ...managedInventorySlugs.map((slug) => key.inventory(slug)),
+  ])
+
+  return Object.fromEntries(
+    managedInventorySlugs.map((slug, index) => [
+      slug,
+      normalizedInventory(values?.[index], INITIAL_INVENTORY[slug]),
+    ])
+  ) as InventorySnapshot
+}
+
+export async function decrementInventoryForPaidOrder(
+  orderNumber: string,
+  items: Array<Pick<StoredOrderItem, 'sku' | 'quantity'>>
+) {
+  const requested = Object.fromEntries(
+    managedInventorySlugs.map((slug) => [slug, 0])
+  ) as Record<ManagedInventorySlug, number>
+
+  for (const item of items) {
+    const slug = inventorySlugFromSku(item.sku)
+    if (!slug) continue
+    requested[slug] += Math.max(0, Math.floor(item.quantity || 0))
+  }
+
+  const affectedSlugs = managedInventorySlugs.filter((slug) => requested[slug] > 0)
+  if (!affectedSlugs.length) return { processed: false, duplicate: false }
+
+  await ensureInventoryInitialized()
+
+  const script = [
+    "if redis.call('EXISTS', KEYS[1]) == 1 then return {0} end",
+    'local result = {1}',
+    'for i = 2, #KEYS do',
+    "  local remaining = redis.call('DECRBY', KEYS[i], tonumber(ARGV[i - 1]) or 0)",
+    '  table.insert(result, remaining)',
+    'end',
+    "redis.call('SET', KEYS[1], '1')",
+    'return result',
+  ].join('\n')
+
+  const result = await redisCommand<number[]>([
+    'EVAL',
+    script,
+    affectedSlugs.length + 1,
+    key.inventoryOrder(orderNumber),
+    ...affectedSlugs.map((slug) => key.inventory(slug)),
+    ...affectedSlugs.map((slug) => requested[slug]),
+  ])
+
+  return {
+    processed: result?.[0] === 1,
+    duplicate: result?.[0] === 0,
+    remaining: Object.fromEntries(
+      affectedSlugs.map((slug, index) => [slug, Math.max(0, Number(result?.[index + 1] || 0))])
+    ),
+  }
 }
 
 export async function webhookWasProcessed(eventId: string) {

@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    deviceSizes: [360, 640, 750, 828, 1080, 1200, 1600, 1920],
+    imageSizes: [32, 48, 64, 80, 96, 128, 256, 384],
+    qualities: [60, 70, 72, 75, 85],
+    minimumCacheTTL: 2678400,
   },
   async headers() {
     return [

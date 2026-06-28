@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { locales, defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
 import { nonBrandLandingPages } from '@/lib/non-brand-pages'
+import { specificationLandingPages } from '@/lib/specification-pages'
 import { absoluteUrl } from '@/lib/site'
 import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
@@ -79,7 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  for (const page of nonBrandLandingPages) {
+  for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {
     const url = absoluteUrl(`/${page.path}`)
     entries.push({
       url,

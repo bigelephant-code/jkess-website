@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { locales, defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
 import { nonBrandLandingPages } from '@/lib/non-brand-pages'
+import { specSeoPages } from '@/lib/spec-seo-pages'
 import { absoluteUrl } from '@/lib/site'
 import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
@@ -47,6 +48,23 @@ function staticChangeFrequency(path: string): MetadataRoute.Sitemap[number]['cha
   return 'monthly'
 }
 
+function pushEnglishSeoPage(entries: MetadataRoute.Sitemap, page: { path: string; image: string }, priority: number) {
+  const url = absoluteUrl(`/${page.path}`)
+  entries.push({
+    url,
+    lastModified: siteLastModified,
+    changeFrequency: 'monthly',
+    priority,
+    images: [absoluteUrl(page.image)],
+    alternates: {
+      languages: {
+        en: url,
+        'x-default': url,
+      },
+    },
+  })
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
 
@@ -80,20 +98,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   for (const page of nonBrandLandingPages) {
-    const url = absoluteUrl(`/${page.path}`)
-    entries.push({
-      url,
-      lastModified: siteLastModified,
-      changeFrequency: page.kind === 'guide' ? 'monthly' : 'weekly',
-      priority: page.kind === 'category' ? 0.9 : 0.85,
-      images: [absoluteUrl(page.image)],
-      alternates: {
-        languages: {
-          en: url,
-          'x-default': url,
-        },
-      },
-    })
+    pushEnglishSeoPage(entries, page, page.kind === 'category' ? 0.9 : 0.85)
+  }
+
+  for (const page of specSeoPages) {
+    pushEnglishSeoPage(entries, page, page.kind === 'guide' ? 0.8 : 0.86)
   }
 
   return entries

@@ -1,6 +1,7 @@
 import Script from 'next/script'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ProductSalePrice from '@/components/ProductSalePrice'
 import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
@@ -81,6 +82,7 @@ export default async function LangLayout(props: {
             </Script>
           )}
           <Navbar />
+          <ProductSalePrice />
           <main className="flex-1">{props.children}</main>
           <Footer />
         </CartProvider>

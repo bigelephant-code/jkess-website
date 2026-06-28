@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import SpecSeoLandingPage from '@/components/SpecSeoLandingPage'
+import { locales } from '@/i18n/config'
 import { buildSpecSeoMetadata } from '@/lib/spec-seo-utils'
 import { getSpecSeoPage, specSeoPagesByPrefix } from '@/lib/spec-seo-pages'
 
@@ -10,7 +11,12 @@ interface PageProps {
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return specSeoPagesByPrefix('high-voltage-bms').map((page) => ({ slug: page.slug }))
+  return locales.flatMap((locale) =>
+    specSeoPagesByPrefix('high-voltage-bms').map((page) => ({
+      lang: locale.code,
+      slug: page.slug,
+    }))
+  )
 }
 
 export async function generateMetadata({ params }: PageProps) {

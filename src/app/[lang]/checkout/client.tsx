@@ -98,16 +98,23 @@ export default function CheckoutPage() {
   const formComplete = contactComplete && acceptedPolicies
 
   useEffect(() => {
+    if (!formComplete || scriptLoaded.current || !PAYPAL_CLIENT_ID) return
+
     if (window.paypal) {
       window.setTimeout(() => setSdkReady(true), 0)
       return
     }
 
-    if (scriptLoaded.current || !PAYPAL_CLIENT_ID) return
     scriptLoaded.current = true
 
+    const preconnect = document.createElement('link')
+    preconnect.rel = 'preconnect'
+    preconnect.href = 'https://www.paypal.com'
+    preconnect.crossOrigin = 'anonymous'
+    document.head.appendChild(preconnect)
+
     const script = document.createElement('script')
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD`
+    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&components=buttons`
     script.async = true
     script.onload = () => setSdkReady(true)
     script.onerror = () => {
@@ -124,7 +131,7 @@ export default function CheckoutPage() {
     }, 15000)
 
     return () => window.clearTimeout(timeout)
-  }, [])
+  }, [formComplete])
 
   useEffect(() => {
     if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError) return
@@ -201,6 +208,7 @@ export default function CheckoutPage() {
               `jkess-order-${invoiceNumber.current}`,
               JSON.stringify(orderSnapshot)
             )
+            window.dispatchEvent(new Event('jkess:order-created'))
           } catch {
             // PayPal remains the authoritative payment record if local storage is unavailable.
           }
@@ -306,7 +314,7 @@ export default function CheckoutPage() {
                     {items.map((item) => (
                       <div key={`${item.slug}-${item.variant}`} className="flex gap-3">
                         <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                          <Image src={item.image || '/placeholder.svg'} alt={item.name} fill className="object-contain p-1" sizes="56px" />
+                          <Image src={item.image || '/placeholder.svg'} alt={item.name} fill className="object-contain p-1" sizes="56px" quality={70} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-gray-900 font-medium truncate">{item.name}</p>

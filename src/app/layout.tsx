@@ -5,6 +5,7 @@ import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
 import { jkessOrganization, jsonLd } from '@/lib/structured-data'
 import './globals.css'
+import './performance.css'
 
 const inter = Inter({
   variable: '--font-inter',

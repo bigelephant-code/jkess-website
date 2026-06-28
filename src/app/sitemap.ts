@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { locales, defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
+import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { absoluteUrl } from '@/lib/site'
 import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
@@ -13,7 +14,7 @@ const policyPaths = [
   '/privacy-policy',
 ]
 const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
-const siteLastModified = new Date('2026-06-27')
+const siteLastModified = new Date('2026-06-28')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],
@@ -76,6 +77,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       })
     }
+  }
+
+  for (const page of nonBrandLandingPages) {
+    const url = absoluteUrl(`/${page.path}`)
+    entries.push({
+      url,
+      lastModified: siteLastModified,
+      changeFrequency: page.kind === 'guide' ? 'monthly' : 'weekly',
+      priority: page.kind === 'category' ? 0.9 : 0.85,
+      images: [absoluteUrl(page.image)],
+      alternates: {
+        languages: {
+          en: url,
+          'x-default': url,
+        },
+      },
+    })
   }
 
   return entries

@@ -1,0 +1,6 @@
+@media (min-width: 1024px) {
+  nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="ml-auto"][class*="lg:flex"],
+  nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="gap-3"][class*="lg:flex"] {
+    transform: translateX(clamp(12px, 2.5vw, 40px));
+  }
+}

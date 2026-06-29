@@ -42,6 +42,16 @@ function requestHeadersWithLocale(request: NextRequest, locale: string) {
   return requestHeaders
 }
 
+function setLocaleResponseHeaders(
+  response: NextResponse,
+  locale: string,
+  varyByAcceptLanguage = false
+) {
+  response.headers.set('Content-Language', locale)
+  if (varyByAcceptLanguage) response.headers.append('Vary', 'Accept-Language')
+  return response
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -53,11 +63,12 @@ export function proxy(request: NextRequest) {
   const firstSegment = pathSegments[0]?.toLowerCase()
 
   if (firstSegment && isValidLocale(firstSegment)) {
-    return NextResponse.next({
+    const response = NextResponse.next({
       request: {
         headers: requestHeadersWithLocale(request, firstSegment),
       },
     })
+    return setLocaleResponseHeaders(response, firstSegment)
   }
 
   const locale = getNegotiatedLocale(request)
@@ -65,16 +76,18 @@ export function proxy(request: NextRequest) {
   if (locale !== defaultLocale) {
     const newUrl = new URL(request.nextUrl)
     newUrl.pathname = `/${locale}${pathname}`
-    return NextResponse.redirect(newUrl, 307)
+    const response = NextResponse.redirect(newUrl, 307)
+    return setLocaleResponseHeaders(response, locale, true)
   }
 
   const rewriteUrl = new URL(request.nextUrl)
   rewriteUrl.pathname = `/en${pathname === '/' ? '' : pathname}`
-  return NextResponse.rewrite(rewriteUrl, {
+  const response = NextResponse.rewrite(rewriteUrl, {
     request: {
       headers: requestHeadersWithLocale(request, defaultLocale),
     },
   })
+  return setLocaleResponseHeaders(response, defaultLocale, true)
 }
 
 export const config = {

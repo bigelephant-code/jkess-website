@@ -123,8 +123,8 @@ export default async function NewsPage({ params }: { params: Promise<{ lang: str
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: newsJsonLd() }}
       />
-      <NewsOwnedInsights lang={lang} />
       <NewsPageClient />
+      <NewsOwnedInsights lang={lang} />
     </>
   )
 }

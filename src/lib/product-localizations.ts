@@ -22,6 +22,7 @@ export interface LocalizedProductPageContent {
 
 const batteryKitGerman = {
   product: {
+    name: 'JKESS Batteriegehäuse-Bausatz mit Rollen',
     categoryLabel: 'Batteriegehäuse-Bausatz mit Rollen',
     tagline: 'Mobiler LiFePO4-Batteriegehäuse-Bausatz mit optionalem BMS und LCD',
     description:
@@ -122,6 +123,7 @@ const batteryKitGerman = {
 
 const batteryKitFrench = {
   product: {
+    name: 'Kit de boîtier de batterie JKESS sur roulettes',
     categoryLabel: 'Kit de boîtier de batterie sur roulettes',
     tagline: 'Kit de boîtier LiFePO4 mobile avec BMS et écran LCD en option',
     description:

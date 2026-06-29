@@ -6,7 +6,15 @@ import { absoluteUrl } from '@/lib/site'
 export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr']
 export const fullyLocalizedSeoLocales: readonly LangCode[] = [defaultLocale]
 export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
+export const batteryKitIndexableSeoLocales: readonly LangCode[] = [
+  defaultLocale,
+  ...euSeoPilotLocales,
+]
 export const allPublishedSeoLocales: readonly LangCode[] = locales.map((locale) => locale.code)
+
+const productIndexableSeoLocalesBySlug: Readonly<Record<string, readonly LangCode[]>> = {
+  'battery-kit': batteryKitIndexableSeoLocales,
+}
 
 interface PageMetadataOptions {
   lang: string
@@ -17,6 +25,12 @@ interface PageMetadataOptions {
   image?: string
   indexableLocales?: readonly LangCode[]
   alternateLocales?: readonly LangCode[]
+  openGraphLocale?: string
+  openGraphAlternateLocales?: string[]
+}
+
+export function productIndexableSeoLocales(slug: string) {
+  return productIndexableSeoLocalesBySlug[slug] ?? defaultIndexableSeoLocales
 }
 
 export function localizedSeoPath(lang: string, path: string) {
@@ -64,6 +78,8 @@ export function buildPageMetadata({
   image = '/images/news-featured-energy-storage.jpg',
   indexableLocales = defaultIndexableSeoLocales,
   alternateLocales,
+  openGraphLocale,
+  openGraphAlternateLocales,
 }: PageMetadataOptions): Metadata {
   const indexable = isSeoLocaleIndexable(lang, indexableLocales)
   const canonicalPath = canonicalSeoPath(lang, path, indexableLocales)
@@ -97,6 +113,8 @@ export function buildPageMetadata({
       description,
       url: absoluteUrl(canonicalPath),
       siteName: 'JKESS',
+      locale: openGraphLocale,
+      alternateLocale: openGraphAlternateLocales,
       type: 'website',
       images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },

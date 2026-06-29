@@ -17,6 +17,9 @@ export const messageOverrides: MessageOverrides = {
     'checkout.deliveryCountry': 'Lieferland / Lieferregion *',
     'checkout.selectDeliveryCountry': 'Lieferland / Lieferregion auswählen',
     'checkout.otherCountryQuoteRequired': 'Anderes Land / andere Region — Angebot erforderlich',
+    'checkout.euCountryGroup': 'Europäische Union — kostenloser Versand',
+    'checkout.flatRateCountryGroup':
+      'USA, Südostasien, Naher Osten, Japan und Südkorea — {amount} US-Dollar Versand',
     'checkout.euFreeShipping':
       'Für diese Lieferadresse in der EU ist der Standardversand kostenlos enthalten.',
     'checkout.flatRateShipping':
@@ -118,6 +121,9 @@ export const messageOverrides: MessageOverrides = {
     'checkout.deliveryCountry': 'Pays / région de livraison *',
     'checkout.selectDeliveryCountry': 'Sélectionner le pays / la région de livraison',
     'checkout.otherCountryQuoteRequired': 'Autre pays / région — devis requis',
+    'checkout.euCountryGroup': 'Union européenne — livraison gratuite',
+    'checkout.flatRateCountryGroup':
+      'États-Unis, Asie du Sud-Est, Moyen-Orient, Japon et Corée du Sud — livraison à {amount} $ US',
     'checkout.euFreeShipping':
       'La livraison standard est incluse gratuitement pour cette adresse de livraison dans l’UE.',
     'checkout.flatRateShipping':

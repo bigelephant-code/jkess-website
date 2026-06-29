@@ -1,3 +1,4 @@
+import '../navbar-right-balance.css'
 import Script from 'next/script'
 import NavbarMegaMenuV2 from '@/components/NavbarMegaMenuV2'
 import Footer from '@/components/Footer'

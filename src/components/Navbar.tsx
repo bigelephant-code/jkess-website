@@ -1,29 +1,31 @@
 'use client'
 
-import { useState, useEffect, useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { Menu, X, ShoppingCart, Globe} from 'lucide-react'
-import { useCart} from '@/context/CartContext'
-import { motion, AnimatePresence} from 'framer-motion'
-import { useI18n} from '@/i18n/client'
-import { locales, localeMap} from '@/i18n/config'
-import type { LangCode} from '@/i18n/config'
+import { usePathname } from 'next/navigation'
+import { Menu, X, ShoppingCart, Globe } from 'lucide-react'
+import { useCart } from '@/context/CartContext'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useI18n } from '@/i18n/client'
+import { locales, localeMap } from '@/i18n/config'
+import type { LangCode } from '@/i18n/config'
 
 const navLinks = [
-  { key: 'nav.home', href: '/'},
-  { key: 'nav.shop', href: '/products'},
-  { key: 'nav.news', href: '/news'},
-  { key: 'nav.about', href: '/about'},
-  { key: 'nav.contact', href: '/contact'},
-  { key: 'nav.downloads', href: '/downloads'},
+  { key: 'nav.home', label: 'Home', href: '/' },
+  { key: 'nav.shop', label: 'Products', href: '/products' },
+  { key: 'nav.solutions', label: 'Solutions', href: '/commercial-energy-storage' },
+  { key: 'nav.guides', label: 'Guides', href: '/news' },
+  { key: 'nav.quality', label: 'Quality', href: '/quality-and-manufacturing' },
+  { key: 'nav.shippingQuote', label: 'Shipping Quote', href: '/shipping-quote' },
+  { key: 'nav.contact', label: 'Contact', href: '/contact' },
 ]
 
 const languageGroups = [
-  { label: 'West & Central Europe', codes: ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt'] as LangCode[]},
-  { label: 'Nordic', codes: ['sv', 'da', 'fi'] as LangCode[]},
-  { label: 'Central & Eastern Europe', codes: ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el'] as LangCode[]},
-  { label: 'Baltics & Balkans', codes: ['hr', 'sl', 'lt', 'lv', 'et'] as LangCode[]},
-  { label: 'CIS & Middle East', codes: ['ru', 'uk', 'fa', 'tr'] as LangCode[]},
+  { label: 'West & Central Europe', codes: ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt'] as LangCode[] },
+  { label: 'Nordic', codes: ['sv', 'da', 'fi'] as LangCode[] },
+  { label: 'Central & Eastern Europe', codes: ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el'] as LangCode[] },
+  { label: 'Baltics & Balkans', codes: ['hr', 'sl', 'lt', 'lv', 'et'] as LangCode[] },
+  { label: 'CIS & Middle East', codes: ['ru', 'uk', 'fa', 'tr'] as LangCode[] },
 ]
 
 export default function Navbar() {
@@ -37,78 +39,72 @@ export default function Navbar() {
   const scrollDirection = useRef<'up' | 'down' | null>(null)
   const visibleRef = useRef(true)
   const navRef = useRef<HTMLDivElement>(null)
-  const { itemCount} = useCart()
-  const { lang, t} = useI18n()
+  const { itemCount } = useCart()
+  const { lang, t } = useI18n()
+  const pathname = usePathname()
   const prefix = lang === 'en' ? '' : '/' + lang
 
   const currentLocale = localeMap.get(lang)!
+  const localePattern = new RegExp(`^/(${locales.map((locale) => locale.code).join('|')})(?=/|$)`)
+  const languageNeutralPath = pathname.replace(localePattern, '') || '/'
+  const languageHref = (code: LangCode) =>
+    code === 'en'
+      ? languageNeutralPath
+      : `/${code}${languageNeutralPath === '/' ? '' : languageNeutralPath}`
 
-  // Sync visibleRef with state
-  useEffect(() => { visibleRef.current = visible}, [visible])
+  useEffect(() => { visibleRef.current = visible }, [visible])
 
-  // Hide navbar on scroll down
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      
-      // Track scroll direction (always, with small dead zone)
+
       if (currentScrollY > lastScrollY.current + 2) {
         scrollDirection.current = 'down'
-     } else if (currentScrollY < lastScrollY.current - 2) {
+      } else if (currentScrollY < lastScrollY.current - 2) {
         scrollDirection.current = 'up'
-     }
+      }
       lastScrollY.current = currentScrollY
-      
-      // Close language panel on scroll
       setLangOpen(false)
-      
+
       const isCurrentlyVisible = visibleRef.current
-      
+
       if (currentScrollY <= 10) {
-        // At top: seamless full-width
         setAtTop(true)
         if (!isCurrentlyVisible) {
           wasHidden.current = true
           setVisible(true)
-       }
-     } else if (scrollDirection.current === 'down' && currentScrollY > 100) {
-        // Scrolling down past threshold: peel then hide
+        }
+      } else if (scrollDirection.current === 'down' && currentScrollY > 100) {
         setAtTop(false)
         setVisible(false)
-     } else if (scrollDirection.current === 'up' && !isCurrentlyVisible) {
-        // Scrolling up while hidden: reappear with particles
+      } else if (scrollDirection.current === 'up' && !isCurrentlyVisible) {
         setAtTop(currentScrollY <= 10)
         wasHidden.current = true
         setVisible(true)
-     } else {
-        // Between 10-100px: peeled visible state
+      } else {
         setAtTop(false)
-        if (!isCurrentlyVisible) {
-          setVisible(true)
-       }
-     }
-   }
-    window.addEventListener('scroll', handleScroll, { passive: true})
+        if (!isCurrentlyVisible) setVisible(true)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
- }, [])
+  }, [])
+
   useEffect(() => {
     if (visible && wasHidden.current) {
       setJustAppeared(true)
       wasHidden.current = false
       setTimeout(() => setJustAppeared(false), 400)
-   }
- }, [visible])
+    }
+  }, [visible])
 
-  // Close language panel on outside click
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setLangOpen(false)
-     }
-   }
+    const handleClick = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) setLangOpen(false)
+    }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
- }, [])
+  }, [])
 
   return (
     <nav
@@ -123,39 +119,34 @@ export default function Navbar() {
           : 'top-2 w-[97%] max-w-[1580px] rounded-[17px]'
       }`}
     >
-      {/* ── Energy Sweep Effect (on reappear, lightweight CSS animation) ── */}
       <AnimatePresence>
         {justAppeared && (
           <motion.div
-            initial={{ opacity: 1}}
-            exit={{ opacity: 0}}
-            transition={{ duration: 0.3, delay: 0.5}}
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
             className="absolute inset-0 z-30 pointer-events-none overflow-hidden"
-            style={{ borderRadius: 'inherit'}}
+            style={{ borderRadius: 'inherit' }}
           >
             <div className="w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent animate-navbar-sweep" />
           </motion.div>
         )}
       </AnimatePresence>
 
-
-      {/* ── Language Panel (appears ABOVE navbar content, pushes everything down) ── */}
       <AnimatePresence>
         {langOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0}}
-            animate={{ height: 'auto', opacity: 1}}
-            exit={{ height: 0, opacity: 0}}
-            transition={{ duration: 0.3, ease: 'easeInOut'}}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="bg-black/90 border-b border-white/[0.06] rounded-t-[17px]"
           >
             <div className="px-8 py-6">
               <div className="grid grid-cols-5 gap-x-6 gap-y-0 max-w-[1400px] mx-auto">
                 {languageGroups.map((group) => (
                   <div key={group.label}>
-                    <p className="text-sm uppercase tracking-widest text-gray-400 mb-2 font-semibold">
-                      {group.label}
-                    </p>
+                    <p className="text-sm uppercase tracking-widest text-gray-400 mb-2 font-semibold">{group.label}</p>
                     <div className="space-y-0.5">
                       {group.codes.map((code) => {
                         const locale = localeMap.get(code)
@@ -164,19 +155,19 @@ export default function Navbar() {
                         return (
                           <a
                             key={code}
-                            href={code === 'en' ? '/' : `/${code}`}
+                            href={languageHref(code)}
                             className={`flex items-center gap-2 px-2 py-2 rounded-lg text-base transition-colors ${
                               isActive
                                 ? 'bg-green-500/15 text-green-400'
                                 : 'text-gray-200 hover:bg-white/10 hover:text-white'
-                           }`}
+                            }`}
                           >
                             <span className="text-2xl shrink-0 leading-none flex items-center self-center">{locale.flag}</span>
                             <span className="text-base leading-none self-center translate-y-px">{locale.name}</span>
                             {isActive && <span className="text-green-400 text-sm ml-auto font-bold">✓</span>}
                           </a>
                         )
-                     })}
+                      })}
                     </div>
                   </div>
                 ))}
@@ -186,9 +177,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* ── Original Navbar Content — unchanged layout ── */}
       <div className="px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
         <a href={prefix || '/'} className="flex items-center">
           <Image
             src="/images/jkess-logo-cropped.png"
@@ -200,35 +189,31 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-5 lg:gap-7">
           {navLinks.map((link) => (
             <a
               key={link.key}
               href={`${prefix}${link.href}`}
-              className="relative text-xl tracking-wider font-medium text-white transition-colors duration-200
-                before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px]
-                before:bg-green-500 before:rounded-full before:transition-all before:duration-300
-                hover:before:w-full"
+              className="relative text-sm lg:text-base tracking-wide font-medium text-white transition-colors duration-200 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px] before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full"
             >
               <motion.span
                 className="flex"
                 initial="rest"
                 animate="rest"
                 variants={{
-                  rest: { transition: { staggerChildren: 0.03, staggerDirection: -1}},
-                  hover: { transition: { staggerChildren: 0.025}},
-               }}
+                  rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+                  hover: { transition: { staggerChildren: 0.025 } },
+                }}
                 whileHover="hover"
               >
-                {(t(link.key) || link.key.replace('nav.', '')).split('').map((char: string, i: number) => (
+                {t(link.key, link.label).split('').map((char: string, index: number) => (
                   <motion.span
-                    key={i}
+                    key={index}
                     className="inline-block"
                     variants={{
-                      rest: { y: 0, color: 'rgba(255,255,255,1)', transition: { duration: 0.2}},
-                      hover: { y: -2, color: '#22c55e', transition: { duration: 0.2}},
-                   }}
+                      rest: { y: 0, color: 'rgba(255,255,255,1)', transition: { duration: 0.2 } },
+                      hover: { y: -2, color: '#22c55e', transition: { duration: 0.2 } },
+                    }}
                   >
                     {char === ' ' ? '\u00A0' : char}
                   </motion.span>
@@ -237,24 +222,22 @@ export default function Navbar() {
             </a>
           ))}
 
-          {/* ── Language Switcher ── */}
           <button
             onClick={() => setLangOpen(!langOpen)}
             aria-label="Change language"
             aria-expanded={langOpen}
             className="flex items-center gap-1.5 text-white hover:text-green-500 transition-colors duration-200 text-xl"
           >
-            <Globe size={24} />
-            <span className="text-2xl leading-none">{currentLocale.flag}</span>
+            <Globe size={22} />
+            <span className="text-xl leading-none">{currentLocale.flag}</span>
           </button>
 
-          {/* Cart icon */}
           <a
             href={`${prefix}/cart`}
             aria-label={`View cart with ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`}
             className="relative text-white hover:text-green-500 transition-colors duration-200"
           >
-            <ShoppingCart size={24} />
+            <ShoppingCart size={23} />
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
                 {itemCount > 99 ? '99+' : itemCount}
@@ -263,7 +246,6 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-3">
           <a href={`${prefix}/cart`} aria-label={`View cart with ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`} className="relative text-white">
             <ShoppingCart size={24} />
@@ -279,13 +261,12 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0}}
-            animate={{ height: 'auto', opacity: 1}}
-            exit={{ height: 0, opacity: 0}}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
             className="md:hidden bg-black/70 border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px] overflow-hidden"
           >
             {navLinks.map((link) => (
@@ -295,7 +276,7 @@ export default function Navbar() {
                 className="block text-xl tracking-wider font-medium text-white transition-colors duration-200"
                 onClick={() => setIsOpen(false)}
               >
-                {t(link.key) || link.key.replace('nav.', '')}
+                {t(link.key, link.label)}
               </a>
             ))}
 
@@ -309,23 +290,23 @@ export default function Navbar() {
                   return (
                     <a
                       key={locale.code}
-                      href={locale.code === 'en' ? '/' : `/${locale.code}`}
+                      href={languageHref(locale.code)}
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm transition-colors ${
                         isActive ? 'bg-green-500/15 text-green-400' : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                     }`}
+                      }`}
                     >
                       <span className="text-base">{locale.flag}</span>
                       <span className="text-[10px] font-bold text-gray-500 uppercase">{locale.code.toUpperCase()}</span>
                       <span className="truncate">{locale.name}</span>
                     </a>
                   )
-               })}
+                })}
               </div>
             </div>
 
             <a
-              href={`${prefix}/#contact`}
+              href={`${prefix}/contact`}
               className="block text-center border border-white/20 hover:border-green-500 text-white hover:text-green-500 font-normal px-6 py-2.5 rounded-[8px] transition-all duration-200"
               onClick={() => setIsOpen(false)}
             >

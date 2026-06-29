@@ -11,6 +11,7 @@ import {
 import { INITIAL_INVENTORY, isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { getInventorySnapshot } from '@/lib/order-store'
 import { productVariantCommerce, schemaAvailability } from '@/lib/commerce'
+import { getLocalizedProductPageContent } from '@/lib/product-localizations'
 import {
   canonicalSeoPath,
   defaultIndexableSeoLocales,
@@ -28,10 +29,6 @@ export function generateStaticParams() {
     }
   }
   return params
-}
-
-function productPath(product: Product, lang: string) {
-  return `${lang === defaultLocale ? '' : '/' + lang}/products/${product.slug}`
 }
 
 type PurchaseNotice = {
@@ -295,15 +292,18 @@ async function productJsonLd(p: Product) {
 
 export async function generateMetadata(props: { params: Promise<{ lang: string; slug: string }> }) {
   const { lang, slug } = await props.params
-  const product = getProductBySlug(slug)
-  if (!product) return {}
+  const sourceProduct = getProductBySlug(slug)
+  if (!sourceProduct) return {}
 
+  const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
+  const product = localizedContent.product
   const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
-  const canonicalPath = canonicalSeoPath(lang, `/products/${product.slug}`, defaultIndexableSeoLocales)
-  const purchaseNotice = getPurchaseNotice(product)
+  const canonicalPath = canonicalSeoPath(lang, `/products/${sourceProduct.slug}`, defaultIndexableSeoLocales)
+  const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
   const noticeSentence = purchaseNotice ? ` ${purchaseNotice.metadataSentence}` : ''
   const shippingSentence = product.type === 'shop'
-    ? ' EU delivery addresses include free standard shipping; selected non-EU direct checkout destinations use a flat $150 shipping charge per order.'
+    ? localizedContent.shippingMetadataSentence
+      ?? ' EU delivery addresses include free standard shipping; selected non-EU direct checkout destinations use a flat $150 shipping charge per order.'
     : ''
   const description = `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`.slice(0, 158)
 
@@ -313,7 +313,7 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
     keywords: productKeywords(product),
     alternates: {
       canonical: absoluteUrl(canonicalPath),
-      languages: productLanguageAlternates(product),
+      languages: productLanguageAlternates(sourceProduct),
     },
     robots: {
       index: indexable,
@@ -343,8 +343,8 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
 
 export default async function ProductPage(props: { params: Promise<{ lang: string; slug: string }> }) {
   const { lang, slug } = await props.params
-  const product = getProductBySlug(slug)
-  if (!product) {
+  const sourceProduct = getProductBySlug(slug)
+  if (!sourceProduct) {
     return (
       <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
         <p className="text-gray-400">Product not found</p>
@@ -352,13 +352,14 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
     )
   }
 
-  const purchaseNotice = getPurchaseNotice(product)
+  const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
+  const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: await productJsonLd(product) }}
+        dangerouslySetInnerHTML={{ __html: await productJsonLd(sourceProduct) }}
       />
       <div className="relative bg-black">
         {purchaseNotice && (
@@ -368,7 +369,11 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
                   <div className="shrink-0">
                     <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-300">
-                      Important purchase notice
+                      {lang === 'de'
+                        ? 'Wichtiger Kaufhinweis'
+                        : lang === 'fr'
+                          ? 'Information importante avant l’achat'
+                          : 'Important purchase notice'}
                     </p>
                     <h2 className="mt-1 text-lg font-bold text-white">{purchaseNotice.title}</h2>
                   </div>
@@ -380,11 +385,11 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         )}
         <div className={purchaseNotice ? 'pt-32' : ''}>
           <ProductDetailClient
-            product={product}
+            product={localizedContent.product}
             lang={lang}
-            relatedProducts={getRelatedProducts(product)}
-            useCases={getProductUseCases(product)}
-            seoContent={getProductSeoContent(product)}
+            relatedProducts={getRelatedProducts(sourceProduct)}
+            useCases={localizedContent.useCases}
+            seoContent={localizedContent.seoContent}
           />
         </div>
       </div>

@@ -25,6 +25,8 @@ interface PageMetadataOptions {
   image?: string
   indexableLocales?: readonly LangCode[]
   alternateLocales?: readonly LangCode[]
+  openGraphLocale?: string
+  openGraphAlternateLocales?: string[]
 }
 
 export function productIndexableSeoLocales(slug: string) {
@@ -76,6 +78,8 @@ export function buildPageMetadata({
   image = '/images/news-featured-energy-storage.jpg',
   indexableLocales = defaultIndexableSeoLocales,
   alternateLocales,
+  openGraphLocale,
+  openGraphAlternateLocales,
 }: PageMetadataOptions): Metadata {
   const indexable = isSeoLocaleIndexable(lang, indexableLocales)
   const canonicalPath = canonicalSeoPath(lang, path, indexableLocales)
@@ -109,6 +113,8 @@ export function buildPageMetadata({
       description,
       url: absoluteUrl(canonicalPath),
       siteName: 'JKESS',
+      locale: openGraphLocale,
+      alternateLocale: openGraphAlternateLocales,
       type: 'website',
       images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle, ExternalLink, Loader2, Lock } from 'lucide-react'
@@ -92,6 +92,14 @@ export default function CheckoutPage() {
     notes: '',
   })
 
+  const regionDisplayNames = useMemo(() => {
+    try {
+      return new Intl.DisplayNames([lang], { type: 'region' })
+    } catch {
+      return null
+    }
+  }, [lang])
+
   useEffect(() => {
     void refreshInventory()
   }, [refreshInventory])
@@ -115,6 +123,14 @@ export default function CheckoutPage() {
   const shippingSummaryMessage = t(
     'checkout.shippingSummary',
     'EU addresses receive free standard shipping. Eligible non-EU destinations are charged ${amount} once per order. Other destinations require a written quotation.'
+  ).replace('{amount}', String(FLAT_RATE_SHIPPING_USD))
+  const euCountryGroupLabel = t(
+    'checkout.euCountryGroup',
+    'European Union — Free shipping'
+  )
+  const flatRateCountryGroupLabel = t(
+    'checkout.flatRateCountryGroup',
+    'United States, Southeast Asia, Middle East, Japan & South Korea — ${amount} shipping'
   ).replace('{amount}', String(FLAT_RATE_SHIPPING_USD))
 
   const contactComplete = Boolean(
@@ -393,10 +409,15 @@ export default function CheckoutPage() {
                       <option value="">
                         {t('checkout.selectDeliveryCountry', 'Select delivery country / region')}
                       </option>
-                      {directCheckoutCountryGroups.map((group) => (
-                        <optgroup key={group.label} label={group.label}>
+                      {directCheckoutCountryGroups.map((group, groupIndex) => (
+                        <optgroup
+                          key={group.label}
+                          label={groupIndex === 0 ? euCountryGroupLabel : flatRateCountryGroupLabel}
+                        >
                           {group.countries.map((country) => (
-                            <option key={country.code} value={country.code}>{country.name}</option>
+                            <option key={country.code} value={country.code}>
+                              {regionDisplayNames?.of(country.code) || country.name}
+                            </option>
                           ))}
                         </optgroup>
                       ))}

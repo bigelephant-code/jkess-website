@@ -1,3 +1,17 @@
+.jkess-navbar-shell {
+  transition-property: transform, top, width, max-width, border-radius, background-color, border-color, box-shadow !important;
+  transition-duration: 500ms !important;
+  transition-timing-function: ease-in-out !important;
+}
+
+.jkess-navbar-shell.jkess-navbar-at-top {
+  top: 0 !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 @media (min-width: 1024px) {
   nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="ml-auto"][class*="lg:flex"],
   nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="gap-3"][class*="lg:flex"] {

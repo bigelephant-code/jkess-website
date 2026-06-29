@@ -1,6 +1,7 @@
 import '../navbar-right-balance.css'
 import Script from 'next/script'
 import NavbarMegaMenuV2 from '@/components/NavbarMegaMenuV2'
+import NavbarDockEffect from '@/components/NavbarDockEffect'
 import Footer from '@/components/Footer'
 import ProductSalePrice from '@/components/ProductSalePrice'
 import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
@@ -81,6 +82,7 @@ export default async function LangLayout(props: {
             </Script>
           )}
           <NavbarMegaMenuV2 />
+          <NavbarDockEffect />
           <ProductSalePrice />
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>

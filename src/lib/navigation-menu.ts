@@ -61,7 +61,7 @@ export const navigationGroups: NavigationGroup[] = [
     items: [
       { label: 'About', href: '/about', description: 'Company background, manufacturing facts, and energy storage focus.' },
       { label: 'Quality & Manufacturing', href: '/quality-and-manufacturing', description: 'Inspection workflow, documentation, and order-specific checks.' },
-      { label: 'Shipping Quote', href: '/shipping-quote', description: 'Request written international freight terms before payment.' },
+      { label: 'Request a Quote', href: '/shipping-quote', description: 'Request destination review, multiple products, quantities, or volume pricing.' },
       { label: 'Contact', href: '/contact', description: 'Send a technical, commercial, or project inquiry to JKESS.' },
     ],
   },

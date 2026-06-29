@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { locales, defaultLocale } from '@/i18n/config'
+import { defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
 import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { specificationLandingPages } from '@/lib/specification-pages'
@@ -16,7 +16,6 @@ const policyPaths = [
   '/privacy-policy',
 ]
 const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
-const englishOnlyStaticPaths = ['/news', '/quality-and-manufacturing', '/shipping-quote']
 const siteLastModified = new Date('2026-06-29')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
@@ -52,11 +51,6 @@ function staticChangeFrequency(path: string): MetadataRoute.Sitemap[number]['cha
   return 'monthly'
 }
 
-function englishOnlyAlternates(path: string) {
-  const url = absoluteUrl(path)
-  return { en: url, 'x-default': url }
-}
-
 function indexableSeoAlternates(path: string) {
   return pageLanguageAlternates(path, defaultIndexableSeoLocales)
 }
@@ -64,20 +58,16 @@ function indexableSeoAlternates(path: string) {
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
 
-  for (const locale of locales) {
+  for (const locale of defaultIndexableSeoLocales) {
     for (const path of staticPaths) {
-      if (englishOnlyStaticPaths.includes(path) && locale.code !== defaultLocale) continue
-
       entries.push({
-        url: absoluteUrl(localizedPath(locale.code, path)),
+        url: absoluteUrl(localizedPath(locale, path)),
         lastModified: siteLastModified,
         changeFrequency: staticChangeFrequency(path),
         priority: staticPriority(path),
         images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
         alternates: {
-          languages: englishOnlyStaticPaths.includes(path)
-            ? englishOnlyAlternates(sitemapPath(path))
-            : pageLanguageAlternates(sitemapPath(path)),
+          languages: indexableSeoAlternates(sitemapPath(path)),
         },
       })
     }
@@ -91,7 +81,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: staticPriority(path),
       images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
-      alternates: { languages: englishOnlyAlternates(path) },
+      alternates: { languages: indexableSeoAlternates(path) },
     })
   }
 

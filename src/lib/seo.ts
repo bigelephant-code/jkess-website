@@ -27,7 +27,7 @@ export function localizedSeoPath(lang: string, path: string) {
 
 export function pageLanguageAlternates(
   path: string,
-  localeCodes: readonly LangCode[] = allPublishedSeoLocales
+  localeCodes: readonly LangCode[] = defaultIndexableSeoLocales
 ) {
   return {
     ...Object.fromEntries(
@@ -42,7 +42,7 @@ export function pageLanguageAlternates(
 
 export function isSeoLocaleIndexable(
   lang: string,
-  indexableLocales: readonly LangCode[] = allPublishedSeoLocales
+  indexableLocales: readonly LangCode[] = defaultIndexableSeoLocales
 ) {
   return indexableLocales.includes(lang as LangCode)
 }
@@ -50,7 +50,7 @@ export function isSeoLocaleIndexable(
 export function canonicalSeoPath(
   lang: string,
   path: string,
-  indexableLocales: readonly LangCode[] = allPublishedSeoLocales
+  indexableLocales: readonly LangCode[] = defaultIndexableSeoLocales
 ) {
   return localizedSeoPath(isSeoLocaleIndexable(lang, indexableLocales) ? lang : defaultLocale, path)
 }
@@ -62,11 +62,13 @@ export function buildPageMetadata({
   description,
   keywords = [],
   image = '/images/news-featured-energy-storage.jpg',
-  indexableLocales,
+  indexableLocales = defaultIndexableSeoLocales,
   alternateLocales,
 }: PageMetadataOptions): Metadata {
+  const indexable = isSeoLocaleIndexable(lang, indexableLocales)
   const canonicalPath = canonicalSeoPath(lang, path, indexableLocales)
   const imageUrl = absoluteUrl(image)
+  const resolvedAlternateLocales = alternateLocales ?? indexableLocales
 
   return {
     title,
@@ -75,9 +77,20 @@ export function buildPageMetadata({
     applicationName: 'JKESS',
     creator: 'JKBMS Electronic Technology Co.,Ltd',
     publisher: 'JKBMS Electronic Technology Co.,Ltd',
+    robots: {
+      index: indexable,
+      follow: true,
+      googleBot: {
+        index: indexable,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
     alternates: {
       canonical: absoluteUrl(canonicalPath),
-      languages: pageLanguageAlternates(path, alternateLocales),
+      languages: pageLanguageAlternates(path, resolvedAlternateLocales),
     },
     openGraph: {
       title,

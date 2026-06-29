@@ -8,14 +8,22 @@ import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
+import { messageOverrides } from '@/i18n/message-overrides'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
 
-async function getMessages(locale: string): Promise<Record<string, string>> {
+async function getMessages(locale: LangCode): Promise<Record<string, string>> {
+  let messages: Record<string, string>
+
   try {
-    return (await import(`../../../messages/${locale}.json`)).default
+    messages = (await import(`../../../messages/${locale}.json`)).default
   } catch {
-    return (await import(`../../../messages/${defaultLocale}.json`)).default
+    messages = (await import(`../../../messages/${defaultLocale}.json`)).default
+  }
+
+  return {
+    ...messages,
+    ...(messageOverrides[locale] || {}),
   }
 }
 
@@ -30,7 +38,7 @@ export default async function LangLayout(props: {
   const { lang } = await props.params
   const validLang = isValidLocale(lang) ? lang : defaultLocale
   const localeDef = localeMap.get(validLang)!
-  const messages = await getMessages(validLang)
+  const messages = await getMessages(validLang as LangCode)
 
   return (
     <>

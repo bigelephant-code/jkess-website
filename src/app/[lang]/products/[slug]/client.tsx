@@ -62,6 +62,19 @@ export function ProductDetailClient({
     : Math.max(0, managedStock - productQuantityInCart)
   const soldOut = isShop && managedStock !== null && managedStock <= 0
   const noMoreAvailable = isShop && availableToAdd !== null && availableToAdd <= 0
+  const discountLabel = t('product.discountOff', '-{discount}% OFF')
+    .replace('{discount}', String(SALE_DISCOUNT_PERCENT))
+  const promoPriceNote = t(
+    'product.promoPriceNote',
+    'The displayed price is the current promotional price after the {discount}% discount.'
+  ).replace('{discount}', String(SALE_DISCOUNT_PERCENT))
+  const availableToAddLabel = availableToAdd === null
+    ? null
+    : t('product.availableToAdd', '{count} available to add')
+      .replace('{count}', availableToAdd.toLocaleString('en-US'))
+  const itemCountLabel = itemCount === 1
+    ? t('product.item', 'item')
+    : t('product.items', 'items')
 
   useEffect(() => {
     if (availableToAdd === null || availableToAdd <= 0) return
@@ -131,11 +144,12 @@ export function ProductDetailClient({
   const stockLabel = !isShop
     ? t('product.customOrder', 'Custom Order')
     : !inventoryLoaded
-      ? 'Checking stock…'
+      ? t('product.checkingStock', 'Checking stock…')
       : soldOut
-        ? 'Out of stock'
+        ? t('product.outOfStock', 'Out of stock')
         : managedStock !== null
-          ? `${managedStock.toLocaleString('en-US')} units in stock`
+          ? t('product.unitsInStock', '{count} units in stock')
+            .replace('{count}', managedStock.toLocaleString('en-US'))
           : t('product.inStock', 'In Stock')
 
   return (
@@ -147,14 +161,16 @@ export function ProductDetailClient({
             className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors mb-6 pt-2"
           >
             <ArrowLeft size={16} />
-            <span>{t('nav.shop', 'Back to Products')}</span>
+            <span>{t('product.backToProducts', 'Back to Products')}</span>
           </Link>
 
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-            <Link href={`${prefix}/`} className="hover:text-white transition-colors">Home</Link>
+            <Link href={`${prefix}/`} className="hover:text-white transition-colors">
+              {t('nav.home', 'Home')}
+            </Link>
             <span>/</span>
             <Link href={`${prefix}/#products`} className="hover:text-white transition-colors">
-              {t('nav.shop', 'Products')}
+              {t('nav.products', 'Products')}
             </Link>
             <span>/</span>
             <span className="text-white">{product.name}</span>
@@ -212,26 +228,35 @@ export function ProductDetailClient({
                           {formatUsd(currentCommerce.regularPrice)}
                         </span>
                         <span className="mb-1 rounded-full bg-red-500/20 px-2.5 py-1 text-xs font-bold text-red-300">
-                          -{SALE_DISCOUNT_PERCENT}% OFF
+                          {discountLabel}
                         </span>
                       </>
                     )}
                   </div>
                   <p className="mt-3 text-xs leading-5 text-green-300/80">
-                    The displayed price is the current promotional price after the {SALE_DISCOUNT_PERCENT}% discount.
+                    {promoPriceNote}
                   </p>
                   <p className="mt-2 text-xs leading-5 text-gray-400">
-                    EU delivery addresses include free standard shipping. Supported non-EU direct checkout destinations add $150 per order. Other countries require a shipping quote before online payment. Import duties, taxes, customs clearance fees, and brokerage charges are not included unless expressly stated.
+                    {t(
+                      'product.shippingRuleDetail',
+                      'EU delivery addresses include free standard shipping. Supported non-EU direct checkout destinations add $150 per order. Other countries require a shipping quote before online payment. Import duties, taxes, customs clearance fees, and brokerage charges are not included unless expressly stated.'
+                    )}
                   </p>
                   <Link
                     href={`${prefix}/shipping-quote`}
                     className="mt-2 inline-flex text-xs font-semibold text-amber-200 underline decoration-amber-200/40 underline-offset-4 hover:text-amber-100"
                   >
-                    Request a destination shipping quote before payment
+                    {t(
+                      'product.shippingQuoteBeforePayment',
+                      'Request a destination shipping quote before payment'
+                    )}
                   </Link>
                   {managedStock !== null && (
                     <p className="mt-2 text-xs leading-5 text-gray-400">
-                      Inventory is shared across this product’s options and is deducted after verified payment.
+                      {t(
+                        'product.sharedInventoryNote',
+                        'Inventory is shared across this product’s options and is deducted after verified payment.'
+                      )}
                     </p>
                   )}
                 </div>
@@ -265,16 +290,16 @@ export function ProductDetailClient({
 
               <div className="mb-6">
                 <p className="text-sm text-gray-400 mb-2">
-                  Quantity:
-                  {availableToAdd !== null && (
-                    <span className="ml-2 text-xs text-gray-500">{availableToAdd.toLocaleString('en-US')} available to add</span>
+                  {t('product.quantity', 'Quantity')}:
+                  {availableToAddLabel && (
+                    <span className="ml-2 text-xs text-gray-500">{availableToAddLabel}</span>
                   )}
                 </p>
                 <div className="flex items-center border border-white/10 rounded-xl bg-white/5 w-fit">
                   <button
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    aria-label="Decrease quantity"
+                    aria-label={t('product.decreaseQuantity', 'Decrease quantity')}
                     disabled={quantity <= 1 || soldOut}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
@@ -284,7 +309,7 @@ export function ProductDetailClient({
                   <button
                     type="button"
                     onClick={() => setQuantity((current) => availableToAdd === null ? current + 1 : Math.min(current + 1, Math.max(1, availableToAdd)))}
-                    aria-label="Increase quantity"
+                    aria-label={t('product.increaseQuantity', 'Increase quantity')}
                     disabled={soldOut || noMoreAvailable || (availableToAdd !== null && quantity >= availableToAdd)}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
@@ -308,9 +333,9 @@ export function ProductDetailClient({
                         }`}
                       >
                         {soldOut
-                          ? 'Out of stock'
+                          ? t('product.outOfStock', 'Out of stock')
                           : noMoreAvailable
-                            ? 'Available stock in cart'
+                            ? t('product.stockInCart', 'Available stock in cart')
                             : addedToCart
                               ? t('product.added', 'Added')
                               : <><ShoppingCart size={18} /> {t('product.addToCart', 'Add to Cart')}</>}
@@ -326,7 +351,7 @@ export function ProductDetailClient({
                     </div>
                     {itemCount > 0 && (
                       <Link href={`${prefix}/cart`} className="block text-center text-sm text-gray-500 hover:text-white transition-colors">
-                        {t('nav.viewCart', 'View Cart')} ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                        {t('nav.viewCart', 'View Cart')} ({itemCount} {itemCountLabel})
                       </Link>
                     )}
                   </>
@@ -335,15 +360,20 @@ export function ProductDetailClient({
                     <button type="button" onClick={handleInquiry} className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3.5 rounded-xl text-lg transition-all">
                       <Send size={18} /> {t('product.getQuote', 'Get a Quote')}
                     </button>
-                    <p className="text-xs text-gray-500 text-center">This product requires a custom quotation. JKESS normally responds within 24 business hours.</p>
+                    <p className="text-xs text-gray-500 text-center">
+                      {t(
+                        'product.customQuoteResponse',
+                        'This product requires a custom quotation. JKESS normally responds within 24 business hours.'
+                      )}
+                    </p>
                   </>
                 )}
               </div>
 
               <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
-                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">EU free shipping; supported regions $150/order</p></div>
+                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.shippingSummary', 'EU free shipping; supported regions $150/order')}</p></div>
                 <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.warranty', '1-Year Warranty')}</p></div>
-                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Returns subject to policy</p></div>
+                <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.returnsSubjectToPolicy', 'Returns subject to policy')}</p></div>
               </div>
             </div>
           </div>

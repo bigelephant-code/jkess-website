@@ -9,7 +9,6 @@ import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
-import { absoluteUrl } from '@/lib/site'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
 
@@ -23,28 +22,6 @@ async function getMessages(locale: string): Promise<Record<string, string>> {
 
 export function generateStaticParams() {
   return locales.map((l) => ({ lang: l.code }))
-}
-
-function languageAlternates() {
-  return {
-    ...Object.fromEntries(
-      locales.map((l) => [
-        l.code,
-        absoluteUrl(l.code === defaultLocale ? '/' : `/${l.code}`),
-      ])
-    ),
-    'x-default': absoluteUrl('/'),
-  }
-}
-
-export async function generateMetadata(props: { params: Promise<{ lang: string }> }) {
-  await props.params
-
-  return {
-    alternates: {
-      languages: languageAlternates(),
-    },
-  }
 }
 
 export default async function LangLayout(props: {

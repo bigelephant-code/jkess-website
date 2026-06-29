@@ -1,6 +1,5 @@
-import '../navbar-adjustments.css'
 import Script from 'next/script'
-import NavbarMegaMenu from '@/components/NavbarMegaMenu'
+import NavbarMegaMenuV2 from '@/components/NavbarMegaMenuV2'
 import Footer from '@/components/Footer'
 import ProductSalePrice from '@/components/ProductSalePrice'
 import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
@@ -80,7 +79,7 @@ export default async function LangLayout(props: {
               {`document.documentElement.lang="${validLang}";document.documentElement.dir="${localeDef.dir}";`}
             </Script>
           )}
-          <NavbarMegaMenu />
+          <NavbarMegaMenuV2 />
           <ProductSalePrice />
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>

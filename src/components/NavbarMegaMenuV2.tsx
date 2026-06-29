@@ -19,6 +19,8 @@ const languageGroups = [
   ['CIS & Middle East', ['ru', 'uk', 'fa', 'tr']],
 ] as const satisfies ReadonlyArray<readonly [string, readonly LangCode[]]>
 
+const MENU_CLOSE_DELAY_MS = 140
+
 export default function NavbarMegaMenuV2() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const [mobileGroup, setMobileGroup] = useState<string | null>(null)
@@ -27,6 +29,7 @@ export default function NavbarMegaMenuV2() {
   const [visible, setVisible] = useState(true)
   const lastScrollY = useRef(0)
   const navRef = useRef<HTMLElement>(null)
+  const menuCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { itemCount } = useCart()
   const { lang, t } = useI18n()
   const pathname = usePathname()
@@ -37,11 +40,38 @@ export default function NavbarMegaMenuV2() {
   const currentLocale = localeMap.get(lang)!
   const languageHref = (code: LangCode) => code === 'en' ? neutralPath : `/${code}${neutralPath === '/' ? '' : neutralPath}`
 
+  const cancelMenuClose = () => {
+    if (menuCloseTimer.current) {
+      clearTimeout(menuCloseTimer.current)
+      menuCloseTimer.current = null
+    }
+  }
+
+  const closeMenu = () => {
+    cancelMenuClose()
+    setActiveMenu(null)
+  }
+
+  const scheduleMenuClose = () => {
+    cancelMenuClose()
+    menuCloseTimer.current = setTimeout(() => {
+      setActiveMenu(null)
+      menuCloseTimer.current = null
+    }, MENU_CLOSE_DELAY_MS)
+  }
+
+  const openMenu = (key: string) => {
+    cancelMenuClose()
+    setLanguageOpen(false)
+    setActiveMenu(key)
+  }
+
   useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY
       setVisible(current < 100 || current < lastScrollY.current)
       lastScrollY.current = current
+      cancelMenuClose()
       setActiveMenu(null)
       setLanguageOpen(false)
     }
@@ -50,6 +80,7 @@ export default function NavbarMegaMenuV2() {
   }, [])
 
   useEffect(() => {
+    cancelMenuClose()
     setActiveMenu(null)
     setLanguageOpen(false)
     setMobileOpen(false)
@@ -59,6 +90,7 @@ export default function NavbarMegaMenuV2() {
   useEffect(() => {
     const onOutsideClick = (event: MouseEvent) => {
       if (!navRef.current?.contains(event.target as Node)) {
+        cancelMenuClose()
         setActiveMenu(null)
         setLanguageOpen(false)
       }
@@ -67,15 +99,12 @@ export default function NavbarMegaMenuV2() {
     return () => document.removeEventListener('mousedown', onOutsideClick)
   }, [])
 
-  const openMenu = (key: string) => {
-    setLanguageOpen(false)
-    setActiveMenu(key)
-  }
+  useEffect(() => () => cancelMenuClose(), [])
 
   return (
     <nav
       ref={navRef}
-      onMouseLeave={() => { setActiveMenu(null); setLanguageOpen(false) }}
+      onMouseLeave={() => { closeMenu(); setLanguageOpen(false) }}
       style={{ transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})` }}
       className="fixed left-1/2 top-2 z-50 w-[97%] max-w-[1580px] rounded-[17px] border border-white/[0.07] bg-black/70 shadow-2xl shadow-black/30 backdrop-blur-xl transition-transform duration-500"
     >
@@ -116,7 +145,7 @@ export default function NavbarMegaMenuV2() {
       </AnimatePresence>
 
       <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start px-5 lg:px-7">
-        <a href={prefix || '/'} className="shrink-0">
+        <a href={prefix || '/'} className="shrink-0" onMouseEnter={closeMenu}>
           <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={160} height={48} className="h-12 w-auto brightness-0 invert" priority />
         </a>
 
@@ -126,6 +155,7 @@ export default function NavbarMegaMenuV2() {
               key={group.key}
               type="button"
               onMouseEnter={() => openMenu(group.key)}
+              onMouseLeave={scheduleMenuClose}
               onFocus={() => openMenu(group.key)}
               onClick={() => setActiveMenu(activeMenu === group.key ? null : group.key)}
               aria-expanded={activeMenu === group.key}
@@ -135,13 +165,13 @@ export default function NavbarMegaMenuV2() {
               <motion.span animate={{ rotate: activeMenu === group.key ? 180 : 0 }} transition={{ duration: 0.2 }}><ChevronDown size={15} /></motion.span>
             </button>
           ) : (
-            <a key={group.key} href={`${prefix}${group.href}`} className="rounded-xl px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-green-400">
+            <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="rounded-xl px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-green-400">
               {t(`nav.${group.key}`, group.label)}
             </a>
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex" onMouseEnter={closeMenu}>
           <button
             type="button"
             onClick={() => { setActiveMenu(null); setLanguageOpen((current) => !current) }}
@@ -179,6 +209,7 @@ export default function NavbarMegaMenuV2() {
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: 'top' }}
             onMouseEnter={() => openMenu(activeGroup.key)}
+            onMouseLeave={scheduleMenuClose}
             className="absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(94vw,1180px)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#090909]/[0.98] shadow-2xl shadow-black/60 backdrop-blur-2xl lg:block"
           >
             <div className="grid lg:grid-cols-[300px_1fr]">

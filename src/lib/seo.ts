@@ -6,7 +6,15 @@ import { absoluteUrl } from '@/lib/site'
 export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr']
 export const fullyLocalizedSeoLocales: readonly LangCode[] = [defaultLocale]
 export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
+export const batteryKitIndexableSeoLocales: readonly LangCode[] = [
+  defaultLocale,
+  ...euSeoPilotLocales,
+]
 export const allPublishedSeoLocales: readonly LangCode[] = locales.map((locale) => locale.code)
+
+const productIndexableSeoLocalesBySlug: Readonly<Record<string, readonly LangCode[]>> = {
+  'battery-kit': batteryKitIndexableSeoLocales,
+}
 
 interface PageMetadataOptions {
   lang: string
@@ -17,6 +25,10 @@ interface PageMetadataOptions {
   image?: string
   indexableLocales?: readonly LangCode[]
   alternateLocales?: readonly LangCode[]
+}
+
+export function productIndexableSeoLocales(slug: string) {
+  return productIndexableSeoLocalesBySlug[slug] ?? defaultIndexableSeoLocales
 }
 
 export function localizedSeoPath(lang: string, path: string) {

@@ -2,6 +2,7 @@ import Script from 'next/script'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProductSalePrice from '@/components/ProductSalePrice'
+import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
 import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
@@ -10,7 +11,6 @@ import { absoluteUrl } from '@/lib/site'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
 
-// Pre-load translation files at build time
 async function getMessages(locale: string): Promise<Record<string, string>> {
   try {
     return (await import(`../../../messages/${locale}.json`)).default
@@ -56,7 +56,6 @@ export default async function LangLayout(props: {
 
   return (
     <>
-      {/* Google Analytics */}
       {GA_ID && (
         <>
           <Script
@@ -75,7 +74,6 @@ export default async function LangLayout(props: {
       )}
       <I18nProvider lang={validLang as LangCode} dir={localeDef.dir} messages={messages}>
         <CartProvider>
-          {/* Only set html lang for non-English pages via a side-effect script */}
           {validLang !== 'en' && (
             <Script id="set-html-lang" strategy="afterInteractive">
               {`document.documentElement.lang="${validLang}";document.documentElement.dir="${localeDef.dir}";`}
@@ -83,6 +81,7 @@ export default async function LangLayout(props: {
           )}
           <Navbar />
           <ProductSalePrice />
+          <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>
           <Footer />
         </CartProvider>

@@ -5,7 +5,12 @@ import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { specificationLandingPages } from '@/lib/specification-pages'
 import { technicalGuides } from '@/lib/technical-guides'
 import { absoluteUrl } from '@/lib/site'
-import { defaultIndexableSeoLocales, localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
+import {
+  defaultIndexableSeoLocales,
+  localizedSeoPath,
+  pageLanguageAlternates,
+  productIndexableSeoLocales,
+} from '@/lib/seo'
 
 const policyPaths = [
   '/shipping-policy',
@@ -87,16 +92,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const product of products) {
     const productPath = `/products/${product.slug}`
-    entries.push({
-      url: absoluteUrl(localizedSeoPath(defaultLocale, productPath)),
-      lastModified: siteLastModified,
-      changeFrequency: 'weekly',
-      priority: product.type === 'shop' ? 0.9 : 0.85,
-      images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
-      alternates: {
-        languages: indexableSeoAlternates(productPath),
-      },
-    })
+    const indexableLocales = productIndexableSeoLocales(product.slug)
+    const languageAlternates = pageLanguageAlternates(productPath, indexableLocales)
+
+    for (const locale of indexableLocales) {
+      entries.push({
+        url: absoluteUrl(localizedSeoPath(locale, productPath)),
+        lastModified: siteLastModified,
+        changeFrequency: 'weekly',
+        priority: product.type === 'shop' ? 0.9 : 0.85,
+        images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
+        alternates: {
+          languages: languageAlternates,
+        },
+      })
+    }
   }
 
   for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {

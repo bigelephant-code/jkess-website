@@ -1,3 +1,5 @@
+import { FLAT_RATE_SHIPPING_USD } from '@/lib/shipping-zones'
+
 export type PolicySection = {
   heading: string
   paragraphs?: string[]
@@ -19,14 +21,14 @@ export type PolicySlug =
   | 'safety'
   | 'privacy-policy'
 
-export const policyLastUpdated = 'June 27, 2026'
+export const policyLastUpdated = 'June 29, 2026'
 
 export const policyPages: Record<PolicySlug, PolicyPage> = {
   'shipping-policy': {
     slug: 'shipping-policy',
     title: 'Shipping Policy',
     summary:
-      'How JKESS processes, dispatches, and delivers orders worldwide, including delivery estimates, address responsibilities, customs, and shipment issues.',
+      'How JKESS processes, dispatches, and delivers orders, including EU free standard shipping, selected-region flat-rate shipping, quote-only destinations, customs, and shipment issues.',
     sections: [
       {
         heading: 'Order processing',
@@ -36,17 +38,27 @@ export const policyPages: Record<PolicySlug, PolicyPage> = {
         ],
       },
       {
-        heading: 'Worldwide delivery',
+        heading: 'Direct checkout destinations',
         paragraphs: [
-          'JKESS offers worldwide delivery where suitable carrier service, export rules, import rules, and product transportation requirements allow shipment.',
-          'Some destinations, remote areas, products, or battery-related components may require special handling, additional documentation, an alternative carrier, or a revised delivery schedule. JKESS will contact the customer if an order cannot be shipped as originally requested.',
+          'JKESS currently supports direct online checkout only for destinations where the website can apply the shipping rule at checkout and the order can be reviewed under the current transport, import, product, and carrier constraints.',
+        ],
+        bullets: [
+          'European Union delivery addresses: free standard shipping at checkout.',
+          `United States, supported Southeast Asia, Japan, South Korea, and listed Middle East destinations: a flat $${FLAT_RATE_SHIPPING_USD} shipping charge per order at checkout. This is charged per order, not per item.`,
+        ],
+      },
+      {
+        heading: 'Quote-only destinations',
+        paragraphs: [
+          'Countries and regions outside the current direct-checkout lists cannot complete online payment immediately. Customers are directed to Request a Quote so JKESS can review local transport policy, carrier limitations, import requirements, product regulations, and destination-specific conditions before confirming a delivery option.',
+          'A quote-only destination does not mean JKESS refuses the country permanently; it means the order requires manual review before payment and fulfillment terms are confirmed.',
         ],
       },
       {
         heading: 'Shipping charges, duties, and taxes',
         paragraphs: [
-          'Shipping charges, delivery terms, and any included services will be shown at checkout or stated in the applicable quotation or order confirmation.',
-          'Import duties, taxes, customs clearance fees, brokerage charges, and destination-country compliance costs are handled according to the written checkout or quotation terms and any mandatory local law. Customers should confirm local import requirements before ordering.',
+          'Checkout separates the product subtotal, shipping, and order total. EU direct-checkout orders show free standard shipping. Supported non-EU direct-checkout orders show the flat shipping charge as shipping, not as a product price increase.',
+          'Import duties, taxes, customs clearance fees, brokerage charges, and destination-country compliance costs are not included unless expressly stated in the checkout terms, written quotation, pro forma invoice, or order confirmation. Customers should confirm local import requirements before ordering.',
         ],
       },
       {

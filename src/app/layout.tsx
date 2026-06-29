@@ -4,7 +4,12 @@ import { Inter } from 'next/font/google'
 import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
-import { jkessMerchantShippingPolicy, jkessOrganization, jsonLd } from '@/lib/structured-data'
+import {
+  jkessMerchantReturnPolicy,
+  jkessMerchantShippingPolicy,
+  jkessOrganization,
+  jsonLd,
+} from '@/lib/structured-data'
 import { defaultLocale, isValidLocale, localeMap } from '@/i18n/config'
 import { REQUEST_LOCALE_HEADER } from '@/lib/request-locale'
 import './globals.css'
@@ -95,7 +100,12 @@ const websiteJsonLd = {
 
 const siteJsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [jkessOrganization, jkessMerchantShippingPolicy, websiteJsonLd],
+  '@graph': [
+    jkessOrganization,
+    jkessMerchantShippingPolicy,
+    jkessMerchantReturnPolicy,
+    websiteJsonLd,
+  ],
 }
 
 export default async function RootLayout({

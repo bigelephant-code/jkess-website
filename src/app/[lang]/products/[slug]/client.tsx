@@ -16,7 +16,7 @@ import {
   ShoppingCart,
   Truck,
 } from 'lucide-react'
-import type { Product, ProductSeoContent, ProductUseCases } from '@/lib/products'
+import type { Product, ProductFaq, ProductSeoContent, ProductUseCases } from '@/lib/products'
 import { getProductFaqs } from '@/lib/products'
 import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
@@ -27,6 +27,40 @@ import {
   formatUsd,
   productVariantCommerce,
 } from '@/lib/commerce'
+
+type ProductWithLocalizedFaqs = Product & {
+  localizedFaqs?: ProductFaq[]
+}
+
+type ProductDetailCopy = {
+  packageScope: string
+  whatsIncluded: string
+  whatsNotIncluded: string
+  applications: string
+  compatibleSystems: string
+  selectionNotes: string
+  projectFit: string
+  selectionGuidance: string
+  installationNotes: string
+  procurementNotes: string
+  buyerNotes: string
+  configureForProject: string
+  buyerNotesBody: string
+  requestQuote: string
+  requestQuoteText: string
+  checkDocuments: string
+  checkDocumentsText: string
+  readInsights: string
+  readInsightsText: string
+  faqTitle: string
+  technicalDownloads: string
+  technicalDownloadsText: string
+  industryInsights: string
+  industryInsightsText: string
+  projectInquiry: string
+  projectInquiryText: string
+  relatedProducts: string
+}
 
 export function ProductDetailClient({
   product,
@@ -50,7 +84,7 @@ export function ProductDetailClient({
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
-  const faqs = getProductFaqs(product)
+  const faqs = (product as ProductWithLocalizedFaqs).localizedFaqs ?? getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
   const currentCommerce = productVariantCommerce(product)[selectedVariant] || null
   const managedStock = isManagedInventorySlug(product.slug) ? inventory[product.slug] : null
@@ -75,6 +109,49 @@ export function ProductDetailClient({
   const itemCountLabel = itemCount === 1
     ? t('product.item', 'item')
     : t('product.items', 'items')
+  const detailCopy: ProductDetailCopy = {
+    packageScope: t('product.packageScope', 'Package Scope'),
+    whatsIncluded: t('product.whatsIncluded', 'What’s Included'),
+    whatsNotIncluded: t('product.whatsNotIncluded', 'What’s Not Included'),
+    applications: t('product.applications', 'Applications'),
+    compatibleSystems: t('product.compatibleSystems', 'Compatible Systems'),
+    selectionNotes: t('product.selectionNotes', 'Selection Notes'),
+    projectFit: t('product.projectFit', 'Project Fit'),
+    selectionGuidance: t('product.selectionGuidance', 'Selection guidance for {name}')
+      .replace('{name}', product.name),
+    installationNotes: t('product.installationNotes', 'Installation notes'),
+    procurementNotes: t('product.procurementNotes', 'Procurement notes'),
+    buyerNotes: t('product.buyerNotes', 'Buyer Notes'),
+    configureForProject: t('product.configureForProject', 'Configure {name} for your project')
+      .replace('{name}', product.name),
+    buyerNotesBody: t(
+      'product.buyerNotesBody',
+      'Share the target voltage, capacity, inverter or PCS model, installation environment, and expected order quantity so JKESS can confirm the right configuration before production.'
+    ),
+    requestQuote: t('product.requestQuote', 'Request quote'),
+    requestQuoteText: t('product.requestQuoteText', 'Get configuration support and pricing.'),
+    checkDocuments: t('product.checkDocuments', 'Check documents'),
+    checkDocumentsText: t('product.checkDocumentsText', 'Review manuals and datasheets.'),
+    readInsights: t('product.readInsights', 'Read insights'),
+    readInsightsText: t('product.readInsightsText', 'Follow BMS and ESS market updates.'),
+    faqTitle: t('product.faqTitle', 'Frequently Asked Questions'),
+    technicalDownloads: t('product.technicalDownloads', 'Technical Downloads'),
+    technicalDownloadsText: t(
+      'product.technicalDownloadsText',
+      'Datasheets, manuals, and product resources.'
+    ),
+    industryInsights: t('product.industryInsights', 'Industry Insights'),
+    industryInsightsText: t(
+      'product.industryInsightsText',
+      'Battery storage market and BMS technology updates.'
+    ),
+    projectInquiry: t('product.projectInquiry', 'Project Inquiry'),
+    projectInquiryText: t(
+      'product.projectInquiryText',
+      'Ask for configuration support or a quotation.'
+    ),
+    relatedProducts: t('product.relatedProducts', 'Related Products'),
+  }
 
   useEffect(() => {
     if (availableToAdd === null || availableToAdd <= 0) return
@@ -408,8 +485,8 @@ export function ProductDetailClient({
             <p className="text-gray-700 leading-relaxed mb-8">{product.description}</p>
 
             <div className="grid gap-5 md:grid-cols-2 mb-10">
-              <ScopeCard title="What’s Included" items={product.included} included />
-              <ScopeCard title="What’s Not Included" items={product.notIncluded} />
+              <ScopeCard scopeLabel={detailCopy.packageScope} title={detailCopy.whatsIncluded} items={product.included} included />
+              <ScopeCard scopeLabel={detailCopy.packageScope} title={detailCopy.whatsNotIncluded} items={product.notIncluded} />
             </div>
 
             <h3 className="text-gray-900 font-semibold mb-4">{t('product.keyFeatures', 'Key Features')}</h3>
@@ -423,17 +500,17 @@ export function ProductDetailClient({
             </div>
 
             <div className="mb-8 grid gap-4 lg:grid-cols-3">
-              <ProductUseCasePanel title="Applications" items={useCases.applications} />
-              <ProductUseCasePanel title="Compatible Systems" items={useCases.compatibleSystems} />
-              <ProductUseCasePanel title="Selection Notes" items={useCases.selectionNotes} />
+              <ProductUseCasePanel title={detailCopy.applications} items={useCases.applications} />
+              <ProductUseCasePanel title={detailCopy.compatibleSystems} items={useCases.compatibleSystems} />
+              <ProductUseCasePanel title={detailCopy.selectionNotes} items={useCases.selectionNotes} />
             </div>
 
-            <ProductSeoPanel product={product} seoContent={seoContent} />
-            <ProductDecisionPanel product={product} prefix={prefix} />
+            <ProductSeoPanel product={product} seoContent={seoContent} copy={detailCopy} />
+            <ProductDecisionPanel product={product} prefix={prefix} copy={detailCopy} />
 
             {faqs.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-gray-900 font-semibold mb-4">Frequently Asked Questions</h3>
+                <h3 className="text-gray-900 font-semibold mb-4">{detailCopy.faqTitle}</h3>
                 <div className="divide-y divide-gray-100 border border-gray-200 rounded-2xl overflow-hidden">
                   {faqs.map((faq) => (
                     <div key={faq.question} className="bg-white px-5 py-4">
@@ -446,14 +523,14 @@ export function ProductDetailClient({
             )}
 
             <div className="mb-8 grid gap-3 md:grid-cols-3">
-              <ResourceLink href={`${prefix}/downloads`} icon={FileText} title="Technical Downloads" text="Datasheets, manuals, and product resources." />
-              <ResourceLink href={`${prefix}/news`} icon={Newspaper} title="Industry Insights" text="Battery storage market and BMS technology updates." />
-              <ResourceLink href={`${prefix}/contact`} icon={Send} title="Project Inquiry" text="Ask for configuration support or a quotation." />
+              <ResourceLink href={`${prefix}/downloads`} icon={FileText} title={detailCopy.technicalDownloads} text={detailCopy.technicalDownloadsText} />
+              <ResourceLink href={`${prefix}/news`} icon={Newspaper} title={detailCopy.industryInsights} text={detailCopy.industryInsightsText} />
+              <ResourceLink href={`${prefix}/contact`} icon={Send} title={detailCopy.projectInquiry} text={detailCopy.projectInquiryText} />
             </div>
 
             {relatedProducts.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-gray-900 font-semibold mb-4">Related Products</h3>
+                <h3 className="text-gray-900 font-semibold mb-4">{detailCopy.relatedProducts}</h3>
                 <div className="grid gap-4 md:grid-cols-3">
                   {relatedProducts.map((item) => (
                     <Link key={item.slug} href={`${prefix}/products/${item.slug}`} className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-colors hover:border-green-200 hover:bg-green-50">
@@ -497,10 +574,20 @@ export function ProductDetailClient({
   )
 }
 
-function ScopeCard({ title, items, included = false }: { title: string; items: string[]; included?: boolean }) {
+function ScopeCard({
+  scopeLabel,
+  title,
+  items,
+  included = false,
+}: {
+  scopeLabel: string
+  title: string
+  items: string[]
+  included?: boolean
+}) {
   return (
     <div className={`rounded-2xl border p-5 md:p-6 ${included ? 'border-green-200 bg-green-50/60' : 'border-amber-200 bg-amber-50/60'}`}>
-      <p className={`text-xs font-bold uppercase tracking-widest ${included ? 'text-green-700' : 'text-amber-700'}`}>Package Scope</p>
+      <p className={`text-xs font-bold uppercase tracking-widest ${included ? 'text-green-700' : 'text-amber-700'}`}>{scopeLabel}</p>
       <h3 className="mt-2 text-lg font-bold text-gray-900">{title}</h3>
       <div className="mt-4 space-y-3">
         {items.map((item) => (
@@ -530,15 +617,23 @@ function ProductUseCasePanel({ title, items }: { title: string; items: string[] 
   )
 }
 
-function ProductSeoPanel({ product, seoContent }: { product: Product; seoContent: ProductSeoContent }) {
+function ProductSeoPanel({
+  product,
+  seoContent,
+  copy,
+}: {
+  product: Product
+  seoContent: ProductSeoContent
+  copy: ProductDetailCopy
+}) {
   return (
     <div className="mb-8 rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
-      <p className="text-xs font-semibold uppercase tracking-widest text-green-600">Project Fit</p>
-      <h3 className="mt-2 text-lg font-bold text-gray-900">{product.name} selection guidance</h3>
+      <p className="text-xs font-semibold uppercase tracking-widest text-green-600">{copy.projectFit}</p>
+      <h3 className="mt-2 text-lg font-bold text-gray-900">{copy.selectionGuidance}</h3>
       <p className="mt-3 text-sm leading-7 text-gray-600">{seoContent.projectFit}</p>
       <div className="mt-6 grid gap-5 md:grid-cols-2">
-        <SeoNoteList title="Installation notes" items={seoContent.installationNotes} />
-        <SeoNoteList title="Procurement notes" items={seoContent.procurementNotes} />
+        <SeoNoteList title={copy.installationNotes} items={seoContent.installationNotes} />
+        <SeoNoteList title={copy.procurementNotes} items={seoContent.procurementNotes} />
       </div>
     </div>
   )
@@ -560,25 +655,31 @@ function SeoNoteList({ title, items }: { title: string; items: string[] }) {
   )
 }
 
-function ProductDecisionPanel({ product, prefix }: { product: Product; prefix: string }) {
+function ProductDecisionPanel({
+  product,
+  prefix,
+  copy,
+}: {
+  product: Product
+  prefix: string
+  copy: ProductDetailCopy
+}) {
   const specSummary = product.specs.slice(0, 3).map((spec) => `${spec.key}: ${spec.value}`)
   return (
     <div className="mb-8 overflow-hidden rounded-2xl border border-gray-200 bg-gray-950 text-white">
       <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="bg-gray-950 p-5 md:p-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-green-300">Buyer Notes</p>
-          <h3 className="mt-3 text-lg font-bold">Configure {product.name} for your project</h3>
-          <p className="mt-3 text-sm leading-6 text-gray-300">
-            Share the target voltage, capacity, inverter or PCS model, installation environment, and expected order quantity so JKESS can confirm the right configuration before production.
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-green-300">{copy.buyerNotes}</p>
+          <h3 className="mt-3 text-lg font-bold">{copy.configureForProject}</h3>
+          <p className="mt-3 text-sm leading-6 text-gray-300">{copy.buyerNotesBody}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {specSummary.map((item) => <span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300">{item}</span>)}
           </div>
         </div>
         <div className="grid gap-px bg-white/10 sm:grid-cols-3 lg:grid-cols-1">
-          <DecisionLink href={`${prefix}/contact`} icon={Send} title="Request quote" text="Get configuration support and pricing." />
-          <DecisionLink href={`${prefix}/downloads`} icon={FileText} title="Check documents" text="Review manuals and datasheets." />
-          <DecisionLink href={`${prefix}/news`} icon={Newspaper} title="Read insights" text="Follow BMS and ESS market updates." />
+          <DecisionLink href={`${prefix}/contact`} icon={Send} title={copy.requestQuote} text={copy.requestQuoteText} />
+          <DecisionLink href={`${prefix}/downloads`} icon={FileText} title={copy.checkDocuments} text={copy.checkDocumentsText} />
+          <DecisionLink href={`${prefix}/news`} icon={Newspaper} title={copy.readInsights} text={copy.readInsightsText} />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
 
 export const organizationId = `${siteUrl}/#organization`
 export const merchantShippingPolicyId = `${siteUrl}/shipping-policy#policy`
+export const merchantReturnPolicyId = `${siteUrl}/returns-refunds#policy`
 
 const handlingTime = {
   '@type': 'QuantitativeValue',
@@ -29,6 +30,9 @@ function definedRegion(countries: { code: string }[]) {
     addressCountry: countries.map((country) => country.code),
   }
 }
+
+const directCheckoutCountryCodes = [...euCountries, ...flatRateCountries]
+  .map((country) => country.code)
 
 export const jkessOfferShippingDetails = [
   {
@@ -89,6 +93,38 @@ export const jkessMerchantShippingPolicy = {
   ],
 }
 
+export const jkessMerchantReturnPolicy = {
+  '@id': merchantReturnPolicyId,
+  '@type': 'MerchantReturnPolicy',
+  name: 'JKESS returns and refunds policy',
+  url: absoluteUrl('/returns-refunds'),
+  applicableCountry: directCheckoutCountryCodes,
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: 7,
+  returnMethod: 'https://schema.org/ReturnByMail',
+  returnFees: 'https://schema.org/ReturnShippingFees',
+  additionalProperty: [
+    {
+      '@type': 'PropertyValue',
+      name: 'Return authorization',
+      value:
+        'Customers must contact JKESS and receive written return instructions before sending products back.',
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Confirmed quality defects',
+      value:
+        'JKESS bears reasonable approved return shipping costs or provides another agreed remedy for a confirmed product quality problem.',
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'Mandatory local rights',
+      value:
+        'Longer mandatory cancellation or return periods and non-excludable statutory remedies continue to apply where required by local law.',
+    },
+  ],
+}
+
 export const jkessOrganization = {
   '@id': organizationId,
   '@type': ['Organization', 'LocalBusiness', 'ManufacturingBusiness'],
@@ -120,6 +156,9 @@ export const jkessOrganization = {
     'Selected Middle East direct checkout',
     'Other regions by quotation review',
   ],
+  hasMerchantReturnPolicy: {
+    '@id': merchantReturnPolicyId,
+  },
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Room 1008, Building B4, Yunzhi Science & Technology Park, Guangming Street',
@@ -146,5 +185,5 @@ export const jkessOrganization = {
 }
 
 export function jsonLd(data: unknown) {
-  return JSON.stringify(data).replace(/</g, '\\u003c')
+  return JSON.stringify(data).replace(/</g, '\u003c')
 }

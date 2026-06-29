@@ -14,6 +14,7 @@ export type NavigationGroup = {
 
 export const navigationGroups: NavigationGroup[] = [
   { key: 'home', label: 'Home', href: '/' },
+  { key: 'shop', label: 'Shop', href: '/products' },
   {
     key: 'products',
     label: 'Products',

@@ -1,5 +1,5 @@
 import Script from 'next/script'
-import Navbar from '@/components/Navbar'
+import NavbarMegaMenu from '@/components/NavbarMegaMenu'
 import Footer from '@/components/Footer'
 import ProductSalePrice from '@/components/ProductSalePrice'
 import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
@@ -79,7 +79,7 @@ export default async function LangLayout(props: {
               {`document.documentElement.lang="${validLang}";document.documentElement.dir="${localeDef.dir}";`}
             </Script>
           )}
-          <Navbar />
+          <NavbarMegaMenu />
           <ProductSalePrice />
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>

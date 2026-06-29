@@ -16,6 +16,7 @@ import {
   canonicalSeoPath,
   defaultIndexableSeoLocales,
   isSeoLocaleIndexable,
+  localizedSeoPath,
   pageLanguageAlternates,
 } from '@/lib/seo'
 
@@ -36,6 +37,19 @@ type PurchaseNotice = {
   description: string
   schemaValue: string
   metadataSentence: string
+}
+
+type ProductSchemaLabels = {
+  batteryIncluded: string
+  currentInventory: string
+  inventoryValue: (stock: number) => string
+  applications: string
+  compatibleSystems: string
+  selectionNotes: string
+  projectFit: string
+  installationNotes: string
+  home: string
+  products: string
 }
 
 function getPurchaseNotice(product: Product): PurchaseNotice | null {
@@ -113,6 +127,64 @@ function productLanguageAlternates(product: Product) {
   return pageLanguageAlternates(`/products/${product.slug}`, defaultIndexableSeoLocales)
 }
 
+function isReviewedLocalizedProductRoute(product: Product, lang: string) {
+  return product.slug === 'battery-kit' && (lang === 'de' || lang === 'fr')
+}
+
+function productSchemaLabels(lang: string): ProductSchemaLabels {
+  if (lang === 'de') {
+    return {
+      batteryIncluded: 'Batteriezellen enthalten',
+      currentInventory: 'Aktueller Lagerbestand',
+      inventoryValue: (stock) => `${stock} Stück`,
+      applications: 'Anwendungen',
+      compatibleSystems: 'Kompatible Systeme',
+      selectionNotes: 'Auswahlhinweise',
+      projectFit: 'Projekteignung',
+      installationNotes: 'Installationshinweise',
+      home: 'Startseite',
+      products: 'Produkte',
+    }
+  }
+
+  if (lang === 'fr') {
+    return {
+      batteryIncluded: 'Cellules de batterie incluses',
+      currentInventory: 'Stock actuel',
+      inventoryValue: (stock) => `${stock} unités`,
+      applications: 'Applications',
+      compatibleSystems: 'Systèmes compatibles',
+      selectionNotes: 'Conseils de sélection',
+      projectFit: 'Adéquation au projet',
+      installationNotes: 'Conseils d’installation',
+      home: 'Accueil',
+      products: 'Produits',
+    }
+  }
+
+  return {
+    batteryIncluded: 'Battery Included',
+    currentInventory: 'Current inventory',
+    inventoryValue: (stock) => `${stock} units`,
+    applications: 'Applications',
+    compatibleSystems: 'Compatible Systems',
+    selectionNotes: 'Selection Notes',
+    projectFit: 'Project Fit',
+    installationNotes: 'Installation Notes',
+    home: 'Home',
+    products: 'Products',
+  }
+}
+
+function truncateMetadataDescription(value: string, maxLength = 158) {
+  const normalized = value.replace(/\s+/g, ' ').trim()
+  if (normalized.length <= maxLength) return normalized
+
+  const truncated = normalized.slice(0, maxLength + 1)
+  const lastSpace = truncated.lastIndexOf(' ')
+  return `${truncated.slice(0, lastSpace > maxLength * 0.75 ? lastSpace : maxLength).trimEnd()}…`
+}
+
 async function productStock(product: Product) {
   if (!isManagedInventorySlug(product.slug)) return null
 
@@ -125,19 +197,29 @@ async function productStock(product: Product) {
   }
 }
 
-async function productJsonLd(p: Product) {
-  const url = absoluteUrl(`/products/${p.slug}`)
-  const faqs = getProductFaqs(p)
-  const useCases = getProductUseCases(p)
-  const seoContent = getProductSeoContent(p)
-  const purchaseNotice = getPurchaseNotice(p)
-  const stock = await productStock(p)
+async function productJsonLd(sourceProduct: Product, lang: string) {
+  const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
+  const localizedRoute = isReviewedLocalizedProductRoute(sourceProduct, lang)
+  const schemaLang = localizedRoute ? lang : defaultLocale
+  const p = localizedRoute ? localizedContent.product : sourceProduct
+  const productPath = `/products/${sourceProduct.slug}`
+  const url = absoluteUrl(localizedSeoPath(schemaLang, productPath))
+  const faqs = localizedRoute
+    ? localizedContent.product.localizedFaqs ?? getProductFaqs(sourceProduct)
+    : getProductFaqs(sourceProduct)
+  const useCases = localizedRoute ? localizedContent.useCases : getProductUseCases(sourceProduct)
+  const seoContent = localizedRoute ? localizedContent.seoContent : getProductSeoContent(sourceProduct)
+  const purchaseNotice = localizedRoute
+    ? localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
+    : getPurchaseNotice(sourceProduct)
+  const labels = productSchemaLabels(schemaLang)
+  const stock = await productStock(sourceProduct)
   const additionalProperty = [
     ...(purchaseNotice
       ? [
           {
             '@type': 'PropertyValue',
-            name: 'Battery Included',
+            name: labels.batteryIncluded,
             value: purchaseNotice.schemaValue,
           },
         ]
@@ -151,34 +233,34 @@ async function productJsonLd(p: Product) {
       ? [
           {
             '@type': 'PropertyValue',
-            name: 'Current inventory',
-            value: `${stock} units`,
+            name: labels.currentInventory,
+            value: labels.inventoryValue(stock),
           },
         ]
       : []),
     {
       '@type': 'PropertyValue',
-      name: 'Applications',
+      name: labels.applications,
       value: useCases.applications.join('; '),
     },
     {
       '@type': 'PropertyValue',
-      name: 'Compatible Systems',
+      name: labels.compatibleSystems,
       value: useCases.compatibleSystems.join('; '),
     },
     {
       '@type': 'PropertyValue',
-      name: 'Selection Notes',
+      name: labels.selectionNotes,
       value: useCases.selectionNotes.join('; '),
     },
     {
       '@type': 'PropertyValue',
-      name: 'Project Fit',
+      name: labels.projectFit,
       value: seoContent.projectFit,
     },
     {
       '@type': 'PropertyValue',
-      name: 'Installation Notes',
+      name: labels.installationNotes,
       value: seoContent.installationNotes.join('; '),
     },
   ]
@@ -189,8 +271,9 @@ async function productJsonLd(p: Product) {
           '@type': 'Product',
           '@id': `${url}#product`,
           name: p.name,
-          sku: p.slug,
+          sku: sourceProduct.slug,
           description: p.description,
+          inLanguage: schemaLang,
           brand: { '@type': 'Brand', name: 'JKESS' },
           manufacturer: { '@id': organizationId },
           image: p.images.map((img) => absoluteUrl(img)),
@@ -205,6 +288,7 @@ async function productJsonLd(p: Product) {
           '@id': `${url}#service`,
           name: p.name,
           description: p.description,
+          inLanguage: schemaLang,
           provider: { '@id': organizationId },
           image: p.images.map((img) => absoluteUrl(img)),
           url,
@@ -216,10 +300,10 @@ async function productJsonLd(p: Product) {
         }
 
   if (p.type === 'shop') {
-    const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
+    const mpn = sourceProduct.specs.find((s) => s.key.toLowerCase().includes('model'))
     if (mpn) primaryEntity.mpn = mpn.value
 
-    const variants = productVariantCommerce(p)
+    const variants = productVariantCommerce(sourceProduct)
     if (variants.length) {
       const availability = schemaAvailability(stock ?? 0)
       primaryEntity.offers = {
@@ -267,14 +351,26 @@ async function productJsonLd(p: Product) {
       primaryEntity,
       {
         '@type': 'BreadcrumbList',
+        inLanguage: schemaLang,
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
-          { '@type': 'ListItem', position: 2, name: 'Shop', item: absoluteUrl('/products') },
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: labels.home,
+            item: absoluteUrl(localizedSeoPath(schemaLang, '/')),
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: labels.products,
+            item: absoluteUrl(localizedSeoPath(schemaLang, '/products')),
+          },
           { '@type': 'ListItem', position: 3, name: p.name, item: url },
         ],
       },
       {
         '@type': 'FAQPage',
+        inLanguage: schemaLang,
         mainEntity: faqs.map((faq) => ({
           '@type': 'Question',
           name: faq.question,
@@ -305,7 +401,9 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
     ? localizedContent.shippingMetadataSentence
       ?? ' EU delivery addresses include free standard shipping; selected non-EU direct checkout destinations use a flat $150 shipping charge per order.'
     : ''
-  const description = `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`.slice(0, 158)
+  const description = truncateMetadataDescription(
+    `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`
+  )
 
   return {
     title: `${product.name} | ${product.categoryLabel} | JKESS`,
@@ -354,12 +452,15 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
 
   const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
   const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
+  const relatedProducts = isReviewedLocalizedProductRoute(sourceProduct, lang)
+    ? []
+    : getRelatedProducts(sourceProduct)
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: await productJsonLd(sourceProduct) }}
+        dangerouslySetInnerHTML={{ __html: await productJsonLd(sourceProduct, lang) }}
       />
       <div className="relative bg-black">
         {purchaseNotice && (
@@ -387,7 +488,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
           <ProductDetailClient
             product={localizedContent.product}
             lang={lang}
-            relatedProducts={getRelatedProducts(sourceProduct)}
+            relatedProducts={relatedProducts}
             useCases={localizedContent.useCases}
             seoContent={localizedContent.seoContent}
           />

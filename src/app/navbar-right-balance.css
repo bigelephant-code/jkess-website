@@ -5,7 +5,11 @@
   }
 
   nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="ml-auto"][class*="lg:flex"] > a,
-  nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="ml-auto"][class*="lg:flex"] > button,
+  nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="ml-auto"][class*="lg:flex"] > button {
+    font-size: 18px;
+    line-height: 1.5rem;
+  }
+
   nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="gap-3"][class*="lg:flex"] > a:last-child {
     font-size: 17px;
     line-height: 1.5rem;

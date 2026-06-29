@@ -1,5 +1,5 @@
-import type { Product, ProductSeoContent, ProductUseCases } from '@/lib/products'
-import { getProductSeoContent, getProductUseCases } from '@/lib/products'
+import type { Product, ProductFaq, ProductSeoContent, ProductUseCases } from '@/lib/products'
+import { getProductFaqs, getProductSeoContent, getProductUseCases } from '@/lib/products'
 
 export interface LocalizedPurchaseNotice {
   title: string
@@ -8,8 +8,12 @@ export interface LocalizedPurchaseNotice {
   metadataSentence: string
 }
 
+export type LocalizedProduct = Product & {
+  localizedFaqs?: ProductFaq[]
+}
+
 export interface LocalizedProductPageContent {
-  product: Product
+  product: LocalizedProduct
   useCases: ProductUseCases
   seoContent: ProductSeoContent
   purchaseNotice: LocalizedPurchaseNotice | null
@@ -88,6 +92,23 @@ const batteryKitGerman = {
       'Bei wiederkehrenden Projekten Gehäusefarbe, Logo, Verdrahtungsaufbau und gewünschtes Hardwarepaket bestätigen.',
     ],
   },
+  faqs: [
+    {
+      question: 'Sind im Batteriebausatz mit Rollen Batteriezellen enthalten?',
+      answer:
+        'Nein. Das Set wird als Gehäuse- und Montagehardware geliefert; je nach gewählter Variante sind zusätzlich LCD und BMS enthalten. Kompatible LiFePO4-Zellen mit 280 Ah bis 320 Ah müssen separat gekauft werden.',
+    },
+    {
+      question: 'Was ist in den einzelnen Batteriebausatz-Optionen enthalten?',
+      answer:
+        'Die Option Nur Gehäuse umfasst das Gehäuse, den Rollenunterbau und die zugehörige Montagehardware. Die Option Gehäuse + LCD + BMS enthält zusätzlich die angegebene Anzeige- und BMS-Hardware. Für den exakten Lieferumfang gilt die endgültige Packliste.',
+    },
+    {
+      question: 'Für welche Anwendungen ist der Batteriebausatz mit Rollen geeignet?',
+      answer:
+        'Er eignet sich für private Notstromversorgung, mobile Arbeitsstromsysteme, kleine gewerbliche Speicher und Batterie-Montageprojekte, bei denen eine einfache Bewegung und Positionierung erforderlich ist.',
+    },
+  ],
   purchaseNotice: {
     title: 'Batteriezellen sind nicht enthalten',
     description:
@@ -171,6 +192,23 @@ const batteryKitFrench = {
       'Pour les projets récurrents, confirmer la couleur du boîtier, le logo, le schéma de câblage et l’ensemble matériel sélectionné.',
     ],
   },
+  faqs: [
+    {
+      question: 'Les cellules de batterie sont-elles incluses avec le kit sur roulettes ?',
+      answer:
+        'Non. Le kit comprend le boîtier et le matériel d’assemblage ; l’écran LCD et le BMS sont ajoutés selon la variante choisie. Les cellules LiFePO4 compatibles de 280 Ah à 320 Ah doivent être achetées séparément.',
+    },
+    {
+      question: 'Que comprend chaque option du kit batterie ?',
+      answer:
+        'L’option Boîtier seul comprend le boîtier, la base à roulettes et le matériel d’assemblage associé. L’option Boîtier + LCD + BMS ajoute l’écran et le matériel BMS spécifiés. La liste de colisage finale définit le contenu exact livré.',
+    },
+    {
+      question: 'Dans quels projets utilise-t-on généralement ce kit sur roulettes ?',
+      answer:
+        'Il convient aux systèmes de secours résidentiels, à l’alimentation mobile, au petit stockage commercial et aux projets d’assemblage de batteries nécessitant un déplacement et un positionnement faciles.',
+    },
+  ],
   purchaseNotice: {
     title: 'Les cellules de batterie ne sont pas incluses',
     description:
@@ -187,7 +225,10 @@ export function getLocalizedProductPageContent(
   lang: string
 ): LocalizedProductPageContent {
   const fallback: LocalizedProductPageContent = {
-    product,
+    product: {
+      ...product,
+      localizedFaqs: getProductFaqs(product),
+    },
     useCases: getProductUseCases(product),
     seoContent: getProductSeoContent(product),
     purchaseNotice: null,
@@ -211,6 +252,7 @@ export function getLocalizedProductPageContent(
       included: localized.product.included,
       notIncluded: localized.product.notIncluded,
       features: localized.product.features,
+      localizedFaqs: localized.faqs,
     },
     useCases: localized.useCases,
     seoContent: localized.seoContent,

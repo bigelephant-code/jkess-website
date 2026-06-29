@@ -1,7 +1,6 @@
 import DynamicProductPage from '../[slug]/page'
 import { getProductBySlug } from '@/lib/products'
 import { getLocalizedProductPageContent } from '@/lib/product-localizations'
-import type { LangCode } from '@/i18n/config'
 import {
   buildPageMetadata,
   productIndexableSeoLocales,
@@ -12,7 +11,9 @@ export const dynamic = 'force-dynamic'
 const PRODUCT_SLUG = 'battery-kit'
 const PRODUCT_PATH = `/products/${PRODUCT_SLUG}`
 
-const localizedKeywords: Record<LangCode, string[]> = {
+type PilotLocale = 'en' | 'de' | 'fr'
+
+const localizedKeywords: Record<PilotLocale, string[]> = {
   en: [
     'battery kit with caster',
     'portable LiFePO4 battery enclosure',
@@ -36,13 +37,13 @@ const localizedKeywords: Record<LangCode, string[]> = {
   ],
 }
 
-const openGraphLocales: Record<LangCode, string> = {
+const openGraphLocales: Record<PilotLocale, string> = {
   en: 'en_US',
   de: 'de_DE',
   fr: 'fr_FR',
 }
 
-function isSupportedSeoLocale(lang: string): lang is LangCode {
+function isPilotLocale(lang: string): lang is PilotLocale {
   return lang === 'en' || lang === 'de' || lang === 'fr'
 }
 
@@ -73,7 +74,7 @@ export async function generateMetadata(props: { params: Promise<{ lang: string }
     `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`
   )
   const indexableLocales = productIndexableSeoLocales(PRODUCT_SLUG)
-  const resolvedLang: LangCode = isSupportedSeoLocale(lang) ? lang : 'en'
+  const resolvedLang: PilotLocale = isPilotLocale(lang) ? lang : 'en'
   const openGraphLocale = openGraphLocales[resolvedLang]
   const openGraphAlternateLocales = Object.entries(openGraphLocales)
     .filter(([, locale]) => locale !== openGraphLocale)

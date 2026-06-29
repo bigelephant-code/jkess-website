@@ -1,3 +1,4 @@
+// Central source for the current direct-checkout shipping rules.
 export const FLAT_RATE_SHIPPING_USD = 150
 export const OTHER_COUNTRY_CODE = 'OTHER'
 

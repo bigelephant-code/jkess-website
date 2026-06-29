@@ -3,6 +3,7 @@ import { locales, defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
 import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { specificationLandingPages } from '@/lib/specification-pages'
+import { technicalGuides } from '@/lib/technical-guides'
 import { absoluteUrl } from '@/lib/site'
 import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
@@ -15,7 +16,8 @@ const policyPaths = [
   '/privacy-policy',
 ]
 const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
-const siteLastModified = new Date('2026-06-28')
+const englishOnlyStaticPaths = ['/news', '/quality-and-manufacturing', '/shipping-quote']
+const siteLastModified = new Date('2026-06-29')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],
@@ -23,6 +25,8 @@ const staticImages: Record<string, string[]> = {
   '/downloads': ['/images/downloads-banner-bg.webp'],
   '/news': ['/images/news-featured-energy-storage.jpg'],
   '/contact': ['/images/contact-banner-bg.webp'],
+  '/quality-and-manufacturing': ['/images/company-building.webp'],
+  '/shipping-quote': ['/images/contact-banner-bg.webp'],
 }
 
 function localizedPath(locale: string, path: string) {
@@ -36,8 +40,8 @@ function sitemapPath(path: string) {
 function staticPriority(path: string) {
   if (path === '') return 1
   if (path === '/products') return 0.9
-  if (path === '/contact') return 0.85
-  if (path === '/downloads' || path === '/news') return 0.75
+  if (path === '/contact' || path === '/shipping-quote') return 0.85
+  if (path === '/downloads' || path === '/news' || path === '/quality-and-manufacturing') return 0.75
   if (policyPaths.includes(path)) return 0.5
   return 0.7
 }
@@ -48,11 +52,18 @@ function staticChangeFrequency(path: string): MetadataRoute.Sitemap[number]['cha
   return 'monthly'
 }
 
+function englishOnlyAlternates(path: string) {
+  const url = absoluteUrl(path)
+  return { en: url, 'x-default': url }
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
 
   for (const locale of locales) {
     for (const path of staticPaths) {
+      if (englishOnlyStaticPaths.includes(path) && locale.code !== defaultLocale) continue
+
       entries.push({
         url: absoluteUrl(localizedPath(locale.code, path)),
         lastModified: siteLastModified,
@@ -60,24 +71,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: staticPriority(path),
         images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
         alternates: {
-          languages: pageLanguageAlternates(sitemapPath(path)),
+          languages: englishOnlyStaticPaths.includes(path)
+            ? englishOnlyAlternates(sitemapPath(path))
+            : pageLanguageAlternates(sitemapPath(path)),
         },
       })
     }
+  }
 
-    for (const product of products) {
-      const productPath = `/products/${product.slug}`
-      entries.push({
-        url: absoluteUrl(localizedSeoPath(locale.code, productPath)),
-        lastModified: siteLastModified,
-        changeFrequency: 'weekly',
-        priority: product.type === 'shop' ? 0.9 : 0.85,
-        images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
-        alternates: {
-          languages: pageLanguageAlternates(productPath),
-        },
-      })
-    }
+  for (const path of ['/quality-and-manufacturing', '/shipping-quote']) {
+    const url = absoluteUrl(path)
+    entries.push({
+      url,
+      lastModified: siteLastModified,
+      changeFrequency: 'monthly',
+      priority: staticPriority(path),
+      images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
+      alternates: { languages: englishOnlyAlternates(path) },
+    })
+  }
+
+  for (const product of products) {
+    const productPath = `/products/${product.slug}`
+    entries.push({
+      url: absoluteUrl(localizedSeoPath(defaultLocale, productPath)),
+      lastModified: siteLastModified,
+      changeFrequency: 'weekly',
+      priority: product.type === 'shop' ? 0.9 : 0.85,
+      images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
+      alternates: {
+        languages: englishOnlyAlternates(productPath),
+      },
+    })
   }
 
   for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {
@@ -94,6 +119,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
           'x-default': url,
         },
       },
+    })
+  }
+
+  for (const guide of technicalGuides) {
+    const path = `/guides/${guide.slug}`
+    const url = absoluteUrl(path)
+    entries.push({
+      url,
+      lastModified: siteLastModified,
+      changeFrequency: 'monthly',
+      priority: 0.82,
+      images: [absoluteUrl(guide.image)],
+      alternates: { languages: englishOnlyAlternates(path) },
     })
   }
 

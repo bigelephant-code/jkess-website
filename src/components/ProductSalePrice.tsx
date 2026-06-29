@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
-const DISCOUNT_PERCENT = 15
-const SALE_MULTIPLIER = 1 - DISCOUNT_PERCENT / 100
+import {
+  SALE_DISCOUNT_PERCENT,
+  SALE_MULTIPLIER,
+  formatUsd,
+} from '@/lib/commerce'
 
 type SaleTarget = {
   container: HTMLElement
@@ -15,15 +18,6 @@ type SaleTarget = {
 function parsePrice(value: string) {
   const price = Number.parseFloat(value.replace(/[^0-9.]/g, ''))
   return Number.isFinite(price) && price > 0 ? price : null
-}
-
-function formatUsd(value: number) {
-  return value.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
 }
 
 export default function ProductSalePrice() {
@@ -82,11 +76,17 @@ export default function ProductSalePrice() {
         {formatUsd(regularPrice)}
       </span>
       <span className="rounded-full bg-red-500/20 px-2.5 py-1 text-xs font-bold text-red-300">
-        -{DISCOUNT_PERCENT}% OFF
+        -{SALE_DISCOUNT_PERCENT}% OFF
       </span>
       <span className="w-full text-xs leading-5 text-green-300/80">
-        The displayed price is the current promotional price after the 15% discount.
+        The displayed price is the current promotional price after the {SALE_DISCOUNT_PERCENT}% discount.
       </span>
+      <Link
+        href="/shipping-quote"
+        className="mt-1 w-full text-xs font-semibold text-amber-200 underline decoration-amber-200/40 underline-offset-4 hover:text-amber-100"
+      >
+        Request a destination shipping quote before payment
+      </Link>
     </div>,
     target.container
   )

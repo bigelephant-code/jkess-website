@@ -4,6 +4,11 @@ import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
+import { INITIAL_INVENTORY, isManagedInventorySlug } from '@/lib/inventory-catalog'
+import { getInventorySnapshot } from '@/lib/order-store'
+import { productVariantCommerce, schemaAvailability } from '@/lib/commerce'
+
+export const dynamic = 'force-dynamic'
 
 export function generateStaticParams() {
   const params: Array<{ lang: string; slug: string }> = []
@@ -98,24 +103,32 @@ function productKeywords(product: Product) {
 }
 
 function productLanguageAlternates(product: Product) {
+  const englishUrl = absoluteUrl(productPath(product, defaultLocale))
   return {
-    ...Object.fromEntries(
-      locales.map((locale) => [
-        locale.code,
-        absoluteUrl(productPath(product, locale.code)),
-      ])
-    ),
-    'x-default': absoluteUrl(productPath(product, defaultLocale)),
+    en: englishUrl,
+    'x-default': englishUrl,
   }
 }
 
-function productJsonLd(p: Product, lang: string) {
-  const localePath = lang === defaultLocale ? '' : `/${lang}`
-  const url = absoluteUrl(`${localePath}/products/${p.slug}`)
+async function productStock(product: Product) {
+  if (!isManagedInventorySlug(product.slug)) return null
+
+  try {
+    const inventory = await getInventorySnapshot()
+    return inventory[product.slug]
+  } catch (error) {
+    console.error('Unable to load product inventory for structured data:', error)
+    return INITIAL_INVENTORY[product.slug]
+  }
+}
+
+async function productJsonLd(p: Product) {
+  const url = absoluteUrl(`/products/${p.slug}`)
   const faqs = getProductFaqs(p)
   const useCases = getProductUseCases(p)
   const seoContent = getProductSeoContent(p)
   const purchaseNotice = getPurchaseNotice(p)
+  const stock = await productStock(p)
   const additionalProperty = [
     ...(purchaseNotice
       ? [
@@ -131,6 +144,15 @@ function productJsonLd(p: Product, lang: string) {
       name: spec.key,
       value: spec.value,
     })),
+    ...(stock !== null
+      ? [
+          {
+            '@type': 'PropertyValue',
+            name: 'Current inventory',
+            value: `${stock} units`,
+          },
+        ]
+      : []),
     {
       '@type': 'PropertyValue',
       name: 'Applications',
@@ -162,6 +184,7 @@ function productJsonLd(p: Product, lang: string) {
     p.type === 'shop'
       ? {
           '@type': 'Product',
+          '@id': `${url}#product`,
           name: p.name,
           sku: p.slug,
           description: p.description,
@@ -172,9 +195,11 @@ function productJsonLd(p: Product, lang: string) {
           mainEntityOfPage: url,
           additionalProperty,
           category: p.categoryLabel,
+          itemCondition: 'https://schema.org/NewCondition',
         }
       : {
           '@type': 'Service',
+          '@id': `${url}#service`,
           name: p.name,
           description: p.description,
           provider: { '@id': organizationId },
@@ -191,20 +216,48 @@ function productJsonLd(p: Product, lang: string) {
     const mpn = p.specs.find((s) => s.key.toLowerCase().includes('model'))
     if (mpn) primaryEntity.mpn = mpn.value
 
-    if (p.variants?.length) {
+    const variants = productVariantCommerce(p)
+    if (variants.length) {
+      const availability = schemaAvailability(stock ?? 0)
       primaryEntity.offers = {
         '@type': 'AggregateOffer',
         priceCurrency: 'USD',
-        lowPrice: Math.min(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
-        highPrice: Math.max(...p.variants.map((v) => parseFloat((v.price || '0').replace(/[$,]/g, '')))),
-        offerCount: p.variants.length,
-        offers: p.variants.map((v) => ({
+        lowPrice: Math.min(...variants.map((variant) => variant.salePrice)),
+        highPrice: Math.max(...variants.map((variant) => variant.salePrice)),
+        offerCount: variants.length,
+        availability,
+        offers: variants.map((variant) => ({
           '@type': 'Offer',
-          name: v.label,
-          price: v.price ? parseFloat(v.price.replace(/[$,]/g, '')) : undefined,
+          sku: variant.sku,
+          name: variant.label,
+          price: variant.salePrice,
           priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            priceType: 'https://schema.org/StrikethroughPrice',
+            price: variant.regularPrice,
+            priceCurrency: 'USD',
+          },
+          availability,
+          inventoryLevel:
+            stock === null
+              ? undefined
+              : {
+                  '@type': 'QuantitativeValue',
+                  value: stock,
+                },
+          itemCondition: 'https://schema.org/NewCondition',
+          seller: { '@id': organizationId },
           url,
+          hasMerchantReturnPolicy: {
+            '@id': `${absoluteUrl('/returns-refunds')}#policy`,
+          },
+          shippingDetails: {
+            '@type': 'OfferShippingDetails',
+            hasShippingService: {
+              '@id': `${absoluteUrl('/shipping-policy')}#policy`,
+            },
+          },
         })),
       }
     }
@@ -217,8 +270,8 @@ function productJsonLd(p: Product, lang: string) {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl(localePath || '/') },
-          { '@type': 'ListItem', position: 2, name: 'Shop', item: absoluteUrl(`${localePath}/products`) },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+          { '@type': 'ListItem', position: 2, name: 'Shop', item: absoluteUrl('/products') },
           { '@type': 'ListItem', position: 3, name: p.name, item: url },
         ],
       },
@@ -243,10 +296,13 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
   const { lang, slug } = await props.params
   const product = getProductBySlug(slug)
   if (!product) return {}
-  const canonicalPath = productPath(product, lang)
+
+  const indexable = lang === defaultLocale
+  const canonicalPath = productPath(product, defaultLocale)
   const purchaseNotice = getPurchaseNotice(product)
   const noticeSentence = purchaseNotice ? ` ${purchaseNotice.metadataSentence}` : ''
   const description = `${product.tagline}.${noticeSentence} ${product.description}`.slice(0, 158)
+
   return {
     title: `${product.name} | ${product.categoryLabel} | JKESS`,
     description,
@@ -254,6 +310,16 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
     alternates: {
       canonical: absoluteUrl(canonicalPath),
       languages: productLanguageAlternates(product),
+    },
+    robots: {
+      index: indexable,
+      follow: true,
+      googleBot: {
+        index: indexable,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
     openGraph: {
       title: `${product.name} | JKESS`,
@@ -288,7 +354,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: productJsonLd(product, lang) }}
+        dangerouslySetInnerHTML={{ __html: await productJsonLd(product) }}
       />
       <div className="relative bg-black">
         {purchaseNotice && (

@@ -15,6 +15,8 @@ const navLinks = [
   { key: 'nav.shop', label: 'Products', href: '/products' },
   { key: 'nav.solutions', label: 'Solutions', href: '/commercial-energy-storage' },
   { key: 'nav.guides', label: 'Guides', href: '/news' },
+  { key: 'nav.about', label: 'About', href: '/about' },
+  { key: 'nav.downloads', label: 'Downloads', href: '/downloads' },
   { key: 'nav.quality', label: 'Quality', href: '/quality-and-manufacturing' },
   { key: 'nav.shippingQuote', label: 'Shipping Quote', href: '/shipping-quote' },
   { key: 'nav.contact', label: 'Contact', href: '/contact' },
@@ -189,12 +191,12 @@ export default function Navbar() {
           />
         </a>
 
-        <div className="hidden md:flex items-center gap-5 lg:gap-7">
+        <div className="hidden lg:flex items-center gap-3 xl:gap-5">
           {navLinks.map((link) => (
             <a
               key={link.key}
               href={`${prefix}${link.href}`}
-              className="relative text-sm lg:text-base tracking-wide font-medium text-white transition-colors duration-200 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px] before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full"
+              className="relative text-xs xl:text-sm tracking-wide font-medium text-white transition-colors duration-200 before:content-[''] before:absolute before:top-[calc(100%+2px)] before:left-0 before:w-0 before:h-[1px] before:bg-green-500 before:rounded-full before:transition-all before:duration-300 hover:before:w-full"
             >
               <motion.span
                 className="flex"
@@ -246,7 +248,7 @@ export default function Navbar() {
           </a>
         </div>
 
-        <div className="md:hidden flex items-center gap-3">
+        <div className="lg:hidden flex items-center gap-3">
           <a href={`${prefix}/cart`} aria-label={`View cart with ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`} className="relative text-white">
             <ShoppingCart size={24} />
             {itemCount > 0 && (
@@ -267,7 +269,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-black/70 border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px] overflow-hidden"
+            className="lg:hidden bg-black/70 border-t border-white/[0.04] px-6 py-5 space-y-4 rounded-b-[17px] overflow-hidden"
           >
             {navLinks.map((link) => (
               <a

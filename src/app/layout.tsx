@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from 'next'
+import { headers } from 'next/headers'
 import { Inter } from 'next/font/google'
 import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
 import { jkessMerchantShippingPolicy, jkessOrganization, jsonLd } from '@/lib/structured-data'
+import { defaultLocale, isValidLocale, localeMap } from '@/i18n/config'
+import { REQUEST_LOCALE_HEADER } from '@/lib/request-locale'
 import './globals.css'
 import './performance.css'
 
@@ -95,13 +98,20 @@ const siteJsonLd = {
   '@graph': [jkessOrganization, jkessMerchantShippingPolicy, websiteJsonLd],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const requestHeaders = await headers()
+  const requestedLocale = requestHeaders.get(REQUEST_LOCALE_HEADER)
+  const lang = requestedLocale && isValidLocale(requestedLocale)
+    ? requestedLocale
+    : defaultLocale
+  const dir = localeMap.get(lang)?.dir || 'ltr'
+
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang={lang} dir={dir} className={`${inter.variable} h-full antialiased`}>
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />

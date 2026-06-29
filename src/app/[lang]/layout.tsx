@@ -52,11 +52,6 @@ export default async function LangLayout(props: {
       )}
       <I18nProvider lang={validLang as LangCode} dir={localeDef.dir} messages={messages}>
         <CartProvider>
-          {validLang !== 'en' && (
-            <Script id="set-html-lang" strategy="afterInteractive">
-              {`document.documentElement.lang="${validLang}";document.documentElement.dir="${localeDef.dir}";`}
-            </Script>
-          )}
           <NavbarMegaMenuV2 />
           <NavbarDockEffect />
           <EcommerceAnalyticsTracker />

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { defaultLocale, isValidLocale } from '@/i18n/config'
+import { REQUEST_LOCALE_HEADER } from '@/lib/request-locale'
 
 const PUBLIC_PATHS = [
   '/_next',
@@ -35,6 +36,12 @@ function getNegotiatedLocale(request: NextRequest): string {
   return defaultLocale
 }
 
+function requestHeadersWithLocale(request: NextRequest, locale: string) {
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set(REQUEST_LOCALE_HEADER, locale)
+  return requestHeaders
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -46,7 +53,11 @@ export function proxy(request: NextRequest) {
   const firstSegment = pathSegments[0]?.toLowerCase()
 
   if (firstSegment && isValidLocale(firstSegment)) {
-    return NextResponse.next()
+    return NextResponse.next({
+      request: {
+        headers: requestHeadersWithLocale(request, firstSegment),
+      },
+    })
   }
 
   const locale = getNegotiatedLocale(request)
@@ -59,7 +70,11 @@ export function proxy(request: NextRequest) {
 
   const rewriteUrl = new URL(request.nextUrl)
   rewriteUrl.pathname = `/en${pathname === '/' ? '' : pathname}`
-  return NextResponse.rewrite(rewriteUrl)
+  return NextResponse.rewrite(rewriteUrl, {
+    request: {
+      headers: requestHeadersWithLocale(request, defaultLocale),
+    },
+  })
 }
 
 export const config = {

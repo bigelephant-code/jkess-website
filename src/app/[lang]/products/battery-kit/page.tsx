@@ -35,6 +35,12 @@ const localizedKeywords: Record<string, string[]> = {
   ],
 }
 
+const openGraphLocales: Record<string, string> = {
+  en: 'en_US',
+  de: 'de_DE',
+  fr: 'fr_FR',
+}
+
 function truncateMetadataDescription(value: string, maxLength = 158) {
   const normalized = value.replace(/\s+/g, ' ').trim()
   if (normalized.length <= maxLength) return normalized
@@ -62,6 +68,10 @@ export async function generateMetadata(props: { params: Promise<{ lang: string }
     `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`
   )
   const indexableLocales = productIndexableSeoLocales(PRODUCT_SLUG)
+  const openGraphLocale = openGraphLocales[lang] ?? openGraphLocales.en
+  const openGraphAlternateLocales = Object.entries(openGraphLocales)
+    .filter(([, locale]) => locale !== openGraphLocale)
+    .map(([, locale]) => locale)
 
   return buildPageMetadata({
     lang,
@@ -79,6 +89,8 @@ export async function generateMetadata(props: { params: Promise<{ lang: string }
     image: product.images[0] ?? '/images/battery-kit-hero.webp',
     indexableLocales,
     alternateLocales: indexableLocales,
+    openGraphLocale,
+    openGraphAlternateLocales,
   })
 }
 

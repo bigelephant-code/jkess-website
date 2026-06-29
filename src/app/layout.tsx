@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
-import { jkessOrganization, jsonLd } from '@/lib/structured-data'
+import { jkessMerchantShippingPolicy, jkessOrganization, jsonLd } from '@/lib/structured-data'
 import './globals.css'
 import './performance.css'
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s',
   },
   description:
-    'JKBMS Electronic Technology Co.,Ltd develops BMS control hardware, battery enclosure kits, high-voltage battery management systems, and configured commercial energy storage solutions for customers across 200+ countries and regions.',
+    'JKBMS Electronic Technology Co.,Ltd develops BMS control hardware, battery enclosure kits, high-voltage battery management systems, and configured commercial energy storage solutions with direct checkout in selected destinations and quotation review for other regions.',
   keywords: [
     'JKESS',
     'BMS',
@@ -92,7 +92,7 @@ const websiteJsonLd = {
 
 const siteJsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [jkessOrganization, websiteJsonLd],
+  '@graph': [jkessOrganization, jkessMerchantShippingPolicy, websiteJsonLd],
 }
 
 export default function RootLayout({

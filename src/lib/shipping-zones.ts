@@ -14,7 +14,7 @@ export type ShippingCountryGroup = {
   countries: ShippingCountry[]
 }
 
-const euCountries: ShippingCountry[] = [
+export const euCountries: ShippingCountry[] = [
   { code: 'AT', name: 'Austria' },
   { code: 'BE', name: 'Belgium' },
   { code: 'BG', name: 'Bulgaria' },
@@ -44,7 +44,7 @@ const euCountries: ShippingCountry[] = [
   { code: 'SE', name: 'Sweden' },
 ]
 
-const flatRateCountries: ShippingCountry[] = [
+export const flatRateCountries: ShippingCountry[] = [
   { code: 'US', name: 'United States' },
   { code: 'BN', name: 'Brunei' },
   { code: 'KH', name: 'Cambodia' },

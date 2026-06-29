@@ -3,10 +3,20 @@ import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
-import { jsonLd, organizationId } from '@/lib/structured-data'
+import {
+  jsonLd,
+  organizationId,
+  jkessOfferShippingDetails,
+} from '@/lib/structured-data'
 import { INITIAL_INVENTORY, isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { getInventorySnapshot } from '@/lib/order-store'
 import { productVariantCommerce, schemaAvailability } from '@/lib/commerce'
+import {
+  canonicalSeoPath,
+  defaultIndexableSeoLocales,
+  isSeoLocaleIndexable,
+  pageLanguageAlternates,
+} from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -103,11 +113,7 @@ function productKeywords(product: Product) {
 }
 
 function productLanguageAlternates(product: Product) {
-  const englishUrl = absoluteUrl(productPath(product, defaultLocale))
-  return {
-    en: englishUrl,
-    'x-default': englishUrl,
-  }
+  return pageLanguageAlternates(`/products/${product.slug}`, defaultIndexableSeoLocales)
 }
 
 async function productStock(product: Product) {
@@ -208,7 +214,7 @@ async function productJsonLd(p: Product) {
           mainEntityOfPage: url,
           serviceType: p.categoryLabel,
           category: p.categoryLabel,
-          areaServed: 'Worldwide',
+          areaServed: 'Direct-checkout destinations plus quote-only project review regions',
           additionalProperty,
         }
 
@@ -252,12 +258,7 @@ async function productJsonLd(p: Product) {
           hasMerchantReturnPolicy: {
             '@id': `${absoluteUrl('/returns-refunds')}#policy`,
           },
-          shippingDetails: {
-            '@type': 'OfferShippingDetails',
-            hasShippingService: {
-              '@id': `${absoluteUrl('/shipping-policy')}#policy`,
-            },
-          },
+          shippingDetails: jkessOfferShippingDetails,
         })),
       }
     }
@@ -297,11 +298,14 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
   const product = getProductBySlug(slug)
   if (!product) return {}
 
-  const indexable = lang === defaultLocale
-  const canonicalPath = productPath(product, defaultLocale)
+  const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
+  const canonicalPath = canonicalSeoPath(lang, `/products/${product.slug}`, defaultIndexableSeoLocales)
   const purchaseNotice = getPurchaseNotice(product)
   const noticeSentence = purchaseNotice ? ` ${purchaseNotice.metadataSentence}` : ''
-  const description = `${product.tagline}.${noticeSentence} ${product.description}`.slice(0, 158)
+  const shippingSentence = product.type === 'shop'
+    ? ' EU delivery addresses include free standard shipping; selected non-EU direct checkout destinations use a flat $150 shipping charge per order.'
+    : ''
+  const description = `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`.slice(0, 158)
 
   return {
     title: `${product.name} | ${product.categoryLabel} | JKESS`,

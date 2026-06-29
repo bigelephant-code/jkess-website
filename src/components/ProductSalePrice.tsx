@@ -15,9 +15,21 @@ type SaleTarget = {
   salePrice: number
 }
 
+const CURRENT_PRODUCT_SHIPPING_COPY =
+  'Shipping: free standard shipping to EU delivery addresses; $150 per order to the United States, supported Southeast Asia, Japan, South Korea, and listed Middle East destinations; other countries require a shipping quote before online payment. Import duties, taxes, customs clearance fees, and brokerage charges are not included unless expressly stated.'
+
 function parsePrice(value: string) {
   const price = Number.parseFloat(value.replace(/[^0-9.]/g, ''))
   return Number.isFinite(price) && price > 0 ? price : null
+}
+
+function syncCurrentShippingCopy() {
+  const paragraphs = Array.from(document.querySelectorAll<HTMLElement>('p.text-xs.leading-5'))
+  for (const paragraph of paragraphs) {
+    if (paragraph.textContent?.includes('Product price only. Shipping, import duty')) {
+      paragraph.textContent = CURRENT_PRODUCT_SHIPPING_COPY
+    }
+  }
 }
 
 export default function ProductSalePrice() {
@@ -31,6 +43,7 @@ export default function ProductSalePrice() {
     }
 
     const syncSalePrice = () => {
+      syncCurrentShippingCopy()
       const priceElement = document.querySelector<HTMLElement>(
         'span.text-3xl.font-bold.text-green-400'
       )
@@ -80,6 +93,9 @@ export default function ProductSalePrice() {
       </span>
       <span className="w-full text-xs leading-5 text-green-300/80">
         The displayed price is the current promotional price after the {SALE_DISCOUNT_PERCENT}% discount.
+      </span>
+      <span className="w-full text-xs leading-5 text-gray-400">
+        EU delivery addresses include free standard shipping. Supported non-EU direct checkout destinations add $150 per order; other countries require Request a Quote before payment.
       </span>
       <Link
         href="/shipping-quote"

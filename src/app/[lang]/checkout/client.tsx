@@ -108,6 +108,14 @@ export default function CheckoutPage() {
   const orderTotal = orderTotalNumber.toFixed(2)
   const shippingCountry = getShippingCountryName(formData.countryCode)
   const canCheckout = isDirectCheckoutCountry(formData.countryCode)
+  const flatRateShippingMessage = t(
+    'checkout.flatRateShipping',
+    'A fixed ${amount} shipping charge will be added once per order for this destination.'
+  ).replace('{amount}', FLAT_RATE_SHIPPING_USD.toFixed(2))
+  const shippingSummaryMessage = t(
+    'checkout.shippingSummary',
+    'EU addresses receive free standard shipping. Eligible non-EU destinations are charged ${amount} once per order. Other destinations require a written quotation.'
+  ).replace('{amount}', String(FLAT_RATE_SHIPPING_USD))
 
   const contactComplete = Boolean(
     formData.name.trim() &&
@@ -260,7 +268,12 @@ export default function CheckoutPage() {
           window.setTimeout(clearCart, 500)
         },
         onError: () => {
-          setPaymentError('Payment failed. Please try again or contact zhou@jkess.com.')
+          setPaymentError(
+            t(
+              'checkout.paymentFailed',
+              'Payment failed. Please try again or contact zhou@jkess.com.'
+            )
+          )
         },
       }).render(container)
     } catch {
@@ -281,6 +294,7 @@ export default function CheckoutPage() {
     orderTotalNumber,
     items,
     clearCart,
+    t,
   ])
 
   if (items.length === 0 && !submitted) {
@@ -304,18 +318,25 @@ export default function CheckoutPage() {
           <CheckCircle size={64} className="mx-auto mb-6 text-green-400" />
           <h1 className="text-3xl font-bold text-white mb-3">{t('checkout.paymentSuccessful')}</h1>
           <div className="my-6 rounded-2xl border border-white/10 bg-white/5 p-5 text-left">
-            <p className="text-xs uppercase tracking-widest text-green-400 font-semibold">JKESS Order Number</p>
+            <p className="text-xs uppercase tracking-widest text-green-400 font-semibold">
+              {t('checkout.orderNumber', 'JKESS Order Number')}
+            </p>
             <p className="mt-1 text-lg font-bold text-white break-all">{invoiceNumber.current}</p>
             {paypalOrderId && (
               <>
-                <p className="mt-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">PayPal Order ID</p>
+                <p className="mt-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">
+                  {t('checkout.paypalOrderId', 'PayPal Order ID')}
+                </p>
                 <p className="mt-1 text-sm text-gray-300 break-all">{paypalOrderId}</p>
               </>
             )}
           </div>
           <p className="text-gray-400 mb-2">{t('checkout.thankYou')}</p>
           <p className="text-sm text-gray-500 mb-3">
-            The products, shipping charge, quantities, amount, and order references have been recorded in PayPal automatically.
+            {t(
+              'checkout.paypalRecorded',
+              'The products, shipping charge, quantities, amount, and order references have been recorded in PayPal automatically.'
+            )}
           </p>
           <p className="text-sm text-gray-500 mb-8">{t('checkout.shippingDetails')}</p>
           <Link href={localizedPath(lang, '/')} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
@@ -339,17 +360,19 @@ export default function CheckoutPage() {
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900">{t('checkout.contactInfo')}</h2>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <input type="text" aria-label="Full name" placeholder={t('checkout.fullName')} value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="email" aria-label="Email address" placeholder={t('checkout.email')} value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="tel" aria-label="Phone number" placeholder={t('checkout.phone')} value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
-                    <input type="text" aria-label="Company name" placeholder={t('checkout.company')} value={formData.company} onChange={(event) => setFormData({ ...formData, company: event.target.value })} className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                    <input type="text" aria-label={t('checkout.fullName', 'Full name')} placeholder={t('checkout.fullName')} value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                    <input type="email" aria-label={t('checkout.email', 'Email address')} placeholder={t('checkout.email')} value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                    <input type="tel" aria-label={t('checkout.phone', 'Phone number')} placeholder={t('checkout.phone')} value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
+                    <input type="text" aria-label={t('checkout.company', 'Company name')} placeholder={t('checkout.company')} value={formData.company} onChange={(event) => setFormData({ ...formData, company: event.target.value })} className="sm:col-span-2 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors" />
                   </div>
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900">{t('checkout.shippingAddress')}</h2>
                   <label className="block">
-                    <span className="mb-2 block text-sm font-semibold text-gray-700">Delivery country / region *</span>
+                    <span className="mb-2 block text-sm font-semibold text-gray-700">
+                      {t('checkout.deliveryCountry', 'Delivery country / region *')}
+                    </span>
                     <select
                       required
                       value={formData.countryCode}
@@ -367,7 +390,9 @@ export default function CheckoutPage() {
                       }}
                       className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition-colors focus:border-green-500"
                     >
-                      <option value="">Select delivery country / region</option>
+                      <option value="">
+                        {t('checkout.selectDeliveryCountry', 'Select delivery country / region')}
+                      </option>
                       {directCheckoutCountryGroups.map((group) => (
                         <optgroup key={group.label} label={group.label}>
                           {group.countries.map((country) => (
@@ -375,30 +400,41 @@ export default function CheckoutPage() {
                           ))}
                         </optgroup>
                       ))}
-                      <option value={OTHER_COUNTRY_CODE}>Other country / region — Quote required</option>
+                      <option value={OTHER_COUNTRY_CODE}>
+                        {t('checkout.otherCountryQuoteRequired', 'Other country / region — Quote required')}
+                      </option>
                     </select>
                   </label>
 
                   {shippingTier === 'eu-free' && (
                     <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
-                      Free standard shipping is included for this EU delivery address.
+                      {t(
+                        'checkout.euFreeShipping',
+                        'Free standard shipping is included for this EU delivery address.'
+                      )}
                     </div>
                   )}
                   {shippingTier === 'flat-150' && (
                     <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-                      A fixed ${FLAT_RATE_SHIPPING_USD.toFixed(2)} shipping charge will be added once per order for this destination.
+                      {flatRateShippingMessage}
                     </div>
                   )}
                   {shippingTier === 'quote-only' && (
                     <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-                      Direct online checkout is unavailable for this destination because local shipping, import, or carrier policies require individual review. Please use Get a Quote for availability and written terms.
+                      {t(
+                        'checkout.quoteOnlyShipping',
+                        'Direct online checkout is unavailable for this destination because local shipping, import, or carrier policies require individual review. Please use Get a Quote for availability and written terms.'
+                      )}
                     </div>
                   )}
 
-                  <textarea aria-label="Shipping address" placeholder={t('checkout.addressPlaceholder')} rows={3} value={formData.address} onChange={(event) => setFormData({ ...formData, address: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
-                  <textarea aria-label="Order notes" placeholder={t('checkout.notesPlaceholder')} rows={2} value={formData.notes} onChange={(event) => setFormData({ ...formData, notes: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
+                  <textarea aria-label={t('checkout.shippingAddress', 'Shipping address')} placeholder={t('checkout.addressPlaceholder')} rows={3} value={formData.address} onChange={(event) => setFormData({ ...formData, address: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
+                  <textarea aria-label={t('checkout.notesPlaceholder', 'Order notes')} placeholder={t('checkout.notesPlaceholder')} rows={2} value={formData.notes} onChange={(event) => setFormData({ ...formData, notes: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
                   <p className="text-xs leading-5 text-gray-500">
-                    The country selected here must match the shipping country in PayPal. Import duty, tax, customs clearance, and destination handling charges are not included unless stated in writing.
+                    {t(
+                      'checkout.paypalCountryMatch',
+                      'The country selected here must match the shipping country in PayPal. Import duty, tax, customs clearance, and destination handling charges are not included unless stated in writing.'
+                    )}
                   </p>
                 </div>
               </div>
@@ -406,7 +442,9 @@ export default function CheckoutPage() {
               <div className="lg:col-span-2">
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-24">
                   <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('checkout.orderSummary')}</h2>
-                  <p className="mb-4 text-[11px] text-gray-400">Order: {invoiceNumber.current}</p>
+                  <p className="mb-4 text-[11px] text-gray-400">
+                    {t('checkout.orderLabel', 'Order')}: {invoiceNumber.current}
+                  </p>
                   <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
                     {items.map((item) => (
                       <div key={`${item.slug}-${item.variant}`} className="flex gap-3">
@@ -427,28 +465,32 @@ export default function CheckoutPage() {
 
                   <div className="space-y-2 border-t border-gray-200 pt-4 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Product subtotal</span>
+                      <span className="text-gray-600">
+                        {t('checkout.productSubtotal', 'Product subtotal')}
+                      </span>
                       <span className="font-semibold text-gray-900">${productSubtotal}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600">Shipping</span>
+                      <span className="text-gray-600">{t('checkout.shipping', 'Shipping')}</span>
                       <span className="font-semibold text-gray-900">
                         {shippingTier === 'eu-free'
-                          ? 'FREE'
+                          ? t('checkout.free', 'FREE')
                           : shippingTier === 'flat-150'
                             ? `$${shippingAmount}`
                             : shippingTier === 'quote-only'
-                              ? 'Quote required'
-                              : 'Select country'}
+                              ? t('checkout.quoteRequired', 'Quote required')
+                              : t('checkout.selectCountry', 'Select country')}
                       </span>
                     </div>
                     <div className="flex items-center justify-between border-t border-gray-100 pt-3">
-                      <span className="font-semibold text-gray-900">Order total</span>
+                      <span className="font-semibold text-gray-900">
+                        {t('checkout.orderTotal', 'Order total')}
+                      </span>
                       <span className="text-xl font-bold text-green-600">${orderTotal}</span>
                     </div>
                   </div>
                   <p className="mb-5 mt-3 text-xs leading-5 text-gray-500">
-                    EU addresses receive free standard shipping. Eligible non-EU destinations are charged ${FLAT_RATE_SHIPPING_USD} once per order. Other destinations require a written quotation.
+                    {shippingSummaryMessage}
                   </p>
 
                   <label className="mb-5 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
@@ -459,27 +501,55 @@ export default function CheckoutPage() {
                       className="mt-1 h-4 w-4 shrink-0 accent-green-500"
                     />
                     <span className="text-xs leading-5 text-gray-600">
-                      I agree to the{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/terms-of-sale')}>Terms of Sale</Link>,{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/shipping-policy')}>Shipping Policy</Link>,{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/returns-refunds')}>Returns & Refunds Policy</Link>,{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/warranty')}>Warranty Policy</Link>, and{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/safety')}>Safety Notice</Link>, and acknowledge the{' '}
-                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/privacy-policy')}>Privacy Policy</Link>.
+                      {t('checkout.policyConsentStart', 'I agree to the following policies:')}{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/terms-of-sale')}>
+                        {t('checkout.termsOfSale', 'Terms of Sale')}
+                      </Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/shipping-policy')}>
+                        {t('checkout.shippingPolicy', 'Shipping Policy')}
+                      </Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/returns-refunds')}>
+                        {t('checkout.returnsPolicy', 'Returns & Refunds Policy')}
+                      </Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/warranty')}>
+                        {t('checkout.warrantyPolicy', 'Warranty Policy')}
+                      </Link>,{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/safety')}>
+                        {t('checkout.safetyNotice', 'Safety Notice')}
+                      </Link>.{' '}
+                      {t('checkout.policyConsentEnd', 'I also acknowledge the')}{' '}
+                      <Link className="font-medium text-green-700 hover:underline" href={localizedPath(lang, '/privacy-policy')}>
+                        {t('checkout.privacyPolicy', 'Privacy Policy')}
+                      </Link>.
                     </span>
                   </label>
 
                   <div className="space-y-3">
                     {shippingTier === 'unselected' ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
-                        <p className="text-xs text-yellow-700">Select the delivery country to calculate shipping and continue.</p>
+                        <p className="text-xs text-yellow-700">
+                          {t(
+                            'checkout.selectCountryToContinue',
+                            'Select the delivery country to calculate shipping and continue.'
+                          )}
+                        </p>
                       </div>
                     ) : shippingTier === 'quote-only' ? (
                       <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-center">
-                        <p className="text-sm font-semibold text-amber-950">This destination requires a separate quotation.</p>
-                        <p className="mt-1 text-xs leading-5 text-amber-800">Direct checkout is disabled due to destination-specific shipping and local policy requirements.</p>
+                        <p className="text-sm font-semibold text-amber-950">
+                          {t(
+                            'checkout.separateQuoteTitle',
+                            'This destination requires a separate quotation.'
+                          )}
+                        </p>
+                        <p className="mt-1 text-xs leading-5 text-amber-800">
+                          {t(
+                            'checkout.separateQuoteBody',
+                            'Direct checkout is disabled due to destination-specific shipping and local policy requirements.'
+                          )}
+                        </p>
                         <Link href={localizedPath(lang, '/shipping-quote')} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-green-500 px-5 py-2.5 text-sm font-bold text-black transition hover:bg-green-400">
-                          <ExternalLink size={16} /> Get a Quote
+                          <ExternalLink size={16} /> {t('checkout.getQuote', 'Get a Quote')}
                         </Link>
                       </div>
                     ) : !contactComplete ? (
@@ -488,12 +558,19 @@ export default function CheckoutPage() {
                       </div>
                     ) : !acceptedPolicies ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
-                        <p className="text-xs text-yellow-700">Please review and accept the order policies before payment.</p>
+                        <p className="text-xs text-yellow-700">
+                          {t(
+                            'checkout.acceptPolicies',
+                            'Please review and accept the order policies before payment.'
+                          )}
+                        </p>
                       </div>
                     ) : !inventoryLoaded ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">
                         <Loader2 size={18} className="animate-spin text-green-500" />
-                        <span className="text-sm text-gray-500">Checking current inventory…</span>
+                        <span className="text-sm text-gray-500">
+                          {t('checkout.checkingInventory', 'Checking current inventory…')}
+                        </span>
                       </div>
                     ) : !sdkReady ? (
                       <div className="flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-xl py-4">

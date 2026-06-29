@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight, ChevronDown, Globe, Menu, ShoppingCart, X } from 'lucide-react'
+import LanguageFlag from '@/components/LanguageFlag'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 import { localeMap, locales } from '@/i18n/config'
@@ -129,7 +130,7 @@ export default function NavbarMegaMenuV2() {
                         const active = lang === code
                         return (
                           <a key={code} href={languageHref(code)} className={`flex items-center gap-2 rounded-lg px-2 py-2 text-base transition-colors ${active ? 'bg-green-500/15 text-green-400' : 'text-gray-200 hover:bg-white/10 hover:text-white'}`}>
-                            <span className="text-2xl leading-none">{locale.flag}</span>
+                            <LanguageFlag code={code} />
                             <span className="text-base leading-none">{locale.name}</span>
                             {active && <span className="ml-auto text-sm font-bold">✓</span>}
                           </a>
@@ -176,10 +177,10 @@ export default function NavbarMegaMenuV2() {
             type="button"
             onClick={() => { setActiveMenu(null); setLanguageOpen((current) => !current) }}
             className={`flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-white transition hover:bg-white/10 hover:text-green-400 ${languageOpen ? 'bg-white/10 text-green-400' : ''}`}
-            aria-label="Change language"
+            aria-label={`Change language. Current language: ${currentLocale.name}`}
             aria-expanded={languageOpen}
           >
-            <Globe size={21} /><span className="text-lg">{currentLocale.flag}</span>
+            <Globe size={21} /><LanguageFlag code={lang} size="sm" />
           </button>
           <a href={`${prefix}/cart`} className="relative rounded-xl p-2 text-white transition hover:bg-white/10 hover:text-green-400" aria-label={`View cart with ${itemCount} items`}>
             <ShoppingCart size={22} />
@@ -260,7 +261,7 @@ export default function NavbarMegaMenuV2() {
               })}
               <div className="mt-4 border-t border-white/10 pt-5">
                 <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-gray-500"><Globe size={15} /> {t('nav.language', 'Language')}</p>
-                <div className="grid grid-cols-2 gap-1.5">{locales.map((locale) => <a key={locale.code} href={languageHref(locale.code)} className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm ${lang === locale.code ? 'bg-green-500/15 text-green-400' : 'text-gray-300 hover:bg-white/10'}`}><span>{locale.flag}</span><span className="truncate">{locale.name}</span></a>)}</div>
+                <div className="grid grid-cols-2 gap-1.5">{locales.map((locale) => <a key={locale.code} href={languageHref(locale.code)} className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm ${lang === locale.code ? 'bg-green-500/15 text-green-400' : 'text-gray-300 hover:bg-white/10'}`}><LanguageFlag code={locale.code} size="sm" /><span className="truncate">{locale.name}</span></a>)}</div>
               </div>
               <a href={`${prefix}/shipping-quote`} className="mt-5 block rounded-xl bg-green-500 px-6 py-3.5 text-center font-bold text-black">{t('nav.getQuote', 'Get a Quote')}</a>
             </div>

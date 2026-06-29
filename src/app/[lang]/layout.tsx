@@ -1,3 +1,4 @@
+import '../navbar-adjustments.css'
 import Script from 'next/script'
 import NavbarMegaMenu from '@/components/NavbarMegaMenu'
 import Footer from '@/components/Footer'

@@ -52,6 +52,27 @@ export const messageOverrides: MessageOverrides = {
       'Bitte prüfen und akzeptieren Sie vor der Zahlung die Bestellrichtlinien.',
     'checkout.checkingInventory': 'Aktueller Lagerbestand wird geprüft…',
     'product.freeShipping': 'Kostenloser EU-Standardversand',
+    'product.checkingStock': 'Lagerbestand wird geprüft…',
+    'product.outOfStock': 'Nicht auf Lager',
+    'product.unitsInStock': '{count} Stück auf Lager',
+    'product.discountOff': '-{discount}% RABATT',
+    'product.promoPriceNote':
+      'Der angezeigte Preis ist der aktuelle Aktionspreis nach {discount}% Rabatt.',
+    'product.shippingRuleDetail':
+      'Lieferadressen in der EU erhalten kostenlosen Standardversand. Unterstützte Ziele außerhalb der EU werden mit 150 US-Dollar pro Bestellung berechnet. Für andere Länder ist vor der Online-Zahlung ein Versandangebot erforderlich. Einfuhrzölle, Steuern, Zollabfertigungs- und Maklergebühren sind nicht enthalten, sofern sie nicht ausdrücklich angegeben sind.',
+    'product.shippingQuoteBeforePayment': 'Vor der Zahlung ein Versandangebot anfordern',
+    'product.sharedInventoryNote':
+      'Der Lagerbestand wird von allen Optionen dieses Produkts gemeinsam genutzt und nach bestätigter Zahlung abgezogen.',
+    'product.availableToAdd': '{count} zum Hinzufügen verfügbar',
+    'product.decreaseQuantity': 'Menge verringern',
+    'product.increaseQuantity': 'Menge erhöhen',
+    'product.stockInCart': 'Verfügbarer Bestand bereits im Warenkorb',
+    'product.item': 'Artikel',
+    'product.items': 'Artikel',
+    'product.customQuoteResponse':
+      'Für dieses Produkt ist ein individuelles Angebot erforderlich. JKESS antwortet normalerweise innerhalb von 24 Geschäftsstunden.',
+    'product.shippingSummary': 'EU kostenlos; unterstützte Regionen 150 US-Dollar pro Bestellung',
+    'product.returnsSubjectToPolicy': 'Rückgabe gemäß Richtlinie',
   },
   fr: {
     'cart.shippingNote':
@@ -104,5 +125,26 @@ export const messageOverrides: MessageOverrides = {
       'Veuillez consulter et accepter les politiques de commande avant le paiement.',
     'checkout.checkingInventory': 'Vérification du stock actuel…',
     'product.freeShipping': 'Livraison standard gratuite dans l’UE',
+    'product.checkingStock': 'Vérification du stock…',
+    'product.outOfStock': 'Rupture de stock',
+    'product.unitsInStock': '{count} unités en stock',
+    'product.discountOff': '-{discount}% DE REMISE',
+    'product.promoPriceNote':
+      'Le prix affiché est le prix promotionnel actuel après une remise de {discount}%.',
+    'product.shippingRuleDetail':
+      'Les adresses de livraison dans l’UE bénéficient de la livraison standard gratuite. Les destinations prises en charge hors UE ajoutent 150 $ US par commande. Les autres pays nécessitent un devis de livraison avant le paiement en ligne. Les droits d’importation, taxes, frais de dédouanement et frais de courtage ne sont pas inclus, sauf mention expresse.',
+    'product.shippingQuoteBeforePayment': 'Demander un devis de livraison avant le paiement',
+    'product.sharedInventoryNote':
+      'Le stock est partagé entre les différentes options de ce produit et est déduit après confirmation du paiement.',
+    'product.availableToAdd': '{count} disponibles à ajouter',
+    'product.decreaseQuantity': 'Réduire la quantité',
+    'product.increaseQuantity': 'Augmenter la quantité',
+    'product.stockInCart': 'Stock disponible déjà dans le panier',
+    'product.item': 'article',
+    'product.items': 'articles',
+    'product.customQuoteResponse':
+      'Ce produit nécessite un devis personnalisé. JKESS répond généralement sous 24 heures ouvrées.',
+    'product.shippingSummary': 'UE gratuite ; régions prises en charge 150 $ US par commande',
+    'product.returnsSubjectToPolicy': 'Retours soumis à la politique',
   },
 }

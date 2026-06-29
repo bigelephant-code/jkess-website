@@ -5,7 +5,7 @@ import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { specificationLandingPages } from '@/lib/specification-pages'
 import { technicalGuides } from '@/lib/technical-guides'
 import { absoluteUrl } from '@/lib/site'
-import { localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
+import { defaultIndexableSeoLocales, localizedSeoPath, pageLanguageAlternates } from '@/lib/seo'
 
 const policyPaths = [
   '/shipping-policy',
@@ -57,6 +57,10 @@ function englishOnlyAlternates(path: string) {
   return { en: url, 'x-default': url }
 }
 
+function indexableSeoAlternates(path: string) {
+  return pageLanguageAlternates(path, defaultIndexableSeoLocales)
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
 
@@ -100,13 +104,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: product.type === 'shop' ? 0.9 : 0.85,
       images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),
       alternates: {
-        languages: englishOnlyAlternates(productPath),
+        languages: indexableSeoAlternates(productPath),
       },
     })
   }
 
   for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {
-    const url = absoluteUrl(`/${page.path}`)
+    const path = `/${page.path}`
+    const url = absoluteUrl(path)
     entries.push({
       url,
       lastModified: siteLastModified,
@@ -114,10 +119,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: page.kind === 'category' ? 0.9 : 0.85,
       images: [absoluteUrl(page.image)],
       alternates: {
-        languages: {
-          en: url,
-          'x-default': url,
-        },
+        languages: indexableSeoAlternates(path),
       },
     })
   }
@@ -131,7 +133,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.82,
       images: [absoluteUrl(guide.image)],
-      alternates: { languages: englishOnlyAlternates(path) },
+      alternates: { languages: indexableSeoAlternates(path) },
     })
   }
 

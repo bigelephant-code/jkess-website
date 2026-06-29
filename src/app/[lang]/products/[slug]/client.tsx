@@ -22,6 +22,11 @@ import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 import { trackEvent } from '@/lib/analytics'
+import {
+  SALE_DISCOUNT_PERCENT,
+  formatUsd,
+  productVariantCommerce,
+} from '@/lib/commerce'
 
 export function ProductDetailClient({
   product,
@@ -47,6 +52,7 @@ export function ProductDetailClient({
   const prefix = lang === 'en' ? '' : '/' + lang
   const faqs = getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
+  const currentCommerce = productVariantCommerce(product)[selectedVariant] || null
   const managedStock = isManagedInventorySlug(product.slug) ? inventory[product.slug] : null
   const productQuantityInCart = items
     .filter((item) => item.slug === product.slug)
@@ -198,10 +204,31 @@ export function ProductDetailClient({
 
               {isShop && currentPrice && (
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-5">
-                  <span className="text-3xl md:text-4xl font-bold text-green-400">{currentPrice}</span>
-                  <p className="mt-2 text-xs leading-5 text-gray-500">
-                    Product price only. Shipping, import duty, and applicable taxes are confirmed separately for the destination and order quantity.
+                  <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
+                    <span className="text-3xl md:text-4xl font-bold text-green-400">{currentPrice}</span>
+                    {currentCommerce && (
+                      <>
+                        <span className="pb-1 text-sm text-gray-400 line-through">
+                          {formatUsd(currentCommerce.regularPrice)}
+                        </span>
+                        <span className="mb-1 rounded-full bg-red-500/20 px-2.5 py-1 text-xs font-bold text-red-300">
+                          -{SALE_DISCOUNT_PERCENT}% OFF
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <p className="mt-3 text-xs leading-5 text-green-300/80">
+                    The displayed price is the current promotional price after the {SALE_DISCOUNT_PERCENT}% discount.
                   </p>
+                  <p className="mt-2 text-xs leading-5 text-gray-400">
+                    EU delivery addresses include free standard shipping. Supported non-EU direct checkout destinations add $150 per order. Other countries require a shipping quote before online payment. Import duties, taxes, customs clearance fees, and brokerage charges are not included unless expressly stated.
+                  </p>
+                  <Link
+                    href={`${prefix}/shipping-quote`}
+                    className="mt-2 inline-flex text-xs font-semibold text-amber-200 underline decoration-amber-200/40 underline-offset-4 hover:text-amber-100"
+                  >
+                    Request a destination shipping quote before payment
+                  </Link>
                   {managedStock !== null && (
                     <p className="mt-2 text-xs leading-5 text-gray-400">
                       Inventory is shared across this product’s options and is deducted after verified payment.
@@ -314,7 +341,7 @@ export function ProductDetailClient({
               </div>
 
               <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
-                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Shipping & taxes confirmed separately</p></div>
+                <div className="text-center"><Truck size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">EU free shipping; supported regions $150/order</p></div>
                 <div className="text-center"><Shield size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">{t('product.warranty', '1-Year Warranty')}</p></div>
                 <div className="text-center"><RotateCcw size={18} className="mx-auto mb-1 text-green-400" /><p className="text-xs text-gray-500">Returns subject to policy</p></div>
               </div>

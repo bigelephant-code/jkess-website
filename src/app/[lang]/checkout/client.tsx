@@ -9,10 +9,19 @@ import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { trackEvent } from '@/lib/analytics'
+import {
+  directCheckoutCountryGroups,
+  FLAT_RATE_SHIPPING_USD,
+  getShippingAmount,
+  getShippingCountryName,
+  getShippingTier,
+  isDirectCheckoutCountry,
+  OTHER_COUNTRY_CODE,
+} from '@/lib/shipping-zones'
 
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''
 const SALES_EMAIL = 'zhou@jkess.com'
-const POLICY_VERSION = '2026-06-27'
+const POLICY_VERSION = '2026-06-29'
 
 interface PayPalCapturedOrder {
   id: string
@@ -78,6 +87,7 @@ export default function CheckoutPage() {
     email: '',
     phone: '',
     company: '',
+    countryCode: '',
     address: '',
     notes: '',
   })
@@ -86,17 +96,27 @@ export default function CheckoutPage() {
     void refreshInventory()
   }, [refreshInventory])
 
-  const totalAmount = items
-    .reduce((sum, item) => sum + priceNumber(item.price) * item.quantity, 0)
-    .toFixed(2)
+  const productSubtotalNumber = items.reduce(
+    (sum, item) => sum + priceNumber(item.price) * item.quantity,
+    0
+  )
+  const shippingTier = getShippingTier(formData.countryCode)
+  const shippingAmountNumber = getShippingAmount(formData.countryCode)
+  const orderTotalNumber = productSubtotalNumber + shippingAmountNumber
+  const productSubtotal = productSubtotalNumber.toFixed(2)
+  const shippingAmount = shippingAmountNumber.toFixed(2)
+  const orderTotal = orderTotalNumber.toFixed(2)
+  const shippingCountry = getShippingCountryName(formData.countryCode)
+  const canCheckout = isDirectCheckoutCountry(formData.countryCode)
 
   const contactComplete = Boolean(
     formData.name.trim() &&
     formData.email.trim() &&
     formData.phone.trim() &&
+    formData.countryCode &&
     formData.address.trim()
   )
-  const formComplete = contactComplete && acceptedPolicies && inventoryLoaded
+  const formComplete = contactComplete && acceptedPolicies && inventoryLoaded && canCheckout
 
   useEffect(() => {
     if (!formComplete || scriptLoaded.current || !PAYPAL_CLIENT_ID) return
@@ -145,7 +165,7 @@ export default function CheckoutPage() {
       `Name:${formData.name} | Email:${formData.email} | Phone:${formData.phone} | Company:${formData.company || '-'}`
     )
     const deliveryReference = compactReference(
-      `Delivery reference:${formData.address} | Notes:${formData.notes || '-'}`
+      `Country:${shippingCountry} | Delivery reference:${formData.address} | Notes:${formData.notes || '-'}`
     )
 
     try {
@@ -176,12 +196,20 @@ export default function CheckoutPage() {
                 })),
                 amount: {
                   currency_code: 'USD',
-                  value: totalAmount,
+                  value: orderTotal,
                   breakdown: {
                     item_total: {
                       currency_code: 'USD',
-                      value: totalAmount,
+                      value: productSubtotal,
                     },
+                    ...(shippingAmountNumber > 0
+                      ? {
+                          shipping: {
+                            currency_code: 'USD',
+                            value: shippingAmount,
+                          },
+                        }
+                      : {}),
                   },
                 },
               },
@@ -195,7 +223,11 @@ export default function CheckoutPage() {
             jkessOrderNumber: invoiceNumber.current,
             paypalOrderId: order.id,
             paypalStatus: order.status || 'COMPLETED',
-            total: totalAmount,
+            total: orderTotal,
+            productSubtotal,
+            shippingAmount,
+            shippingTier,
+            shippingCountry,
             currency: 'USD',
             items,
             customer: formData,
@@ -217,7 +249,9 @@ export default function CheckoutPage() {
           trackEvent('purchase', {
             transaction_id: order.id,
             order_number: invoiceNumber.current,
-            value: Number(totalAmount),
+            value: orderTotalNumber,
+            shipping: shippingAmountNumber,
+            shipping_country: shippingCountry,
             currency: 'USD',
             items: items.length,
           })
@@ -232,7 +266,22 @@ export default function CheckoutPage() {
     } catch {
       window.setTimeout(() => setSdkError(true), 0)
     }
-  }, [sdkReady, submitted, sdkError, formComplete, formData, totalAmount, items, clearCart])
+  }, [
+    sdkReady,
+    submitted,
+    sdkError,
+    formComplete,
+    formData,
+    productSubtotal,
+    shippingAmount,
+    shippingAmountNumber,
+    shippingCountry,
+    shippingTier,
+    orderTotal,
+    orderTotalNumber,
+    items,
+    clearCart,
+  ])
 
   if (items.length === 0 && !submitted) {
     return (
@@ -266,7 +315,7 @@ export default function CheckoutPage() {
           </div>
           <p className="text-gray-400 mb-2">{t('checkout.thankYou')}</p>
           <p className="text-sm text-gray-500 mb-3">
-            The product, option, quantity, amount, and order references have been recorded in PayPal automatically. No manual email is required.
+            The products, shipping charge, quantities, amount, and order references have been recorded in PayPal automatically.
           </p>
           <p className="text-sm text-gray-500 mb-8">{t('checkout.shippingDetails')}</p>
           <Link href={localizedPath(lang, '/')} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-8 py-3 rounded-full transition-all">
@@ -299,10 +348,57 @@ export default function CheckoutPage() {
 
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900">{t('checkout.shippingAddress')}</h2>
+                  <label className="block">
+                    <span className="mb-2 block text-sm font-semibold text-gray-700">Delivery country / region *</span>
+                    <select
+                      required
+                      value={formData.countryCode}
+                      onChange={(event) => {
+                        const countryCode = event.target.value
+                        setFormData({ ...formData, countryCode })
+                        const amount = getShippingAmount(countryCode)
+                        trackEvent('add_shipping_info', {
+                          currency: 'USD',
+                          value: amount,
+                          shipping_tier: getShippingTier(countryCode),
+                          destination_country: getShippingCountryName(countryCode),
+                          items: [],
+                        })
+                      }}
+                      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 outline-none transition-colors focus:border-green-500"
+                    >
+                      <option value="">Select delivery country / region</option>
+                      {directCheckoutCountryGroups.map((group) => (
+                        <optgroup key={group.label} label={group.label}>
+                          {group.countries.map((country) => (
+                            <option key={country.code} value={country.code}>{country.name}</option>
+                          ))}
+                        </optgroup>
+                      ))}
+                      <option value={OTHER_COUNTRY_CODE}>Other country / region — Quote required</option>
+                    </select>
+                  </label>
+
+                  {shippingTier === 'eu-free' && (
+                    <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
+                      Free standard shipping is included for this EU delivery address.
+                    </div>
+                  )}
+                  {shippingTier === 'flat-150' && (
+                    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
+                      A fixed ${FLAT_RATE_SHIPPING_USD.toFixed(2)} shipping charge will be added once per order for this destination.
+                    </div>
+                  )}
+                  {shippingTier === 'quote-only' && (
+                    <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+                      Direct online checkout is unavailable for this destination because local shipping, import, or carrier policies require individual review. Please use Get a Quote for availability and written terms.
+                    </div>
+                  )}
+
                   <textarea aria-label="Shipping address" placeholder={t('checkout.addressPlaceholder')} rows={3} value={formData.address} onChange={(event) => setFormData({ ...formData, address: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
                   <textarea aria-label="Order notes" placeholder={t('checkout.notesPlaceholder')} rows={2} value={formData.notes} onChange={(event) => setFormData({ ...formData, notes: event.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors resize-none" />
                   <p className="text-xs leading-5 text-gray-500">
-                    PayPal records the purchased items and payment automatically. Please also confirm that the shipping address shown in PayPal is correct before approving payment.
+                    The country selected here must match the shipping country in PayPal. Import duty, tax, customs clearance, and destination handling charges are not included unless stated in writing.
                   </p>
                 </div>
               </div>
@@ -329,12 +425,30 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-4 mb-2 flex items-center justify-between">
-                    <span className="text-gray-900 font-semibold">Product total</span>
-                    <span className="text-xl font-bold text-green-600">${totalAmount}</span>
+                  <div className="space-y-2 border-t border-gray-200 pt-4 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Product subtotal</span>
+                      <span className="font-semibold text-gray-900">${productSubtotal}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-semibold text-gray-900">
+                        {shippingTier === 'eu-free'
+                          ? 'FREE'
+                          : shippingTier === 'flat-150'
+                            ? `$${shippingAmount}`
+                            : shippingTier === 'quote-only'
+                              ? 'Quote required'
+                              : 'Select country'}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-gray-100 pt-3">
+                      <span className="font-semibold text-gray-900">Order total</span>
+                      <span className="text-xl font-bold text-green-600">${orderTotal}</span>
+                    </div>
                   </div>
-                  <p className="mb-5 text-xs leading-5 text-gray-500">
-                    This payment covers the listed products only. Destination-dependent shipping, import duty, and applicable taxes are not included and will be confirmed separately before dispatch.
+                  <p className="mb-5 mt-3 text-xs leading-5 text-gray-500">
+                    EU addresses receive free standard shipping. Eligible non-EU destinations are charged ${FLAT_RATE_SHIPPING_USD} once per order. Other destinations require a written quotation.
                   </p>
 
                   <label className="mb-5 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
@@ -356,7 +470,19 @@ export default function CheckoutPage() {
                   </label>
 
                   <div className="space-y-3">
-                    {!contactComplete ? (
+                    {shippingTier === 'unselected' ? (
+                      <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
+                        <p className="text-xs text-yellow-700">Select the delivery country to calculate shipping and continue.</p>
+                      </div>
+                    ) : shippingTier === 'quote-only' ? (
+                      <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-center">
+                        <p className="text-sm font-semibold text-amber-950">This destination requires a separate quotation.</p>
+                        <p className="mt-1 text-xs leading-5 text-amber-800">Direct checkout is disabled due to destination-specific shipping and local policy requirements.</p>
+                        <Link href={localizedPath(lang, '/shipping-quote')} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-green-500 px-5 py-2.5 text-sm font-bold text-black transition hover:bg-green-400">
+                          <ExternalLink size={16} /> Get a Quote
+                        </Link>
+                      </div>
+                    ) : !contactComplete ? (
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
                         <p className="text-xs text-yellow-700">{t('checkout.fillFields')}</p>
                       </div>
@@ -378,7 +504,7 @@ export default function CheckoutPage() {
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
                         <p className="text-sm text-yellow-700 font-medium mb-2">{t('checkout.paypalUnavailable')}</p>
                         <p className="text-xs text-gray-500 mb-4">{t('checkout.paypalDesc')}</p>
-                        <a href={`mailto:${SALES_EMAIL}`} onClick={() => trackEvent('checkout_contact_to_pay', { value: Number(totalAmount), currency: 'USD' })} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
+                        <a href={`mailto:${SALES_EMAIL}`} onClick={() => trackEvent('checkout_contact_to_pay', { value: orderTotalNumber, currency: 'USD' })} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
                           <ExternalLink size={16} /> {t('checkout.contactToPay')}
                         </a>
                       </div>

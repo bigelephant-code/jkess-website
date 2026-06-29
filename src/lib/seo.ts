@@ -6,6 +6,7 @@ import { absoluteUrl } from '@/lib/site'
 export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr']
 export const fullyLocalizedSeoLocales: readonly LangCode[] = [defaultLocale]
 export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
+export const allPublishedSeoLocales: readonly LangCode[] = locales.map((locale) => locale.code)
 
 interface PageMetadataOptions {
   lang: string
@@ -26,7 +27,7 @@ export function localizedSeoPath(lang: string, path: string) {
 
 export function pageLanguageAlternates(
   path: string,
-  localeCodes: readonly LangCode[] = locales.map((locale) => locale.code)
+  localeCodes: readonly LangCode[] = allPublishedSeoLocales
 ) {
   return {
     ...Object.fromEntries(
@@ -41,7 +42,7 @@ export function pageLanguageAlternates(
 
 export function isSeoLocaleIndexable(
   lang: string,
-  indexableLocales: readonly LangCode[] = defaultIndexableSeoLocales
+  indexableLocales: readonly LangCode[] = allPublishedSeoLocales
 ) {
   return indexableLocales.includes(lang as LangCode)
 }
@@ -49,7 +50,7 @@ export function isSeoLocaleIndexable(
 export function canonicalSeoPath(
   lang: string,
   path: string,
-  indexableLocales: readonly LangCode[] = defaultIndexableSeoLocales
+  indexableLocales: readonly LangCode[] = allPublishedSeoLocales
 ) {
   return localizedSeoPath(isSeoLocaleIndexable(lang, indexableLocales) ? lang : defaultLocale, path)
 }

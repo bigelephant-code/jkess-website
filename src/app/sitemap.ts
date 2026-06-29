@@ -71,7 +71,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: staticPriority(path),
         images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
         alternates: {
-          languages: pageLanguageAlternates(sitemapPath(path)),
+          languages: englishOnlyStaticPaths.includes(path)
+            ? englishOnlyAlternates(sitemapPath(path))
+            : pageLanguageAlternates(sitemapPath(path)),
         },
       })
     }

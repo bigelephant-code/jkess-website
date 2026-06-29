@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { defaultLocale } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
-import ShippingQuoteClient from './client'
+import QuoteRequestClient from './QuoteRequestClient'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -9,9 +9,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const indexable = lang === defaultLocale
 
   return {
-    title: 'International Shipping Quote for Battery Kits and BMS | JKESS',
+    title: 'Product, Bulk Purchase and Shipping Quote | JKESS',
     description:
-      'Request a written international freight quote for JKESS battery enclosures, 6U rack kits, high-voltage BMS hardware, and commercial ESS equipment before payment.',
+      'Request a JKESS quotation for multiple products, large quantities, volume pricing, project configurations, or destinations that require individual shipping review.',
     alternates: {
       canonical,
       languages: { en: canonical, 'x-default': canonical },
@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       googleBot: { index: indexable, follow: true, 'max-snippet': -1 },
     },
     openGraph: {
-      title: 'International Shipping Quote | JKESS',
-      description: 'Submit destination, quantity, product, and unloading details for a written freight quotation.',
+      title: 'Request a Product or Bulk Purchase Quote | JKESS',
+      description: 'Select multiple JKESS products, enter separate quantities, and request destination or volume-pricing terms.',
       url: canonical,
       type: 'website',
       images: [absoluteUrl('/images/contact-banner-bg.webp')],
@@ -33,5 +33,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function ShippingQuotePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  return <ShippingQuoteClient lang={lang} />
+  return <QuoteRequestClient lang={lang} />
 }

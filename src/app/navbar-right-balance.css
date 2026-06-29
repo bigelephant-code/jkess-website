@@ -24,6 +24,10 @@
     line-height: 1.5rem;
   }
 
+  nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="gap-3"][class*="lg:flex"] > button:first-child {
+    flex-direction: row-reverse;
+  }
+
   nav[style*="translateX(-50%)"] > div[class*="max-w-[1500px]"] > div[class*="gap-3"][class*="lg:flex"] > a:last-child {
     font-size: 17px;
     line-height: 1.5rem;

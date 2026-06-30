@@ -1,50 +1,32 @@
-import type { Metadata } from 'next'
-import { defaultLocale } from '@/i18n/config'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { news } from '@/lib/news'
 import { technicalGuides } from '@/lib/technical-guides'
 import { jsonLd, organizationId } from '@/lib/structured-data'
+import { buildPageMetadata, canonicalSeoPath } from '@/lib/seo'
 import NewsOwnedInsights from '@/components/NewsOwnedInsights'
 import NewsPageClient from './client'
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const canonical = absoluteUrl('/news')
-  const indexable = lang === defaultLocale
-
-  return {
+  return buildPageMetadata({
+    lang,
+    path: '/news',
     title: 'JKESS Technical Guides and Curated Energy Storage Sources',
     description:
       'Read original JKESS technical guides on battery enclosures, BMS communication, cell selection, and inverter compatibility, plus a clearly labeled directory of external energy storage sources.',
-    alternates: {
-      canonical,
-      languages: {
-        en: canonical,
-        'x-default': canonical,
-      },
-    },
-    robots: {
-      index: indexable,
-      follow: true,
-      googleBot: {
-        index: indexable,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    openGraph: {
-      type: 'website',
-      title: 'JKESS Technical Guides and Curated Energy Storage Sources',
-      description: 'Original JKESS engineering guides and a labeled directory of third-party energy storage sources.',
-      url: canonical,
-      images: [absoluteUrl('/images/news-featured-energy-storage.jpg')],
-    },
-  }
+    keywords: [
+      'JKESS technical guides',
+      'battery enclosure guide',
+      'BMS communication guide',
+      'LiFePO4 cell selection',
+      'energy storage sources',
+    ],
+    image: '/images/news-featured-energy-storage.jpg',
+  })
 }
 
-function newsJsonLd() {
-  const pageUrl = absoluteUrl('/news')
+function newsJsonLd(lang: string) {
+  const pageUrl = absoluteUrl(canonicalSeoPath(lang, '/news'))
 
   return jsonLd({
     '@context': 'https://schema.org',
@@ -63,13 +45,13 @@ function newsJsonLd() {
             itemListElement: technicalGuides.map((guide, index) => ({
               '@type': 'ListItem',
               position: index + 1,
-              url: absoluteUrl(`/guides/${guide.slug}`),
+              url: absoluteUrl(canonicalSeoPath(lang, `/guides/${guide.slug}`)),
               item: {
                 '@type': 'TechArticle',
                 headline: guide.title,
                 description: guide.description,
                 image: absoluteUrl(guide.image),
-                url: absoluteUrl(`/guides/${guide.slug}`),
+                url: absoluteUrl(canonicalSeoPath(lang, `/guides/${guide.slug}`)),
                 author: { '@id': organizationId },
                 publisher: { '@id': organizationId },
               },
@@ -121,7 +103,7 @@ export default async function NewsPage({ params }: { params: Promise<{ lang: str
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: newsJsonLd() }}
+        dangerouslySetInnerHTML={{ __html: newsJsonLd(lang) }}
       />
       <NewsPageClient />
       <NewsOwnedInsights lang={lang} />

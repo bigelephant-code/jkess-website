@@ -3,7 +3,7 @@ export interface PageFaq {
   answer: string
 }
 
-export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads', PageFaq[]> = {
+export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads' | 'shippingQuote', PageFaq[]> = {
   about: [
     {
       question: 'When were the JKESS team, JKBMS company, and JKESS brand established?',
@@ -80,6 +80,28 @@ export const pageFaqs: Record<'about' | 'products' | 'contact' | 'downloads', Pa
       question: 'Are documents suitable for project planning?',
       answer:
         'Yes. Datasheets and manuals can support early project planning, but final compatibility should be confirmed with JKESS before purchase or installation.',
+    },
+  ],
+  shippingQuote: [
+    {
+      question: 'When should I use the JKESS shipping quote form instead of direct checkout?',
+      answer:
+        'Use the quote form when your destination is outside the current direct-checkout countries, when you need several products in one shipment, or when the order requires project, freight, or customs review before payment.',
+    },
+    {
+      question: 'What information helps JKESS prepare a faster quotation?',
+      answer:
+        'Include the product names, quantities, model or option requirements, destination country, city, postal code, expected arrival timing, and any project-specific technical or documentation needs.',
+    },
+    {
+      question: 'Can JKESS review bulk purchase pricing?',
+      answer:
+        'Yes. Bulk pricing depends on product mix, quantity, configuration, production planning, destination, and company approval. The final written quotation controls the confirmed price and terms.',
+    },
+    {
+      question: 'Can one request include multiple products?',
+      answer:
+        'Yes. The quote form is designed for multi-product requests, so you can include battery kits, high-voltage kit hardware, BMS items, and project-related products in one inquiry.',
     },
   ],
 }

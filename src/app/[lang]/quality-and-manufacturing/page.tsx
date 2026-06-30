@@ -1,39 +1,28 @@
-import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, ClipboardCheck, Factory, FileCheck2, PackageCheck, ShieldCheck, Wrench } from 'lucide-react'
-import { defaultLocale } from '@/i18n/config'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyFacts, companyProfile } from '@/lib/company-profile'
 import { jsonLd, organizationId } from '@/lib/structured-data'
-import { localizedSeoPath } from '@/lib/seo'
+import { buildPageMetadata, canonicalSeoPath, localizedSeoPath } from '@/lib/seo'
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const canonical = absoluteUrl('/quality-and-manufacturing')
-  const indexable = lang === defaultLocale
-
-  return {
+  return buildPageMetadata({
+    lang,
+    path: '/quality-and-manufacturing',
     title: 'Quality, Manufacturing and Pre-Shipment Documentation | JKESS',
     description:
       'Review JKESS manufacturing facts, configuration control, incoming inspection, assembly checks, functional testing, packing verification, and the documents customers should confirm before shipment.',
-    alternates: {
-      canonical,
-      languages: { en: canonical, 'x-default': canonical },
-    },
-    robots: {
-      index: indexable,
-      follow: true,
-      googleBot: { index: indexable, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
-    },
-    openGraph: {
-      type: 'website',
-      title: 'JKESS Quality and Manufacturing',
-      description: 'Manufacturing facts, inspection workflow, configuration control, and shipment documentation.',
-      url: canonical,
-      images: [absoluteUrl('/images/company-building.webp')],
-    },
-  }
+    keywords: [
+      'JKESS manufacturing',
+      'battery kit quality control',
+      'BMS inspection',
+      'energy storage shipment documentation',
+      'battery enclosure factory',
+    ],
+    image: '/images/company-building.webp',
+  })
 }
 
 const qualitySteps = [
@@ -74,8 +63,8 @@ const documentChecklist = [
   'Certificates or compliance documents only when applicable to the selected product and confirmed in writing',
 ]
 
-function qualityJsonLd() {
-  const url = absoluteUrl('/quality-and-manufacturing')
+function qualityJsonLd(lang: string) {
+  const url = absoluteUrl(canonicalSeoPath(lang, '/quality-and-manufacturing'))
   return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -86,7 +75,7 @@ function qualityJsonLd() {
         description: 'Manufacturing facts, quality-control workflow, and pre-shipment documentation for JKESS products.',
         url,
         mainEntity: { '@id': organizationId },
-        inLanguage: 'en',
+        inLanguage: lang,
       },
       {
         '@type': 'BreadcrumbList',
@@ -104,7 +93,7 @@ export default async function QualityAndManufacturingPage({ params }: { params: 
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: qualityJsonLd() }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: qualityJsonLd(lang) }} />
       <div className="min-h-screen bg-white text-gray-950">
         <header className="relative isolate overflow-hidden bg-gray-950 pt-24 text-white">
           <Image src="/images/company-building.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-25" />

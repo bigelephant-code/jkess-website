@@ -1,37 +1,89 @@
-import type { Metadata } from 'next'
-import { defaultLocale } from '@/i18n/config'
-import { absoluteUrl } from '@/lib/site'
+import { absoluteUrl, siteUrl } from '@/lib/site'
+import { jsonLd, organizationId } from '@/lib/structured-data'
+import { buildPageMetadata, canonicalSeoPath } from '@/lib/seo'
+import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
+import PageFaqSection from '@/components/PageFaqSection'
 import QuoteRequestClient from './QuoteRequestClient'
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const canonical = absoluteUrl('/shipping-quote')
-  const indexable = lang === defaultLocale
-
-  return {
+  return buildPageMetadata({
+    lang,
+    path: '/shipping-quote',
     title: 'Product, Bulk Purchase and Shipping Quote | JKESS',
     description:
       'Request a JKESS quotation for multiple products, large quantities, volume pricing, project configurations, or destinations that require individual shipping review.',
-    alternates: {
-      canonical,
-      languages: { en: canonical, 'x-default': canonical },
-    },
-    robots: {
-      index: indexable,
-      follow: true,
-      googleBot: { index: indexable, follow: true, 'max-snippet': -1 },
-    },
-    openGraph: {
-      title: 'Request a Product or Bulk Purchase Quote | JKESS',
-      description: 'Select multiple JKESS products, enter separate quantities, and request destination or volume-pricing terms.',
-      url: canonical,
-      type: 'website',
-      images: [absoluteUrl('/images/contact-banner-bg.webp')],
-    },
-  }
+    keywords: [
+      'JKESS shipping quote',
+      'battery kit bulk quote',
+      'energy storage project quote',
+      'BMS volume pricing',
+      'battery enclosure freight review',
+    ],
+    image: '/images/contact-banner-bg.webp',
+  })
+}
+
+function shippingQuoteJsonLd(lang: string) {
+  const pageUrl = absoluteUrl(canonicalSeoPath(lang, '/shipping-quote'))
+
+  return jsonLd({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ContactPage',
+        '@id': `${pageUrl}#page`,
+        name: 'JKESS Product, Bulk Purchase and Shipping Quote',
+        description:
+          'Request a JKESS quotation for product combinations, volume pricing, project configurations, and destinations that require individual shipping review.',
+        url: pageUrl,
+        isPartOf: siteUrl,
+        mainEntity: {
+          '@type': 'Service',
+          '@id': `${pageUrl}#quote-service`,
+          name: 'Product and shipping quotation review',
+          provider: { '@id': organizationId },
+          serviceType: [
+            'Product quotation',
+            'Bulk purchase review',
+            'Destination shipping review',
+            'Energy storage project configuration review',
+          ],
+          areaServed: 'Worldwide',
+        },
+        potentialAction: {
+          '@type': 'CommunicateAction',
+          name: 'Request a JKESS quotation',
+          target: pageUrl,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Shipping Quote', item: pageUrl },
+        ],
+      },
+      faqJsonLd(pageFaqs.shippingQuote),
+    ],
+  })
 }
 
 export default async function ShippingQuotePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  return <QuoteRequestClient lang={lang} />
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: shippingQuoteJsonLd(lang) }}
+      />
+      <QuoteRequestClient lang={lang} />
+      <PageFaqSection
+        faqs={pageFaqs.shippingQuote}
+        title="Shipping Quote FAQ"
+        description="Common questions about JKESS product quotations, bulk purchase review, and destination-specific shipping confirmation."
+      />
+    </>
+  )
 }

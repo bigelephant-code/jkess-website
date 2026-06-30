@@ -1,12 +1,13 @@
 'use client'
 
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { useTranslate } from '@/i18n/client'
 import { companyMilestones } from '@/lib/company-profile'
 
 export default function Timeline() {
   const t = useTranslate()
+  const shouldReduceMotion = useReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -19,7 +20,7 @@ export default function Timeline() {
     <section ref={sectionRef} className="relative py-20 md:py-28 overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
@@ -35,12 +36,14 @@ export default function Timeline() {
           <div className="absolute left-10 right-10 top-1/2 h-px -translate-y-1/2 bg-gray-200" />
           <motion.div
             className="absolute left-10 right-10 top-1/2 h-[3px] -translate-y-1/2 origin-left rounded-full bg-gradient-to-r from-green-300 via-green-500 to-emerald-300 shadow-[0_0_24px_rgba(34,197,94,0.35)]"
-            style={{ scaleX: lineScale }}
+            style={{ scaleX: shouldReduceMotion ? 1 : lineScale }}
           />
-          <motion.div
-            className="absolute top-1/2 h-7 w-28 -translate-y-1/2 rounded-full bg-gradient-to-r from-transparent via-green-300/70 to-transparent blur-md"
-            style={{ left: glowLeft }}
-          />
+          {!shouldReduceMotion && (
+            <motion.div
+              className="absolute top-1/2 h-7 w-28 -translate-y-1/2 rounded-full bg-gradient-to-r from-transparent via-green-300/70 to-transparent blur-md"
+              style={{ left: glowLeft }}
+            />
+          )}
 
           <div className="grid grid-cols-4 gap-8">
             {companyMilestones.map((item, index) => {
@@ -49,7 +52,7 @@ export default function Timeline() {
               return (
                 <motion.div
                   key={item.year}
-                  initial={{ opacity: 0, y: isTop ? -28 : 28 }}
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: isTop ? -28 : 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-80px' }}
                   transition={{ duration: 0.55, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
@@ -57,7 +60,7 @@ export default function Timeline() {
                 >
                   <div className={`absolute w-full ${isTop ? 'bottom-[calc(50%+54px)]' : 'top-[calc(50%+54px)]'}`}>
                     <motion.div
-                      whileHover={{ y: -3 }}
+                      whileHover={shouldReduceMotion ? undefined : { y: -3 }}
                       className="relative bg-white border border-gray-200 p-5 shadow-sm transition-shadow duration-300 hover:shadow-lg"
                     >
                       <span className="absolute left-0 top-0 h-4 w-4 border-l-2 border-t-2 border-green-500" />
@@ -80,7 +83,7 @@ export default function Timeline() {
                   </div>
 
                   <motion.div
-                    initial={{ scale: 0.86, opacity: 0.45 }}
+                    initial={shouldReduceMotion ? false : { scale: 0.86, opacity: 0.45 }}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true, margin: '-120px' }}
                     transition={{ duration: 0.45, delay: index * 0.12 }}
@@ -88,7 +91,7 @@ export default function Timeline() {
                   >
                     <motion.span
                       className="absolute inset-[-8px] rounded-full border border-green-400/50"
-                      animate={{ scale: [1, 1.18, 1], opacity: [0.35, 0, 0.35] }}
+                      animate={shouldReduceMotion ? undefined : { scale: [1, 1.18, 1], opacity: [0.35, 0, 0.35] }}
                       transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.25 }}
                     />
                     <span className="absolute h-[3px] w-7 bg-green-500 -left-7" />
@@ -106,12 +109,12 @@ export default function Timeline() {
         <div className="lg:hidden relative space-y-8">
           <motion.div
             className="absolute left-[18px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-green-300 via-green-500 to-emerald-300"
-            style={{ scaleY: lineScale }}
+            style={{ scaleY: shouldReduceMotion ? 1 : lineScale }}
           />
           {companyMilestones.map((item, index) => (
             <motion.div
               key={item.year}
-              initial={{ opacity: 0, x: -18 }}
+              initial={shouldReduceMotion ? false : { opacity: 0, x: -18 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.08 }}

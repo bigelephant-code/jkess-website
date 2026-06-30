@@ -37,20 +37,26 @@ function productsCollectionJsonLd(lang: string) {
   const url = absoluteUrl(
     canonicalSeoPath(lang, '/products', defaultIndexableSeoLocales)
   )
+  const collectionId = `${url}#collection`
+  const itemListId = `${url}#product-list`
 
   return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'CollectionPage',
+        '@id': collectionId,
         name: 'JKESS Energy Storage Products',
         description:
           'JKESS energy storage product catalog, including battery kits, high voltage BMS kits, and commercial ESS cabinet solutions.',
         inLanguage: schemaLang,
         url,
+        mainEntityOfPage: url,
         publisher: { '@id': organizationId },
         mainEntity: {
           '@type': 'ItemList',
+          '@id': itemListId,
+          itemListOrder: 'https://schema.org/ItemListOrderAscending',
           numberOfItems: products.length,
           itemListElement: products.map((product, index) => {
             const productUrl = absoluteUrl(
@@ -69,6 +75,7 @@ function productsCollectionJsonLd(lang: string) {
                 description: product.description,
                 inLanguage: schemaLang,
                 url: productUrl,
+                isPartOf: { '@id': collectionId },
                 primaryImageOfPage: product.images[0]
                   ? {
                       '@type': 'ImageObject',
@@ -82,13 +89,19 @@ function productsCollectionJsonLd(lang: string) {
       },
       {
         '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
         inLanguage: schemaLang,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
           { '@type': 'ListItem', position: 2, name: 'Products', item: url },
         ],
       },
-      faqJsonLd(pageFaqs.products),
+      {
+        ...faqJsonLd(pageFaqs.products),
+        '@id': `${url}#faq`,
+        inLanguage: schemaLang,
+        mainEntityOfPage: url,
+      },
     ],
   })
 }

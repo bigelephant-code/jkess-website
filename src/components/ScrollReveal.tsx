@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ReactNode } from 'react'
 
 interface RevealProps {
@@ -23,6 +23,7 @@ export function Reveal({
   once = true,
   distance = 50,
 }: RevealProps) {
+  const shouldReduceMotion = useReducedMotion()
   const dirOffset: Record<string, { x?: number; y?: number }> = {
     up: { y: distance },
     left: { x: distance },
@@ -32,7 +33,7 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, ...dirOffset[direction] }}
+      initial={shouldReduceMotion ? false : { opacity: 0, ...dirOffset[direction] }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once, amount: 0.2 }}
       transition={{ duration, delay, ease: 'easeOut' }}
@@ -56,10 +57,12 @@ export function StaggerReveal({
   staggerDelay = 0.12,
   once = true,
 }: StaggerRevealProps) {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
     <motion.div
       className={className}
-      initial="hidden"
+      initial={shouldReduceMotion ? false : 'hidden'}
       whileInView="visible"
       viewport={{ once, amount: 0.15 }}
       variants={{

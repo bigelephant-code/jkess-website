@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
@@ -20,15 +20,32 @@ export default function SolutionsShowcase() {
   const shouldReduceMotion = useReducedMotion()
   const [active, setActive] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [paused, setPaused] = useState(false)
+  const [impactIndex, setImpactIndex] = useState<number | null>(null)
+  const impactTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const triggerImpact = (index: number) => {
+    if (impactTimerRef.current) clearTimeout(impactTimerRef.current)
+    setImpactIndex(index)
+    impactTimerRef.current = setTimeout(() => setImpactIndex(null), 620)
+  }
+
+  const selectScenario = (index: number) => {
+    setActive(index)
+    setProgress(0)
+    triggerImpact(index)
+  }
 
   useEffect(() => {
-    if (paused || shouldReduceMotion) return
+    if (shouldReduceMotion) return
 
     const interval = window.setInterval(() => {
       setProgress((current) => {
         if (current >= 99) {
-          setActive((index) => (index + 1) % scenarios.length)
+          setActive((index) => {
+            const next = (index + 1) % scenarios.length
+            triggerImpact(next)
+            return next
+          })
           return 0
         }
         return current + 1
@@ -36,12 +53,13 @@ export default function SolutionsShowcase() {
     }, 50)
 
     return () => window.clearInterval(interval)
-  }, [paused, shouldReduceMotion])
+  }, [shouldReduceMotion])
 
-  const selectScenario = (index: number) => {
-    setActive(index)
-    setProgress(0)
-  }
+  useEffect(() => {
+    return () => {
+      if (impactTimerRef.current) clearTimeout(impactTimerRef.current)
+    }
+  }, [])
 
   const scenario = scenarios[active]
   const title = t(`scenarios.${scenario.id}.title`, scenario.id)
@@ -61,14 +79,11 @@ export default function SolutionsShowcase() {
           </p>
         </div>
 
-        <div
-          className="flex flex-col items-stretch gap-8 md:flex-row md:gap-10"
-          onPointerEnter={() => setPaused(true)}
-          onPointerLeave={() => setPaused(false)}
-        >
+        <div className="flex flex-col items-stretch gap-8 md:flex-row md:gap-10">
           <div className="flex w-full flex-row items-center justify-between overflow-visible md:w-[100px] md:flex-shrink-0 md:flex-col" role="tablist" aria-label={t('solutions.title', 'Solutions')}>
             {scenarios.map((item, index) => {
               const isActive = index === active
+              const isImpacting = index === impactIndex
               const iconExt = item.icon === '2' ? '.svg' : '.png'
 
               return (
@@ -81,14 +96,24 @@ export default function SolutionsShowcase() {
                   onClick={() => selectScenario(index)}
                   className="group relative flex h-[72px] w-[72px] flex-shrink-0 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-4"
                 >
-                  {isActive && !shouldReduceMotion && (
-                    <motion.span
-                      aria-hidden="true"
-                      className="absolute inset-1 rounded-full bg-green-400/15"
-                      animate={{ scale: [0.88, 1.16, 0.88], opacity: [0.35, 0.12, 0.35] }}
-                      transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                    />
-                  )}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-0 rounded-full pointer-events-none z-0 ${
+                      isImpacting
+                        ? 'animate-startled'
+                        : isActive && !shouldReduceMotion
+                          ? 'animate-heartbeat'
+                          : !shouldReduceMotion
+                            ? 'animate-breathe'
+                            : ''
+                    }`}
+                    style={{
+                      background: isActive
+                        ? 'radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 70%)'
+                        : 'radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)',
+                      animationDelay: isImpacting || isActive ? '0s' : `${index * 0.2}s`,
+                    }}
+                  />
                   <svg className="absolute inset-0 h-full w-full" viewBox="0 0 64 64" aria-hidden="true">
                     <circle cx="32" cy="32" r="28" fill="transparent" stroke={isActive ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.07)'} strokeWidth="5" />
                     {isActive && (
@@ -106,8 +131,11 @@ export default function SolutionsShowcase() {
                       />
                     )}
                   </svg>
+                  {isImpacting && !shouldReduceMotion && (
+                    <span aria-hidden="true" className="absolute inset-0 rounded-full border-green-400 animate-ripple-wave pointer-events-none z-10" />
+                  )}
                   <span
-                    className={`relative z-10 block bg-gray-600 transition-all duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'scale-110 bg-green-500' : 'group-hover:bg-gray-500'}`}
+                    className={`relative z-20 block bg-gray-600 transition-all duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'scale-110 bg-green-500' : 'group-hover:bg-gray-500'} ${isImpacting && !shouldReduceMotion ? 'animate-startled' : ''}`}
                     style={{
                       mask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,
                       WebkitMask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,

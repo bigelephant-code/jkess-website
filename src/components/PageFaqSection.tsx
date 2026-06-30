@@ -17,14 +17,14 @@ export default function PageFaqSection({
           <h2 className="mt-3 text-2xl font-bold text-gray-950 md:text-4xl">{title}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-gray-500">{description}</p>
         </div>
-        <div className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <dl className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
           {faqs.map((faq) => (
             <div key={faq.question} className="p-5 md:p-6">
-              <h3 className="text-base font-semibold text-gray-950">{faq.question}</h3>
-              <p className="mt-2 text-sm leading-7 text-gray-600">{faq.answer}</p>
+              <dt className="text-base font-semibold text-gray-950">{faq.question}</dt>
+              <dd className="mt-2 text-sm leading-7 text-gray-600">{faq.answer}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       </div>
     </section>
   )

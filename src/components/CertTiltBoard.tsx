@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useTranslate } from '@/i18n/client'
 import Image from 'next/image'
 
@@ -31,6 +31,7 @@ const certificates: Certificate[] = [
 
 export default function CertTiltBoard() {
   const t = useTranslate()
+  const shouldReduceMotion = useReducedMotion()
 
   return (
     <section className="relative overflow-hidden">
@@ -50,7 +51,7 @@ export default function CertTiltBoard() {
               <motion.div
                 key={i}
                 className="flex justify-center cursor-pointer group"
-                initial={{ opacity: 0, y: 20 }}
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.06 } }}
                 viewport={{ once: true }}
               >
@@ -58,7 +59,7 @@ export default function CertTiltBoard() {
                 <motion.div
                   className="absolute -inset-4 rounded-2xl opacity-0 blur-2xl pointer-events-none"
                   style={{ background: `radial-gradient(circle, ${cert.color}, transparent)` }}
-                  whileHover={{ opacity: 0.3 }}
+                  whileHover={shouldReduceMotion ? undefined : { opacity: 0.3 }}
                   transition={{ duration: 0.4 }}
                 />
 
@@ -66,14 +67,14 @@ export default function CertTiltBoard() {
                 <motion.div
                   className="relative w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg"
                   style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.06)' }}
-                  whileHover={{ y: -7, scale: 1.10, borderColor: cert.color, boxShadow: `0 14px 48px rgba(0,0,0,0.1), 0 0 25px ${cert.color}25` }}
+                  whileHover={shouldReduceMotion ? undefined : { y: -7, scale: 1.10, borderColor: cert.color, boxShadow: `0 14px 48px rgba(0,0,0,0.1), 0 0 25px ${cert.color}25` }}
                   transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 >
                   {/* Color accent bar */}
                   <motion.div
                     className="h-1"
                     style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}44)` }}
-                    whileHover={{ width: '100%' }}
+                    whileHover={shouldReduceMotion ? undefined : { width: '100%' }}
                     transition={{ duration: 0.3 }}
                   />
                   <div className="relative w-full p-2" style={{ height: 'calc(100% - 4px)' }}>
@@ -81,7 +82,9 @@ export default function CertTiltBoard() {
                       src={cert.image}
                       alt={cert.title}
                       fill
-                      className="object-contain transition-all duration-500 ease-out group-hover:scale-[1.18]"
+                      className={shouldReduceMotion
+                        ? 'object-contain'
+                        : 'object-contain transition-all duration-500 ease-out group-hover:scale-[1.18]'}
                       sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 14vw"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-8 pb-2 px-3 z-10">

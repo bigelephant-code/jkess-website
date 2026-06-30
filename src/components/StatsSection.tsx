@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Building2, Factory, Globe, Users } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useTranslate } from '@/i18n/client'
 import { Reveal, StaggerItem, StaggerReveal } from './ScrollReveal'
 
@@ -14,6 +14,8 @@ interface StatsData {
 }
 
 function StaggerText({ text, className }: { text: string; className?: string }) {
+  const shouldReduceMotion = useReducedMotion()
+
   return (
     <motion.span
       className={`flex group cursor-default ${className || ''}`}
@@ -23,7 +25,7 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
         rest: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
         hover: { transition: { staggerChildren: 0.025 } },
       }}
-      whileHover="hover"
+      whileHover={shouldReduceMotion ? undefined : 'hover'}
     >
       {(text || '').split('').map((char, index) => (
         <motion.span
@@ -46,10 +48,17 @@ function AnimatedNumber({ value }: { value: string }) {
   const [display, setDisplay] = useState(Number.isNaN(numericValue) ? value : '0')
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     if (Number.isNaN(numericValue)) return
+    if (shouldReduceMotion) {
+      hasAnimated.current = true
+      setDisplay(value)
+      return
+    }
 
+    let timer: number | null = null
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
@@ -57,11 +66,11 @@ function AnimatedNumber({ value }: { value: string }) {
           const steps = value.includes('+') ? 30 : 40
           let current = 0
           const increment = numericValue / steps
-          const timer = window.setInterval(() => {
+          timer = window.setInterval(() => {
             current += increment
             if (current >= numericValue) {
               setDisplay(value)
-              window.clearInterval(timer)
+              if (timer !== null) window.clearInterval(timer)
             } else {
               const rounded = Math.round(current)
               setDisplay(`${rounded}${value.includes('+') ? '+' : ''}`)
@@ -73,8 +82,11 @@ function AnimatedNumber({ value }: { value: string }) {
     )
 
     if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [numericValue, value])
+    return () => {
+      observer.disconnect()
+      if (timer !== null) window.clearInterval(timer)
+    }
+  }, [numericValue, shouldReduceMotion, value])
 
   return <span ref={ref}>{display}</span>
 }
@@ -88,6 +100,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export default function StatsSection({ data }: { data?: StatsData }) {
   const t = useTranslate()
+  const shouldReduceMotion = useReducedMotion()
   const stats = [
     {
       key: 'established',
@@ -125,12 +138,12 @@ export default function StatsSection({ data }: { data?: StatsData }) {
                 <StaggerItem key={stat.key}>
                   <motion.div
                     className="text-center space-y-3 group cursor-default"
-                    whileHover={{ y: -2 }}
+                    whileHover={shouldReduceMotion ? undefined : { y: -2 }}
                     transition={{ duration: 0.2 }}
                   >
                     <motion.div
                       className="flex justify-center text-gray-400 transition-all duration-300 group-hover:text-blue-500"
-                      whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                      whileHover={shouldReduceMotion ? undefined : { scale: 1.1, rotate: [0, -5, 5, 0] }}
                       transition={{ duration: 0.3 }}
                     >
                       {iconMap[stat.key] || iconMap.established}

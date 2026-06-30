@@ -82,6 +82,16 @@ const technicalSearchPages = [
     text: 'Check 48V and 51.2V battery enclosure fit, BMS protocol, inverter matching, and installation format.',
   },
   {
+    href: '/europe/germany-lifepo4-battery-kit',
+    title: 'Germany battery kit shipping',
+    text: 'Prepare German LiFePO4 kit, EU shipping, inverter compatibility, and C&I cabinet quotation inputs.',
+  },
+  {
+    href: '/europe/france-lifepo4-battery-kit',
+    title: 'France ESS quotation planning',
+    text: 'Review France-focused battery kit, 48V enclosure, high-voltage BMS, and C&I cabinet buying inputs.',
+  },
+  {
     href: '/battery-enclosures/15kwh-lifepo4',
     title: '15kWh battery enclosure',
     text: 'Review the 15kWh-class floor-standing enclosure, cell inputs, package scope, and installation questions.',
@@ -120,6 +130,21 @@ const technicalSearchPages = [
     href: '/commercial-battery-storage-cabinet',
     title: 'Commercial battery storage cabinet',
     text: 'Plan C&I cabinet capacity, PCS power, cooling, safety documentation, logistics, and project scope.',
+  },
+  {
+    href: '/europe/italy-lifepo4-battery-kit',
+    title: 'Italy LiFePO4 battery kits',
+    text: 'Plan Italy-focused 48V battery enclosure, EU delivery, rack kit, and commercial ESS cabinet requests.',
+  },
+  {
+    href: '/europe/netherlands-lifepo4-battery-kit',
+    title: 'Netherlands EU warehouse search',
+    text: 'Target Dutch buyers comparing EU warehouse battery kit options, freight, and ESS cabinet scope.',
+  },
+  {
+    href: '/europe/poland-lifepo4-battery-kit',
+    title: 'Poland battery storage quote',
+    text: 'Prepare Polish battery kit, high-voltage BMS, C&I cabinet, and EU shipping quotation details.',
   },
   {
     href: '/commercial-energy-storage/261kwh',

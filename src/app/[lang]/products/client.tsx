@@ -9,12 +9,65 @@ import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import PageFaqSection from '@/components/PageFaqSection'
 import { pageFaqs } from '@/lib/page-faqs'
+import type { PageFaq } from '@/lib/page-faqs'
 
 const categoryLabels: Record<string, string> = {
   bms: 'BMS Protection Board',
   'battery-kit': 'Battery Kit',
   'high-voltage-kit': 'High Voltage Kit',
   'commercial-ess': 'C&I ESS Cabinet',
+}
+
+const localizedCategoryLabels: Partial<Record<string, Record<string, string>>> = {
+  de: {
+    bms: 'BMS-Schutzplatine',
+    'battery-kit': 'Batteriebausatz',
+    'high-voltage-kit': 'Hochspannungs-Bausatz',
+    'commercial-ess': 'C&I-ESS-Schrank',
+  },
+  fr: {
+    bms: 'Carte de protection BMS',
+    'battery-kit': 'Kit de batterie',
+    'high-voltage-kit': 'Kit haute tension',
+    'commercial-ess': 'Armoire ESS C&I',
+  },
+}
+
+const localizedProductFaqs: Partial<Record<string, PageFaq[]>> = {
+  de: [
+    {
+      question: 'Wie wähle ich das passende JKESS-Produkt?',
+      answer:
+        'Wählen Sie Niederspannungs-Batteriegehäuse-Bausätze für Wohn- und Rackprojekte, Hochspannungs-BMS-Bausätze für die Steuerung von Batterieracks und konfigurierte C&I-ESS-Schränke für größere gewerbliche Speicherprojekte.',
+    },
+    {
+      question: 'Kann JKESS die Kompatibilität mit Wechselrichter oder PCS prüfen?',
+      answer:
+        'Ja. Teilen Sie uns das Modell Ihres Wechselrichters, PCS oder EMS sowie Spannung, Kapazität und Kommunikationsanforderungen mit, damit JKESS die Kompatibilität prüfen kann.',
+    },
+    {
+      question: 'Welche Produkte können direkt bestellt werden?',
+      answer:
+        'Die Hardwareoptionen Battery Kit, 6U Battery Kit und High Voltage Kit können direkt ausgewählt werden. Der C&I-ESS-Schrank wird entsprechend der endgültigen Projektkonfiguration angeboten.',
+    },
+  ],
+  fr: [
+    {
+      question: 'Comment choisir le produit JKESS adapté ?',
+      answer:
+        'Choisissez les kits de boîtier de batterie basse tension pour les projets résidentiels et en rack, les kits BMS haute tension pour la commande des racks de batteries, et les armoires ESS C&I configurées pour les projets de stockage commerciaux de plus grande capacité.',
+    },
+    {
+      question: 'JKESS peut-il confirmer la compatibilité avec un onduleur ou un PCS ?',
+      answer:
+        'Oui. Communiquez le modèle de votre onduleur, PCS ou EMS ainsi que les exigences de tension, de capacité et de communication afin que JKESS puisse vérifier la compatibilité.',
+    },
+    {
+      question: 'Quels produits peuvent être commandés directement ?',
+      answer:
+        'Les options matérielles Battery Kit, 6U Battery Kit et High Voltage Kit peuvent être sélectionnées directement, tandis que l’armoire ESS C&I fait l’objet d’un devis selon la configuration finale du projet.',
+    },
+  ],
 }
 
 const technicalSearchPages = [
@@ -68,6 +121,8 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
     'Comprehensive energy storage solutions engineered for reliability and performance'
   )
   const viewDetails = t('productsSection.viewDetails', 'View Details')
+  const productFaqs = localizedProductFaqs[lang] ?? pageFaqs.products
+  const categoryLabelsForLanguage = localizedCategoryLabels[lang] ?? categoryLabels
 
   return (
     <div className="relative min-h-screen bg-gray-50">
@@ -111,7 +166,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                         </div>
                       )}
                       <span className="absolute top-4 left-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-                        {categoryLabels[product.category] || product.category}
+                        {categoryLabelsForLanguage[product.category] || product.category}
                       </span>
                     </div>
                     <div className="p-6">
@@ -175,7 +230,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
 
       <div className="defer-render">
         <PageFaqSection
-          faqs={pageFaqs.products}
+          faqs={productFaqs}
           title={t('product.faqTitle', 'Frequently Asked Questions')}
           description={pageDescription}
         />

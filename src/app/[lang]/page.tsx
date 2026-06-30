@@ -2,14 +2,14 @@ import dynamic from 'next/dynamic'
 import HeroSection from '@/components/HeroSection'
 import StatsSection from '@/components/StatsSection'
 import Timeline from '@/components/Timeline'
-import SolutionsSection from '@/components/SolutionsSection'
+import SolutionsShowcase from '@/components/SolutionsShowcase'
 import TechLines from '@/components/TechLines'
 import { localizedPath } from '@/lib/lang'
 import { buildPageMetadata } from '@/lib/seo'
 import type { LangCode } from '@/i18n/config'
 import { companyProfile, companyStats } from '@/lib/company-profile'
 
-const MadeWithJKESS = dynamic(() => import('@/components/MadeWithJKESS'), {
+const MadeWithJKESS = dynamic(() => import('@/components/MadeWithShowcase'), {
   loading: () => null,
 })
 const ReviewsWall = dynamic(() => import('@/components/ReviewsWall'), {
@@ -72,7 +72,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
         <div className="relative z-10">
           <StatsSection data={companyStats} />
           <Timeline />
-          <SolutionsSection />
+          <SolutionsShowcase />
           <CertTiltBoard />
         </div>
       </section>

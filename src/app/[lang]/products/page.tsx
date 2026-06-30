@@ -1,5 +1,11 @@
 import { products } from '@/lib/products'
-import { buildPageMetadata, localizedSeoPath } from '@/lib/seo'
+import { defaultLocale } from '@/i18n/config'
+import {
+  buildPageMetadata,
+  canonicalSeoPath,
+  defaultIndexableSeoLocales,
+  localizedSeoPath,
+} from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
 import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
@@ -27,7 +33,10 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
 }
 
 function productsCollectionJsonLd(lang: string) {
-  const url = absoluteUrl(localizedSeoPath(lang, '/products'))
+  const schemaLang = defaultLocale
+  const url = absoluteUrl(
+    canonicalSeoPath(lang, '/products', defaultIndexableSeoLocales)
+  )
 
   return jsonLd({
     '@context': 'https://schema.org',
@@ -37,6 +46,7 @@ function productsCollectionJsonLd(lang: string) {
         name: 'JKESS Energy Storage Products',
         description:
           'JKESS energy storage product catalog, including battery kits, high voltage BMS kits, and commercial ESS cabinet solutions.',
+        inLanguage: schemaLang,
         url,
         publisher: { '@id': organizationId },
         mainEntity: {
@@ -44,7 +54,7 @@ function productsCollectionJsonLd(lang: string) {
           numberOfItems: products.length,
           itemListElement: products.map((product, index) => {
             const productUrl = absoluteUrl(
-              localizedSeoPath(lang, `/products/${product.slug}`)
+              localizedSeoPath(schemaLang, `/products/${product.slug}`)
             )
 
             return {
@@ -57,6 +67,7 @@ function productsCollectionJsonLd(lang: string) {
                 '@id': productUrl,
                 name: product.name,
                 description: product.description,
+                inLanguage: schemaLang,
                 url: productUrl,
                 primaryImageOfPage: product.images[0]
                   ? {
@@ -71,6 +82,7 @@ function productsCollectionJsonLd(lang: string) {
       },
       {
         '@type': 'BreadcrumbList',
+        inLanguage: schemaLang,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
           { '@type': 'ListItem', position: 2, name: 'Products', item: url },

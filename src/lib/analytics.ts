@@ -12,7 +12,12 @@ type StoredCartItem = {
 
 declare global {
   interface Window {
-    gtag?: (command: 'event', eventName: string, params?: AnalyticsParams) => void
+    dataLayer?: unknown[][]
+    gtag?: {
+      (command: 'event', eventName: string, params?: AnalyticsParams): void
+      (command: 'js', date: Date): void
+      (command: 'config', targetId: string, params?: AnalyticsParams): void
+    }
   }
 }
 

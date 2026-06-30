@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { defaultLocale } from '@/i18n/config'
 import { getProductBySlug } from '@/lib/products'
 import {
   getNonBrandLandingPage,
@@ -11,6 +10,12 @@ import {
   type NonBrandLandingPage,
 } from '@/lib/non-brand-pages'
 import { localizedSeoPath } from '@/lib/seo'
+import {
+  canonicalSeoPath,
+  defaultIndexableSeoLocales,
+  isSeoLocaleIndexable,
+  pageLanguageAlternates,
+} from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
 
@@ -35,18 +40,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = getNonBrandLandingPage(pagePath(seoPath))
   if (!page) return {}
 
-  const canonical = absoluteUrl(`/${page.path}`)
-  const indexable = lang === defaultLocale
+  const path = `/${page.path}`
+  const canonical = absoluteUrl(canonicalSeoPath(lang, path, defaultIndexableSeoLocales))
+  const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
 
   return {
     title: `${page.title} | JKESS`,
     description: page.description,
     alternates: {
       canonical,
-      languages: {
-        en: canonical,
-        'x-default': canonical,
-      },
+      languages: pageLanguageAlternates(path, defaultIndexableSeoLocales),
     },
     robots: {
       index: indexable,

@@ -27,6 +27,7 @@ const footerGroups = [
     title: 'Company & Support',
     links: [
       ['Quality & Manufacturing', '/quality-and-manufacturing'],
+      ['EU Compliance', '/eu-compliance'],
       ['Shipping Quote', '/shipping-quote'],
       ['Technical Downloads', '/downloads'],
       ['Contact JKESS', '/contact'],

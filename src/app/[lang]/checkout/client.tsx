@@ -72,7 +72,7 @@ function createInvoiceNumber() {
 export default function CheckoutPage() {
   const { lang, t } = useI18n()
   const { items, clearCart, inventoryLoaded, refreshInventory } = useCart()
-  const invoiceNumber = useRef(createInvoiceNumber())
+  const [invoiceNumber] = useState(() => createInvoiceNumber())
   const paypalRef = useRef<HTMLDivElement>(null)
   const scriptLoaded = useRef(false)
 
@@ -204,8 +204,8 @@ export default function CheckoutPage() {
             },
             purchase_units: [
               {
-                reference_id: invoiceNumber.current,
-                invoice_id: invoiceNumber.current,
+                reference_id: invoiceNumber,
+                invoice_id: invoiceNumber,
                 custom_id: contactReference,
                 description: deliveryReference,
                 items: items.map((item) => ({
@@ -244,7 +244,7 @@ export default function CheckoutPage() {
           setPaypalOrderId(order.id)
 
           const orderSnapshot = {
-            jkessOrderNumber: invoiceNumber.current,
+            jkessOrderNumber: invoiceNumber,
             paypalOrderId: order.id,
             paypalStatus: order.status || 'COMPLETED',
             total: orderTotal,
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
 
           try {
             window.localStorage.setItem(
-              `jkess-order-${invoiceNumber.current}`,
+              `jkess-order-${invoiceNumber}`,
               JSON.stringify(orderSnapshot)
             )
             window.dispatchEvent(new Event('jkess:order-created'))
@@ -272,7 +272,7 @@ export default function CheckoutPage() {
 
           trackEvent('purchase', {
             transaction_id: order.id,
-            order_number: invoiceNumber.current,
+            order_number: invoiceNumber,
             value: orderTotalNumber,
             shipping: shippingAmountNumber,
             shipping_country: shippingCountry,
@@ -301,6 +301,7 @@ export default function CheckoutPage() {
     sdkError,
     formComplete,
     formData,
+    invoiceNumber,
     productSubtotal,
     shippingAmount,
     shippingAmountNumber,
@@ -337,7 +338,7 @@ export default function CheckoutPage() {
             <p className="text-xs uppercase tracking-widest text-green-400 font-semibold">
               {t('checkout.orderNumber', 'JKESS Order Number')}
             </p>
-            <p className="mt-1 text-lg font-bold text-white break-all">{invoiceNumber.current}</p>
+            <p className="mt-1 text-lg font-bold text-white break-all">{invoiceNumber}</p>
             {paypalOrderId && (
               <>
                 <p className="mt-4 text-xs uppercase tracking-widest text-gray-500 font-semibold">
@@ -464,7 +465,7 @@ export default function CheckoutPage() {
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-24">
                   <h2 className="text-lg font-semibold text-gray-900 mb-1">{t('checkout.orderSummary')}</h2>
                   <p className="mb-4 text-[11px] text-gray-400">
-                    {t('checkout.orderLabel', 'Order')}: {invoiceNumber.current}
+                    {t('checkout.orderLabel', 'Order')}: {invoiceNumber}
                   </p>
                   <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
                     {items.map((item) => (

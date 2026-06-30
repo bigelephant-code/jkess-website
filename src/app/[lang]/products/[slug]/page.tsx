@@ -14,10 +14,10 @@ import { productVariantCommerce, schemaAvailability } from '@/lib/commerce'
 import { getLocalizedProductPageContent } from '@/lib/product-localizations'
 import {
   canonicalSeoPath,
-  defaultIndexableSeoLocales,
   isSeoLocaleIndexable,
   localizedSeoPath,
   pageLanguageAlternates,
+  productIndexableSeoLocales,
 } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
@@ -124,7 +124,7 @@ function productKeywords(product: Product) {
 }
 
 function productLanguageAlternates(product: Product) {
-  return pageLanguageAlternates(`/products/${product.slug}`, defaultIndexableSeoLocales)
+  return pageLanguageAlternates(`/products/${product.slug}`, productIndexableSeoLocales(product.slug))
 }
 
 function isReviewedLocalizedProductRoute(product: Product, lang: string) {
@@ -199,7 +199,7 @@ async function productStock(product: Product) {
 
 async function productJsonLd(sourceProduct: Product, lang: string) {
   const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
-  const localizedRoute = isReviewedLocalizedProductRoute(sourceProduct, lang)
+  const localizedRoute = Boolean(localizedContent.isLocalized)
   const schemaLang = localizedRoute ? lang : defaultLocale
   const p = localizedRoute ? localizedContent.product : sourceProduct
   const productPath = `/products/${sourceProduct.slug}`
@@ -393,8 +393,9 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
 
   const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
   const product = localizedContent.product
-  const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
-  const canonicalPath = canonicalSeoPath(lang, `/products/${sourceProduct.slug}`, defaultIndexableSeoLocales)
+  const indexableLocales = productIndexableSeoLocales(sourceProduct.slug)
+  const indexable = isSeoLocaleIndexable(lang, indexableLocales)
+  const canonicalPath = canonicalSeoPath(lang, `/products/${sourceProduct.slug}`, indexableLocales)
   const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
   const noticeSentence = purchaseNotice ? ` ${purchaseNotice.metadataSentence}` : ''
   const shippingSentence = product.type === 'shop'

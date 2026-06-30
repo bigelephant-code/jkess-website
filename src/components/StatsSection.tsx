@@ -45,16 +45,17 @@ function StaggerText({ text, className }: { text: string; className?: string }) 
 
 function AnimatedNumber({ value }: { value: string }) {
   const numericValue = Number.parseFloat(value.replace(/[+,]|k/g, ''))
-  const [display, setDisplay] = useState(Number.isNaN(numericValue) ? value : '0')
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
   const shouldReduceMotion = useReducedMotion()
+  const [display, setDisplay] = useState(
+    Number.isNaN(numericValue) || shouldReduceMotion ? value : '0'
+  )
 
   useEffect(() => {
     if (Number.isNaN(numericValue)) return
     if (shouldReduceMotion) {
       hasAnimated.current = true
-      setDisplay(value)
       return
     }
 

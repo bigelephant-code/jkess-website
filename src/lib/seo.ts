@@ -3,8 +3,11 @@ import { defaultLocale, isValidLocale, locales } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
 
-export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr']
-export const fullyLocalizedSeoLocales: readonly LangCode[] = [defaultLocale]
+export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr', 'es', 'it', 'nl', 'pl']
+export const fullyLocalizedSeoLocales: readonly LangCode[] = [
+  defaultLocale,
+  ...euSeoPilotLocales,
+]
 export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
 export const batteryKitIndexableSeoLocales: readonly LangCode[] = [
   defaultLocale,

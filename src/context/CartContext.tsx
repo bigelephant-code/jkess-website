@@ -89,7 +89,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    void refreshInventory()
+    const timeout = window.setTimeout(() => {
+      void refreshInventory()
+    }, 0)
+
+    return () => window.clearTimeout(timeout)
   }, [refreshInventory])
 
   useEffect(() => {

@@ -47,6 +47,7 @@ export const navigationGroups: NavigationGroup[] = [
     items: [
       { label: 'Technical Guides', href: '/news', description: 'JKESS original guides and clearly labeled external sources.' },
       { label: 'Downloads', href: '/downloads', description: 'Product manuals, datasheets, and technical documents.' },
+      { label: 'EU Compliance', href: '/eu-compliance', description: 'Documentation, certification-scope, and EU project review notes.' },
       { label: 'BCU vs BMU', href: '/guides/bcu-vs-bmu', description: 'Understand master and slave roles in high-voltage BMS design.' },
       { label: 'CAN vs RS485', href: '/guides/can-vs-rs485-battery-communication', description: 'Compare battery, inverter, PCS, and EMS communication.' },
       { label: '280Ah vs 314Ah Cells', href: '/guides/280ah-vs-314ah-lifepo4-cells', description: 'Review capacity, fit, terminals, and lifecycle considerations.' },
@@ -61,6 +62,7 @@ export const navigationGroups: NavigationGroup[] = [
     items: [
       { label: 'About', href: '/about', description: 'Company background, manufacturing facts, and energy storage focus.' },
       { label: 'Quality & Manufacturing', href: '/quality-and-manufacturing', description: 'Inspection workflow, documentation, and order-specific checks.' },
+      { label: 'EU Compliance', href: '/eu-compliance', description: 'European documentation review and order-scope guidance.' },
       { label: 'Request a Quote', href: '/shipping-quote', description: 'Request destination review, multiple products, quantities, or volume pricing.' },
       { label: 'Contact', href: '/contact', description: 'Send a technical, commercial, or project inquiry to JKESS.' },
     ],

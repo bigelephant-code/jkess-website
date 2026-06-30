@@ -19,6 +19,7 @@ const policyPaths = [
   '/terms-of-sale',
   '/safety',
   '/privacy-policy',
+  '/eu-compliance',
 ]
 const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
 const siteLastModified = new Date('2026-06-29')
@@ -31,6 +32,7 @@ const staticImages: Record<string, string[]> = {
   '/contact': ['/images/contact-banner-bg.webp'],
   '/quality-and-manufacturing': ['/images/company-building.webp'],
   '/shipping-quote': ['/images/contact-banner-bg.webp'],
+  '/eu-compliance': ['/images/company-building.webp'],
 }
 
 function localizedPath(locale: string, path: string) {
@@ -45,7 +47,7 @@ function staticPriority(path: string) {
   if (path === '') return 1
   if (path === '/products') return 0.9
   if (path === '/contact' || path === '/shipping-quote') return 0.85
-  if (path === '/downloads' || path === '/news' || path === '/quality-and-manufacturing') return 0.75
+  if (path === '/downloads' || path === '/news' || path === '/quality-and-manufacturing' || path === '/eu-compliance') return 0.75
   if (policyPaths.includes(path)) return 0.5
   return 0.7
 }
@@ -111,30 +113,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {
     const path = `/${page.path}`
-    const url = absoluteUrl(path)
-    entries.push({
-      url,
-      lastModified: siteLastModified,
-      changeFrequency: page.kind === 'guide' ? 'monthly' : 'weekly',
-      priority: page.kind === 'category' ? 0.9 : 0.85,
-      images: [absoluteUrl(page.image)],
-      alternates: {
-        languages: indexableSeoAlternates(path),
-      },
-    })
+    const languageAlternates = indexableSeoAlternates(path)
+
+    for (const locale of defaultIndexableSeoLocales) {
+      entries.push({
+        url: absoluteUrl(localizedSeoPath(locale, path)),
+        lastModified: siteLastModified,
+        changeFrequency: page.kind === 'guide' ? 'monthly' : 'weekly',
+        priority: page.kind === 'category' ? 0.9 : 0.85,
+        images: [absoluteUrl(page.image)],
+        alternates: {
+          languages: languageAlternates,
+        },
+      })
+    }
   }
 
   for (const guide of technicalGuides) {
     const path = `/guides/${guide.slug}`
-    const url = absoluteUrl(path)
-    entries.push({
-      url,
-      lastModified: siteLastModified,
-      changeFrequency: 'monthly',
-      priority: 0.82,
-      images: [absoluteUrl(guide.image)],
-      alternates: { languages: indexableSeoAlternates(path) },
-    })
+    const languageAlternates = indexableSeoAlternates(path)
+
+    for (const locale of defaultIndexableSeoLocales) {
+      entries.push({
+        url: absoluteUrl(localizedSeoPath(locale, path)),
+        lastModified: siteLastModified,
+        changeFrequency: 'monthly',
+        priority: 0.82,
+        images: [absoluteUrl(guide.image)],
+        alternates: { languages: languageAlternates },
+      })
+    }
   }
 
   return entries

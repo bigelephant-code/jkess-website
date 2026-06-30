@@ -2,26 +2,29 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { defaultLocale } from '@/i18n/config'
 import { getProductBySlug } from '@/lib/products'
 import type { TechnicalGuide } from '@/lib/technical-guides'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
-import { localizedSeoPath } from '@/lib/seo'
+import {
+  canonicalSeoPath,
+  defaultIndexableSeoLocales,
+  isSeoLocaleIndexable,
+  localizedSeoPath,
+  pageLanguageAlternates,
+} from '@/lib/seo'
 
 export function buildTechnicalGuideMetadata(guide: TechnicalGuide, lang: string): Metadata {
-  const canonical = absoluteUrl(`/guides/${guide.slug}`)
-  const indexable = lang === defaultLocale
+  const path = `/guides/${guide.slug}`
+  const canonical = absoluteUrl(canonicalSeoPath(lang, path, defaultIndexableSeoLocales))
+  const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
 
   return {
     title: `${guide.title} | JKESS Technical Guide`,
     description: guide.description,
     alternates: {
       canonical,
-      languages: {
-        en: canonical,
-        'x-default': canonical,
-      },
+      languages: pageLanguageAlternates(path, defaultIndexableSeoLocales),
     },
     robots: {
       index: indexable,

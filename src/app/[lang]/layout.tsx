@@ -1,9 +1,9 @@
 import '../navbar-right-balance.css'
-import Script from 'next/script'
 import NavbarMegaMenuV2 from '@/components/NavbarMegaMenuV2'
 import NavbarDockEffect from '@/components/NavbarDockEffect'
 import Footer from '@/components/Footer'
 import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
+import CookieConsent from '@/components/CookieConsent'
 import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
@@ -42,26 +42,11 @@ export default async function LangLayout(props: {
 
   return (
     <>
-      {GA_ID && (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_ID}');
-            `}
-          </Script>
-        </>
-      )}
       <I18nProvider lang={validLang as LangCode} dir={localeDef.dir} messages={messages}>
         <CartProvider>
           <NavbarMegaMenuV2 />
           <NavbarDockEffect />
+          <CookieConsent gaId={GA_ID} />
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>
           <Footer />

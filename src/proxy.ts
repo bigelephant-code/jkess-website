@@ -11,6 +11,7 @@ const PUBLIC_PATHS = [
   '/studio',
   '/robots.txt',
   '/sitemap.xml',
+  '/merchant-feed.xml',
   '/manifest.webmanifest',
   '/apple-touch-icon.png',
   '/icon-',

@@ -44,10 +44,14 @@ export default function NavbarMegaMenu() {
   }, [])
 
   useEffect(() => {
-    setActiveMenu(null)
-    setLanguageOpen(false)
-    setMobileOpen(false)
-    setMobileGroup(null)
+    const timeout = window.setTimeout(() => {
+      setActiveMenu(null)
+      setLanguageOpen(false)
+      setMobileOpen(false)
+      setMobileGroup(null)
+    }, 0)
+
+    return () => window.clearTimeout(timeout)
   }, [pathname])
 
   useEffect(() => {

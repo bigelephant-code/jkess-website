@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -123,6 +123,9 @@ export function ProductDetailClient({
   const availableToAdd = managedStock === null
     ? null
     : Math.max(0, managedStock - productQuantityInCart)
+  const selectedQuantity = availableToAdd === null
+    ? quantity
+    : Math.min(quantity, Math.max(1, availableToAdd))
   const soldOut = isShop && managedStock !== null && managedStock <= 0
   const noMoreAvailable = isShop && availableToAdd !== null && availableToAdd <= 0
   const discountLabel = t('product.discountOff', '-{discount}% OFF')
@@ -182,15 +185,10 @@ export function ProductDetailClient({
     relatedProducts: t('product.relatedProducts', 'Related Products'),
   }
 
-  useEffect(() => {
-    if (availableToAdd === null || availableToAdd <= 0) return
-    setQuantity((current) => Math.min(current, availableToAdd))
-  }, [availableToAdd])
-
   const handleAddToCart = () => {
     if (soldOut || noMoreAvailable) return
     const variant = product.variants?.[selectedVariant]
-    const allowedQuantity = availableToAdd === null ? quantity : Math.min(quantity, availableToAdd)
+    const allowedQuantity = availableToAdd === null ? selectedQuantity : Math.min(selectedQuantity, availableToAdd)
     if (allowedQuantity <= 0) return
 
     addItem({
@@ -218,7 +216,7 @@ export function ProductDetailClient({
     trackEvent('buy_now_click', {
       item_id: product.slug,
       item_name: product.name,
-      quantity,
+      quantity: selectedQuantity,
     })
     handleAddToCart()
     setTimeout(() => {
@@ -232,14 +230,14 @@ export function ProductDetailClient({
       item_id: product.slug,
       item_name: product.name,
       item_variant: variant?.label || 'Standard',
-      quantity,
+      quantity: selectedQuantity,
     })
     const subject = encodeURIComponent(`Product Inquiry - JKESS ${product.name}`)
     const body = encodeURIComponent(
       [
         `Product: ${product.name}`,
         `Model / Option: ${variant?.label || 'Standard'}`,
-        `Quantity: ${quantity}`,
+        `Quantity: ${selectedQuantity}`,
         '',
         'Message:',
       ].join('\n')
@@ -414,17 +412,17 @@ export function ProductDetailClient({
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label={t('product.decreaseQuantity', 'Decrease quantity')}
-                    disabled={quantity <= 1 || soldOut}
+                    disabled={selectedQuantity <= 1 || soldOut}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <Minus size={16} />
                   </button>
-                  <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">{quantity}</span>
+                  <span className="px-6 py-2.5 text-white font-medium min-w-[3rem] text-center">{selectedQuantity}</span>
                   <button
                     type="button"
                     onClick={() => setQuantity((current) => availableToAdd === null ? current + 1 : Math.min(current + 1, Math.max(1, availableToAdd)))}
                     aria-label={t('product.increaseQuantity', 'Increase quantity')}
-                    disabled={soldOut || noMoreAvailable || (availableToAdd !== null && quantity >= availableToAdd)}
+                    disabled={soldOut || noMoreAvailable || (availableToAdd !== null && selectedQuantity >= availableToAdd)}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <Plus size={16} />
@@ -542,7 +540,7 @@ export function ProductDetailClient({
               <ProductUseCasePanel title={detailCopy.selectionNotes} items={useCases.selectionNotes} />
             </div>
 
-            <ProductSeoPanel product={product} seoContent={seoContent} copy={detailCopy} />
+            <ProductSeoPanel seoContent={seoContent} copy={detailCopy} />
             <ProductDecisionPanel product={product} prefix={prefix} copy={detailCopy} />
 
             {faqs.length > 0 && (
@@ -655,11 +653,9 @@ function ProductUseCasePanel({ title, items }: { title: string; items: string[] 
 }
 
 function ProductSeoPanel({
-  product,
   seoContent,
   copy,
 }: {
-  product: Product
   seoContent: ProductSeoContent
   copy: ProductDetailCopy
 }) {

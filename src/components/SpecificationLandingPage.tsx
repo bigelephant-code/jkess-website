@@ -143,7 +143,7 @@ export default function SpecificationLandingPage({
     .map((item) => ({ item, product: getProductBySlug(item.slug) }))
     .filter((entry) => entry.product)
 
-  const contactHref = localizedSeoPath(lang, '/contact')
+  const quoteHref = localizedSeoPath(lang, '/shipping-quote')
   const downloadsHref = localizedSeoPath(lang, '/downloads')
 
   return (
@@ -177,7 +177,7 @@ export default function SpecificationLandingPage({
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href={contactHref}
+                  href={quoteHref}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-bold text-black transition hover:bg-green-400"
                 >
                   Request configuration support <ArrowRight size={17} />
@@ -247,7 +247,7 @@ export default function SpecificationLandingPage({
                   site conditions, installation scope, and required certification or documentation.
                 </p>
                 <Link
-                  href={contactHref}
+                  href={quoteHref}
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
                 >
                   Start a technical inquiry <ArrowRight size={16} />

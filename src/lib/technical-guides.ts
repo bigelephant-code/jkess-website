@@ -235,7 +235,7 @@ export const technicalGuides: TechnicalGuide[] = [
     relatedLinks: [
       { href: '/guides/can-vs-rs485-battery-communication', label: 'CAN vs RS485 communication' },
       { href: '/guides/bcu-vs-bmu', label: 'BCU vs BMU architecture' },
-      { href: '/contact', label: 'Request compatibility review' },
+      { href: '/shipping-quote', label: 'Request compatibility review' },
     ],
   },
 ]

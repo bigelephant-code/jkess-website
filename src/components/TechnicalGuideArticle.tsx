@@ -162,7 +162,7 @@ export default function TechnicalGuideArticle({
                     </div>
                   ))}
                 </div>
-                <Link href={localizedSeoPath(lang, '/contact')} className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100">
+                <Link href={localizedSeoPath(lang, '/shipping-quote')} className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100">
                   Request technical review <ArrowRight size={16} />
                 </Link>
               </aside>

@@ -9,6 +9,7 @@ import { localizedSeoPath } from '@/lib/seo'
 import { FLAT_RATE_SHIPPING_USD } from '@/lib/shipping-zones'
 
 type Selection = { selected: boolean; quantity: string; option: string }
+type SubmitStatus = 'idle' | 'sending' | 'sent' | 'failed'
 
 const purposes = [
   'Destination requires individual shipping review',
@@ -18,12 +19,12 @@ const purposes = [
 ]
 
 const arrivalWindows = [
-  'Urgent — as soon as possible',
+  'Urgent - as soon as possible',
   'Within 2 weeks',
   'Within 1 month',
   'Within 2 months',
   'Within 3 months',
-  'Flexible — no fixed deadline',
+  'Flexible - no fixed deadline',
 ]
 
 const initialSelections = Object.fromEntries(
@@ -39,6 +40,7 @@ export default function QuoteRequestClient({
 }) {
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState('')
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle')
   const [selections, setSelections] = useState<Record<string, Selection>>(() => {
     if (!initialProductSlug || !initialSelections[initialProductSlug]) return initialSelections
     return {
@@ -76,6 +78,7 @@ export default function QuoteRequestClient({
   )
 
   const totalUnits = chosen.reduce((sum, item) => sum + item.quantity, 0)
+  const selectedProductNames = chosen.map((item) => item.product.name).join(', ')
   const requestText = useMemo(
     () =>
       [
@@ -100,22 +103,75 @@ export default function QuoteRequestClient({
       ].join('\n'),
     [chosen, form]
   )
+  const emailHref = useMemo(() => {
+    const subject = encodeURIComponent('JKESS Quote Request')
+    return `mailto:zhou@jkess.com?subject=${subject}&body=${encodeURIComponent(requestText)}`
+  }, [requestText])
 
   const updateSelection = (slug: string, patch: Partial<Selection>) => {
     setSelections((current) => ({ ...current, [slug]: { ...current[slug], ...patch } }))
     setError('')
+    setSubmitStatus('idle')
+    if (patch.selected) {
+      const product = products.find((item) => item.slug === slug)
+      trackEvent('quote_product_select', {
+        item_id: slug,
+        item_name: product?.name || slug,
+      })
+    }
   }
 
-  const copyRequest = async (event: React.FormEvent) => {
-    event.preventDefault()
+  const validateRequest = () => {
     if (!chosen.length) {
       setError('Select at least one product and enter its quantity.')
+      return false
+    }
+    setError('')
+    return true
+  }
+
+  const submitRequest = async (event: React.FormEvent) => {
+    event.preventDefault()
+    if (!validateRequest()) return
+
+    setSubmitStatus('sending')
+
+    try {
+      const response = await fetch('/api/quote-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          website: '',
+          requestText,
+          products: chosen.map(({ product, quantity, option }) => ({
+            slug: product.slug,
+            quantity,
+            option,
+          })),
+        }),
+      })
+
+      if (!response.ok) {
+        setSubmitStatus('failed')
+        trackEvent('quote_request_error', {
+          lead_source: 'product_quote',
+          destination_country: form.country,
+          product_names: selectedProductNames,
+        })
+        return
+      }
+    } catch {
+      setSubmitStatus('failed')
+      trackEvent('quote_request_error', {
+        lead_source: 'product_quote',
+        destination_country: form.country,
+        product_names: selectedProductNames,
+      })
       return
     }
 
-    await navigator.clipboard.writeText(requestText)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 2500)
+    setSubmitStatus('sent')
     trackEvent('generate_lead', {
       lead_source: 'product_quote',
       inquiry_type: form.purpose,
@@ -123,7 +179,24 @@ export default function QuoteRequestClient({
       expected_arrival: form.arrivalWindow,
       target_arrival_date: form.targetArrivalDate || 'not_specified',
       quantity: totalUnits,
-      product_names: chosen.map((item) => item.product.name).join(', '),
+      product_names: selectedProductNames,
+    })
+  }
+
+  const copyRequest = async () => {
+    if (!validateRequest()) return
+
+    await navigator.clipboard.writeText(requestText)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 2500)
+    trackEvent('quote_request_copy', {
+      lead_source: 'product_quote',
+      inquiry_type: form.purpose,
+      destination_country: form.country,
+      expected_arrival: form.arrivalWindow,
+      target_arrival_date: form.targetArrivalDate || 'not_specified',
+      quantity: totalUnits,
+      product_names: selectedProductNames,
     })
   }
 
@@ -150,7 +223,7 @@ export default function QuoteRequestClient({
       </section>
 
       <main className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[minmax(0,1fr)_360px] lg:py-24">
-        <form onSubmit={copyRequest} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
+        <form onSubmit={submitRequest} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:p-8">
           <h2 className="text-2xl font-bold">Products, quantities, and destination</h2>
 
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
@@ -196,6 +269,10 @@ export default function QuoteRequestClient({
           </div>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <label className="hidden" aria-hidden="true">
+              Company website
+              <input tabIndex={-1} autoComplete="off" name="website" />
+            </label>
             <Field label="Destination country / region" required value={form.country} onChange={(value) => setForm({ ...form, country: value })} />
             <Field label="City" required value={form.city} onChange={(value) => setForm({ ...form, city: value })} />
             <Field label="Postal code" required value={form.postalCode} onChange={(value) => setForm({ ...form, postalCode: value })} />
@@ -208,11 +285,25 @@ export default function QuoteRequestClient({
             </label>
           </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 font-bold text-black hover:bg-green-400"><Copy size={18} /> {copied ? 'Request copied' : 'Generate & copy request'}</button>
-            <a href="mailto:zhou@jkess.com?subject=JKESS%20Quote%20Request" className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 px-6 py-3.5 font-bold hover:bg-gray-50"><Mail size={18} /> Open email to JKESS</a>
+          {submitStatus === 'sent' && (
+            <p className="mt-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-800">
+              Quote request sent. JKESS will review the products, destination, and quantity before confirming the written quotation.
+            </p>
+          )}
+          {submitStatus === 'failed' && (
+            <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+              The form could not be sent right now. Please copy the request or open email as a fallback.
+            </p>
+          )}
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <button type="submit" disabled={submitStatus === 'sending'} className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 font-bold text-black hover:bg-green-400 disabled:cursor-not-allowed disabled:bg-gray-300">
+              <Mail size={18} /> {submitStatus === 'sending' ? 'Sending...' : 'Send quote request'}
+            </button>
+            <button type="button" onClick={copyRequest} className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 px-6 py-3.5 font-bold hover:bg-gray-50"><Copy size={18} /> {copied ? 'Request copied' : 'Copy request'}</button>
+            <a href={emailHref} onClick={() => trackEvent('quote_request_email_open', { destination_country: form.country, product_names: selectedProductNames })} className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 px-6 py-3.5 font-bold hover:bg-gray-50"><Mail size={18} /> Open email</a>
           </div>
-          <p className="mt-3 text-xs leading-5 text-gray-500">Generate and copy the request first, then paste it into the email message.</p>
+          <p className="mt-3 text-xs leading-5 text-gray-500">The primary button sends the request to JKESS. Copy and email remain available as fallback channels.</p>
         </form>
 
         <aside className="space-y-5">

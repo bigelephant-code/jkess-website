@@ -8,7 +8,7 @@ import { useState } from 'react'
 import type { ComponentType } from 'react'
 import { useI18n, useTranslate } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
-import { downloadCategories, getDownloadFileType } from '@/lib/downloads'
+import { downloadCategories, getDownloadFileType, getDownloadFileVersion } from '@/lib/downloads'
 import PageFaqSection from '@/components/PageFaqSection'
 import { pageFaqs } from '@/lib/page-faqs'
 import { trackEvent } from '@/lib/analytics'
@@ -121,8 +121,8 @@ export function DownloadsPageClient() {
                   <Link href={localizedPath(lang, '/products')} className="rounded-lg bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-green-50 hover:text-green-700">
                     Browse matching products
                   </Link>
-                  <Link href={localizedPath(lang, '/contact')} className="rounded-lg bg-gray-950 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
-                    Ask for document support
+                  <Link href={localizedPath(lang, '/shipping-quote')} className="rounded-lg bg-gray-950 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
+                    Request project quote
                   </Link>
                 </div>
               </div>
@@ -167,6 +167,7 @@ export function DownloadsPageClient() {
                               <div>
                                 <h2 className="text-lg font-bold text-gray-900">{cat.label}</h2>
                                 <p className="mt-1 text-xs uppercase tracking-widest text-gray-400">{cat.files.length} documents available</p>
+                                <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">{cat.description}</p>
                               </div>
                             </div>
                             <div className="h-px flex-1 bg-gradient-to-r from-gray-200 via-gray-100 to-transparent md:max-w-xs" />
@@ -179,7 +180,7 @@ export function DownloadsPageClient() {
                                 href={file.url}
                                 download
                                 aria-label={`Download ${file.name}`}
-                                onClick={() => trackEvent('download_document', { file_name: file.name, file_category: cat.label })}
+                                onClick={() => trackEvent('download_document', { file_name: file.name, file_category: cat.label, file_type: getDownloadFileType(file.url), file_version: getDownloadFileVersion(file.name) })}
                                 initial={{ opacity: 0, x: -12 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
@@ -191,7 +192,11 @@ export function DownloadsPageClient() {
                                 </div>
                                 <div className="min-w-0">
                                   <p className="truncate text-sm font-semibold text-gray-800 transition-colors group-hover:text-green-700">{file.name}</p>
-                                  <p className="mt-1 text-xs text-gray-400">{getDownloadFileType(file.url)} document</p>
+                                  <p className="mt-1 text-xs text-gray-400">
+                                    {getDownloadFileType(file.url)} document · {getDownloadFileVersion(file.name)}
+                                    {file.updated ? ` · Updated ${file.updated}` : ''}
+                                  </p>
+                                  {file.description && <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-500">{file.description}</p>}
                                 </div>
                                 <div className="flex items-center gap-3">
                                   <span className="hidden text-xs font-semibold uppercase tracking-widest text-gray-400 group-hover:text-green-600 md:inline">Download</span>

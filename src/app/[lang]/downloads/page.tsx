@@ -52,6 +52,8 @@ function downloadsJsonLd(lang: string) {
                 ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                 : 'application/pdf',
               about: file.category,
+              description: file.description || `${file.category} technical document from JKESS.`,
+              dateModified: file.updated || '2026-06-30',
               publisher: { '@id': organizationId },
             },
           })),

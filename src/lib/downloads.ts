@@ -1,16 +1,24 @@
 export interface DownloadFile {
   name: string
   url: string
+  description?: string
+  updated?: string
 }
 
 export interface DownloadCategory {
   label: string
+  description: string
+  audience: string
+  hidden?: boolean
   files: DownloadFile[]
 }
 
-export const downloadCategories: DownloadCategory[] = [
+const allDownloadCategories: DownloadCategory[] = [
   {
     label: 'BMS Protection Board',
+    description: 'Legacy protection board documents kept in the repository for historical reference.',
+    audience: 'Legacy BMS support',
+    hidden: true,
     files: [
       { name: 'JK-B15A24S Active Balancer Protection Board Manual V11.6.1', url: '/downloads/BMS-Protection-Board/JK-B15A24S-Active-Balancer-Protection-Board-Manual-V11.6.1.pdf' },
       { name: 'JK-B2A16S-TH Active Balancer Manual V11.5.1', url: '/downloads/BMS-Protection-Board/JK-B2A16S-TH-Active-Balancer-Manual-V11.5.1.pdf' },
@@ -34,6 +42,8 @@ export const downloadCategories: DownloadCategory[] = [
   },
   {
     label: 'Balancing Capacitors',
+    description: 'Active balancing and capacitor manuals for battery maintenance and balancing projects.',
+    audience: 'Balancing hardware selection',
     files: [
       { name: 'EK-24S10EB Balancing Capacitor Manual V1.2.1', url: '/downloads/Balancing-Capacitors/EK-24S10EB-Balancing-Capacitor-Manual-V1.2.1.pdf' },
       { name: 'EK-24S15EB Balancing Capacitor Manual V1.61', url: '/downloads/Balancing-Capacitors/EK-24S15EB-Balancing-Capacitor-Manual-V1.61.pdf' },
@@ -45,13 +55,17 @@ export const downloadCategories: DownloadCategory[] = [
   },
   {
     label: 'Kits',
+    description: 'Battery enclosure kit specifications and manuals for low-voltage LiFePO4 assembly projects.',
+    audience: 'Battery enclosure buyers',
     files: [
-      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf' },
-      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf' },
+      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf', description: 'Rack-mount 6U battery kit specification for 51.2V LiFePO4 module assembly.' },
+      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf', description: 'Caster battery enclosure kit manual for movable residential and small commercial storage assembly.' },
     ],
   },
   {
     label: 'Accessory Manuals',
+    description: 'Display, communication, alarm, and accessory manuals for system integration support.',
+    audience: 'Installers and integrators',
     files: [
       { name: '3.2-Inch Display Manual V1.0', url: '/downloads/Accessory-Manuals/3.2-Inch-Display-Manual-V1.0.pdf' },
       { name: '4.3-Inch Display DW Manual V1.1', url: '/downloads/Accessory-Manuals/4.3-Inch-Display-DW-Manual-V1.1.pdf' },
@@ -68,14 +82,18 @@ export const downloadCategories: DownloadCategory[] = [
   },
   {
     label: 'High Voltage',
+    description: 'High-voltage BCU, BMU, EMS, and controller specifications for engineered ESS racks.',
+    audience: 'C&I ESS engineers',
     files: [
-      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx' },
-      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf' },
-      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx' },
-      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf' },
+      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx', description: 'Master controller specification for high-voltage energy storage BMS architecture.' },
+      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf', description: 'Energy management unit document for C&I ESS monitoring and control integration.' },
+      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx', updated: '2026-06-01', description: 'Slave control box specification for high-voltage battery rack sampling and monitoring.' },
+      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf', updated: '2026-05-20', description: 'High-voltage BMS controller specification for 250A-class ESS control applications.' },
     ],
   },
 ]
+
+export const downloadCategories = allDownloadCategories.filter((category) => !category.hidden)
 
 export const downloadFiles = downloadCategories.flatMap((category) =>
   category.files.map((file) => ({
@@ -86,4 +104,12 @@ export const downloadFiles = downloadCategories.flatMap((category) =>
 
 export function getDownloadFileType(url: string) {
   return url.split('.').pop()?.toUpperCase() || 'FILE'
+}
+
+export function getDownloadFileVersion(name: string) {
+  const version = name.match(/\bV\d+(?:\.\d+){0,3}\b/i)?.[0]
+  if (version) return version.toUpperCase()
+  const dottedDate = name.match(/\b20\d{2}\.\d{2}\.\d{2}\b/)?.[0]
+  if (dottedDate) return dottedDate
+  return 'Current'
 }

@@ -12,7 +12,7 @@ type StoredCartItem = {
 
 declare global {
   interface Window {
-    dataLayer?: unknown[][]
+    dataLayer?: unknown[]
     gtag?: {
       (command: 'event', eventName: string, params?: AnalyticsParams): void
       (command: 'js', date: Date): void
@@ -102,6 +102,8 @@ function normalizeEvent(eventName: string, params: AnalyticsParams = {}) {
 export function trackEvent(eventName: string, params?: AnalyticsParams) {
   if (typeof window === 'undefined') return
   const normalized = normalizeEvent(eventName, params)
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({ event: eventName, ...normalized })
   window.gtag?.('event', eventName, normalized)
 
   if (eventName === 'contact_form_submit') {

@@ -212,6 +212,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
         question: 'Where is the caster battery kit typically used?',
         answer: 'It is suitable for home backup, mobile power, small commercial storage, and semi-outdoor battery assembly projects that need easy movement and positioning.',
       },
+      {
+        question: 'Can the Battery Kit be shipped to Europe?',
+        answer: 'European Union delivery addresses can use the current direct-checkout shipping rule where available. For bulk quantities, remote areas, or project delivery requirements, request a written quotation before ordering.',
+      },
+      {
+        question: 'Can JKESS support OEM color, logo, or repeat project requirements?',
+        answer: 'Yes. Share the target quantity, color requirement, logo placement, cell plan, inverter model, and destination country so JKESS can review feasible OEM or repeat-project options.',
+      },
     ]
   }
 
@@ -228,6 +236,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
       {
         question: 'Can the 6U Battery Kit be expanded in parallel?',
         answer: 'Yes. After compatible cells and electronics are installed, multiple modules can be planned for parallel expansion subject to BMS, inverter, breaker, and cabling requirements.',
+      },
+      {
+        question: 'Is the 6U Battery Kit suitable for EU residential solar storage projects?',
+        answer: 'It can be used in EU-oriented residential or small commercial storage assembly projects when the final battery cells, BMS, inverter communication, protection devices, and installation rules are confirmed by the installer.',
+      },
+      {
+        question: 'What information should I provide before buying several 6U kits?',
+        answer: 'Provide the inverter model, target capacity, rack layout, cell specification, quantity, destination country, and any documentation requirements so JKESS can confirm the correct option and shipping route.',
       },
     ]
   }
@@ -246,6 +262,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
         question: 'Does the High Voltage Kit support remote monitoring?',
         answer: 'Remote OTA upgrades and IoT monitoring can be supported depending on the final system architecture and selected supporting services.',
       },
+      {
+        question: 'How do I choose between the 100A and 200A High Voltage Kit options?',
+        answer: 'Choose based on the full electrical design, including continuous current, peak current, pack voltage, PCS power, thermal design, contactors, fuses, cables, and duty cycle. JKESS can review the selection before purchase.',
+      },
+      {
+        question: 'Can JKESS review PCS or EMS communication compatibility?',
+        answer: 'Yes. Send the PCS or EMS model, protocol requirement, voltage range, current rating, contactor logic, and project diagram so JKESS can review CAN, RS485, or isoSPI integration requirements.',
+      },
     ]
   }
 
@@ -262,6 +286,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
       {
         question: 'How do customers order the C&I High Voltage ESS Cabinet?',
         answer: 'This product is supplied through project quotation because the final configuration depends on capacity, cooling method, PCS requirements, site conditions, certification, installation, and communication needs.',
+      },
+      {
+        question: 'Can the C&I ESS Cabinet be configured for European projects?',
+        answer: 'Yes. Share the delivery country, grid connection requirements, capacity target, AC power, site environment, compliance documents required by the customer, and installation scope for project review.',
+      },
+      {
+        question: 'Does the quotation include freight, duty, tax, or onsite installation?',
+        answer: 'Only the signed written quotation defines whether freight, duty, tax, installation, commissioning, training, or site services are included. Items not listed in the quotation should be treated as excluded.',
       },
     ]
   }

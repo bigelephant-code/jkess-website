@@ -7,6 +7,7 @@ export const companyProfile = {
   employees: '700+',
   rdEmployees: '100+',
   exportMarkets: '200+',
+  overseasWarehouses: 3,
   annualCapacityGWh: 2.1,
   salesEmail: 'zhou@jkess.com',
   companyName: 'JKBMS Electronic Technology Co.,Ltd',
@@ -35,6 +36,7 @@ export const companyFacts = [
   { label: 'R&D Professionals', value: companyProfile.rdEmployees },
   { label: 'Current Annual Capacity', value: '2.1 GWh' },
   { label: 'Countries & Regions Served', value: companyProfile.exportMarkets },
+  { label: 'Overseas Warehouses', value: String(companyProfile.overseasWarehouses) },
 ] as const
 
 export const companyMilestones = [

@@ -112,6 +112,7 @@ export function ProductDetailClient({
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
+  const quoteHref = `${prefix}/shipping-quote?product=${encodeURIComponent(product.slug)}`
   const mediaCopy = mediaCopyByLanguage[lang as keyof typeof mediaCopyByLanguage] ?? mediaCopyByLanguage.en
   const faqs = (product as ProductWithLocalizedFaqs).localizedFaqs ?? getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
@@ -232,17 +233,7 @@ export function ProductDetailClient({
       item_variant: variant?.label || 'Standard',
       quantity: selectedQuantity,
     })
-    const subject = encodeURIComponent(`Product Inquiry - JKESS ${product.name}`)
-    const body = encodeURIComponent(
-      [
-        `Product: ${product.name}`,
-        `Model / Option: ${variant?.label || 'Standard'}`,
-        `Quantity: ${selectedQuantity}`,
-        '',
-        'Message:',
-      ].join('\n')
-    )
-    window.open(`mailto:zhou@jkess.com?subject=${subject}&body=${body}`)
+    window.location.href = quoteHref
   }
 
   const stockLabel = !isShop
@@ -354,7 +345,7 @@ export function ProductDetailClient({
                     )}
                   </p>
                   <Link
-                    href={`${prefix}/shipping-quote`}
+                    href={quoteHref}
                     className="mt-2 inline-flex text-xs font-semibold text-amber-200 underline decoration-amber-200/40 underline-offset-4 hover:text-amber-100"
                   >
                     {t(
@@ -541,7 +532,7 @@ export function ProductDetailClient({
             </div>
 
             <ProductSeoPanel seoContent={seoContent} copy={detailCopy} />
-            <ProductDecisionPanel product={product} prefix={prefix} copy={detailCopy} />
+            <ProductDecisionPanel product={product} prefix={prefix} quoteHref={quoteHref} copy={detailCopy} />
 
             {faqs.length > 0 && (
               <div className="mb-8">
@@ -560,7 +551,7 @@ export function ProductDetailClient({
             <div className="mb-8 grid gap-3 md:grid-cols-3">
               <ResourceLink href={`${prefix}/downloads`} icon={FileText} title={detailCopy.technicalDownloads} text={detailCopy.technicalDownloadsText} />
               <ResourceLink href={`${prefix}/news`} icon={Newspaper} title={detailCopy.industryInsights} text={detailCopy.industryInsightsText} />
-              <ResourceLink href={`${prefix}/contact`} icon={Send} title={detailCopy.projectInquiry} text={detailCopy.projectInquiryText} />
+              <ResourceLink href={quoteHref} icon={Send} title={detailCopy.projectInquiry} text={detailCopy.projectInquiryText} />
             </div>
 
             {relatedProducts.length > 0 && (
@@ -691,10 +682,12 @@ function SeoNoteList({ title, items }: { title: string; items: string[] }) {
 function ProductDecisionPanel({
   product,
   prefix,
+  quoteHref,
   copy,
 }: {
   product: Product
   prefix: string
+  quoteHref: string
   copy: ProductDetailCopy
 }) {
   const specSummary = product.specs.slice(0, 3).map((spec) => `${spec.key}: ${spec.value}`)
@@ -710,7 +703,7 @@ function ProductDecisionPanel({
           </div>
         </div>
         <div className="grid gap-px bg-white/10 sm:grid-cols-3 lg:grid-cols-1">
-          <DecisionLink href={`${prefix}/contact`} icon={Send} title={copy.requestQuote} text={copy.requestQuoteText} />
+          <DecisionLink href={quoteHref} icon={Send} title={copy.requestQuote} text={copy.requestQuoteText} />
           <DecisionLink href={`${prefix}/downloads`} icon={FileText} title={copy.checkDocuments} text={copy.checkDocumentsText} />
           <DecisionLink href={`${prefix}/news`} icon={Newspaper} title={copy.readInsights} text={copy.readInsightsText} />
         </div>

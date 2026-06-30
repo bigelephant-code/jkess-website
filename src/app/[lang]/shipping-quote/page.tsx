@@ -69,8 +69,15 @@ function shippingQuoteJsonLd(lang: string) {
   })
 }
 
-export default async function ShippingQuotePage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function ShippingQuotePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ lang: string }>
+  searchParams?: Promise<{ product?: string }>
+}) {
   const { lang } = await params
+  const query = searchParams ? await searchParams : {}
 
   return (
     <>
@@ -78,7 +85,7 @@ export default async function ShippingQuotePage({ params }: { params: Promise<{ 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: shippingQuoteJsonLd(lang) }}
       />
-      <QuoteRequestClient lang={lang} />
+      <QuoteRequestClient lang={lang} initialProductSlug={query.product} />
       <PageFaqSection
         faqs={pageFaqs.shippingQuote}
         title="Shipping Quote FAQ"

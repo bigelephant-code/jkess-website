@@ -84,8 +84,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-function landingPageJsonLd(page: NonBrandLandingPage) {
-  const url = absoluteUrl(`/${page.path}`)
+function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
+  const path = `/${page.path}`
+  const url = absoluteUrl(canonicalSeoPath(lang, path))
   const primaryType = page.kind === 'category' ? 'CollectionPage' : page.kind === 'guide' ? 'TechArticle' : 'WebPage'
 
   const primaryEntity: Record<string, unknown> = {
@@ -96,7 +97,7 @@ function landingPageJsonLd(page: NonBrandLandingPage) {
     description: page.description,
     url,
     image: absoluteUrl(page.image),
-    inLanguage: 'en',
+    inLanguage: lang,
     publisher: { '@id': organizationId },
     mainEntityOfPage: url,
   }
@@ -104,14 +105,14 @@ function landingPageJsonLd(page: NonBrandLandingPage) {
   if (page.kind === 'guide') {
     primaryEntity.author = { '@id': organizationId }
     primaryEntity.datePublished = '2026-06-28'
-    primaryEntity.dateModified = '2026-06-28'
+    primaryEntity.dateModified = '2026-06-30'
   }
 
   const productItems = page.products
     .map((item, index) => {
       const product = getProductBySlug(item.slug)
       if (!product) return null
-      const productUrl = absoluteUrl(`/products/${product.slug}`)
+      const productUrl = absoluteUrl(canonicalSeoPath(lang, `/products/${product.slug}`))
 
       return {
         '@type': 'ListItem',
@@ -169,14 +170,14 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
     .map((item) => ({ item, product: getProductBySlug(item.slug) }))
     .filter((entry) => entry.product)
 
-  const contactHref = localizedSeoPath(lang, '/contact')
+  const quoteHref = localizedSeoPath(lang, '/shipping-quote')
   const downloadsHref = localizedSeoPath(lang, '/downloads')
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: landingPageJsonLd(page) }}
+        dangerouslySetInnerHTML={{ __html: landingPageJsonLd(page, lang) }}
       />
 
       <div className="min-h-screen bg-white text-gray-950">
@@ -203,7 +204,7 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
               </p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href={contactHref}
+                  href={quoteHref}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-bold text-black transition hover:bg-green-400"
                 >
                   Request configuration support <ArrowRight size={17} />
@@ -273,7 +274,7 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
                   destination country, site conditions, and required delivery scope.
                 </p>
                 <Link
-                  href={contactHref}
+                  href={quoteHref}
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
                 >
                   Start a technical inquiry <ArrowRight size={16} />

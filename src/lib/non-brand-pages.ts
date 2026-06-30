@@ -550,6 +550,330 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
       },
     ],
   },
+  {
+    path: '48v-lifepo4-battery-enclosure',
+    kind: 'category',
+    eyebrow: 'Low-voltage battery assembly',
+    title: '48V and 51.2V LiFePO4 Battery Enclosure Selection',
+    description:
+      'Plan a 48V or 51.2V LiFePO4 battery enclosure by checking cell dimensions, BMS communication, inverter compatibility, service clearance, and shipment scope.',
+    intro:
+      'A 48V-class LiFePO4 battery enclosure is usually built around a 16-series 51.2V nominal battery platform. The enclosure choice should be driven by the exact cell model, BMS hardware, inverter protocol, wiring route, service access, and installation environment rather than capacity wording alone.',
+    image: '/images/battery-kit-system.webp',
+    highlights: [
+      { label: 'Nominal platform', value: '48V / 51.2V LiFePO4 systems' },
+      { label: 'Common cell range', value: '280Ah to 320Ah class cells' },
+      { label: 'Form factors', value: 'Caster enclosure or 6U rack kit' },
+      { label: 'Key check', value: 'Cell fit, BMS protocol, inverter match' },
+    ],
+    sections: [
+      {
+        title: 'Start with the exact cell model',
+        paragraphs: [
+          'Capacity labels such as 280Ah, 304Ah, or 314Ah do not prove that a cell fits a cabinet. Width, height, depth, terminal position, vent location, compression method, busbar geometry, and insulation clearance can all differ between suppliers.',
+          'Before ordering an enclosure, provide the official cell datasheet and dimensional drawing. This avoids a common problem where the electrical capacity looks correct but the mechanical pack cannot be assembled cleanly.',
+        ],
+      },
+      {
+        title: 'Confirm BMS and inverter compatibility',
+        paragraphs: [
+          'A completed 48V-class battery normally needs correct voltage limits, charge and discharge current limits, CAN or RS485 communication, cable pinout, breaker selection, and commissioning settings. Connector type alone is not a compatibility guarantee.',
+        ],
+        bullets: [
+          'Share the inverter brand, model, firmware, and supported battery protocol.',
+          'Confirm CAN or RS485 message format, baud rate, pinout, and termination.',
+          'Check continuous current, surge current, cable size, breaker rating, and thermal path.',
+          'Define whether the project needs enclosure-only supply or integrated BMS and LCD hardware.',
+        ],
+      },
+      {
+        title: 'Choose between floor-standing and rack formats',
+        paragraphs: [
+          'A caster enclosure can help during positioning and service access in residential or small commercial rooms. A 6U rack kit can suit equipment cabinets, telecom rooms, and modular battery banks where rack depth, rail rating, airflow, and cable management are already planned.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing 51.2V LiFePO4 enclosure for compatible high-capacity cells.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount enclosure option for compact 51.2V battery module assembly.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a 48V LiFePO4 battery the same as a 51.2V battery?',
+        answer: 'Many 48V-class LiFePO4 systems use 16 cells in series and are described as 51.2V nominal. The inverter voltage range and BMS settings must still be confirmed.',
+      },
+      {
+        question: 'Are battery cells included with the JKESS enclosure kits?',
+        answer: 'No. The product page defines the enclosure and selected hardware scope. Compatible cells are sourced separately unless a written quotation states otherwise.',
+      },
+      {
+        question: 'Can JKESS review my inverter compatibility?',
+        answer: 'Yes. Send the inverter model, protocol information, target battery configuration, and selected enclosure option for compatibility review.',
+      },
+    ],
+    related: [
+      {
+        href: '/battery-enclosures',
+        label: 'Battery enclosure selection guide',
+        description: 'Compare enclosure scope, cell compatibility, and package options.',
+      },
+      {
+        href: '/guides/how-to-match-bms-with-inverter',
+        label: 'BMS and inverter matching checklist',
+        description: 'Review voltage, current, protocol, firmware, and commissioning checks.',
+      },
+    ],
+  },
+  {
+    path: 'high-voltage-bms-for-ess',
+    kind: 'category',
+    eyebrow: 'ESS rack control hardware',
+    title: 'High Voltage BMS for ESS Battery Racks',
+    description:
+      'Review high voltage BMS hardware for ESS projects, including BCU master control, BMU slave monitoring, 100A and 200A options, PCS communication, and quotation inputs.',
+    intro:
+      'A high voltage BMS for energy storage systems coordinates rack safety, cell monitoring, contactor logic, current limits, and communication with a PCS or EMS. The correct hardware combination depends on voltage, current, module topology, protocol requirements, and the final system boundary.',
+    image: '/images/hv-kit/1.jpg',
+    highlights: [
+      { label: 'Current classes', value: '100A and 200A hardware options' },
+      { label: 'Control roles', value: 'Master BCU and slave BMU boxes' },
+      { label: 'System interface', value: 'PCS, EMS, CAN, RS485 review' },
+      { label: 'Use case', value: 'Commercial ESS racks and cabinets' },
+    ],
+    sections: [
+      {
+        title: 'Define the master and slave control scope',
+        paragraphs: [
+          'High voltage BMS hardware is not a complete battery pack. A functioning rack normally needs the correct master control box, slave monitoring boxes, sensors, contactors, pre-charge components, protection devices, wiring, PCS interface, and commissioning settings.',
+        ],
+        bullets: [
+          'Confirm total series cell count, rack voltage range, module count, and BMU channel requirements.',
+          'Confirm continuous current, peak current, contactor selection, and pre-charge logic.',
+          'Confirm PCS or EMS protocol, message format, baud rate, and fault handling requirements.',
+        ],
+      },
+      {
+        title: 'Choose 100A or 200A from the electrical design',
+        paragraphs: [
+          'Current class should follow the project power requirement, battery module design, conductor rating, contactor rating, thermal condition, and operating schedule. A higher current option is not automatically better if the rest of the system is not designed for it.',
+        ],
+      },
+      {
+        title: 'Information to send before purchase',
+        paragraphs: [
+          'For a faster review, prepare a one-line diagram, rack voltage range, module arrangement, cell count, PCS model, required communication protocol, operating current, peak current, destination country, and any required compliance documentation.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: '100A and 200A BMS control-box options for engineered ESS rack projects.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Quoted cabinet solution when the project requires a configured complete system.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a master control box enough for a complete high voltage battery rack?',
+        answer: 'No. It is one part of the control architecture. Slave monitoring, sensors, contactors, wiring, PCS communication, and commissioning requirements must also be defined.',
+      },
+      {
+        question: 'How do I choose between 100A and 200A?',
+        answer: 'Choose from the project power, voltage, battery module design, conductor and contactor ratings, thermal conditions, and duty cycle.',
+      },
+      {
+        question: 'Can JKESS review PCS communication compatibility?',
+        answer: 'Yes. Provide the PCS or EMS model and protocol document so JKESS can review communication and control requirements.',
+      },
+    ],
+    related: [
+      {
+        href: '/high-voltage-bms',
+        label: 'High-voltage BMS selection page',
+        description: 'Compare high-voltage BMS hardware, scope, and quotation inputs.',
+      },
+      {
+        href: '/guides/bcu-vs-bmu',
+        label: 'BCU vs BMU guide',
+        description: 'Understand master and slave controller roles in high-voltage BMS architecture.',
+      },
+    ],
+  },
+  {
+    path: 'commercial-battery-storage-cabinet',
+    kind: 'solution',
+    eyebrow: 'C&I energy storage planning',
+    title: 'Commercial Battery Storage Cabinet Planning Guide',
+    description:
+      'Plan a commercial battery storage cabinet by reviewing capacity, PCS power, cooling method, outdoor rating, communication, safety documentation, and project quotation scope.',
+    intro:
+      'Commercial battery storage cabinets are project-configured systems. The right solution depends on load profile, tariff structure, backup requirement, PCS power, site conditions, installation boundary, logistics route, and local documentation requirements.',
+    image: '/images/tness-ci-ess/main-1.webp',
+    highlights: [
+      { label: 'Typical use', value: 'Peak shaving, backup, solar self-use' },
+      { label: 'Configuration', value: 'Capacity, PCS power, cooling, EMS' },
+      { label: 'Project input', value: 'Load data and site conditions' },
+      { label: 'Commercial path', value: 'Quotation-based configuration' },
+    ],
+    sections: [
+      {
+        title: 'Start from the load and tariff data',
+        paragraphs: [
+          'A cabinet should not be selected from kWh alone. Peak shaving, backup, solar self-consumption, and demand management each require different power, capacity, discharge duration, and control strategy.',
+          'Where possible, provide measured interval load data, peak demand charges, electricity tariff periods, backup loads, available transformer capacity, and the target financial objective.',
+        ],
+      },
+      {
+        title: 'Define cabinet configuration and site constraints',
+        paragraphs: [
+          'The quotation should define capacity, PCS power, cooling method, IP rating, communication, fire and safety documentation, installation boundary, freight route, and any customer-side civil or electrical work.',
+        ],
+        bullets: [
+          'Ambient temperature, altitude, humidity, dust, solar exposure, and corrosion environment.',
+          'Available footprint, cabinet spacing, access for service, crane route, and unloading condition.',
+          'Grid connection point, AC voltage, transformer capacity, EMS or monitoring requirements.',
+          'Documentation, warranty, commissioning, and training scope required by the buyer.',
+        ],
+      },
+      {
+        title: 'When a quoted cabinet is better than buying parts',
+        paragraphs: [
+          'A quoted cabinet can be more appropriate when the project needs coordinated battery modules, BMS, PCS, thermal management, enclosure design, monitoring, and documentation. Component-only purchasing may suit experienced integrators who already own the system engineering responsibility.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial and industrial cabinet solution for project quotation review.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'Control hardware option for integrators engineering their own ESS rack architecture.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can I buy a commercial storage cabinet directly online?',
+        answer: 'No. C&I cabinets require quotation review because final capacity, PCS power, cooling, site conditions, shipping route, documentation, and project scope must be confirmed.',
+      },
+      {
+        question: 'What information is needed for a cabinet quotation?',
+        answer: 'Provide load data, use case, target capacity, PCS power, site country, site conditions, grid voltage, installation boundary, and required documentation.',
+      },
+      {
+        question: 'Does JKESS support air-cooled and liquid-cooled configurations?',
+        answer: 'Selected cabinet configurations can use intelligent air cooling or liquid cooling. The final quotation confirms the supplied thermal-management system.',
+      },
+    ],
+    related: [
+      {
+        href: '/commercial-energy-storage',
+        label: 'Commercial energy storage overview',
+        description: 'Review C&I cabinet capacity, project scope, and quotation inputs.',
+      },
+      {
+        href: '/guides/air-cooled-vs-liquid-cooled-ess',
+        label: 'Air-cooled vs liquid-cooled ESS',
+        description: 'Compare thermal management choices for cabinet projects.',
+      },
+    ],
+  },
+  {
+    path: 'can-rs485-bms-inverter-compatibility',
+    kind: 'guide',
+    eyebrow: 'Communication compatibility',
+    title: 'CAN and RS485 BMS Inverter Compatibility Checklist',
+    description:
+      'Check BMS and inverter compatibility through CAN or RS485 by reviewing protocol, firmware, pinout, baud rate, message map, operating limits, and commissioning tests.',
+    intro:
+      'CAN or RS485 on a product label does not guarantee that a battery, BMS, inverter, PCS, or EMS will work together. Compatibility depends on the exact protocol, firmware, wiring, message format, state logic, and protection limits used by the completed system.',
+    image: '/images/battery-kit-display.webp',
+    highlights: [
+      { label: 'Interfaces', value: 'CAN, RS485, Modbus, proprietary maps' },
+      { label: 'Main risk', value: 'Same port, different protocol' },
+      { label: 'Required proof', value: 'Protocol files and commissioning test' },
+      { label: 'Best use', value: 'Battery-to-inverter matching review' },
+    ],
+    sections: [
+      {
+        title: 'Check protocol before connector shape',
+        paragraphs: [
+          'Two devices can both include CAN or RS485 ports and still be incompatible. Confirm the application protocol, message identifiers or register map, byte order, scaling, update interval, alarm definitions, and master-slave relationship.',
+        ],
+      },
+      {
+        title: 'Check wiring and physical layer details',
+        paragraphs: [
+          'Incorrect pinout, missing termination, swapped differential wires, duplicated addresses, wrong baud rate, or unsupported firmware can prevent communication even when the equipment is otherwise suitable.',
+        ],
+        bullets: [
+          'Confirm CAN-H/CAN-L or RS485-A/RS485-B pinout from both device manuals.',
+          'Confirm baud rate, parity, stop bits, termination, shielding, grounding, and maximum cable length.',
+          'Record firmware versions and supported protocol profiles before commissioning.',
+        ],
+      },
+      {
+        title: 'Commission operating limits, not only data display',
+        paragraphs: [
+          'A system may show voltage and state-of-charge but still fail under real operation if charge enable, discharge enable, current limit, contactor status, alarm handling, or fault recovery logic does not match.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Low-voltage enclosure option where BMS and inverter communication must be checked before assembly.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'High-voltage BMS control hardware requiring PCS or EMS protocol review.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does CAN support mean my inverter will work with the BMS?',
+        answer: 'No. CAN is an interface, not a complete compatibility statement. Message format, firmware, state logic, and settings must match.',
+      },
+      {
+        question: 'Is RS485 always Modbus?',
+        answer: 'No. RS485 is a physical communication layer. It can carry Modbus RTU or a manufacturer-specific protocol.',
+      },
+      {
+        question: 'What should I send for a compatibility review?',
+        answer: 'Send the inverter or PCS model, BMS model, protocol document, wiring pinout, firmware versions, target voltage, current, and battery configuration.',
+      },
+    ],
+    related: [
+      {
+        href: '/guides/can-vs-rs485-battery-communication',
+        label: 'CAN vs RS485 technical guide',
+        description: 'Compare interface behavior, protocol risks, and commissioning checks.',
+      },
+      {
+        href: '/guides/how-to-match-bms-with-inverter',
+        label: 'How to match BMS with inverter',
+        description: 'Use a broader voltage, current, firmware, and commissioning checklist.',
+      },
+    ],
+  },
 ]
 
 export function getNonBrandLandingPage(path: string) {

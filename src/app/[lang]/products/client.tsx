@@ -77,6 +77,11 @@ const technicalSearchPages = [
     text: 'Compare 51.2V enclosure formats, included scope, cell fit, and inverter communication requirements.',
   },
   {
+    href: '/48v-lifepo4-battery-enclosure',
+    title: '48V LiFePO4 enclosure planning',
+    text: 'Check 48V and 51.2V battery enclosure fit, BMS protocol, inverter matching, and installation format.',
+  },
+  {
     href: '/battery-enclosures/15kwh-lifepo4',
     title: '15kWh battery enclosure',
     text: 'Review the 15kWh-class floor-standing enclosure, cell inputs, package scope, and installation questions.',
@@ -97,6 +102,11 @@ const technicalSearchPages = [
     text: 'Review the moderate-current BCU and BMU option and the system information required before selection.',
   },
   {
+    href: '/high-voltage-bms-for-ess',
+    title: 'High-voltage BMS for ESS',
+    text: 'Plan master and slave control hardware, PCS communication, current class, and quotation inputs.',
+  },
+  {
     href: '/high-voltage-bms/200a',
     title: '200A high-voltage BMS',
     text: 'Review higher-current control hardware, conductor and protection requirements, and supply boundaries.',
@@ -107,9 +117,19 @@ const technicalSearchPages = [
     text: 'Evaluate a 215.04kWh configuration for peak shaving, solar self-consumption, and selected backup loads.',
   },
   {
+    href: '/commercial-battery-storage-cabinet',
+    title: 'Commercial battery storage cabinet',
+    text: 'Plan C&I cabinet capacity, PCS power, cooling, safety documentation, logistics, and project scope.',
+  },
+  {
     href: '/commercial-energy-storage/261kwh',
     title: '261kWh C&I ESS cabinet',
     text: 'Review the larger cabinet energy class, logistics, cooling, duty cycle, and multi-cabinet planning.',
+  },
+  {
+    href: '/can-rs485-bms-inverter-compatibility',
+    title: 'CAN/RS485 BMS compatibility',
+    text: 'Check protocol, firmware, pinout, baud rate, message map, and commissioning requirements.',
   },
 ]
 

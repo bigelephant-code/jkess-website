@@ -13,10 +13,10 @@ export default function MadeWithShowcase() {
   const containerRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const smoothX = useSpring(mouseX, { stiffness: 150, damping: 15 })
-  const smoothY = useSpring(mouseY, { stiffness: 150, damping: 15 })
-  const rotateX = useTransform(smoothY, [-1, 1], [6, -6])
-  const rotateY = useTransform(smoothX, [-1, 1], [-6, 6])
+  const smoothX = useSpring(mouseX, { stiffness: 120, damping: 18 })
+  const smoothY = useSpring(mouseY, { stiffness: 120, damping: 18 })
+  const translateX = useTransform(smoothX, [-1, 1], [-8, 8])
+  const translateY = useTransform(smoothY, [-1, 1], [-5, 5])
 
   function handleMouseMove(event: React.MouseEvent) {
     if (shouldReduceMotion || !containerRef.current) return
@@ -27,31 +27,28 @@ export default function MadeWithShowcase() {
     mouseY.set(Math.max(-1, Math.min(1, (event.clientY - centerY) / (rect.height / 2))))
   }
 
-  function resetTilt() {
+  function resetParallax() {
     mouseX.set(0)
     mouseY.set(0)
   }
 
   return (
-    <section className="relative isolate -mb-px overflow-hidden bg-gray-50">
+    <section className="relative z-10 -mb-4 isolate overflow-hidden bg-gray-50 pb-6">
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
-        onMouseLeave={resetTilt}
-        className="relative bg-gray-50"
-        style={{ perspective: 1200 }}
+        onMouseLeave={resetParallax}
+        className="relative overflow-hidden bg-gray-50"
       >
         <motion.div
           style={{
-            rotateX: shouldReduceMotion ? 0 : rotateX,
-            rotateY: shouldReduceMotion ? 0 : rotateY,
-            transformStyle: 'preserve-3d',
-            transformOrigin: 'center center',
-            backfaceVisibility: 'hidden',
+            x: shouldReduceMotion ? 0 : translateX,
+            y: shouldReduceMotion ? 0 : translateY,
+            scale: shouldReduceMotion ? 1 : 1.02,
           }}
           transition={{ duration: 0.1 }}
         >
-          <div className="relative">
+          <div className="relative bg-gray-50">
             <div className="grid grid-cols-2 gap-2 px-4 pb-24 pt-20 sm:grid-cols-3 md:grid-cols-4 md:gap-3 md:px-8 md:pb-28 md:pt-28">
               {projectImages.map((src, index) => (
                 <motion.div
@@ -89,7 +86,7 @@ export default function MadeWithShowcase() {
         </div>
       </div>
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-3 bg-gray-50" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 -bottom-px z-30 h-12 bg-gradient-to-b from-gray-50 via-gray-50 to-purple-50" />
     </section>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
@@ -14,46 +14,39 @@ const scenarios = [
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
+const CYCLE_SECONDS = 5
 
 export default function SolutionsShowcase() {
   const t = useTranslate()
   const shouldReduceMotion = useReducedMotion()
   const [active, setActive] = useState(0)
-  const [progress, setProgress] = useState(0)
+  const [cycle, setCycle] = useState(0)
   const [impactIndex, setImpactIndex] = useState<number | null>(null)
   const impactTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const triggerImpact = (index: number) => {
+  const triggerImpact = useCallback((index: number) => {
     if (impactTimerRef.current) clearTimeout(impactTimerRef.current)
     setImpactIndex(index)
     impactTimerRef.current = setTimeout(() => setImpactIndex(null), 620)
-  }
+  }, [])
 
-  const selectScenario = (index: number) => {
+  const selectScenario = useCallback((index: number) => {
     setActive(index)
-    setProgress(0)
+    setCycle((value) => value + 1)
     triggerImpact(index)
-  }
+  }, [triggerImpact])
 
   useEffect(() => {
     if (shouldReduceMotion) return
 
-    const interval = window.setInterval(() => {
-      setProgress((current) => {
-        if (current >= 99) {
-          setActive((index) => {
-            const next = (index + 1) % scenarios.length
-            triggerImpact(next)
-            return next
-          })
-          return 0
-        }
-        return current + 1
-      })
-    }, 50)
+    const timer = window.setTimeout(() => {
+      const next = (active + 1) % scenarios.length
+      setActive(next)
+      triggerImpact(next)
+    }, CYCLE_SECONDS * 1000)
 
-    return () => window.clearInterval(interval)
-  }, [shouldReduceMotion])
+    return () => window.clearTimeout(timer)
+  }, [active, cycle, shouldReduceMotion, triggerImpact])
 
   useEffect(() => {
     return () => {
@@ -64,7 +57,6 @@ export default function SolutionsShowcase() {
   const scenario = scenarios[active]
   const title = t(`scenarios.${scenario.id}.title`, scenario.id)
   const description = t(`scenarios.${scenario.id}.desc`, scenario.id)
-  const strokeDashoffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
 
   return (
     <section className="relative py-20 md:py-28">
@@ -117,7 +109,8 @@ export default function SolutionsShowcase() {
                   <svg className="absolute inset-0 h-full w-full" viewBox="0 0 64 64" aria-hidden="true">
                     <circle cx="32" cy="32" r="28" fill="transparent" stroke={isActive ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.07)'} strokeWidth="5" />
                     {isActive && (
-                      <circle
+                      <motion.circle
+                        key={`${active}-${cycle}`}
                         cx="32"
                         cy="32"
                         r="28"
@@ -126,16 +119,31 @@ export default function SolutionsShowcase() {
                         strokeWidth="5"
                         strokeLinecap="round"
                         strokeDasharray={CIRCUMFERENCE}
-                        strokeDashoffset={strokeDashoffset}
+                        initial={{ strokeDashoffset: shouldReduceMotion ? 0 : CIRCUMFERENCE }}
+                        animate={{ strokeDashoffset: 0 }}
+                        transition={{ duration: shouldReduceMotion ? 0 : CYCLE_SECONDS, ease: 'linear' }}
                         style={{ transform: 'rotate(-90deg)', transformOrigin: '32px 32px' }}
                       />
                     )}
                   </svg>
                   {isImpacting && !shouldReduceMotion && (
-                    <span aria-hidden="true" className="absolute inset-0 rounded-full border-green-400 animate-ripple-wave pointer-events-none z-10" />
+                    <>
+                      <span aria-hidden="true" className="absolute inset-0 rounded-full border-2 border-green-400 animate-ripple-wave pointer-events-none z-10" />
+                      <motion.span
+                        aria-hidden="true"
+                        className="absolute inset-2 rounded-full border border-emerald-300 pointer-events-none z-10"
+                        initial={{ scale: 0.8, opacity: 0.65 }}
+                        animate={{ scale: 2.2, opacity: 0 }}
+                        transition={{ duration: 0.58, delay: 0.06, ease: 'easeOut' }}
+                      />
+                    </>
                   )}
-                  <span
-                    className={`relative z-20 block bg-gray-600 transition-all duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'scale-110 bg-green-500' : 'group-hover:bg-gray-500'} ${isImpacting && !shouldReduceMotion ? 'animate-startled' : ''}`}
+                  <motion.span
+                    className={`relative z-20 block bg-gray-600 transition-colors duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'bg-green-500' : 'group-hover:bg-gray-500'}`}
+                    animate={isImpacting && !shouldReduceMotion
+                      ? { scale: [1, 0.72, 1.26, 0.92, 1.1], rotate: [0, -8, 8, -3, 0] }
+                      : { scale: isActive ? 1.1 : 1, rotate: 0 }}
+                    transition={{ duration: isImpacting ? 0.55 : 0.25, ease: 'easeOut' }}
                     style={{
                       mask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,
                       WebkitMask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/client'
@@ -14,39 +14,44 @@ const scenarios = [
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
+const CYCLE_MS = 5000
 
 export default function SolutionsShowcase() {
   const t = useTranslate()
   const shouldReduceMotion = useReducedMotion()
   const [active, setActive] = useState(0)
-  const [progress, setProgress] = useState(0)
-  const [paused, setPaused] = useState(false)
+  const [cycle, setCycle] = useState(0)
+  const [impact, setImpact] = useState<{ index: number; id: number } | null>(null)
+  const impactTimer = useRef<number | null>(null)
 
   useEffect(() => {
-    if (paused || shouldReduceMotion) return
+    if (shouldReduceMotion) return
 
-    const interval = window.setInterval(() => {
-      setProgress((current) => {
-        if (current >= 99) {
-          setActive((index) => (index + 1) % scenarios.length)
-          return 0
-        }
-        return current + 1
-      })
-    }, 50)
+    const timer = window.setTimeout(() => {
+      setActive((index) => (index + 1) % scenarios.length)
+    }, CYCLE_MS)
 
-    return () => window.clearInterval(interval)
-  }, [paused, shouldReduceMotion])
+    return () => window.clearTimeout(timer)
+  }, [active, cycle, shouldReduceMotion])
+
+  useEffect(() => {
+    return () => {
+      if (impactTimer.current !== null) window.clearTimeout(impactTimer.current)
+    }
+  }, [])
 
   const selectScenario = (index: number) => {
     setActive(index)
-    setProgress(0)
+    setCycle((value) => value + 1)
+    setImpact({ index, id: Date.now() })
+
+    if (impactTimer.current !== null) window.clearTimeout(impactTimer.current)
+    impactTimer.current = window.setTimeout(() => setImpact(null), 700)
   }
 
   const scenario = scenarios[active]
   const title = t(`scenarios.${scenario.id}.title`, scenario.id)
   const description = t(`scenarios.${scenario.id}.desc`, scenario.id)
-  const strokeDashoffset = CIRCUMFERENCE - (progress / 100) * CIRCUMFERENCE
 
   return (
     <section className="relative py-20 md:py-28">
@@ -61,14 +66,11 @@ export default function SolutionsShowcase() {
           </p>
         </div>
 
-        <div
-          className="flex flex-col items-stretch gap-8 md:flex-row md:gap-10"
-          onPointerEnter={() => setPaused(true)}
-          onPointerLeave={() => setPaused(false)}
-        >
+        <div className="flex flex-col items-stretch gap-8 md:flex-row md:gap-10">
           <div className="flex w-full flex-row items-center justify-between overflow-visible md:w-[100px] md:flex-shrink-0 md:flex-col" role="tablist" aria-label={t('solutions.title', 'Solutions')}>
             {scenarios.map((item, index) => {
               const isActive = index === active
+              const isImpacted = impact?.index === index
               const iconExt = item.icon === '2' ? '.svg' : '.png'
 
               return (
@@ -89,10 +91,33 @@ export default function SolutionsShowcase() {
                       transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                     />
                   )}
+
+                  {isImpacted && !shouldReduceMotion && (
+                    <>
+                      <motion.span
+                        key={`wave-1-${impact.id}`}
+                        aria-hidden="true"
+                        className="absolute inset-1 rounded-full border-2 border-green-400"
+                        initial={{ scale: 0.9, opacity: 0.7 }}
+                        animate={{ scale: 2.6, opacity: 0 }}
+                        transition={{ duration: 0.65, ease: 'easeOut' }}
+                      />
+                      <motion.span
+                        key={`wave-2-${impact.id}`}
+                        aria-hidden="true"
+                        className="absolute inset-2 rounded-full border border-emerald-300"
+                        initial={{ scale: 0.8, opacity: 0.6 }}
+                        animate={{ scale: 2.1, opacity: 0 }}
+                        transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
+                      />
+                    </>
+                  )}
+
                   <svg className="absolute inset-0 h-full w-full" viewBox="0 0 64 64" aria-hidden="true">
                     <circle cx="32" cy="32" r="28" fill="transparent" stroke={isActive ? 'rgba(34,197,94,0.3)' : 'rgba(0,0,0,0.07)'} strokeWidth="5" />
                     {isActive && (
-                      <circle
+                      <motion.circle
+                        key={`${active}-${cycle}`}
                         cx="32"
                         cy="32"
                         r="28"
@@ -101,13 +126,20 @@ export default function SolutionsShowcase() {
                         strokeWidth="5"
                         strokeLinecap="round"
                         strokeDasharray={CIRCUMFERENCE}
-                        strokeDashoffset={strokeDashoffset}
+                        initial={{ strokeDashoffset: shouldReduceMotion ? 0 : CIRCUMFERENCE }}
+                        animate={{ strokeDashoffset: 0 }}
+                        transition={{ duration: shouldReduceMotion ? 0 : CYCLE_MS / 1000, ease: 'linear' }}
                         style={{ transform: 'rotate(-90deg)', transformOrigin: '32px 32px' }}
                       />
                     )}
                   </svg>
-                  <span
-                    className={`relative z-10 block bg-gray-600 transition-all duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'scale-110 bg-green-500' : 'group-hover:bg-gray-500'}`}
+
+                  <motion.span
+                    className={`relative z-10 block bg-gray-600 transition-colors duration-300 ${item.icon === '2' ? 'h-9 w-9' : 'h-7 w-7'} ${isActive ? 'bg-green-500' : 'group-hover:bg-gray-500'}`}
+                    animate={isImpacted && !shouldReduceMotion
+                      ? { scale: [1, 0.72, 1.26, 0.92, 1.1], rotate: [0, -8, 8, -3, 0] }
+                      : { scale: isActive ? 1.1 : 1, rotate: 0 }}
+                    transition={{ duration: isImpacted ? 0.55 : 0.25, ease: 'easeOut' }}
                     style={{
                       mask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,
                       WebkitMask: `url(/images/goodwe-icon-${item.icon}${iconExt}) center/contain no-repeat`,

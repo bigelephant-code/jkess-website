@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import HeroSection from '@/components/HeroSection'
 import StatsSection from '@/components/StatsSection'
 import Timeline from '@/components/Timeline'
-import SolutionsSection from '@/components/SolutionsSection'
+import SolutionsShowcase from '@/components/SolutionsShowcase'
 import TechLines from '@/components/TechLines'
 import { localizedPath } from '@/lib/lang'
 import { buildPageMetadata } from '@/lib/seo'
@@ -72,7 +72,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
         <div className="relative z-10">
           <StatsSection data={companyStats} />
           <Timeline />
-          <SolutionsSection />
+          <SolutionsShowcase />
           <CertTiltBoard />
         </div>
       </section>

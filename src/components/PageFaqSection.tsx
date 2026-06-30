@@ -10,11 +10,11 @@ export default function PageFaqSection({
   description?: string
 }) {
   return (
-    <section className="bg-white py-14 md:py-18">
+    <section aria-labelledby="page-faq-title" className="bg-white py-14 md:py-18">
       <div className="mx-auto max-w-5xl px-6">
         <div className="mb-8 text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-green-600">FAQ</p>
-          <h2 className="mt-3 text-2xl font-bold text-gray-950 md:text-4xl">{title}</h2>
+          <p aria-hidden="true" className="text-xs font-bold uppercase tracking-[0.22em] text-green-600">FAQ</p>
+          <h2 id="page-faq-title" className="mt-3 text-2xl font-bold text-gray-950 md:text-4xl">{title}</h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-gray-500">{description}</p>
         </div>
         <dl className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">

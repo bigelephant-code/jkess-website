@@ -45,7 +45,7 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Green animated gradient text (flowing shimmer) */
+/* Green animated gradient text */
 .animate-gradient-green {
   background: linear-gradient(135deg, #22c55e, #4ade80, #86efac, #4ade80, #22c55e);
   background-size: 400% 100%;
@@ -55,7 +55,7 @@ body {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* Blue �?Purple �?Orange �?Purple �?Blue flowing gradient */
+/* Vision gradient text */
 .animate-gradient-vision {
   background: linear-gradient(90deg, #5b5bff, #a66cd9, #f58a8a, #a66cd9, #5b5bff);
   background-size: 400% 100%;
@@ -117,7 +117,7 @@ body {
   scrollbar-color: #333 transparent;
 }
 
-/* 🌬�?Breathing glow - gentle life pulse on all circles */
+/* Breathing glow */
 @keyframes breathe {
   0%, 100% { opacity: 0.15; transform: scale(0.85); }
   50% { opacity: 0.35; transform: scale(1.05); }
@@ -127,7 +127,7 @@ body {
   animation: breathe 3s ease-in-out infinite;
 }
 
-/* 💓 Heartbeat - stronger pulse on active circle */
+/* Heartbeat pulse */
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); opacity: 0.3; }
   10% { transform: scale(1.2); opacity: 0.5; }
@@ -140,7 +140,7 @@ body {
   animation: heartbeat 2.2s ease-in-out infinite;
 }
 
-/* 🦘 Startled bounce - when switching to a new circle */
+/* Startled bounce */
 @keyframes startled {
   0% { transform: scale(1); }
   15% { transform: scale(0.8); }
@@ -154,7 +154,7 @@ body {
   animation: startled 0.55s ease-out forwards;
 }
 
-/* 🌊 Ripple wave - green ring expands from new active circle */
+/* Ripple wave */
 @keyframes ripple-wave {
   0% { transform: scale(1); opacity: 0.5; border-width: 3px; }
   100% { transform: scale(3); opacity: 0; border-width: 1px; }
@@ -174,7 +174,7 @@ body {
   animation: scale-focus 0.35s ease-out;
 }
 
-/* 🌊 Gentle floating - subtle up/down motion */
+/* Gentle floating */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-2.5px); }
@@ -188,6 +188,14 @@ body {
   animation: float 3.5s ease-in-out 0.4s infinite;
 }
 
+/* Hide sub-pixel gaps between deferred homepage modules */
+.defer-render {
+  background-color: #ffffff;
+}
+
+.defer-render + .defer-render {
+  margin-top: -1px;
+}
 
 /* Navbar energy sweep effect */
 @keyframes navbar-sweep {
@@ -210,4 +218,3 @@ body {
 .animate-navbar-sweep {
   animation: navbar-sweep 0.8s ease-out forwards;
 }
-

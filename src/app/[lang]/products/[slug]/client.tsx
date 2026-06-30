@@ -62,6 +62,34 @@ type ProductDetailCopy = {
   relatedProducts: string
 }
 
+const mediaCopyByLanguage = {
+  en: {
+    showImage: 'Show {name} image {index}',
+    imageView: '{name} view {index}',
+    selectVariant: 'Select {variant}',
+    detailImage: '{name} detail {index}',
+  },
+  de: {
+    showImage: 'Bild {index} von {name} anzeigen',
+    imageView: '{name}, Ansicht {index}',
+    selectVariant: '{variant} auswählen',
+    detailImage: '{name}, Detailansicht {index}',
+  },
+  fr: {
+    showImage: 'Afficher l’image {index} de {name}',
+    imageView: '{name}, vue {index}',
+    selectVariant: 'Sélectionner {variant}',
+    detailImage: '{name}, vue détaillée {index}',
+  },
+} as const
+
+function fillMediaLabel(template: string, values: Record<string, string | number>) {
+  return Object.entries(values).reduce(
+    (label, [key, value]) => label.replace(`{${key}}`, String(value)),
+    template
+  )
+}
+
 export function ProductDetailClient({
   product,
   lang,
@@ -84,6 +112,7 @@ export function ProductDetailClient({
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
+  const mediaCopy = mediaCopyByLanguage[lang as keyof typeof mediaCopyByLanguage] ?? mediaCopyByLanguage.en
   const faqs = (product as ProductWithLocalizedFaqs).localizedFaqs ?? getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
   const currentCommerce = productVariantCommerce(product)[selectedVariant] || null
@@ -258,7 +287,7 @@ export function ProductDetailClient({
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
                 <Image
                   src={product.images[selectedImage] || '/placeholder.svg'}
-                  alt={product.name}
+                  alt={fillMediaLabel(mediaCopy.imageView, { name: product.name, index: selectedImage + 1 })}
                   fill
                   className="object-contain p-4 md:p-8"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -276,14 +305,21 @@ export function ProductDetailClient({
                       key={image}
                       type="button"
                       onClick={() => setSelectedImage(index)}
-                      aria-label={`Show ${product.name} image ${index + 1}`}
+                      aria-label={fillMediaLabel(mediaCopy.showImage, { name: product.name, index: index + 1 })}
+                      aria-pressed={selectedImage === index}
                       className={`relative w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-xl overflow-hidden border-2 bg-[#0d0d0d] transition-all ${
                         selectedImage === index
                           ? 'border-green-400 ring-1 ring-green-400/50'
                           : 'border-white/10 hover:border-white/30'
                       }`}
                     >
-                      <Image src={image} alt={`${product.name} view ${index + 1}`} fill className="object-contain p-1" sizes="80px" />
+                      <Image
+                        src={image}
+                        alt={fillMediaLabel(mediaCopy.imageView, { name: product.name, index: index + 1 })}
+                        fill
+                        className="object-contain p-1"
+                        sizes="80px"
+                      />
                     </button>
                   ))}
                 </div>
@@ -350,7 +386,8 @@ export function ProductDetailClient({
                         key={variant.label}
                         type="button"
                         onClick={() => setSelectedVariant(index)}
-                        aria-label={`Select ${variant.label}`}
+                        aria-label={fillMediaLabel(mediaCopy.selectVariant, { variant: variant.label })}
+                        aria-pressed={selectedVariant === index}
                         className={`px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
                           selectedVariant === index
                             ? 'border-green-500 bg-green-500/10 text-green-400'
@@ -556,7 +593,7 @@ export function ProductDetailClient({
                     <div key={image} className="w-full">
                       <Image
                         src={image}
-                        alt={`${product.name} detail ${index + 1}`}
+                        alt={fillMediaLabel(mediaCopy.detailImage, { name: product.name, index: index + 1 })}
                         width={1400}
                         height={900}
                         className="w-full h-auto block"

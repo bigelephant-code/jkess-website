@@ -61,15 +61,29 @@ const technicalSearchPages = [
 ]
 
 export function ProductsPageClient({ products }: { products: Product[] }) {
-  const { lang } = useI18n()
+  const { lang, t } = useI18n()
+  const pageTitle = t('productsSection.title', 'Our Products')
+  const pageDescription = t(
+    'productsSection.desc',
+    'Comprehensive energy storage solutions engineered for reliability and performance'
+  )
+  const viewDetails = t('productsSection.viewDetails', 'View Details')
 
   return (
     <div className="relative min-h-screen bg-gray-50">
       <div className="absolute top-0 left-0 right-0 h-[84px] bg-black z-0" />
-      <div className="relative pt-32 pb-8 z-10">
-        <div className="max-w-7xl mx-auto px-6"><div className="h-0" /></div>
-      </div>
-      <section className="pb-16">
+      <header className="relative pt-32 pb-10 z-10" aria-labelledby="products-page-title">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-700">JKESS</p>
+          <h1 id="products-page-title" className="mt-3 text-3xl font-bold tracking-tight text-gray-950 md:text-5xl">
+            {pageTitle}
+          </h1>
+          <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600 md:text-lg">
+            {pageDescription}
+          </p>
+        </div>
+      </header>
+      <section className="pb-16" aria-labelledby="products-page-title">
         <div className="max-w-7xl mx-auto px-6">
           <StaggerReveal staggerDelay={0.12}>
             <div className="grid md:grid-cols-2 gap-8">
@@ -77,13 +91,14 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                 <StaggerItem key={product.slug}>
                   <Link
                     href={localizedPath(lang, `/products/${product.slug}`)}
+                    aria-label={`${viewDetails}: ${product.name}`}
                     className="group block bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1"
                   >
                     <div className="relative aspect-[16/10] bg-gray-100 overflow-hidden">
                       {product.images[0] ? (
                         <Image
                           src={product.images[0]}
-                          alt={`${product.name} energy storage product`}
+                          alt={product.name}
                           fill
                           className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                           sizes="(max-width: 767px) calc(100vw - 3rem), 46vw"
@@ -109,13 +124,13 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                       <div className="space-y-1.5 mb-4">
                         {product.features.slice(0, 3).map((feat, i) => (
                           <div key={i} className="flex items-start gap-2">
-                            <span className="mt-1 text-xs text-green-500">•</span>
+                            <span aria-hidden="true" className="mt-1 text-xs text-green-500">•</span>
                             <span className="text-xs text-gray-600">{feat}</span>
                           </div>
                         ))}
                       </div>
                       <div className="flex items-center gap-2 text-green-600 font-semibold text-sm group-hover:gap-3 transition-all">
-                        View Details <ArrowRight size={16} />
+                        {viewDetails} <ArrowRight aria-hidden="true" size={16} />
                       </div>
                     </div>
                   </Link>
@@ -148,7 +163,7 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
                 >
                   <h3 className="flex items-start justify-between gap-4 text-base font-bold text-gray-950">
                     {page.title}
-                    <ArrowRight className="mt-0.5 shrink-0 text-green-600 transition group-hover:translate-x-1" size={17} />
+                    <ArrowRight aria-hidden="true" className="mt-0.5 shrink-0 text-green-600 transition group-hover:translate-x-1" size={17} />
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-gray-600">{page.text}</p>
                 </Link>
@@ -161,14 +176,14 @@ export function ProductsPageClient({ products }: { products: Product[] }) {
       <div className="defer-render">
         <PageFaqSection
           faqs={pageFaqs.products}
-          title="Product Selection FAQ"
-          description="A quick guide to choosing between JKESS battery kits, high voltage kits, and commercial energy storage cabinets."
+          title={t('product.faqTitle', 'Frequently Asked Questions')}
+          description={pageDescription}
         />
       </div>
       <div className="defer-render pb-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-gray-400 text-base md:text-lg font-light italic tracking-wide">
-            Comprehensive energy storage solutions engineered for reliability and performance
+            {pageDescription}
           </p>
         </div>
       </div>

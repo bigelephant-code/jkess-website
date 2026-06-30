@@ -14,7 +14,7 @@ const scenarios = [
 ]
 
 const CIRCUMFERENCE = 2 * Math.PI * 28
-const CYCLE_SECONDS = 5
+const CYCLE_SECONDS = 10
 
 export default function SolutionsShowcase() {
   const t = useTranslate()

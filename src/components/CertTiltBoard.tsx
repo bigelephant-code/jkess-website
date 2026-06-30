@@ -40,7 +40,7 @@ export default function CertTiltBoard() {
         {/* Module title */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">
- {t('certified.title')?.split(' ')?.[0]} <span className="text-green-600">{t('certified.title')?.split(' ')?.slice(1)?.join(' ')}</span>
+{t('certified.title')?.split(' ')?.[0]} <span className="text-green-600">{t('certified.title')?.split(' ')?.slice(1)?.join(' ')}</span>
           </h2>
         </div>
 

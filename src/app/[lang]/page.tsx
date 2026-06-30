@@ -9,7 +9,7 @@ import { buildPageMetadata } from '@/lib/seo'
 import type { LangCode } from '@/i18n/config'
 import { companyProfile, companyStats } from '@/lib/company-profile'
 
-const MadeWithJKESS = dynamic(() => import('@/components/MadeWithShowcase'), {
+const MadeWithJKESS = dynamic(() => import('@/components/MadeWithJKESS'), {
   loading: () => null,
 })
 const ReviewsWall = dynamic(() => import('@/components/ReviewsWall'), {

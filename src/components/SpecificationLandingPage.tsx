@@ -59,11 +59,12 @@ export function buildSpecificationMetadata(page: NonBrandLandingPage, lang: stri
   }
 }
 
-function specificationJsonLd(page: NonBrandLandingPage) {
-  const url = absoluteUrl(`/${page.path}`)
+function specificationJsonLd(page: NonBrandLandingPage, lang: string) {
+  const path = `/${page.path}`
+  const url = absoluteUrl(canonicalSeoPath(lang, path))
   const pathParts = page.path.split('/')
   const parentPath = `/${pathParts.slice(0, -1).join('/')}`
-  const parentUrl = absoluteUrl(parentPath)
+  const parentUrl = absoluteUrl(canonicalSeoPath(lang, parentPath))
 
   const productItems = page.products
     .map((item, index) => {
@@ -78,7 +79,7 @@ function specificationJsonLd(page: NonBrandLandingPage) {
           name: product.name,
           description: item.description,
           image: product.images[0] ? absoluteUrl(product.images[0]) : undefined,
-          url: absoluteUrl(`/products/${product.slug}`),
+          url: absoluteUrl(canonicalSeoPath(lang, `/products/${product.slug}`)),
           brand: { '@type': 'Brand', name: 'JKESS' },
           manufacturer: { '@id': organizationId },
         },
@@ -97,11 +98,11 @@ function specificationJsonLd(page: NonBrandLandingPage) {
         description: page.description,
         url,
         image: absoluteUrl(page.image),
-        inLanguage: 'en',
+        inLanguage: lang,
         publisher: { '@id': organizationId },
         mainEntityOfPage: url,
         datePublished: '2026-06-28',
-        dateModified: '2026-06-28',
+        dateModified: '2026-06-30',
       },
       {
         '@type': 'BreadcrumbList',
@@ -149,7 +150,7 @@ export default function SpecificationLandingPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: specificationJsonLd(page) }}
+        dangerouslySetInnerHTML={{ __html: specificationJsonLd(page, lang) }}
       />
 
       <div className="min-h-screen bg-white text-gray-950">

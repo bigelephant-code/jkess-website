@@ -59,8 +59,10 @@ export function buildTechnicalGuideMetadata(guide: TechnicalGuide, lang: string)
   }
 }
 
-function guideJsonLd(guide: TechnicalGuide) {
-  const url = absoluteUrl(`/guides/${guide.slug}`)
+function guideJsonLd(guide: TechnicalGuide, lang: string) {
+  const path = `/guides/${guide.slug}`
+  const url = absoluteUrl(canonicalSeoPath(lang, path))
+  const technicalGuidesUrl = absoluteUrl(canonicalSeoPath(lang, '/news'))
   return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -73,9 +75,9 @@ function guideJsonLd(guide: TechnicalGuide) {
         image: absoluteUrl(guide.image),
         url,
         mainEntityOfPage: url,
-        inLanguage: 'en',
+        inLanguage: lang,
         datePublished: '2026-06-29',
-        dateModified: '2026-06-29',
+        dateModified: '2026-06-30',
         author: { '@id': organizationId },
         publisher: { '@id': organizationId },
       },
@@ -83,7 +85,7 @@ function guideJsonLd(guide: TechnicalGuide) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
-          { '@type': 'ListItem', position: 2, name: 'Technical Guides', item: absoluteUrl('/news') },
+          { '@type': 'ListItem', position: 2, name: 'Technical Guides', item: technicalGuidesUrl },
           { '@type': 'ListItem', position: 3, name: guide.title, item: url },
         ],
       },
@@ -106,7 +108,7 @@ export default function TechnicalGuideArticle({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: guideJsonLd(guide) }}
+        dangerouslySetInnerHTML={{ __html: guideJsonLd(guide, lang) }}
       />
       <div className="min-h-screen bg-white text-gray-950">
         <header className="relative isolate overflow-hidden bg-black pt-24">

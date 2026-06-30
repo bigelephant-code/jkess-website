@@ -21,8 +21,18 @@ const policyPaths = [
   '/privacy-policy',
   '/eu-compliance',
 ]
-const staticPaths = ['', '/about', '/products', '/downloads', '/news', '/contact', ...policyPaths]
-const siteLastModified = new Date('2026-06-29')
+const staticPaths = [
+  '',
+  '/about',
+  '/products',
+  '/downloads',
+  '/news',
+  '/contact',
+  '/quality-and-manufacturing',
+  '/shipping-quote',
+  ...policyPaths,
+]
+const siteLastModified = new Date('2026-06-30')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],
@@ -78,18 +88,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       })
     }
-  }
-
-  for (const path of ['/quality-and-manufacturing', '/shipping-quote']) {
-    const url = absoluteUrl(path)
-    entries.push({
-      url,
-      lastModified: siteLastModified,
-      changeFrequency: 'monthly',
-      priority: staticPriority(path),
-      images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
-      alternates: { languages: indexableSeoAlternates(path) },
-    })
   }
 
   for (const product of products) {

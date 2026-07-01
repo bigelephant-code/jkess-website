@@ -72,6 +72,16 @@ const localizedProductFaqs: Partial<Record<string, PageFaq[]>> = {
 
 const technicalSearchPages = [
   {
+    href: '/compare',
+    title: 'Battery storage comparison guides',
+    text: 'Compare voltage wording, enclosure formats, HV BMS current classes, and C&I cabinet routes.',
+  },
+  {
+    href: '/compare/48v-vs-51-2v-lifepo4-battery',
+    title: '48V vs 51.2V LiFePO4',
+    text: 'Understand voltage wording, 16S LiFePO4 systems, inverter voltage range, and enclosure selection.',
+  },
+  {
     href: '/europe',
     title: 'Europe battery storage hub',
     text: 'Navigate EU warehouse, LiFePO4 battery kit Europe, 48V enclosure shipping, and C&I ESS country pages.',
@@ -127,6 +137,11 @@ const technicalSearchPages = [
     text: 'Plan 19-inch rack depth, airflow, service clearance, module expansion, and communication.',
   },
   {
+    href: '/compare/rack-vs-floor-standing-battery-kit',
+    title: 'Rack vs floor-standing kit',
+    text: 'Compare 6U rack installation with caster enclosure placement, service access, and EU shipping needs.',
+  },
+  {
     href: '/high-voltage-bms/100a',
     title: '100A high-voltage BMS',
     text: 'Review the moderate-current BCU and BMU option and the system information required before selection.',
@@ -142,6 +157,11 @@ const technicalSearchPages = [
     text: 'Review higher-current control hardware, conductor and protection requirements, and supply boundaries.',
   },
   {
+    href: '/compare/100a-vs-200a-high-voltage-bms',
+    title: '100A vs 200A HV BMS',
+    text: 'Compare current classes from PCS power, pack voltage, cables, contactors, thermal design, and scope.',
+  },
+  {
     href: '/commercial-energy-storage/215kwh',
     title: '215kWh C&I ESS cabinet',
     text: 'Evaluate a 215.04kWh configuration for peak shaving, solar self-consumption, and selected backup loads.',
@@ -155,6 +175,11 @@ const technicalSearchPages = [
     href: '/europe/commercial-energy-storage-cabinet-europe',
     title: 'C&I ESS cabinet Europe',
     text: 'Prepare commercial cabinet capacity, PCS power, cooling, documentation, freight, and site inputs.',
+  },
+  {
+    href: '/compare/battery-kit-vs-ci-ess-cabinet',
+    title: 'Battery kit vs C&I cabinet',
+    text: 'Compare enclosure-kit buying with configured commercial ESS cabinet project scope and quotation needs.',
   },
   {
     href: '/europe/italy-lifepo4-battery-kit',

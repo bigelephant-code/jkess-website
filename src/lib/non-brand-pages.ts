@@ -1760,6 +1760,441 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
       },
     ],
   },
+  {
+    path: 'compare',
+    kind: 'category',
+    eyebrow: 'Battery storage comparison guides',
+    title: 'Battery Kit, BMS, and ESS Cabinet Comparison Guides',
+    description:
+      'Compare JKESS battery enclosure kits, 48V and 51.2V LiFePO4 platforms, rack and floor-standing formats, 100A and 200A high-voltage BMS options, and C&I cabinet project routes.',
+    intro:
+      'Comparison pages help buyers move from a general search to a practical purchase path. Use these guides to understand whether a project needs a 48V-class enclosure kit, a rack-mount battery kit, a high-voltage BMS control box, or a configured commercial energy storage cabinet.',
+    image: '/images/battery-kit-system.webp',
+    highlights: [
+      { label: 'Guide type', value: 'Procurement and engineering comparisons' },
+      { label: 'Main products', value: 'Battery kits, HV BMS, C&I ESS cabinets' },
+      { label: 'Buyer output', value: 'Clearer product and quote route' },
+      { label: 'Best use', value: 'Early selection before quotation' },
+    ],
+    sections: [
+      {
+        title: 'Use comparisons before requesting a quote',
+        paragraphs: [
+          'A buyer may search with a voltage, current, cabinet format, or application keyword without knowing the best product route. A comparison page helps separate mechanical fit, electrical architecture, delivery scope, and commercial quotation needs.',
+          'The goal is not to replace engineering review. It is to help customers send JKESS better project inputs, choose the right product page, and avoid treating an enclosure, a BMS control box, and a complete C&I cabinet as interchangeable items.',
+        ],
+      },
+      {
+        title: 'What these guides compare',
+        paragraphs: [
+          'The comparison cluster focuses on decisions that repeatedly affect JKESS inquiries.',
+        ],
+        bullets: [
+          '48V vs 51.2V wording for LiFePO4 battery enclosure projects.',
+          'Rack-mount 6U kits vs floor-standing caster enclosure kits.',
+          '100A vs 200A high-voltage BMS control hardware for ESS racks.',
+          'Battery enclosure kits vs configured C&I energy storage cabinets.',
+        ],
+      },
+      {
+        title: 'How to turn a comparison into a quote request',
+        paragraphs: [
+          'After choosing the likely route, provide voltage, capacity, current, quantity, compatible inverter or PCS, delivery country, site conditions, and required documentation. The written quotation remains the controlling commercial document.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing 51.2V LiFePO4 enclosure kit for residential and small commercial assembly projects.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount 51.2V LiFePO4 enclosure kit for compact modular battery installations.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: '100A and 200A BCU or BMU control boxes for high-voltage ESS rack projects.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial energy storage cabinet for project quotation review.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a comparison page determine final product compatibility?',
+        answer: 'No. It can guide the likely product route, but final compatibility depends on cells, inverter or PCS, wiring, protection design, site conditions, and commissioning settings.',
+      },
+      {
+        question: 'Should I request a quote after reading a comparison guide?',
+        answer: 'Yes, if the project involves multiple products, bulk quantity, EU delivery review, high-voltage BMS design, or configured C&I cabinet scope.',
+      },
+      {
+        question: 'What is the biggest mistake buyers make?',
+        answer: 'The common mistake is treating an enclosure kit, BMS control box, and complete ESS cabinet as the same supply scope. They solve different procurement problems.',
+      },
+    ],
+    related: [
+      {
+        href: '/compare/48v-vs-51-2v-lifepo4-battery',
+        label: '48V vs 51.2V LiFePO4 battery',
+        description: 'Understand common voltage wording before selecting a 16S enclosure kit.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        label: 'Rack vs floor-standing battery kit',
+        description: 'Compare cabinet installation and caster enclosure project requirements.',
+      },
+      {
+        href: '/compare/100a-vs-200a-high-voltage-bms',
+        label: '100A vs 200A high-voltage BMS',
+        description: 'Choose current class from PCS power, duty cycle, thermal design, and protection hardware.',
+      },
+      {
+        href: '/compare/battery-kit-vs-ci-ess-cabinet',
+        label: 'Battery kit vs C&I ESS cabinet',
+        description: 'Compare component-level enclosure buying with configured commercial cabinet projects.',
+      },
+    ],
+  },
+  {
+    path: 'compare/48v-vs-51-2v-lifepo4-battery',
+    kind: 'guide',
+    eyebrow: 'Voltage wording comparison',
+    title: '48V vs 51.2V LiFePO4 Battery: What Buyers Should Check',
+    description:
+      'Compare 48V and 51.2V LiFePO4 battery wording for enclosure projects, including 16S cell count, inverter voltage range, BMS settings, and quotation inputs.',
+    intro:
+      'Many LiFePO4 batteries sold into 48V-class solar storage projects are built as 16 cells in series with a 51.2V nominal voltage. The words 48V and 51.2V often point to the same voltage class, but buyers still need to confirm inverter limits, BMS settings, cell count, and enclosure fit before ordering.',
+    image: '/images/battery-kit-display.webp',
+    highlights: [
+      { label: 'Common wording', value: '48V class and 51.2V nominal' },
+      { label: 'Typical chemistry', value: '16S LiFePO4 battery architecture' },
+      { label: 'Main risk', value: 'Voltage label without inverter review' },
+      { label: 'Product route', value: 'Battery enclosure kit selection' },
+    ],
+    sections: [
+      {
+        title: 'Why both names appear in the market',
+        paragraphs: [
+          'Lead-acid systems historically used 48V wording, while LiFePO4 batteries are often described from their nominal cell voltage. A 16S LiFePO4 battery uses 16 cells at about 3.2V nominal each, which gives 51.2V nominal.',
+          'This does not mean every product or inverter setting is automatically compatible. Charge voltage, discharge cutoff, current limits, communication, and protection logic still need project review.',
+        ],
+      },
+      {
+        title: 'What to confirm before selecting an enclosure',
+        paragraphs: [
+          'The enclosure is only one part of the completed battery. Start with the actual cell model and inverter rather than the voltage phrase alone.',
+        ],
+        bullets: [
+          'Cell count, cell dimensions, terminal layout, busbar route, and compression method.',
+          'Inverter voltage window, charge voltage, low-voltage cutoff, and supported battery protocol.',
+          'BMS current rating, CAN or RS485 settings, cable pinout, and firmware profile.',
+          'Whether the project needs enclosure-only supply or the package including LCD and BMS hardware.',
+        ],
+      },
+      {
+        title: 'How this affects EU shipping requests',
+        paragraphs: [
+          'For EU delivery, the quote should state the selected enclosure format, quantity, delivery country, postal code, and whether cells or other components are excluded. This avoids confusion between a battery enclosure kit and a finished battery pack.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing enclosure kit for 48V-class and 51.2V nominal LiFePO4 assembly projects.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount 51.2V LiFePO4 enclosure kit for compact battery module projects.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is 48V the same as 51.2V for LiFePO4 batteries?',
+        answer: 'Often they refer to the same 16S LiFePO4 voltage class, but the inverter voltage window and BMS settings must still be confirmed.',
+      },
+      {
+        question: 'Can I choose an enclosure from voltage only?',
+        answer: 'No. Confirm cell model, dimensions, terminal position, BMS hardware, inverter protocol, and installation format before ordering.',
+      },
+      {
+        question: 'Do JKESS enclosure kits include battery cells?',
+        answer: 'No. Compatible LiFePO4 cells are not included unless a written quotation specifically says otherwise.',
+      },
+    ],
+    related: [
+      {
+        href: '/48v-lifepo4-battery-enclosure',
+        label: '48V LiFePO4 battery enclosure selection',
+        description: 'Plan enclosure fit, BMS protocol, inverter matching, and installation format.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        label: 'Rack vs floor-standing battery kit',
+        description: 'Compare 6U rack installation with a caster enclosure format.',
+      },
+    ],
+  },
+  {
+    path: 'compare/rack-vs-floor-standing-battery-kit',
+    kind: 'guide',
+    eyebrow: 'Battery enclosure format comparison',
+    title: 'Rack Battery Kit vs Floor-Standing Battery Kit',
+    description:
+      'Compare rack-mount 6U battery kits and floor-standing caster battery kits by installation space, service access, airflow, cable routing, movement, and EU shipping requirements.',
+    intro:
+      'A rack battery kit and a floor-standing battery kit can both support 51.2V LiFePO4 assembly projects, but they solve different installation problems. The best choice depends on cabinet availability, floor space, service access, airflow, cable route, quantity, and how the completed battery will be maintained.',
+    image: '/images/6u-kit/2.webp',
+    highlights: [
+      { label: 'Rack format', value: '6U, 19-inch cabinet installation' },
+      { label: 'Floor format', value: 'Caster enclosure for movable placement' },
+      { label: 'Main decision', value: 'Room layout and service strategy' },
+      { label: 'Shared check', value: 'Cells, BMS, inverter, delivery scope' },
+    ],
+    sections: [
+      {
+        title: 'When a rack kit can be the better route',
+        paragraphs: [
+          'A 6U rack kit can fit projects where the site already has a suitable 19-inch cabinet, controlled airflow, front service access, and a plan for multiple modular battery units.',
+          'Rack width alone is not enough. Cabinet depth, rail position, load rating, cable bend radius, breaker location, and service clearance must all be confirmed.',
+        ],
+      },
+      {
+        title: 'When a floor-standing caster kit can be better',
+        paragraphs: [
+          'A floor-standing caster enclosure can suit rooms where movement, direct floor access, and simple positioning are more important than rack modularity. It can also reduce the need for a separate rack cabinet in some small projects.',
+        ],
+        bullets: [
+          'Use rack format when cabinet infrastructure, module stacking, and front service are already planned.',
+          'Use floor-standing format when movement, floor placement, and direct access are more practical.',
+          'Check total assembled weight, floor loading, cable route, and ventilation in both cases.',
+          'Confirm cells, BMS, LCD, inverter protocol, and included hardware before purchase.',
+        ],
+      },
+      {
+        title: 'Shipping and quotation differences',
+        paragraphs: [
+          'Rack kits and floor-standing kits may have different packaging, handling, and quantity considerations. For EU delivery, provide product option, quantity, delivery postal code, address type, and unloading constraints before payment.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount enclosure kit for 19-inch cabinet LiFePO4 battery projects.',
+      },
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing movable enclosure kit for 51.2V LiFePO4 battery assembly.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a rack battery kit always easier to expand?',
+        answer: 'Not always. Rack systems can support modular planning, but expansion still depends on BMS addressing, inverter limits, breaker sizing, cabling, current sharing, and rack capacity.',
+      },
+      {
+        question: 'Does a floor-standing kit require less engineering?',
+        answer: 'No. It may simplify placement, but the completed battery still needs correct cell fit, BMS settings, protection, wiring, inverter communication, and commissioning.',
+      },
+      {
+        question: 'Which format is better for EU delivery?',
+        answer: 'That depends on quantity, packaging, destination, unloading conditions, and delivery address type. Use the quote form for bulk or project shipments.',
+      },
+    ],
+    related: [
+      {
+        href: '/rack-battery-enclosures',
+        label: '6U rack battery enclosures',
+        description: 'Plan 19-inch rack depth, airflow, service clearance, and module expansion.',
+      },
+      {
+        href: '/battery-enclosures',
+        label: 'LiFePO4 battery enclosures',
+        description: 'Compare floor-standing and rack battery enclosure options.',
+      },
+    ],
+  },
+  {
+    path: 'compare/100a-vs-200a-high-voltage-bms',
+    kind: 'guide',
+    eyebrow: 'High-voltage BMS current comparison',
+    title: '100A vs 200A High-Voltage BMS: Selection Inputs',
+    description:
+      'Compare 100A and 200A high-voltage BMS control hardware by PCS power, pack voltage, current rating, contactors, busbars, cables, thermal design, and quotation scope.',
+    intro:
+      'The choice between 100A and 200A high-voltage BMS hardware should come from the complete ESS rack design, not from a desire for the largest number. PCS power, pack voltage, current profile, thermal design, conductors, contactors, fuses, and protection logic all affect the correct selection.',
+    image: '/images/hv-kit/1.jpg',
+    highlights: [
+      { label: 'Options compared', value: '100A and 200A HV BMS hardware' },
+      { label: 'Product scope', value: 'Selected BCU or BMU control box' },
+      { label: 'Main input', value: 'PCS power and current profile' },
+      { label: 'Key warning', value: 'Current class is not complete system power' },
+    ],
+    sections: [
+      {
+        title: 'When 100A may be sufficient',
+        paragraphs: [
+          'A 100A control architecture may suit moderate-current commercial battery racks where the PCS power, pack voltage, cable design, contactor selection, thermal conditions, and duty cycle are consistent with that current class.',
+          'It can be the more appropriate choice when the system does not need the added conductor, protection, and thermal requirements of a higher-current architecture.',
+        ],
+      },
+      {
+        title: 'When 200A may be required',
+        paragraphs: [
+          'A 200A option may be considered when PCS power, rack voltage, charge or discharge rate, or short-duration duty cycle requires a higher current path. The rest of the system must also be designed for the higher current.',
+        ],
+        bullets: [
+          'Check busbar, cable, connector, fuse, breaker, contactor, and current-sensor ratings.',
+          'Check heat generation, enclosure temperature, cooling path, and operating duty cycle.',
+          'Check PCS limits, pre-charge design, insulation monitoring, interlock, and protection thresholds.',
+          'Confirm whether the order needs a master control box, slave control box, or a project-specific combination.',
+        ],
+      },
+      {
+        title: 'What the listed product includes',
+        paragraphs: [
+          'The High Voltage Kit listing covers the selected 100A or 200A BCU master control box or BMU slave control box. Battery cells, modules, racks, high-voltage harnesses, contactors, PCS, EMS, installation, and commissioning are excluded unless separately quoted.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: '100A and 200A BCU or BMU control-box options for engineered high-voltage ESS racks.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet route when the buyer needs a broader integrated system quotation.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is the 200A BMS automatically better than 100A?',
+        answer: 'No. Higher current is only useful when the complete rack design, conductors, contactors, thermal path, PCS, and protection system are designed for it.',
+      },
+      {
+        question: 'Does the 100A or 200A option include all BMUs?',
+        answer: 'No. Each listed variant is one selected control box. Required quantities depend on the rack topology and final system design.',
+      },
+      {
+        question: 'Can JKESS review which current class fits my project?',
+        answer: 'Yes. Send voltage range, PCS power, current profile, module count, protection design, and communication requirements for review.',
+      },
+    ],
+    related: [
+      {
+        href: '/high-voltage-bms/100a',
+        label: '100A high-voltage BMS option',
+        description: 'Review moderate-current BCU and BMU selection inputs.',
+      },
+      {
+        href: '/high-voltage-bms/200a',
+        label: '200A high-voltage BMS option',
+        description: 'Review higher-current control hardware and system boundaries.',
+      },
+    ],
+  },
+  {
+    path: 'compare/battery-kit-vs-ci-ess-cabinet',
+    kind: 'guide',
+    eyebrow: 'Product scope comparison',
+    title: 'Battery Kit vs C&I ESS Cabinet: Which Route Fits the Project?',
+    description:
+      'Compare a LiFePO4 battery enclosure kit with a configured C&I ESS cabinet by supply scope, engineering responsibility, capacity, PCS integration, cooling, safety, and quotation needs.',
+    intro:
+      'A battery kit and a C&I ESS cabinet are not different sizes of the same product. A battery kit is an enclosure and selected integration-hardware route for building a battery from separately sourced cells. A C&I ESS cabinet is a configured project product that can include battery modules, BMS, PCS, EMS, cooling, fire protection, monitoring, and documentation when quoted.',
+    image: '/images/tness-ci-ess/main-1.webp',
+    highlights: [
+      { label: 'Battery kit route', value: 'Component-level enclosure purchase' },
+      { label: 'Cabinet route', value: 'Configured commercial ESS project' },
+      { label: 'Main difference', value: 'Supply scope and engineering responsibility' },
+      { label: 'Quotation need', value: 'Essential for C&I cabinet projects' },
+    ],
+    sections: [
+      {
+        title: 'Choose a battery kit when the project owns integration',
+        paragraphs: [
+          'A battery kit can make sense when the buyer or installer already controls the cell selection, BMS configuration, inverter matching, protection design, assembly, testing, and commissioning process.',
+          'The kit helps define the mechanical enclosure and selected hardware scope, but it does not automatically include cells, inverter, site installation, or a complete energy storage system.',
+        ],
+      },
+      {
+        title: 'Choose a C&I cabinet when the project needs system scope',
+        paragraphs: [
+          'A C&I cabinet route is more appropriate when the project needs coordinated battery modules, BMS, PCS, EMS, cooling, enclosure, fire protection, monitoring, factory testing, and documentation.',
+        ],
+        bullets: [
+          'Use battery kits for residential, rack, demo, or small commercial assembly projects with known cells and electronics.',
+          'Use C&I cabinets for peak shaving, backup, solar self-consumption, and commercial sites needing a configured system.',
+          'Request cabinet quotation with load profile, capacity target, AC power, site conditions, grid data, and delivery scope.',
+          'Confirm whether freight, duty, tax, installation, commissioning, and training are included or excluded.',
+        ],
+      },
+      {
+        title: 'How to avoid scope confusion',
+        paragraphs: [
+          'Before comparing prices, compare the included items. A low-cost enclosure kit and a configured ESS cabinet serve different procurement responsibilities. The signed written quotation should define the final scope for any project beyond simple product purchase.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Enclosure and selected hardware route for floor-standing 51.2V LiFePO4 assembly projects.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount enclosure route for compact LiFePO4 battery module assembly.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial ESS cabinet route for project quotation review.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a battery kit a complete energy storage system?',
+        answer: 'No. It is an enclosure and selected hardware package. Cells, inverter, protection equipment, assembly, installation, and commissioning are separate unless quoted.',
+      },
+      {
+        question: 'Why does the C&I ESS cabinet require a quote?',
+        answer: 'The final capacity, PCS power, cooling, fire protection, monitoring, documentation, freight, and services vary by project and must be confirmed in writing.',
+      },
+      {
+        question: 'Can one project use both routes?',
+        answer: 'Yes. Some buyers purchase low-voltage kits for smaller systems and request a configured C&I cabinet for commercial sites, but the scope should be separated clearly.',
+      },
+    ],
+    related: [
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Plan capacity, PCS power, cooling, safety documentation, and logistics.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        label: 'Rack vs floor-standing battery kit',
+        description: 'Compare two low-voltage enclosure routes before considering C&I cabinets.',
+      },
+    ],
+  },
 ]
 
 export function getNonBrandLandingPage(path: string) {

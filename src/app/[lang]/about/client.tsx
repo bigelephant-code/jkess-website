@@ -5,6 +5,7 @@ import AboutSection from '@/components/AboutSection'
 import TeamSlideshow from '@/components/TeamSlideshow'
 import DynamicGlobe from '@/components/DynamicGlobe'
 import PageFaqSection from '@/components/PageFaqSection'
+import GlobalDealerRecruitment from '@/components/GlobalDealerRecruitment'
 import { Reveal } from '@/components/ScrollReveal'
 import { useTranslate } from '@/i18n/client'
 import { pageFaqs } from '@/lib/page-faqs'
@@ -91,6 +92,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <GlobalDealerRecruitment />
 
       <section className="bg-gradient-to-br from-gray-50 via-white to-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-6">

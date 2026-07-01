@@ -103,7 +103,7 @@ export default function GlobalDealerRecruitment() {
             </div>
             <Link
               href={contactHref}
-              onClick={() => trackEvent('dealer_contact_page_click', { context: 'home_dealer_section' })}
+              onClick={() => trackEvent('dealer_contact_page_click', { context: 'about_dealer_section' })}
               className="mt-4 inline-flex w-full items-center justify-center gap-2 border border-green-200 bg-green-50 px-5 py-3 text-sm font-bold text-green-800 transition hover:border-green-500 hover:bg-green-100"
             >
               {t('dealerRecruitment.contactPage', 'Send a partnership inquiry')} <ArrowRight size={16} />

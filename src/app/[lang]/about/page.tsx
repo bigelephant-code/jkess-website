@@ -11,7 +11,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
       path: '/about',
       title: 'About JKESS | JKBMS Energy Storage Manufacturer',
       description:
-        'The JKESS team began in 2017, JKBMS was established in 2023, and the JKESS brand launched in 2024. Learn about our 70,000 m² factory, 700+ employees, 100+ R&D team, and 2.1 GWh annual capacity.',
+        'The JKESS team began in 2017, JKBMS was established in 2023, and the JKESS brand launched in 2024. Learn about our factory scale, global warehouses, R&D team, and distributor partnership opportunities.',
       keywords: [
         'about JKESS',
         'JKBMS manufacturer',
@@ -20,6 +20,9 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         'battery storage company',
         '70,000 square meter battery factory',
         '2.1 GWh production capacity',
+        'battery storage distributor',
+        'energy storage agent recruitment',
+        'global battery storage partner',
       ],
       image: '/images/company-building.webp',
     })

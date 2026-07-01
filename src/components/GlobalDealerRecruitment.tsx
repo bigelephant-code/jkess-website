@@ -1,7 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, BadgeCheck, Globe2, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Copy, Globe2, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useI18n, useTranslate } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
@@ -21,12 +22,23 @@ const partnerProfiles = [
   'Local service and installation partners',
 ]
 
+const partnerEmail = 'zhou@jkess.com'
+const emailSubject = 'JKESS Global Distributor Application'
+
 export default function GlobalDealerRecruitment() {
   const t = useTranslate()
   const { lang } = useI18n()
   const shouldReduceMotion = useReducedMotion()
+  const [copiedEmail, setCopiedEmail] = useState(false)
   const contactHref = localizedPath(lang, '/contact')
-  const emailHref = 'mailto:zhou@jkess.com?subject=JKESS%20Global%20Distributor%20Application&body=Company%20name%3A%0ACountry%20%2F%20region%3A%0AWebsite%3A%0AMain%20business%3A%0AInterested%20product%20lines%3A%0AExpected%20annual%20volume%3A%0AMessage%3A'
+  const emailHref = `mailto:${partnerEmail}?subject=${encodeURIComponent(emailSubject)}`
+
+  const copyEmail = async () => {
+    await navigator.clipboard.writeText(partnerEmail)
+    setCopiedEmail(true)
+    window.setTimeout(() => setCopiedEmail(false), 1800)
+    trackEvent('dealer_email_copy', { context: 'about_dealer_section' })
+  }
 
   return (
     <section className="relative py-16 md:py-24">
@@ -65,6 +77,20 @@ export default function GlobalDealerRecruitment() {
               >
                 <MessageCircle size={17} /> {t('dealerRecruitment.whatsapp', 'Talk on WhatsApp')}
               </a>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+              <span>{partnerEmail}</span>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="inline-flex items-center gap-1.5 font-semibold text-gray-800 transition hover:text-green-700"
+                aria-label="Copy distributor application email address"
+              >
+                <Copy size={15} />
+                {copiedEmail
+                  ? t('dealerRecruitment.copiedEmail', 'Email copied')
+                  : t('dealerRecruitment.copyEmail', 'Copy email')}
+              </button>
             </div>
           </motion.div>
 

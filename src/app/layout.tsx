@@ -24,6 +24,9 @@ const inter = Inter({
   preload: true,
 })
 
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION || process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+const bingSiteVerification = process.env.BING_SITE_VERIFICATION || process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -158,6 +161,12 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
+        {googleSiteVerification && (
+          <meta name="google-site-verification" content={googleSiteVerification} />
+        )}
+        {bingSiteVerification && (
+          <meta name="msvalidate.01" content={bingSiteVerification} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLd(siteJsonLd) }}

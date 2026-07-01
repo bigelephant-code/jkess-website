@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
+import { navigationGroups } from '@/lib/navigation-menu'
 import {
   jkessMerchantReturnPolicy,
   jkessMerchantShippingPolicy,
@@ -98,6 +99,29 @@ const websiteJsonLd = {
   },
 }
 
+let navigationPosition = 0
+const siteNavigationJsonLd = navigationGroups.flatMap((group) => {
+  const groupItem = group.href
+    ? [{
+        '@type': 'SiteNavigationElement',
+        position: ++navigationPosition,
+        name: group.label,
+        description: group.description,
+        url: absoluteUrl(group.href),
+      }]
+    : []
+
+  const childItems = (group.items || []).map((item) => ({
+    '@type': 'SiteNavigationElement',
+    position: ++navigationPosition,
+    name: item.label,
+    description: item.description,
+    url: absoluteUrl(item.href),
+  }))
+
+  return [...groupItem, ...childItems]
+})
+
 const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -105,6 +129,7 @@ const siteJsonLd = {
     jkessMerchantShippingPolicy,
     jkessMerchantReturnPolicy,
     websiteJsonLd,
+    ...siteNavigationJsonLd,
   ],
 }
 

@@ -14,6 +14,17 @@ import {
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
 
+function specificationKeywords(page: NonBrandLandingPage) {
+  return Array.from(new Set([
+    page.title,
+    page.eyebrow,
+    ...page.highlights.map((highlight) => highlight.value),
+    ...page.products.map((product) => product.label),
+    ...page.related.map((link) => link.label),
+    ...page.faqs.slice(0, 2).map((faq) => faq.question),
+  ])).slice(0, 14)
+}
+
 export function buildSpecificationMetadata(page: NonBrandLandingPage, lang: string): Metadata {
   const path = `/${page.path}`
   const canonical = absoluteUrl(canonicalSeoPath(lang, path, defaultIndexableSeoLocales))
@@ -22,6 +33,7 @@ export function buildSpecificationMetadata(page: NonBrandLandingPage, lang: stri
   return {
     title: `${page.title} | JKESS`,
     description: page.description,
+    keywords: specificationKeywords(page),
     alternates: {
       canonical,
       languages: pageLanguageAlternates(path, defaultIndexableSeoLocales),
@@ -86,6 +98,16 @@ function specificationJsonLd(page: NonBrandLandingPage, lang: string) {
       }
     })
     .filter(Boolean)
+  const relatedPageItems = page.related.map((link, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'WebPage',
+      name: link.label,
+      description: link.description,
+      url: absoluteUrl(canonicalSeoPath(lang, link.href)),
+    },
+  }))
 
   return jsonLd({
     '@context': 'https://schema.org',
@@ -116,6 +138,11 @@ function specificationJsonLd(page: NonBrandLandingPage, lang: string) {
         '@type': 'ItemList',
         name: `Relevant products for ${page.title}`,
         itemListElement: productItems,
+      },
+      {
+        '@type': 'ItemList',
+        name: `Related specifications for ${page.title}`,
+        itemListElement: relatedPageItems,
       },
       {
         '@type': 'FAQPage',

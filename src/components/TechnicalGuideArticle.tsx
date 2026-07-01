@@ -14,6 +14,16 @@ import {
   pageLanguageAlternates,
 } from '@/lib/seo'
 
+function guideKeywords(guide: TechnicalGuide) {
+  return Array.from(new Set([
+    guide.title,
+    guide.eyebrow,
+    ...guide.sections.slice(0, 3).map((section) => section.title),
+    ...guide.takeaways.slice(0, 3),
+    ...guide.relatedLinks.map((item) => item.label),
+  ])).slice(0, 14)
+}
+
 export function buildTechnicalGuideMetadata(guide: TechnicalGuide, lang: string): Metadata {
   const path = `/guides/${guide.slug}`
   const canonical = absoluteUrl(canonicalSeoPath(lang, path, defaultIndexableSeoLocales))
@@ -22,6 +32,7 @@ export function buildTechnicalGuideMetadata(guide: TechnicalGuide, lang: string)
   return {
     title: `${guide.title} | JKESS Technical Guide`,
     description: guide.description,
+    keywords: guideKeywords(guide),
     alternates: {
       canonical,
       languages: pageLanguageAlternates(path, defaultIndexableSeoLocales),
@@ -63,6 +74,36 @@ function guideJsonLd(guide: TechnicalGuide, lang: string) {
   const path = `/guides/${guide.slug}`
   const url = absoluteUrl(canonicalSeoPath(lang, path))
   const technicalGuidesUrl = absoluteUrl(canonicalSeoPath(lang, '/news'))
+  const productItems = guide.relatedProducts
+    .map((slug, index) => {
+      const product = getProductBySlug(slug)
+      if (!product) return null
+
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Product',
+          name: product.name,
+          description: product.tagline,
+          image: product.images[0] ? absoluteUrl(product.images[0]) : undefined,
+          url: absoluteUrl(canonicalSeoPath(lang, `/products/${product.slug}`)),
+          brand: { '@type': 'Brand', name: 'JKESS' },
+          manufacturer: { '@id': organizationId },
+        },
+      }
+    })
+    .filter(Boolean)
+  const relatedPageItems = guide.relatedLinks.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'WebPage',
+      name: item.label,
+      url: absoluteUrl(canonicalSeoPath(lang, item.href)),
+    },
+  }))
+
   return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
@@ -88,6 +129,16 @@ function guideJsonLd(guide: TechnicalGuide, lang: string) {
           { '@type': 'ListItem', position: 2, name: 'Technical Guides', item: technicalGuidesUrl },
           { '@type': 'ListItem', position: 3, name: guide.title, item: url },
         ],
+      },
+      {
+        '@type': 'ItemList',
+        name: `Related products for ${guide.title}`,
+        itemListElement: productItems,
+      },
+      {
+        '@type': 'ItemList',
+        name: `Continue reading after ${guide.title}`,
+        itemListElement: relatedPageItems,
       },
     ],
   })

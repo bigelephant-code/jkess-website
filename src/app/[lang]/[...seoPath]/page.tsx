@@ -65,6 +65,17 @@ function breadcrumbItems(page: NonBrandLandingPage, lang: string) {
   return items
 }
 
+function pageKeywords(page: NonBrandLandingPage) {
+  return Array.from(new Set([
+    page.title,
+    page.eyebrow,
+    ...page.highlights.map((highlight) => highlight.value),
+    ...page.products.map((product) => product.label),
+    ...page.related.map((link) => link.label),
+    ...page.faqs.slice(0, 2).map((faq) => faq.question),
+  ])).slice(0, 14)
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang, seoPath } = await params
   const page = getNonBrandLandingPage(pagePath(seoPath))
@@ -77,6 +88,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${page.title} | JKESS`,
     description: page.description,
+    keywords: pageKeywords(page),
     alternates: {
       canonical,
       languages: pageLanguageAlternates(path, defaultIndexableSeoLocales),
@@ -159,6 +171,16 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
       }
     })
     .filter(Boolean)
+  const relatedPageItems = page.related.map((link, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'WebPage',
+      name: link.label,
+      description: link.description,
+      url: absoluteUrl(canonicalSeoPath(lang, link.href)),
+    },
+  }))
 
   return jsonLd({
     '@context': 'https://schema.org',
@@ -172,6 +194,11 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
         '@type': 'ItemList',
         name: `Relevant products for ${page.title}`,
         itemListElement: productItems,
+      },
+      {
+        '@type': 'ItemList',
+        name: `Related technical pages for ${page.title}`,
+        itemListElement: relatedPageItems,
       },
       {
         '@type': 'FAQPage',

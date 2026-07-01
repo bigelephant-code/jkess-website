@@ -147,6 +147,9 @@ export const jkessOrganization = {
     'LiFePO4 battery enclosure kits',
     'High-voltage battery management systems',
     'Commercial and industrial energy storage cabinets',
+    'EU warehouse battery kit shipping',
+    'Commercial energy storage cabinet project review',
+    'Global energy storage distributor cooperation',
   ],
   areaServed: [
     'European Union direct checkout',
@@ -158,6 +161,37 @@ export const jkessOrganization = {
   ],
   hasMerchantReturnPolicy: {
     '@id': merchantReturnPolicyId,
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'JKESS battery storage products and cooperation programs',
+    itemListElement: [
+      {
+        '@type': 'OfferCatalog',
+        name: 'LiFePO4 battery enclosure kits',
+        url: absoluteUrl('/battery-enclosures'),
+      },
+      {
+        '@type': 'OfferCatalog',
+        name: 'High-voltage BMS hardware',
+        url: absoluteUrl('/high-voltage-bms'),
+      },
+      {
+        '@type': 'OfferCatalog',
+        name: 'Commercial energy storage cabinets',
+        url: absoluteUrl('/commercial-energy-storage'),
+      },
+      {
+        '@type': 'OfferCatalog',
+        name: 'Global distributor and local partner cooperation',
+        url: absoluteUrl('/about'),
+      },
+      {
+        '@type': 'OfferCatalog',
+        name: 'Product, bulk purchase, and shipping quote review',
+        url: absoluteUrl('/shipping-quote'),
+      },
+    ],
   },
   address: {
     '@type': 'PostalAddress',

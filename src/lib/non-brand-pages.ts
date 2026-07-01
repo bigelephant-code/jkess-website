@@ -955,6 +955,26 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
     ],
     related: [
       {
+        href: '/europe/eu-warehouse-battery-kit',
+        label: 'EU warehouse battery kit checklist',
+        description: 'Prepare delivery country, postal code, quantity, kit option, and freight review details.',
+      },
+      {
+        href: '/europe/lifepo4-battery-kit-europe',
+        label: 'LiFePO4 battery kit Europe',
+        description: 'Compare caster and 6U rack LiFePO4 battery kit options for European buyers.',
+      },
+      {
+        href: '/europe/48v-battery-enclosure-eu-shipping',
+        label: '48V battery enclosure EU shipping',
+        description: 'Confirm enclosure fit, BMS option, inverter protocol, and European delivery details.',
+      },
+      {
+        href: '/europe/commercial-energy-storage-cabinet-europe',
+        label: 'Commercial energy storage cabinet Europe',
+        description: 'Prepare C&I cabinet capacity, PCS power, cooling, documentation, and delivery scope.',
+      },
+      {
         href: '/europe/germany-lifepo4-battery-kit',
         label: 'Germany LiFePO4 battery kits',
         description: 'Prepare German battery kit, EU shipping, and C&I cabinet quotation inputs.',
@@ -1410,6 +1430,333 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
         href: '/commercial-energy-storage',
         label: 'Commercial energy storage overview',
         description: 'Compare C&I cabinet capacity, power, cooling, and final supply scope.',
+      },
+    ],
+  },
+  {
+    path: 'europe/eu-warehouse-battery-kit',
+    kind: 'solution',
+    eyebrow: 'EU warehouse battery kit search',
+    title: 'EU Warehouse Battery Kit Buying Checklist',
+    description:
+      'Use this EU warehouse battery kit checklist to prepare LiFePO4 battery enclosure, 6U rack kit, delivery country, quantity, inverter compatibility, and shipping quotation details.',
+    intro:
+      'Buyers searching for an EU warehouse battery kit usually want fast delivery, clear landed cost, and a battery enclosure that fits the planned cells and inverter. This page explains what to confirm before requesting a JKESS battery kit or rack kit quotation for European delivery.',
+    image: '/images/battery-kit-hero.webp',
+    highlights: [
+      { label: 'Search intent', value: 'EU warehouse battery kit' },
+      { label: 'Best fit', value: '48V / 51.2V LiFePO4 enclosure kits' },
+      { label: 'Buyer check', value: 'Country, postal code, quantity, unloading' },
+      { label: 'Next step', value: 'Direct checkout or written quote' },
+    ],
+    sections: [
+      {
+        title: 'What EU warehouse buyers normally need to confirm',
+        paragraphs: [
+          'Warehouse availability and delivery speed are only part of the buying decision. A battery kit still has to match the cell model, BMS option, inverter protocol, installation format, cable layout, and delivery conditions.',
+          'For JKESS, the Battery Kit With Caster and 6U Battery Kit are enclosure and integration-hardware products. Compatible cells and site-side equipment are outside the standard scope unless a written quotation confirms otherwise.',
+        ],
+      },
+      {
+        title: 'Information that makes an EU quote faster',
+        paragraphs: [
+          'A short, complete request helps JKESS confirm whether a direct checkout path is suitable or whether the shipment needs manual freight review.',
+        ],
+        bullets: [
+          'Delivery country, city, postal code, delivery address type, and unloading constraints.',
+          'Product option, required quantity, expected delivery window, and whether the order is for resale or a project.',
+          'Cell model, inverter model, CAN or RS485 requirement, and whether LCD plus BMS hardware is needed.',
+          'Any documentation, OEM label, packing, pallet, or repeated-project requirements.',
+        ],
+      },
+      {
+        title: 'When to use the quotation form instead of checkout',
+        paragraphs: [
+          'Use the quote form when the order has multiple products, larger quantities, remote or restricted delivery, OEM requirements, or any condition that can affect freight, lead time, or final included scope.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Movable 51.2V LiFePO4 battery enclosure kit for European buyers comparing EU delivery options.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount battery enclosure kit for EU projects using 19-inch cabinets and modular battery rooms.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does EU warehouse availability guarantee the kit fits my cells?',
+        answer: 'No. Shipping availability and mechanical compatibility are separate questions. Confirm cell dimensions, terminal layout, BMS option, and inverter communication before ordering.',
+      },
+      {
+        question: 'Should I request a quote for several battery kits?',
+        answer: 'Yes. Larger quantities may require freight, pallet, delivery, and volume pricing review before payment.',
+      },
+      {
+        question: 'Are batteries or cells included in the enclosure kit?',
+        answer: 'No. JKESS battery kits list the enclosure and selected hardware scope. Cells are separate unless the written quotation says otherwise.',
+      },
+    ],
+    related: [
+      {
+        href: '/europe',
+        label: 'Europe battery storage hub',
+        description: 'Navigate EU battery kit, country page, 48V enclosure, and C&I ESS quotation paths.',
+      },
+      {
+        href: '/europe/48v-battery-enclosure-eu-shipping',
+        label: '48V battery enclosure EU shipping',
+        description: 'Review delivery and compatibility details for 48V-class enclosure projects.',
+      },
+    ],
+  },
+  {
+    path: 'europe/lifepo4-battery-kit-europe',
+    kind: 'solution',
+    eyebrow: 'LiFePO4 battery kit Europe',
+    title: 'LiFePO4 Battery Kit Europe Selection Guide',
+    description:
+      'Compare LiFePO4 battery kit Europe options, including 48V caster enclosures, 6U rack battery kits, BMS and LCD options, inverter communication, and EU shipping review.',
+    intro:
+      'A European buyer searching for a LiFePO4 battery kit may need a movable 51.2V enclosure, a 6U rack battery kit, or a project quotation that combines several products. The right JKESS option depends on installation format, cell dimensions, electronics scope, inverter communication, and delivery country.',
+    image: '/images/6u-kit/1.webp',
+    highlights: [
+      { label: 'Core keyword', value: 'LiFePO4 battery kit Europe' },
+      { label: 'Voltage class', value: '48V / 51.2V battery projects' },
+      { label: 'Formats', value: 'Caster enclosure and 6U rack kit' },
+      { label: 'Critical check', value: 'Cells, BMS, inverter, delivery scope' },
+    ],
+    sections: [
+      {
+        title: 'Choose by installation format first',
+        paragraphs: [
+          'Floor-standing projects may prefer a caster enclosure because it improves movement and access during positioning. Rack-based projects may prefer a 6U kit when the site already has a 19-inch cabinet, planned airflow, service clearance, and front cable routing.',
+          'Both choices require confirmation of cell fit, communication protocol, breaker and cable layout, and the exact included hardware package.',
+        ],
+      },
+      {
+        title: 'Confirm the electrical and communication boundary',
+        paragraphs: [
+          'A LiFePO4 kit can look mechanically correct but still fail project expectations if the BMS, inverter, and commissioning settings are not aligned.',
+        ],
+        bullets: [
+          'Confirm inverter brand, model, firmware, CAN or RS485 profile, baud rate, and pinout.',
+          'Confirm required BMS and LCD package or enclosure-only supply.',
+          'Confirm cell model, nominal capacity, dimensions, terminal position, and busbar layout.',
+          'Confirm country-specific delivery, documentation, warranty, and after-sales support expectations.',
+        ],
+      },
+      {
+        title: 'Use country pages for local delivery preparation',
+        paragraphs: [
+          'Germany, France, Italy, the Netherlands, and Poland have dedicated JKESS pages that translate the same kit-selection workflow into country-focused delivery and quotation checklists.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Movable LiFePO4 battery kit format for European residential and small commercial storage assembly.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount LiFePO4 battery kit for compact modular energy storage installations.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Which JKESS kit is better for a European home battery project?',
+        answer: 'Use the caster kit when floor placement and movement matter. Use the 6U kit when the battery will be installed in a suitable 19-inch rack with enough depth, airflow, and service access.',
+      },
+      {
+        question: 'Does JKESS confirm inverter compatibility?',
+        answer: 'JKESS can review the inverter model, protocol, firmware, pinout, voltage range, and selected BMS option before purchase.',
+      },
+      {
+        question: 'Can one Europe quote include several kit types?',
+        answer: 'Yes. Use the quote form for multi-product or volume requests so quantity, freight, and delivery conditions can be reviewed together.',
+      },
+    ],
+    related: [
+      {
+        href: '/battery-enclosures',
+        label: 'LiFePO4 battery enclosures',
+        description: 'Compare enclosure scope, cell fit, installation format, and included hardware.',
+      },
+      {
+        href: '/europe/eu-warehouse-battery-kit',
+        label: 'EU warehouse battery kit checklist',
+        description: 'Prepare delivery, quantity, postal code, and freight review details for EU orders.',
+      },
+    ],
+  },
+  {
+    path: 'europe/commercial-energy-storage-cabinet-europe',
+    kind: 'solution',
+    eyebrow: 'Commercial ESS cabinet Europe',
+    title: 'Commercial Energy Storage Cabinet Europe Quotation Guide',
+    description:
+      'Prepare a commercial energy storage cabinet Europe quotation by defining capacity, PCS power, cooling method, site conditions, documentation, delivery country, and installation scope.',
+    intro:
+      'Commercial energy storage cabinet Europe searches usually come from project owners, EPCs, distributors, or integrators who need more than a web price. A C&I ESS cabinet must be quoted from the project capacity, power, thermal design, site conditions, delivery route, and final scope of supply.',
+    image: '/images/tness-ci-ess/main-1.webp',
+    highlights: [
+      { label: 'Core keyword', value: 'Commercial energy storage cabinet Europe' },
+      { label: 'Capacity family', value: '64.3kWh to 261kWh configurations' },
+      { label: 'Power range', value: '30kW to 125kW AC project classes' },
+      { label: 'Sales path', value: 'Written project quotation' },
+    ],
+    sections: [
+      {
+        title: 'Why C&I cabinets need quotation review',
+        paragraphs: [
+          'A commercial battery cabinet cannot be selected by kWh alone. Usable capacity, PCS power, cooling method, duty cycle, peak shaving target, backup duration, monitoring, fire protection, and grid requirements all affect the final system.',
+          'The JKESS C&I cabinet product is quoted because the final included equipment and services must be defined in writing before production and delivery.',
+        ],
+      },
+      {
+        title: 'European project inputs to prepare',
+        paragraphs: [
+          'A complete project request helps JKESS review the cabinet configuration, delivery feasibility, and commercial scope.',
+        ],
+        bullets: [
+          'Delivery country, site city, unloading access, installation location, ambient temperature, and available footprint.',
+          'Target capacity, AC power, PV input if applicable, backup duration, load profile, and operating objective.',
+          'Cooling preference, fire-protection needs, monitoring protocol, EMS requirements, and grid connection information.',
+          'Documentation, warranty, installation, commissioning, training, freight, duty, tax, and Incoterm expectations.',
+        ],
+      },
+      {
+        title: 'Compare cabinet and component-only routes',
+        paragraphs: [
+          'A configured cabinet suits buyers who want coordinated battery modules, BMS, PCS, EMS, cooling, enclosure, monitoring, and documentation. Component-only purchases may suit integrators who already own system engineering, certification, and commissioning responsibility.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial and industrial energy storage cabinet for European project quotation review.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BCU and BMU control hardware for integrators building their own high-voltage ESS racks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a commercial energy storage cabinet be purchased directly online?',
+        answer: 'No. C&I cabinets require quotation review because capacity, PCS power, cooling, documentation, freight, installation boundary, and site conditions vary by project.',
+      },
+      {
+        question: 'What should European C&I buyers include in the first request?',
+        answer: 'Include capacity, AC power, use case, site country, delivery city, ambient conditions, grid details, cooling preference, documentation needs, and installation scope.',
+      },
+      {
+        question: 'Does the quotation include freight and installation?',
+        answer: 'Only if those items are explicitly listed. The signed quotation controls freight, tax, duty, installation, commissioning, and training scope.',
+      },
+    ],
+    related: [
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Review capacity, PCS power, cooling, logistics, and project scope inputs.',
+      },
+      {
+        href: '/europe',
+        label: 'Europe battery storage hub',
+        description: 'Navigate battery kit, high-voltage BMS, C&I cabinet, and country pages.',
+      },
+    ],
+  },
+  {
+    path: 'europe/48v-battery-enclosure-eu-shipping',
+    kind: 'solution',
+    eyebrow: '48V enclosure EU shipping',
+    title: '48V Battery Enclosure EU Shipping Checklist',
+    description:
+      'Prepare a 48V battery enclosure EU shipping request by confirming 51.2V LiFePO4 kit format, cell fit, BMS option, inverter protocol, delivery country, and postal code.',
+    intro:
+      'A 48V battery enclosure EU shipping request should combine technical fit and delivery planning. The enclosure must match the selected LiFePO4 cells and inverter communication, while the shipment needs a clear country, postal code, quantity, and delivery condition.',
+    image: '/images/battery-kit-system.webp',
+    highlights: [
+      { label: 'Core keyword', value: '48V battery enclosure EU shipping' },
+      { label: 'Battery platform', value: '16S 51.2V LiFePO4 class' },
+      { label: 'Main formats', value: 'Caster enclosure or 6U rack kit' },
+      { label: 'Delivery details', value: 'Country, postal code, unloading' },
+    ],
+    sections: [
+      {
+        title: 'Confirm the enclosure before shipping',
+        paragraphs: [
+          'Many 48V-class LiFePO4 projects use a 16S 51.2V nominal battery. Before arranging EU shipping, confirm that the selected enclosure fits the cell model, terminal layout, busbar plan, BMS hardware, LCD display, breaker layout, and cable route.',
+          'The enclosure kit is not a finished battery unless a written quotation defines a broader supplied scope. Cells, inverter, external protection equipment, onsite assembly, and commissioning remain separate unless explicitly included.',
+        ],
+      },
+      {
+        title: 'Confirm the EU delivery conditions',
+        paragraphs: [
+          'Shipping review depends on destination and order details. A complete request reduces back-and-forth before payment.',
+        ],
+        bullets: [
+          'Country, city, postal code, delivery address type, and unloading equipment.',
+          'Quantity, selected option, expected arrival timing, and whether the order is for a project or resale.',
+          'Any packaging, pallet, remote area, delivery appointment, documentation, or customs requirement.',
+        ],
+      },
+      {
+        title: 'Confirm inverter and BMS communication',
+        paragraphs: [
+          'CAN or RS485 on the product name is not enough. Share the inverter model, firmware, protocol, pinout, and commissioning requirements so the BMS option can be reviewed before shipment.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: '48V-class movable LiFePO4 enclosure kit for European delivery review.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount 51.2V LiFePO4 enclosure kit for EU cabinet-based installations.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is a 48V enclosure the same as a 51.2V LiFePO4 enclosure?',
+        answer: 'Many 48V-class LiFePO4 systems use 16 cells in series and are described as 51.2V nominal. Confirm inverter voltage range and BMS settings before ordering.',
+      },
+      {
+        question: 'What EU shipping details should I provide?',
+        answer: 'Provide country, city, postal code, address type, unloading constraints, quantity, product option, and expected arrival timing.',
+      },
+      {
+        question: 'Can JKESS ship a complete finished battery?',
+        answer: 'This page focuses on enclosure kits. A broader battery or project supply scope must be confirmed through a written quotation.',
+      },
+    ],
+    related: [
+      {
+        href: '/48v-lifepo4-battery-enclosure',
+        label: '48V LiFePO4 enclosure selection',
+        description: 'Review mechanical fit, BMS protocol, inverter match, and installation format.',
+      },
+      {
+        href: '/europe/lifepo4-battery-kit-europe',
+        label: 'LiFePO4 battery kit Europe',
+        description: 'Compare caster and 6U rack battery kit options for European buyers.',
       },
     ],
   },

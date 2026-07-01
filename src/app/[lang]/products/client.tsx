@@ -77,6 +77,16 @@ const technicalSearchPages = [
     text: 'Navigate EU warehouse, LiFePO4 battery kit Europe, 48V enclosure shipping, and C&I ESS country pages.',
   },
   {
+    href: '/europe/eu-warehouse-battery-kit',
+    title: 'EU warehouse battery kit',
+    text: 'Prepare delivery country, postal code, quantity, kit option, inverter compatibility, and freight quote details.',
+  },
+  {
+    href: '/europe/lifepo4-battery-kit-europe',
+    title: 'LiFePO4 battery kit Europe',
+    text: 'Compare caster and 6U rack LiFePO4 battery kit options for European buyers and installers.',
+  },
+  {
     href: '/battery-enclosures',
     title: 'LiFePO4 battery enclosures',
     text: 'Compare 51.2V enclosure formats, included scope, cell fit, and inverter communication requirements.',
@@ -85,6 +95,11 @@ const technicalSearchPages = [
     href: '/48v-lifepo4-battery-enclosure',
     title: '48V LiFePO4 enclosure planning',
     text: 'Check 48V and 51.2V battery enclosure fit, BMS protocol, inverter matching, and installation format.',
+  },
+  {
+    href: '/europe/48v-battery-enclosure-eu-shipping',
+    title: '48V enclosure EU shipping',
+    text: 'Confirm enclosure fit, BMS option, inverter protocol, EU delivery country, and postal code.',
   },
   {
     href: '/europe/germany-lifepo4-battery-kit',
@@ -135,6 +150,11 @@ const technicalSearchPages = [
     href: '/commercial-battery-storage-cabinet',
     title: 'Commercial battery storage cabinet',
     text: 'Plan C&I cabinet capacity, PCS power, cooling, safety documentation, logistics, and project scope.',
+  },
+  {
+    href: '/europe/commercial-energy-storage-cabinet-europe',
+    title: 'C&I ESS cabinet Europe',
+    text: 'Prepare commercial cabinet capacity, PCS power, cooling, documentation, freight, and site inputs.',
   },
   {
     href: '/europe/italy-lifepo4-battery-kit',

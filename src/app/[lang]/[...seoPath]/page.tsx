@@ -35,6 +35,36 @@ function pagePath(segments: string[]) {
   return segments.join('/')
 }
 
+function breadcrumbName(segment: string) {
+  if (segment === 'europe') return 'Europe'
+  return segment
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+function breadcrumbItems(page: NonBrandLandingPage, lang: string) {
+  const segments = page.path.split('/')
+  const items = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+  ]
+
+  segments.forEach((segment, index) => {
+    const subPath = `/${segments.slice(0, index + 1).join('/')}`
+    const isCurrentPage = index === segments.length - 1
+    const matchingPage = getNonBrandLandingPage(segments.slice(0, index + 1).join('/'))
+
+    items.push({
+      '@type': 'ListItem',
+      position: index + 2,
+      name: isCurrentPage ? page.title : matchingPage?.title || breadcrumbName(segment),
+      item: absoluteUrl(canonicalSeoPath(lang, subPath)),
+    })
+  })
+
+  return items
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang, seoPath } = await params
   const page = getNonBrandLandingPage(pagePath(seoPath))
@@ -136,10 +166,7 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
       primaryEntity,
       {
         '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
-          { '@type': 'ListItem', position: 2, name: page.title, item: url },
-        ],
+        itemListElement: breadcrumbItems(page, lang),
       },
       {
         '@type': 'ItemList',

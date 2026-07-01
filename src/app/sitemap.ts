@@ -32,7 +32,7 @@ const staticPaths = [
   '/shipping-quote',
   ...policyPaths,
 ]
-const siteLastModified = new Date('2026-06-30')
+const siteLastModified = new Date('2026-07-01')
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],

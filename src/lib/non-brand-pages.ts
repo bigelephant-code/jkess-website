@@ -875,6 +875,113 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
     ],
   },
   {
+    path: 'europe',
+    kind: 'category',
+    eyebrow: 'Europe battery storage market',
+    title: 'LiFePO4 Battery Kits and ESS Cabinets for Europe',
+    description:
+      'Compare JKESS LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, EU shipping review, and commercial energy storage cabinet quotation paths for European buyers.',
+    intro:
+      'European battery storage buyers often search from several directions at once: EU warehouse availability, LiFePO4 battery kit Europe, 48V battery enclosure EU shipping, high-voltage BMS for ESS, and commercial energy storage cabinet Europe. This hub connects those search intents to the relevant JKESS product pages, country pages, and quotation workflow.',
+    image: '/images/battery-kit-system.webp',
+    highlights: [
+      { label: 'Market focus', value: 'European Union and nearby project buyers' },
+      { label: 'Search themes', value: 'EU warehouse, LiFePO4 kits, C&I ESS' },
+      { label: 'Product paths', value: '48V kits, rack kits, HV BMS, cabinets' },
+      { label: 'Conversion route', value: 'Product review to written quote' },
+    ],
+    sections: [
+      {
+        title: 'Start from the European buying intent',
+        paragraphs: [
+          'A buyer searching for an EU warehouse battery kit may need a directly orderable 48V or 51.2V enclosure. A project owner searching for commercial energy storage cabinet Europe may need a configured C&I quotation instead. Separating those intents helps customers reach the correct product and reduces unclear inquiries.',
+          'JKESS supports direct online ordering for selected products and written quotation review for larger quantities, project shipments, high-voltage BMS architecture, and configured C&I ESS cabinets.',
+        ],
+      },
+      {
+        title: 'What European buyers should prepare',
+        paragraphs: [
+          'A useful request should define the product type, delivery country, quantity, inverter or PCS compatibility needs, and whether the buyer expects a product-only shipment or a broader project scope.',
+        ],
+        bullets: [
+          'For battery kits: cell model, enclosure format, BMS and LCD option, inverter protocol, quantity, and delivery postal code.',
+          'For high-voltage BMS: pack voltage, module count, current class, PCS or EMS protocol, and contactor logic.',
+          'For C&I cabinets: capacity target, AC power, cooling preference, site conditions, documentation, unloading, and installation boundary.',
+          'For logistics: EU destination country, delivery city, address type, unloading access, deadline, and any customs or documentation requirements.',
+        ],
+      },
+      {
+        title: 'Country pages for more specific search traffic',
+        paragraphs: [
+          'Germany, France, Italy, the Netherlands, and Poland each have dedicated pages that connect local search wording to the same product and quotation path. These pages create clearer internal links for search engines and give buyers a country-specific checklist before contacting JKESS.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Movable 51.2V LiFePO4 enclosure kit for European residential and small commercial storage assembly.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount LiFePO4 enclosure kit for 19-inch cabinet and equipment-room battery projects.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: '100A and 200A BCU or BMU control boxes for high-voltage ESS rack integrators.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial energy storage cabinet for European project quotation review.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does JKESS support EU shipping for battery kits?',
+        answer: 'Selected battery kit orders can use the current EU shipping review path. Larger quantities, project shipments, remote delivery, or configured cabinet projects should request a written quotation.',
+      },
+      {
+        question: 'Which European countries have dedicated JKESS market pages?',
+        answer: 'The current Europe cluster includes Germany, France, Italy, the Netherlands, and Poland, with room to add more country pages as search data and sales priorities develop.',
+      },
+      {
+        question: 'Should European C&I cabinet buyers use direct checkout?',
+        answer: 'No. C&I cabinets are quotation-based because capacity, PCS power, cooling, documentation, freight, installation boundary, and site requirements must be confirmed.',
+      },
+    ],
+    related: [
+      {
+        href: '/europe/germany-lifepo4-battery-kit',
+        label: 'Germany LiFePO4 battery kits',
+        description: 'Prepare German battery kit, EU shipping, and C&I cabinet quotation inputs.',
+      },
+      {
+        href: '/europe/france-lifepo4-battery-kit',
+        label: 'France battery storage quote planning',
+        description: 'Review France-focused battery kit, high-voltage BMS, and cabinet quotation needs.',
+      },
+      {
+        href: '/europe/italy-lifepo4-battery-kit',
+        label: 'Italy 48V battery enclosure shipping',
+        description: 'Plan Italy-focused 48V enclosure, rack kit, and commercial ESS requests.',
+      },
+      {
+        href: '/europe/netherlands-lifepo4-battery-kit',
+        label: 'Netherlands EU warehouse battery kit',
+        description: 'Target Dutch buyers comparing battery kits, freight, and ESS cabinet scope.',
+      },
+      {
+        href: '/europe/poland-lifepo4-battery-kit',
+        label: 'Poland battery storage quotation',
+        description: 'Prepare Polish battery kit, HV BMS, and C&I cabinet quotation details.',
+      },
+    ],
+  },
+  {
     path: 'europe/germany-lifepo4-battery-kit',
     kind: 'solution',
     eyebrow: 'Germany energy storage buyers',

@@ -72,6 +72,11 @@ const localizedProductFaqs: Partial<Record<string, PageFaq[]>> = {
 
 const technicalSearchPages = [
   {
+    href: '/europe',
+    title: 'Europe battery storage hub',
+    text: 'Navigate EU warehouse, LiFePO4 battery kit Europe, 48V enclosure shipping, and C&I ESS country pages.',
+  },
+  {
     href: '/battery-enclosures',
     title: 'LiFePO4 battery enclosures',
     text: 'Compare 51.2V enclosure formats, included scope, cell fit, and inverter communication requirements.',

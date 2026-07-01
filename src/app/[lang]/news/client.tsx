@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react'
 import type { ComponentType } from 'react'
 import { useI18n, useTranslate } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import { getLocalizedGuide, getLocalizedUiCopy, localizedCategoryLabel } from '@/lib/localized-ui'
 
 import { news, type NewsItem } from '@/lib/news'
 
@@ -31,13 +32,15 @@ const editorialLenses = [
   { title: 'Policy Radar', text: 'Monitor regulation, incentive, safety, and compliance shifts affecting ESS projects.', category: 'Policy' as const },
 ]
 
-function formatDate(dateText: string) {
-  return new Intl.DateTimeFormat('en', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(dateText))
+function formatDate(dateText: string, lang: string) {
+  return new Intl.DateTimeFormat(lang || 'en', { month: 'short', day: '2-digit', year: 'numeric' }).format(new Date(dateText))
 }
 
 export default function NewsPage() {
   const t = useTranslate()
   const { lang } = useI18n()
+  const ui = getLocalizedUiCopy(lang)
+  const guide = getLocalizedGuide(lang)
   const [activeCategory, setActiveCategory] = useState<(typeof categoryOptions)[number]>('All')
   const [activeYear, setActiveYear] = useState<(typeof yearOptions)[number]>('All')
   const [query, setQuery] = useState('')
@@ -71,7 +74,21 @@ export default function NewsPage() {
       category,
       count: news.filter((item) => item.category === category).length,
     }))
-  const latestDate = formatDate(featured.date)
+  const latestDate = formatDate(featured.date, lang)
+  const localizedSignals = lang === 'en'
+    ? signalHighlights
+    : [
+        { label: guide.europe, value: signalHighlights[0].value, note: guide.desc },
+        { label: guide.hvEss, value: signalHighlights[1].value, note: guide.desc },
+        { label: guide.commercialEurope, value: signalHighlights[2].value, note: guide.desc },
+      ]
+  const localizedLenses = lang === 'en'
+    ? editorialLenses
+    : [
+        { title: guide.europe, text: guide.desc, category: 'Market' as const },
+        { title: guide.hvEss, text: guide.desc, category: 'Technology' as const },
+        { title: guide.enclosureEu, text: guide.desc, category: 'Policy' as const },
+      ]
 
   return (
     <div className="min-h-screen bg-[#f3f6f5] text-gray-950">
@@ -89,9 +106,9 @@ export default function NewsPage() {
             <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">{t('news.desc')}</p>
 
             <div className="mt-10 grid max-w-3xl gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3">
-              <MetricTile value={news.length.toString()} label="Curated Updates" />
-              <MetricTile value={(categoryOptions.length - 1).toString()} label="Research Lenses" />
-              <MetricTile value={`${yearOptions.length - 1}Y`} label="Signal History" />
+              <MetricTile value={news.length.toString()} label={ui.curatedUpdates} />
+              <MetricTile value={(categoryOptions.length - 1).toString()} label={ui.researchLenses} />
+              <MetricTile value={`${yearOptions.length - 1}Y`} label={ui.signalHistory} />
             </div>
           </motion.div>
 
@@ -103,7 +120,7 @@ export default function NewsPage() {
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-200">Live Brief</p>
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-emerald-200">{ui.liveBrief}</p>
                 <p className="mt-1 text-sm text-slate-400">{latestDate}</p>
               </div>
               <div className="flex h-11 w-11 items-center justify-center border border-emerald-300/30 bg-emerald-300/10 text-emerald-200">
@@ -111,7 +128,7 @@ export default function NewsPage() {
               </div>
             </div>
             <div className="mt-5 space-y-4">
-              {signalHighlights.map((item, index) => (
+              {localizedSignals.map((item, index) => (
                 <div key={item.label}>
                   <div className="flex items-end justify-between gap-4">
                     <div>
@@ -138,14 +155,14 @@ export default function NewsPage() {
       <section className="relative z-10 -mt-12">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-4 md:grid-cols-3">
-            {editorialLenses.map((lens, index) => {
+            {localizedLenses.map((lens, index) => {
               const meta = categoryMeta[lens.category]
               const Icon = meta.icon
               return (
                 <motion.button
                   key={lens.title}
                   onClick={() => setActiveCategory(lens.category)}
-                  aria-label={`Show ${lens.category} news`}
+                  aria-label={`${ui.showing}: ${localizedCategoryLabel(lang, lens.category)}`}
                   initial={{ opacity: 0, y: 22 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-80px' }}
@@ -185,7 +202,7 @@ export default function NewsPage() {
               <div className="flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-2 bg-gray-950 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-white">
                   <CalendarDays size={14} />
-                  Lead Story
+                  {ui.leadStory}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{latestDate}</span>
               </div>
@@ -194,13 +211,13 @@ export default function NewsPage() {
               </h2>
               <p className="mt-5 max-w-3xl text-sm leading-7 text-gray-500 md:text-base">{featured.summary}</p>
               <div className="mt-7 flex flex-wrap items-center gap-3">
-                <CategoryPill category={featured.category} />
+                <CategoryPill category={featured.category} lang={lang} />
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-gray-400">
                   <Globe2 size={14} />
                   {featured.region}
                 </span>
                 <span className="ml-auto inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-900 transition-colors group-hover:text-emerald-700">
-                  Read Source
+                  {ui.readSource}
                   <ArrowUpRight size={16} />
                 </span>
               </div>
@@ -209,7 +226,7 @@ export default function NewsPage() {
               <Image src="/images/news-featured-energy-storage.jpg" alt="Battery energy storage system cabinets for energy storage industry news" fill className="object-cover opacity-85 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 440px, 100vw" />
               <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/50 to-black/85" />
               <div className="absolute bottom-5 left-5 right-5 border border-white/10 bg-black/40 p-4 backdrop-blur-sm">
-                <p className="text-xs uppercase tracking-widest text-gray-400">Source</p>
+                <p className="text-xs uppercase tracking-widest text-gray-400">{ui.source}</p>
                 <p className="mt-2 text-lg font-bold text-white">{featured.source}</p>
               </div>
             </div>
@@ -220,21 +237,21 @@ export default function NewsPage() {
               <div className="border border-gray-200 bg-white p-4 shadow-sm">
                 <div className="mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
                   <Filter size={16} className="text-emerald-600" />
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">Refine Feed</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500">{ui.refineFeed}</p>
                 </div>
                 <div className="relative">
                   <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    aria-label="Search energy storage news"
-                    placeholder="Search energy news"
+                    aria-label={ui.searchNews}
+                    placeholder={ui.searchNews}
                     className="w-full border border-gray-200 bg-gray-50 py-3 pl-9 pr-3 text-sm text-gray-900 outline-none transition-colors placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white"
                   />
                 </div>
 
                 <div className="mt-5">
-                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">Topic</p>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">{ui.topic}</p>
                   <div className="space-y-1">
                     {categoryOptions.map((category) => {
                       const isActive = activeCategory === category
@@ -243,12 +260,12 @@ export default function NewsPage() {
                         <button
                           key={category}
                           onClick={() => setActiveCategory(category)}
-                          aria-label={`Show ${category === 'All' ? 'all' : category} news`}
+                          aria-label={`${ui.showing}: ${localizedCategoryLabel(lang, category)}`}
                           className={`flex w-full items-center justify-between px-3 py-3 text-left text-sm transition-colors ${
                             isActive ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                           }`}
                         >
-                          <span className="font-semibold">{category === 'All' ? 'All Topics' : category}</span>
+                          <span className="font-semibold">{category === 'All' ? ui.allTopics : localizedCategoryLabel(lang, category)}</span>
                           <span className="text-xs opacity-70">{count}</span>
                         </button>
                       )
@@ -257,25 +274,25 @@ export default function NewsPage() {
                 </div>
 
                 <div className="mt-5">
-                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">Year</p>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-gray-400">{ui.year}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {yearOptions.map((year) => (
                       <button
                         key={year}
                         onClick={() => setActiveYear(year)}
-                        aria-label={`Show ${year === 'All' ? 'all years' : year} news`}
+                        aria-label={`${ui.year}: ${year === 'All' ? ui.allYears : year}`}
                         className={`px-3 py-2 text-sm font-semibold transition-colors ${
                           activeYear === year ? 'bg-emerald-600 text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                         }`}
                       >
-                        {year === 'All' ? 'All Years' : year}
+                        {year === 'All' ? ui.allYears : year}
                       </button>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="mt-4 border border-gray-200 bg-white p-4 shadow-sm">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Apply the Insight</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">{ui.applyInsight}</p>
                 <div className="mt-3 grid gap-2">
                   <Link href={localizedPath(lang, '/products/high-voltage-kit')} className="rounded-lg bg-gray-50 px-3 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700">
                     High Voltage Kit
@@ -284,7 +301,7 @@ export default function NewsPage() {
                     C&I ESS Cabinet
                   </Link>
                   <Link href={localizedPath(lang, '/contact')} className="rounded-lg bg-gray-950 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
-                    Discuss a project
+                    {ui.discussProject}
                   </Link>
                 </div>
               </div>
@@ -293,18 +310,18 @@ export default function NewsPage() {
             <div className="min-w-0">
               <div className="mb-5 flex flex-col gap-3 border border-gray-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Showing</p>
-                  <p className="mt-1 text-lg font-bold text-gray-950">{filteredNews.length} updates</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{ui.showing}</p>
+                  <p className="mt-1 text-lg font-bold text-gray-950">{filteredNews.length} {ui.updates}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {categoryCounts.map(({ category, count }) => (
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category)}
-                      aria-label={`Filter to ${category} news`}
+                      aria-label={`${ui.showing}: ${localizedCategoryLabel(lang, category)}`}
                       className="group inline-flex items-center gap-2"
                     >
-                      <CategoryPill category={category} compact />
+                      <CategoryPill category={category} compact lang={lang} />
                       <span className="text-xs font-semibold text-gray-400 group-hover:text-gray-700">{count}</span>
                     </button>
                   ))}
@@ -322,8 +339,8 @@ export default function NewsPage() {
                 >
                   {groupedNews.length === 0 ? (
                     <div className="border border-dashed border-gray-300 bg-white px-6 py-14 text-center">
-                      <p className="text-sm font-semibold text-gray-900">No matching news</p>
-                      <p className="mt-2 text-sm text-gray-500">Try another topic, year, or keyword.</p>
+                      <p className="text-sm font-semibold text-gray-900">{ui.noMatchingNews}</p>
+                      <p className="mt-2 text-sm text-gray-500">{ui.tryAnotherNews}</p>
                     </div>
                   ) : (
                     groupedNews.map((group) => (
@@ -331,11 +348,11 @@ export default function NewsPage() {
                         <div className="mb-4 flex items-center gap-4">
                           <h2 className="text-2xl font-bold text-gray-950">{group.year}</h2>
                           <div className="h-px flex-1 bg-gray-200" />
-                          <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{group.items.length} items</span>
+                          <span className="text-xs font-semibold uppercase tracking-widest text-gray-400">{group.items.length} {ui.itemsLabel}</span>
                         </div>
                         <div className="relative grid gap-4 xl:grid-cols-2">
                           {group.items.map((item, index) => (
-                            <NewsCard key={item.date + item.title} item={item} index={index} />
+                            <NewsCard key={item.date + item.title} item={item} index={index} lang={lang} />
                           ))}
                         </div>
                       </section>
@@ -351,7 +368,7 @@ export default function NewsPage() {
   )
 }
 
-function CategoryPill({ category, compact = false }: { category: NewsItem['category']; compact?: boolean }) {
+function CategoryPill({ category, compact = false, lang = 'en' }: { category: NewsItem['category']; compact?: boolean; lang?: string }) {
   const meta = categoryMeta[category]
   const Icon = meta.icon
 
@@ -361,14 +378,15 @@ function CategoryPill({ category, compact = false }: { category: NewsItem['categ
       style={{ background: `${meta.color}14`, color: meta.color }}
     >
       <Icon size={compact ? 12 : 14} />
-      {category}
+      {localizedCategoryLabel(lang, category)}
     </span>
   )
 }
 
-function NewsCard({ item, index }: { item: NewsItem; index: number }) {
+function NewsCard({ item, index, lang }: { item: NewsItem; index: number; lang: string }) {
   const meta = categoryMeta[item.category]
   const Icon = meta.icon
+  const ui = getLocalizedUiCopy(lang)
 
   return (
     <motion.a
@@ -389,13 +407,13 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <CategoryPill category={item.category} compact />
+            <CategoryPill category={item.category} compact lang={lang} />
             <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-gray-400">
               <Globe2 size={12} />
               {item.region}
             </span>
           </div>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-400">{formatDate(item.date)}</p>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-400">{formatDate(item.date, lang)}</p>
         </div>
         <ArrowUpRight size={18} className="shrink-0 text-gray-300 transition-colors group-hover:text-emerald-600" />
       </div>
@@ -403,7 +421,7 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
       <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">{item.summary}</p>
       <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
         <span className="text-xs font-semibold text-gray-500">{item.source}</span>
-        <span className="text-xs font-bold uppercase tracking-widest text-gray-400 transition-colors group-hover:text-emerald-700">Read More</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-gray-400 transition-colors group-hover:text-emerald-700">{ui.readMore}</span>
       </div>
     </motion.a>
   )

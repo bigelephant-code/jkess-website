@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
+import { getLocalizedGuide, localizedNavItem } from '@/lib/localized-ui'
 
 const footerGroups = [
   {
@@ -46,29 +47,49 @@ const policyLinks = [
 
 export default function Footer() {
   const { lang, t } = useI18n()
+  const guide = getLocalizedGuide(lang)
+  const localizedFooterGroupTitle = (title: string) => {
+    if (lang === 'en') return title
+    if (title.includes('Products')) return guide.lifepo4Europe
+    if (title.includes('Solutions')) return guide.commercialEurope
+    return guide.quote
+  }
+  const localizedPolicyLabel = (label: string) => {
+    if (lang === 'en') return label
+    if (label === 'Shipping') return guide.enclosureEu
+    if (label === 'Returns') return guide.quote
+    if (label === 'Warranty') return guide.quote
+    if (label === 'Terms') return guide.quote
+    if (label === 'Safety') return guide.hvEss
+    if (label === 'Privacy') return guide.europe
+    return guide.quote
+  }
 
   return (
     <footer className="border-t border-white/5 bg-black py-12">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-8 border-b border-white/10 pb-10 md:grid-cols-3">
           {footerGroups.map((group) => (
-            <nav key={group.title} aria-label={group.title}>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">{group.title}</p>
+            <nav key={group.title} aria-label={localizedFooterGroupTitle(group.title)}>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">{localizedFooterGroupTitle(group.title)}</p>
               <div className="mt-4 grid gap-2">
-                {group.links.map(([label, path]) => (
-                  <Link key={path} href={localizedPath(lang, path)} className="text-sm text-gray-400 transition-colors hover:text-white">
-                    {label}
-                  </Link>
-                ))}
+                {group.links.map(([label, path]) => {
+                  const localizedItem = localizedNavItem(lang, label, path, '')
+                  return (
+                    <Link key={path} href={localizedPath(lang, path)} className="text-sm text-gray-400 transition-colors hover:text-white">
+                      {localizedItem.label}
+                    </Link>
+                  )
+                })}
               </div>
             </nav>
           ))}
         </div>
 
-        <nav aria-label="Policies" className="my-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <nav aria-label={guide.quote} className="my-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
           {policyLinks.map(([label, path]) => (
             <Link key={path} href={localizedPath(lang, path)} className="text-xs text-gray-500 transition-colors hover:text-green-400">
-              {label}
+              {localizedPolicyLabel(label)}
             </Link>
           ))}
         </nav>

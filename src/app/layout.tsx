@@ -5,6 +5,7 @@ import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
 import { navigationGroups } from '@/lib/navigation-menu'
+import { getLocalizedUiCopy, localizedNavItem } from '@/lib/localized-ui'
 import {
   jkessMerchantReturnPolicy,
   jkessMerchantShippingPolicy,
@@ -99,40 +100,6 @@ const websiteJsonLd = {
   },
 }
 
-let navigationPosition = 0
-const siteNavigationJsonLd = navigationGroups.flatMap((group) => {
-  const groupItem = group.href
-    ? [{
-        '@type': 'SiteNavigationElement',
-        position: ++navigationPosition,
-        name: group.label,
-        description: group.description,
-        url: absoluteUrl(group.href),
-      }]
-    : []
-
-  const childItems = (group.items || []).map((item) => ({
-    '@type': 'SiteNavigationElement',
-    position: ++navigationPosition,
-    name: item.label,
-    description: item.description,
-    url: absoluteUrl(item.href),
-  }))
-
-  return [...groupItem, ...childItems]
-})
-
-const siteJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    jkessOrganization,
-    jkessMerchantShippingPolicy,
-    jkessMerchantReturnPolicy,
-    websiteJsonLd,
-    ...siteNavigationJsonLd,
-  ],
-}
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -144,6 +111,45 @@ export default async function RootLayout({
     ? requestedLocale
     : defaultLocale
   const dir = localeMap.get(lang)?.dir || 'ltr'
+  const ui = getLocalizedUiCopy(lang)
+  let navigationPosition = 0
+  const siteNavigationJsonLd = navigationGroups.flatMap((group) => {
+    const localizedGroup = localizedNavItem(lang, group.label, group.href || '/', group.description || '')
+    const groupName = group.key === 'home' ? companyProfile.brandName : localizedGroup.label
+    const groupDescription = lang === 'en' ? group.description : localizedGroup.description || ui.technicalGuides
+    const groupItem = group.href
+      ? [{
+          '@type': 'SiteNavigationElement',
+          position: ++navigationPosition,
+          name: groupName,
+          description: groupDescription,
+          url: absoluteUrl(group.href),
+        }]
+      : []
+
+    const childItems = (group.items || []).map((item) => {
+      const localizedItem = localizedNavItem(lang, item.label, item.href, item.description)
+      return {
+        '@type': 'SiteNavigationElement',
+        position: ++navigationPosition,
+        name: localizedItem.label,
+        description: localizedItem.description,
+        url: absoluteUrl(item.href),
+      }
+    })
+
+    return [...groupItem, ...childItems]
+  })
+  const siteJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      jkessOrganization,
+      jkessMerchantShippingPolicy,
+      jkessMerchantReturnPolicy,
+      websiteJsonLd,
+      ...siteNavigationJsonLd,
+    ],
+  }
 
   return (
     <html lang={lang} dir={dir} className={`${inter.variable} h-full antialiased`}>

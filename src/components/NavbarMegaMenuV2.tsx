@@ -11,14 +11,15 @@ import { useI18n } from '@/i18n/client'
 import { localeMap, locales } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
 import { navigationGroups } from '@/lib/navigation-menu'
+import { getLocalizedUiCopy, localizedNavItem } from '@/lib/localized-ui'
 
 const languageGroups = [
-  ['West & Central Europe', ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt']],
-  ['Nordic', ['sv', 'da', 'fi']],
-  ['Central & Eastern Europe', ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el']],
-  ['Baltics & Balkans', ['hr', 'sl', 'lt', 'lv', 'et']],
-  ['CIS & Middle East', ['ru', 'uk', 'fa', 'tr']],
-] as const satisfies ReadonlyArray<readonly [string, readonly LangCode[]]>
+  ['nav.languageGroup.westCentralEurope', 'West & Central Europe', ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt']],
+  ['nav.languageGroup.nordic', 'Nordic', ['sv', 'da', 'fi']],
+  ['nav.languageGroup.centralEasternEurope', 'Central & Eastern Europe', ['pl', 'cs', 'sk', 'hu', 'ro', 'bg', 'el']],
+  ['nav.languageGroup.balticsBalkans', 'Baltics & Balkans', ['hr', 'sl', 'lt', 'lv', 'et']],
+  ['nav.languageGroup.cisMiddleEast', 'CIS & Middle East', ['ru', 'uk', 'fa', 'tr']],
+] as const satisfies ReadonlyArray<readonly [string, string, readonly LangCode[]]>
 
 const MENU_CLOSE_DELAY_MS = 140
 
@@ -40,6 +41,9 @@ export default function NavbarMegaMenuV2() {
   const activeGroup = navigationGroups.find((group) => group.key === activeMenu && group.items)
   const currentLocale = localeMap.get(lang)!
   const languageHref = (code: LangCode) => code === 'en' ? neutralPath : `/${code}${neutralPath === '/' ? '' : neutralPath}`
+  const ui = getLocalizedUiCopy(lang)
+  const groupLabel = (key: string, fallback: string) => t(`nav.${key}`, fallback)
+  const groupDescription = (description?: string) => lang === 'en' ? description : getLocalizedUiCopy(lang).technicalGuides
 
   const cancelMenuClose = () => {
     if (menuCloseTimer.current) {
@@ -124,9 +128,9 @@ export default function NavbarMegaMenuV2() {
           >
             <div className="px-8 py-6">
               <div className="mx-auto grid max-w-[1400px] grid-cols-5 gap-x-6">
-                {languageGroups.map(([groupLabel, codes]) => (
-                  <div key={groupLabel}>
-                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray-400">{groupLabel}</p>
+                {languageGroups.map(([labelKey, fallbackLabel, codes]) => (
+                  <div key={labelKey}>
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-gray-400">{t(labelKey, fallbackLabel)}</p>
                     <div className="space-y-0.5">
                       {codes.map((code) => {
                         const locale = localeMap.get(code)
@@ -181,12 +185,12 @@ export default function NavbarMegaMenuV2() {
             type="button"
             onClick={() => { setActiveMenu(null); setLanguageOpen((current) => !current) }}
             className={`flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-white transition hover:bg-white/10 hover:text-green-400 ${languageOpen ? 'bg-white/10 text-green-400' : ''}`}
-            aria-label={`Change language. Current language: ${currentLocale.name}`}
+            aria-label={`${ui.changeLanguage}. ${ui.currentLanguage}: ${currentLocale.name}`}
             aria-expanded={languageOpen}
           >
             <Globe size={21} /><LanguageFlag code={lang} size="sm" />
           </button>
-          <a href={`${prefix}/cart`} className="relative rounded-xl p-2 text-white transition hover:bg-white/10 hover:text-green-400" aria-label={`View cart with ${itemCount} items`}>
+          <a href={`${prefix}/cart`} className="relative rounded-xl p-2 text-white transition hover:bg-white/10 hover:text-green-400" aria-label={`${ui.viewCart}: ${itemCount} ${ui.items}`}>
             <ShoppingCart size={22} />
             {itemCount > 0 && <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-green-500 text-[10px] font-bold text-white">{itemCount > 99 ? '99+' : itemCount}</span>}
           </a>
@@ -196,11 +200,11 @@ export default function NavbarMegaMenuV2() {
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
-          <a href={`${prefix}/cart`} className="relative text-white" aria-label={`View cart with ${itemCount} items`}>
+          <a href={`${prefix}/cart`} className="relative text-white" aria-label={`${ui.viewCart}: ${itemCount} ${ui.items}`}>
             <ShoppingCart size={24} />
             {itemCount > 0 && <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-[10px] font-bold text-white">{itemCount > 99 ? '99+' : itemCount}</span>}
           </a>
-          <button type="button" onClick={() => setMobileOpen((current) => !current)} className="text-white" aria-label="Toggle navigation menu" aria-expanded={mobileOpen}>{mobileOpen ? <X size={23} /> : <Menu size={23} />}</button>
+          <button type="button" onClick={() => setMobileOpen((current) => !current)} className="text-white" aria-label={ui.toggleNavigation} aria-expanded={mobileOpen}>{mobileOpen ? <X size={23} /> : <Menu size={23} />}</button>
         </div>
       </div>
 
@@ -219,20 +223,23 @@ export default function NavbarMegaMenuV2() {
           >
             <div className="grid lg:grid-cols-[300px_1fr]">
               <div className="border-r border-white/10 bg-gradient-to-br from-green-500/15 via-white/[0.03] to-transparent p-7">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-400">{activeGroup.label}</p>
-                <h2 className="mt-3 text-2xl font-bold text-white">Explore {activeGroup.label}</h2>
-                <p className="mt-4 text-sm leading-6 text-gray-400">{activeGroup.description}</p>
-                <a href={`${prefix}${activeGroup.href}`} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-green-400 hover:text-green-300">View overview <ArrowUpRight size={16} /></a>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-400">{groupLabel(activeGroup.key, activeGroup.label)}</p>
+                <h2 className="mt-3 text-2xl font-bold text-white">{ui.explore} {groupLabel(activeGroup.key, activeGroup.label)}</h2>
+                <p className="mt-4 text-sm leading-6 text-gray-400">{groupDescription(activeGroup.description)}</p>
+                <a href={`${prefix}${activeGroup.href}`} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-green-400 hover:text-green-300">{ui.viewOverview} <ArrowUpRight size={16} /></a>
               </div>
               <div className={`grid gap-2 p-4 ${activeGroup.items.length > 4 ? 'xl:grid-cols-3' : 'md:grid-cols-2'}`}>
-                {activeGroup.items.map((item, index) => (
+                {activeGroup.items.map((item, index) => {
+                  const localizedItem = localizedNavItem(lang, item.label, item.href, item.description)
+                  return (
                   <motion.a key={item.href} href={`${prefix}${item.href}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 + index * 0.035, duration: 0.18 }} className="group rounded-xl border border-transparent p-4 transition hover:border-green-400/25 hover:bg-white/[0.06]">
                     <div className="flex items-start justify-between gap-4">
-                      <div><h3 className="text-sm font-bold text-white group-hover:text-green-400">{item.label}</h3><p className="mt-2 text-xs leading-5 text-gray-500 group-hover:text-gray-300">{item.description}</p></div>
+                      <div><h3 className="text-sm font-bold text-white group-hover:text-green-400">{localizedItem.label}</h3><p className="mt-2 text-xs leading-5 text-gray-500 group-hover:text-gray-300">{localizedItem.description}</p></div>
                       <ArrowUpRight size={15} className="mt-0.5 shrink-0 text-gray-600 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-green-400" />
                     </div>
                   </motion.a>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </motion.div>
@@ -255,8 +262,11 @@ export default function NavbarMegaMenuV2() {
                     <AnimatePresence initial={false}>{expanded && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
                         <div className="space-y-1 pb-3 pl-3">
-                          <a href={`${prefix}${group.href}`} className="flex items-center justify-between rounded-xl bg-green-500/10 px-4 py-3 text-sm font-bold text-green-400">View {group.label} overview <ArrowUpRight size={15} /></a>
-                          {group.items?.map((item) => <a key={item.href} href={`${prefix}${item.href}`} className="block rounded-xl px-4 py-3 hover:bg-white/[0.06]"><p className="text-sm font-semibold text-white">{item.label}</p><p className="mt-1 text-xs leading-5 text-gray-500">{item.description}</p></a>)}
+                          <a href={`${prefix}${group.href}`} className="flex items-center justify-between rounded-xl bg-green-500/10 px-4 py-3 text-sm font-bold text-green-400">{ui.viewOverview} <ArrowUpRight size={15} /></a>
+                          {group.items?.map((item) => {
+                            const localizedItem = localizedNavItem(lang, item.label, item.href, item.description)
+                            return <a key={item.href} href={`${prefix}${item.href}`} className="block rounded-xl px-4 py-3 hover:bg-white/[0.06]"><p className="text-sm font-semibold text-white">{localizedItem.label}</p><p className="mt-1 text-xs leading-5 text-gray-500">{localizedItem.description}</p></a>
+                          })}
                         </div>
                       </motion.div>
                     )}</AnimatePresence>

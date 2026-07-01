@@ -13,6 +13,7 @@ import {
 } from '@/lib/seo'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { jsonLd, organizationId } from '@/lib/structured-data'
+import { getLocalizedUiCopy } from '@/lib/localized-ui'
 
 function specificationKeywords(page: NonBrandLandingPage) {
   return Array.from(new Set([
@@ -77,6 +78,7 @@ function specificationJsonLd(page: NonBrandLandingPage, lang: string) {
   const pathParts = page.path.split('/')
   const parentPath = `/${pathParts.slice(0, -1).join('/')}`
   const parentUrl = absoluteUrl(canonicalSeoPath(lang, parentPath))
+  const ui = getLocalizedUiCopy(lang)
 
   const productItems = page.products
     .map((item, index) => {
@@ -136,12 +138,12 @@ function specificationJsonLd(page: NonBrandLandingPage, lang: string) {
       },
       {
         '@type': 'ItemList',
-        name: `Relevant products for ${page.title}`,
+        name: `${ui.relevantProducts}: ${page.title}`,
         itemListElement: productItems,
       },
       {
         '@type': 'ItemList',
-        name: `Related specifications for ${page.title}`,
+        name: `${ui.relatedPages}: ${page.title}`,
         itemListElement: relatedPageItems,
       },
       {
@@ -172,6 +174,7 @@ export default function SpecificationLandingPage({
 
   const quoteHref = localizedSeoPath(lang, '/shipping-quote')
   const downloadsHref = localizedSeoPath(lang, '/downloads')
+  const ui = getLocalizedUiCopy(lang)
 
   return (
     <>
@@ -207,13 +210,13 @@ export default function SpecificationLandingPage({
                   href={quoteHref}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-bold text-black transition hover:bg-green-400"
                 >
-                  Request configuration support <ArrowRight size={17} />
+                  {ui.requestSupport} <ArrowRight size={17} />
                 </Link>
                 <Link
                   href={downloadsHref}
                   className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/15"
                 >
-                  View technical downloads
+                  {ui.viewDownloads}
                 </Link>
               </div>
             </div>
@@ -266,18 +269,17 @@ export default function SpecificationLandingPage({
 
               <aside className="h-fit rounded-2xl border border-gray-200 bg-gray-950 p-6 text-white lg:sticky lg:top-28">
                 <p className="text-xs font-bold uppercase tracking-widest text-green-400">
-                  Quotation checklist
+                  {ui.beforeQuote}
                 </p>
-                <h2 className="mt-3 text-2xl font-bold">Share the real project inputs</h2>
+                <h2 className="mt-3 text-2xl font-bold">{ui.prepareInputs}</h2>
                 <p className="mt-4 text-sm leading-6 text-gray-300">
-                  Include voltage, power, capacity, quantity, duty cycle, compatible equipment, destination,
-                  site conditions, installation scope, and required certification or documentation.
+                  {ui.prepareInputsBody}
                 </p>
                 <Link
                   href={quoteHref}
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
                 >
-                  Start a technical inquiry <ArrowRight size={16} />
+                  {ui.startInquiry} <ArrowRight size={16} />
                 </Link>
               </aside>
             </div>
@@ -286,10 +288,10 @@ export default function SpecificationLandingPage({
           <section className="bg-gray-950 py-20 text-white md:py-24">
             <div className="mx-auto max-w-7xl px-6">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-400">
-                Relevant products
+                {ui.relevantProducts}
               </p>
               <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight md:text-4xl">
-                Continue from the search specification to the actual product scope
+                {ui.continueSpec}
               </h2>
               <div className="mt-10 grid gap-6 md:grid-cols-2">
                 {products.map(({ item, product }) => {
@@ -315,7 +317,7 @@ export default function SpecificationLandingPage({
                         <h3 className="text-xl font-bold">{item.label}</h3>
                         <p className="mt-3 text-sm leading-6 text-gray-300">{item.description}</p>
                         <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-green-400">
-                          View product details <ArrowRight size={15} />
+                          {ui.viewProductDetails} <ArrowRight size={15} />
                         </span>
                       </div>
                     </Link>
@@ -329,9 +331,9 @@ export default function SpecificationLandingPage({
             <div className="grid gap-12 lg:grid-cols-2">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-700">
-                  Frequently asked questions
+                  {ui.faqEyebrow}
                 </p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight">Specification questions</h2>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight">{ui.faqTitle}</h2>
               </div>
               <div className="divide-y divide-gray-200 border-y border-gray-200">
                 {page.faqs.map((faq) => (
@@ -348,7 +350,7 @@ export default function SpecificationLandingPage({
 
           <section className="border-t border-gray-100 bg-gray-50 py-16">
             <div className="mx-auto max-w-7xl px-6">
-              <h2 className="text-2xl font-bold text-gray-950">Compare related specifications</h2>
+              <h2 className="text-2xl font-bold text-gray-950">{ui.relatedPages}</h2>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 {page.related.map((link) => (
                   <Link

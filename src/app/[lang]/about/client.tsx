@@ -7,12 +7,28 @@ import DynamicGlobe from '@/components/DynamicGlobe'
 import PageFaqSection from '@/components/PageFaqSection'
 import GlobalDealerRecruitment from '@/components/GlobalDealerRecruitment'
 import { Reveal } from '@/components/ScrollReveal'
-import { useTranslate } from '@/i18n/client'
+import { useI18n, useTranslate } from '@/i18n/client'
 import { pageFaqs } from '@/lib/page-faqs'
 import { companyFacts, companyProfile } from '@/lib/company-profile'
+import { getLocalizedGuide, getLocalizedUiCopy } from '@/lib/localized-ui'
 
 export default function AboutPage() {
   const t = useTranslate()
+  const { lang } = useI18n()
+  const ui = getLocalizedUiCopy(lang)
+  const guide = getLocalizedGuide(lang)
+  const localizedCompanyFactLabels = [
+    t('stats.established', 'Team Established'),
+    t('stats.years', 'JKBMS Founded'),
+    t('stats.manufacturing', 'JKESS Brand Launched'),
+    t('stats.manufacturing', 'Factory Building Area'),
+    t('stats.manufacturing', 'Factory Site Area'),
+    t('stats.employees', 'Full-time Employees'),
+    guide.hvEss,
+    guide.commercialEurope,
+    t('stats.countries', 'Countries & Regions Served'),
+    guide.europe,
+  ]
 
   const cultures = [
     {
@@ -68,10 +84,10 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-6">
           <Reveal>
             <div className="text-center mb-14">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-600">Verified Company Profile</p>
-              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Company at a Glance</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-600">{ui.companyProfile}</p>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">{ui.companyGlance}</h2>
               <p className="mt-4 text-gray-500 max-w-3xl mx-auto">
-                The following figures use the company&apos;s current unified public information and are applied consistently across the JKESS website.
+                {ui.companyGlanceDesc}
               </p>
             </div>
           </Reveal>
@@ -86,7 +102,7 @@ export default function AboutPage() {
                 className="rounded-2xl border border-gray-200 bg-gray-50 p-5 text-center shadow-sm"
               >
                 <p className="text-2xl md:text-3xl font-bold text-gray-900">{fact.value}</p>
-                <p className="mt-2 text-xs leading-5 uppercase tracking-wider text-gray-500">{fact.label}</p>
+                <p className="mt-2 text-xs leading-5 uppercase tracking-wider text-gray-500">{localizedCompanyFactLabels[index] || fact.label}</p>
               </motion.div>
             ))}
           </div>
@@ -200,8 +216,8 @@ export default function AboutPage() {
 
       <PageFaqSection
         faqs={pageFaqs.about}
-        title="About JKESS FAQ"
-        description="Key information about JKESS company history, manufacturing scale, offices, logistics, and international project support."
+        title={ui.aboutFaq}
+        description={ui.aboutFaqDesc}
       />
     </div>
   )

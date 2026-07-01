@@ -4,13 +4,17 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MapPin, MessageCircle, MessagesSquare, Send, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Image from 'next/image'
-import { useTranslate } from '@/i18n/client'
+import { useI18n, useTranslate } from '@/i18n/client'
 import PageFaqSection from '@/components/PageFaqSection'
 import { pageFaqs } from '@/lib/page-faqs'
 import { trackEvent } from '@/lib/analytics'
+import { getLocalizedGuide, getLocalizedUiCopy } from '@/lib/localized-ui'
 
 export default function ContactPage() {
   const t = useTranslate()
+  const { lang } = useI18n()
+  const ui = getLocalizedUiCopy(lang)
+  const guide = getLocalizedGuide(lang)
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -56,10 +60,10 @@ export default function ContactPage() {
     { icon: MapPin, label: 'Location', value: 'Building B4, Guangming, Shenzhen', color: '#f58a8a' },
   ]
   const inquiryChecklist = [
-    'Product model or application scenario',
-    'Target voltage, capacity, and quantity',
-    'Inverter, PCS, or EMS communication requirements',
-    'Delivery country, timeline, and certification needs',
+    guide.lifepo4Europe,
+    guide.enclosureEu,
+    guide.canRs485,
+    guide.quote,
   ]
 
   return (
@@ -112,11 +116,11 @@ export default function ContactPage() {
           >
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-green-700">Faster Quotation</p>
-                <h2 className="mt-2 text-xl font-bold text-gray-950">Include these details in your inquiry</h2>
+                <p className="text-xs font-bold uppercase tracking-widest text-green-700">{ui.requestProjectQuote}</p>
+                <h2 className="mt-2 text-xl font-bold text-gray-950">{ui.prepareInputs}</h2>
               </div>
               <a href="https://wa.me/8613162828868" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-800">
-                WhatsApp now <ArrowRight size={15} />
+                WhatsApp <ArrowRight size={15} />
               </a>
             </div>
             <div className="mt-5 grid gap-3 md:grid-cols-2">
@@ -148,22 +152,22 @@ export default function ContactPage() {
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <select
-                    aria-label="Product type"
+                    aria-label={guide.lifepo4Europe}
                     value={formData.productType}
                     onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
                     className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
                   >
-                    <option value="">Product type</option>
+                    <option value="">{guide.lifepo4Europe}</option>
                     <option value="Battery Kit (With Caster)">Battery Kit (With Caster)</option>
                     <option value="6U Battery Kit">6U Battery Kit</option>
                     <option value="High Voltage Kit">High Voltage Kit</option>
                     <option value="C&I High Voltage ESS Cabinet">C&I High Voltage ESS Cabinet</option>
-                    <option value="Custom project">Custom project</option>
+                    <option value="Custom project">{guide.quote}</option>
                   </select>
                   <input
                     type="text"
-                    aria-label="Destination country"
-                    placeholder="Destination country"
+                    aria-label={ui.destinationCountry}
+                    placeholder={ui.destinationCountry}
                     value={formData.country}
                     onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                     className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
@@ -172,16 +176,16 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <input
                     type="text"
-                    aria-label="Estimated quantity"
-                    placeholder="Estimated quantity"
+                    aria-label={ui.estimatedQuantity}
+                    placeholder={ui.estimatedQuantity}
                     value={formData.quantity}
                     onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                     className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
                   />
                   <input
                     type="text"
-                    aria-label="Project timeline"
-                    placeholder="Project timeline"
+                    aria-label={ui.projectTimeline}
+                    placeholder={ui.projectTimeline}
                     value={formData.timeline}
                     onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
                     className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition-colors"
@@ -232,8 +236,8 @@ export default function ContactPage() {
       </section>
       <PageFaqSection
         faqs={pageFaqs.contact}
-        title="Contact and Quotation FAQ"
-        description="Prepare the right details before contacting JKESS so the sales and engineering team can respond faster."
+        title={ui.requestProjectQuote}
+        description={ui.prepareInputsBody}
       />
     </div>
   )

@@ -3,6 +3,7 @@ import { jsonLd, organizationId } from '@/lib/structured-data'
 import { buildPageMetadata, canonicalSeoPath } from '@/lib/seo'
 import { faqJsonLd, pageFaqs } from '@/lib/page-faqs'
 import PageFaqSection from '@/components/PageFaqSection'
+import { getLocalizedGuide, getLocalizedUiCopy } from '@/lib/localized-ui'
 import QuoteRequestClient from './QuoteRequestClient'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -78,6 +79,8 @@ export default async function ShippingQuotePage({
 }) {
   const { lang } = await params
   const query = searchParams ? await searchParams : {}
+  const ui = getLocalizedUiCopy(lang)
+  const guide = getLocalizedGuide(lang)
 
   return (
     <>
@@ -88,8 +91,8 @@ export default async function ShippingQuotePage({
       <QuoteRequestClient lang={lang} initialProductSlug={query.product} />
       <PageFaqSection
         faqs={pageFaqs.shippingQuote}
-        title="Shipping Quote FAQ"
-        description="Common questions about JKESS product quotations, bulk purchase review, and destination-specific shipping confirmation."
+        title={guide.quote}
+        description={ui.prepareInputsBody}
       />
     </>
   )

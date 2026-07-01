@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, BadgeCheck, Globe2, Handshake, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Globe2, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useI18n, useTranslate } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
@@ -29,8 +29,7 @@ export default function GlobalDealerRecruitment() {
   const emailHref = 'mailto:zhou@jkess.com?subject=JKESS%20Global%20Distributor%20Application&body=Company%20name%3A%0ACountry%20%2F%20region%3A%0AWebsite%3A%0AMain%20business%3A%0AInterested%20product%20lines%3A%0AExpected%20annual%20volume%3A%0AMessage%3A'
 
   return (
-    <section className="relative overflow-hidden bg-[#f5f7f4] py-16 md:py-24">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-500/40 to-transparent" />
+    <section className="relative py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)] lg:items-center">
           <motion.div
@@ -39,11 +38,7 @@ export default function GlobalDealerRecruitment() {
             viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.55, ease: 'easeOut' }}
           >
-            <div className="inline-flex items-center gap-2 border border-green-600/20 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-green-700">
-              <Handshake size={15} />
-              {t('dealerRecruitment.eyebrow', 'Global partner recruitment')}
-            </div>
-            <h2 className="mt-6 max-w-3xl text-3xl font-bold tracking-tight text-gray-950 md:text-5xl">
+            <h2 className="max-w-3xl text-3xl font-bold tracking-tight text-gray-950 md:text-5xl">
               {t('dealerRecruitment.title', 'JKESS is recruiting distributors and local partners worldwide')}
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-gray-600 md:text-lg">

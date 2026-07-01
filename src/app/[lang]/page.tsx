@@ -21,6 +21,9 @@ const BrandLogos = dynamic(() => import('@/components/BrandLogos'), {
 const CertTiltBoard = dynamic(() => import('@/components/CertTiltBoard'), {
   loading: () => null,
 })
+const GlobalDealerRecruitment = dynamic(() => import('@/components/GlobalDealerRecruitment'), {
+  loading: () => null,
+})
 const ContactSection = dynamic(() => import('@/components/ContactSection'), {
   loading: () => null,
 })
@@ -41,7 +44,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
       path: '/',
       title: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
       description:
-        'JKESS supplies BMS control hardware, LiFePO4 battery enclosure kits, high voltage battery management systems, and configured commercial energy storage cabinet solutions.',
+        'JKESS supplies BMS control hardware, LiFePO4 battery enclosure kits, high voltage battery management systems, configured commercial energy storage cabinet solutions, and global distributor partnership opportunities.',
       keywords: [
         'JKESS',
         'JKBMS',
@@ -49,6 +52,8 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         'high voltage BMS',
         'commercial energy storage system',
         'battery storage cabinet',
+        'battery storage distributor',
+        'energy storage agent recruitment',
       ],
       image: '/images/mountain-bg.webp',
     })
@@ -73,6 +78,7 @@ export default async function Home(props: { params: Promise<{ lang: string }> })
           <StatsSection data={companyStats} />
           <Timeline />
           <SolutionsShowcase />
+          <GlobalDealerRecruitment />
           <CertTiltBoard />
         </div>
       </section>

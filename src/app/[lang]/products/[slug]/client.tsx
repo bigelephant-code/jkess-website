@@ -18,7 +18,7 @@ import {
   Truck,
 } from 'lucide-react'
 import type { Product, ProductFaq, ProductSeoContent, ProductUseCases } from '@/lib/products'
-import { getProductBuyingGuideLinks, getProductFaqs } from '@/lib/products'
+import { getProductBuyingGuideLinks, getProductBuyingGuideSectionCopy, getProductFaqs } from '@/lib/products'
 import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
@@ -187,13 +187,10 @@ export function ProductDetailClient({
       'Ask for configuration support or a quotation.'
     ),
     relatedProducts: t('product.relatedProducts', 'Related Products'),
-    buyingGuides: t('product.buyingGuides', 'Buying guides and planning pages'),
-    buyingGuidesText: t(
-      'product.buyingGuidesText',
-      'Continue with focused pages for EU shipping, product selection, compatibility, and project quotation planning.'
-    ),
+    buyingGuides: getProductBuyingGuideSectionCopy(lang).title,
+    buyingGuidesText: getProductBuyingGuideSectionCopy(lang).description,
   }
-  const buyingGuides = getProductBuyingGuideLinks(product)
+  const buyingGuides = getProductBuyingGuideLinks(product, lang)
 
   const handleAddToCart = () => {
     if (soldOut || noMoreAvailable) return

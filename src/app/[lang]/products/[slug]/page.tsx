@@ -123,7 +123,7 @@ function productKeywords(product: Product) {
   return [
     ...base,
     ...(bySlug[product.slug] || []),
-    ...getProductBuyingGuideLinks(product).map((guide) => guide.title),
+    ...getProductBuyingGuideLinks(product, 'en').map((guide) => guide.title),
   ]
 }
 
@@ -211,7 +211,7 @@ async function productJsonLd(sourceProduct: Product, lang: string) {
   const faqs = localizedRoute
     ? localizedContent.product.localizedFaqs ?? getProductFaqs(sourceProduct)
     : getProductFaqs(sourceProduct)
-  const buyingGuideItems = getProductBuyingGuideLinks(sourceProduct).map((guide, index) => ({
+  const buyingGuideItems = getProductBuyingGuideLinks(sourceProduct, schemaLang).map((guide, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     item: {

@@ -3,9 +3,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { getProductBySlug } from '@/lib/products'
+import { getProductBySlug, guideCopy } from '@/lib/products'
 import {
   getNonBrandLandingPage,
+  localizeNonBrandLandingPage,
   nonBrandLandingPages,
   type NonBrandLandingPage,
 } from '@/lib/non-brand-pages'
@@ -76,10 +77,47 @@ function pageKeywords(page: NonBrandLandingPage) {
   ])).slice(0, 14)
 }
 
+function nonBrandUiCopy(lang: string) {
+  const guide = guideCopy[lang as keyof typeof guideCopy] || guideCopy.en
+  if (lang === 'en') {
+    return {
+      requestSupport: 'Request configuration support',
+      viewDownloads: 'View technical downloads',
+      beforeQuote: 'Before requesting a quote',
+      prepareInputs: 'Prepare the project inputs',
+      prepareInputsBody:
+        'Include the target voltage, capacity, power, quantity, application, compatible equipment, destination country, site conditions, and required delivery scope.',
+      startInquiry: 'Start a technical inquiry',
+      relevantProducts: 'Relevant products',
+      continueSpec: 'Continue from the requirement to the product specification',
+      viewProductDetails: 'View product details',
+      faqEyebrow: 'Frequently asked questions',
+      faqTitle: 'Selection questions',
+      relatedPages: 'Related technical pages',
+    }
+  }
+
+  return {
+    requestSupport: guide.quote,
+    viewDownloads: guide.europe,
+    beforeQuote: guide.quote,
+    prepareInputs: guide.enclosureEu,
+    prepareInputsBody: guide.desc,
+    startInquiry: guide.quote,
+    relevantProducts: guide.lifepo4Europe,
+    continueSpec: guide.desc,
+    viewProductDetails: guide.quote,
+    faqEyebrow: guide.europe,
+    faqTitle: guide.quote,
+    relatedPages: guide.europe,
+  }
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang, seoPath } = await params
-  const page = getNonBrandLandingPage(pagePath(seoPath))
-  if (!page) return {}
+  const sourcePage = getNonBrandLandingPage(pagePath(seoPath))
+  if (!sourcePage) return {}
+  const page = localizeNonBrandLandingPage(sourcePage, lang)
 
   const path = `/${page.path}`
   const canonical = absoluteUrl(canonicalSeoPath(lang, path, defaultIndexableSeoLocales))
@@ -130,6 +168,7 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
   const path = `/${page.path}`
   const url = absoluteUrl(canonicalSeoPath(lang, path))
   const primaryType = page.kind === 'category' ? 'CollectionPage' : page.kind === 'guide' ? 'TechArticle' : 'WebPage'
+  const ui = nonBrandUiCopy(lang)
 
   const primaryEntity: Record<string, unknown> = {
     '@type': primaryType,
@@ -192,12 +231,12 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
       },
       {
         '@type': 'ItemList',
-        name: `Relevant products for ${page.title}`,
+        name: `${ui.relevantProducts}: ${page.title}`,
         itemListElement: productItems,
       },
       {
         '@type': 'ItemList',
-        name: `Related technical pages for ${page.title}`,
+        name: `${ui.relatedPages}: ${page.title}`,
         itemListElement: relatedPageItems,
       },
       {
@@ -217,8 +256,9 @@ function landingPageJsonLd(page: NonBrandLandingPage, lang: string) {
 
 export default async function NonBrandLandingPage({ params }: PageProps) {
   const { lang, seoPath } = await params
-  const page = getNonBrandLandingPage(pagePath(seoPath))
-  if (!page) notFound()
+  const sourcePage = getNonBrandLandingPage(pagePath(seoPath))
+  if (!sourcePage) notFound()
+  const page = localizeNonBrandLandingPage(sourcePage, lang)
 
   const products = page.products
     .map((item) => ({ item, product: getProductBySlug(item.slug) }))
@@ -226,6 +266,7 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
 
   const quoteHref = localizedSeoPath(lang, '/shipping-quote')
   const downloadsHref = localizedSeoPath(lang, '/downloads')
+  const ui = nonBrandUiCopy(lang)
 
   return (
     <>
@@ -261,13 +302,13 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
                   href={quoteHref}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-500 px-6 py-3.5 text-sm font-bold text-black transition hover:bg-green-400"
                 >
-                  Request configuration support <ArrowRight size={17} />
+                  {ui.requestSupport} <ArrowRight size={17} />
                 </Link>
                 <Link
                   href={downloadsHref}
                   className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/15"
                 >
-                  View technical downloads
+                  {ui.viewDownloads}
                 </Link>
               </div>
             </div>
@@ -320,18 +361,17 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
 
               <aside className="h-fit rounded-2xl border border-gray-200 bg-gray-950 p-6 text-white lg:sticky lg:top-28">
                 <p className="text-xs font-bold uppercase tracking-widest text-green-400">
-                  Before requesting a quote
+                  {ui.beforeQuote}
                 </p>
-                <h2 className="mt-3 text-2xl font-bold">Prepare the project inputs</h2>
+                <h2 className="mt-3 text-2xl font-bold">{ui.prepareInputs}</h2>
                 <p className="mt-4 text-sm leading-6 text-gray-300">
-                  Include the target voltage, capacity, power, quantity, application, compatible equipment,
-                  destination country, site conditions, and required delivery scope.
+                  {ui.prepareInputsBody}
                 </p>
                 <Link
                   href={quoteHref}
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-gray-950 transition hover:bg-gray-100"
                 >
-                  Start a technical inquiry <ArrowRight size={16} />
+                  {ui.startInquiry} <ArrowRight size={16} />
                 </Link>
               </aside>
             </div>
@@ -341,10 +381,10 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
             <div className="mx-auto max-w-7xl px-6">
               <div className="max-w-3xl">
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-400">
-                  Relevant products
+                  {ui.relevantProducts}
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-                  Continue from the requirement to the product specification
+                  {ui.continueSpec}
                 </h2>
               </div>
               <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -371,7 +411,7 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
                         <h3 className="text-xl font-bold">{item.label}</h3>
                         <p className="mt-3 text-sm leading-6 text-gray-300">{item.description}</p>
                         <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-green-400">
-                          View product details <ArrowRight size={15} />
+                          {ui.viewProductDetails} <ArrowRight size={15} />
                         </span>
                       </div>
                     </Link>
@@ -385,9 +425,9 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
             <div className="grid gap-12 lg:grid-cols-2">
               <div>
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-700">
-                  Frequently asked questions
+                  {ui.faqEyebrow}
                 </p>
-                <h2 className="mt-3 text-3xl font-bold tracking-tight">Selection questions</h2>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight">{ui.faqTitle}</h2>
               </div>
               <div className="divide-y divide-gray-200 border-y border-gray-200">
                 {page.faqs.map((faq) => (
@@ -404,7 +444,7 @@ export default async function NonBrandLandingPage({ params }: PageProps) {
 
           <section className="border-t border-gray-100 bg-gray-50 py-16">
             <div className="mx-auto max-w-7xl px-6">
-              <h2 className="text-2xl font-bold text-gray-950">Related technical pages</h2>
+              <h2 className="text-2xl font-bold text-gray-950">{ui.relatedPages}</h2>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 {page.related.map((link) => (
                   <Link

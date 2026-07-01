@@ -1,3 +1,5 @@
+import { guideCopy } from '@/lib/products'
+
 export interface NonBrandPageHighlight {
   label: string
   value: string
@@ -43,6 +45,7 @@ export interface NonBrandLandingPage {
 
 type EuropeanCountryPageConfig = {
   country: string
+  code: string
   adjective: string
   slug: string
   image: string
@@ -50,9 +53,58 @@ type EuropeanCountryPageConfig = {
   buyerFocus: string
 }
 
+const existingEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
+  {
+    country: 'Germany',
+    code: 'DE',
+    adjective: 'German',
+    slug: 'germany-lifepo4-battery-kit',
+    image: '/images/battery-kit-hero.webp',
+    priorityPhrase: 'LiFePO4 battery kit Europe, EU shipping, and C&I cabinet quotation review',
+    buyerFocus: 'installers, distributors, and project owners',
+  },
+  {
+    country: 'France',
+    code: 'FR',
+    adjective: 'French',
+    slug: 'france-lifepo4-battery-kit',
+    image: '/images/6u-kit/1.webp',
+    priorityPhrase: 'battery kit Europe, EU shipping, and commercial ESS planning',
+    buyerFocus: 'residential solar installers, distributors, and C&I energy storage buyers',
+  },
+  {
+    country: 'Italy',
+    code: 'IT',
+    adjective: 'Italian',
+    slug: 'italy-lifepo4-battery-kit',
+    image: '/images/battery-kit-system.webp',
+    priorityPhrase: '48V battery enclosure EU shipping and commercial ESS quotation support',
+    buyerFocus: 'residential solar, small commercial, and C&I buyers',
+  },
+  {
+    country: 'Netherlands',
+    code: 'NL',
+    adjective: 'Dutch',
+    slug: 'netherlands-lifepo4-battery-kit',
+    image: '/images/6u-kit/2.webp',
+    priorityPhrase: 'EU warehouse battery kit search and fast quotation preparation',
+    buyerFocus: 'solar storage, battery enclosure, and commercial project buyers',
+  },
+  {
+    country: 'Poland',
+    code: 'PL',
+    adjective: 'Polish',
+    slug: 'poland-lifepo4-battery-kit',
+    image: '/images/tness-ci-ess/main-1.webp',
+    priorityPhrase: 'LiFePO4 battery kit Europe and C&I ESS quotation details',
+    buyerFocus: 'residential storage installers, distributors, and commercial project owners',
+  },
+]
+
 const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   {
     country: 'Spain',
+    code: 'ES',
     adjective: 'Spanish',
     slug: 'spain-lifepo4-battery-kit',
     image: '/images/battery-kit-system.webp',
@@ -61,6 +113,7 @@ const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   },
   {
     country: 'Austria',
+    code: 'AT',
     adjective: 'Austrian',
     slug: 'austria-lifepo4-battery-kit',
     image: '/images/6u-kit/3.webp',
@@ -69,6 +122,7 @@ const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   },
   {
     country: 'Belgium',
+    code: 'BE',
     adjective: 'Belgian',
     slug: 'belgium-lifepo4-battery-kit',
     image: '/images/battery-kit-hero.webp',
@@ -77,6 +131,7 @@ const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   },
   {
     country: 'Sweden',
+    code: 'SE',
     adjective: 'Swedish',
     slug: 'sweden-lifepo4-battery-kit',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -85,6 +140,7 @@ const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   },
   {
     country: 'Denmark',
+    code: 'DK',
     adjective: 'Danish',
     slug: 'denmark-lifepo4-battery-kit',
     image: '/images/6u-kit/2.webp',
@@ -93,6 +149,7 @@ const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
   },
   {
     country: 'Portugal',
+    code: 'PT',
     adjective: 'Portuguese',
     slug: 'portugal-lifepo4-battery-kit',
     image: '/images/battery-kit-system.webp',
@@ -204,6 +261,324 @@ function buildEuropeanCountryPage(config: EuropeanCountryPageConfig): NonBrandLa
       },
     ],
   }
+}
+
+const allEuropeanCountryConfigs = [...existingEuropeanCountryConfigs, ...additionalEuropeanCountryConfigs]
+
+function mkCountryCopy(words: {
+  buyers: string
+  title: string
+  description: string
+  intro: string
+  targetMarket: string
+  coreSearch: string
+  productRoute: string
+  nextStep: string
+  euDelivery: string
+  directOrQuote: string
+  planning: string
+  planningBody: string
+  scopeBody: string
+  inputs: string
+  inputsBody: string
+  quote: string
+  quoteBody: string
+  shipQ: string
+  shipA: string
+  cellsQ: string
+  cellsA: string
+  cabinetQ: string
+  cabinetA: string
+}) {
+  return {
+    buyers: words.buyers,
+    title: (country: string) => `${words.title} ${country}`,
+    description: (country: string) => `${words.description} ${country}.`,
+    intro: (country: string) => `${words.intro} ${country}.`,
+    targetMarket: words.targetMarket,
+    coreSearch: words.coreSearch,
+    productRoute: words.productRoute,
+    nextStep: words.nextStep,
+    euDelivery: words.euDelivery,
+    directOrQuote: words.directOrQuote,
+    planningTitle: (country: string) => `${words.planning} ${country}`,
+    planningBody: words.planningBody,
+    scopeBody: words.scopeBody,
+    inputsTitle: words.inputs,
+    inputsBody: words.inputsBody,
+    quoteTitle: words.quote,
+    quoteBody: words.quoteBody,
+    faqShip: (country: string) => `${words.shipQ} ${country}?`,
+    faqShipAnswer: (country: string) => `${country}: ${words.shipA}`,
+    faqCells: (country: string) => `${words.cellsQ} ${country}?`,
+    faqCellsAnswer: words.cellsA,
+    faqCabinet: words.cabinetQ,
+    faqCabinetAnswer: words.cabinetA,
+  }
+}
+
+const countryPageCopy = {
+  en: {
+    buyers: 'battery storage buyers',
+    title: (country: string) => `LiFePO4 Battery Kits and ESS Cabinets for ${country}`,
+    description: (country: string) => `Prepare ${country}-focused quotations for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping review.`,
+    intro: (country: string) => `Buyers in ${country} can use this page to prepare a JKESS quotation request for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS control boxes, or configured commercial ESS cabinets.`,
+    targetMarket: 'Target market',
+    coreSearch: 'Core search',
+    productRoute: 'Product route',
+    nextStep: 'Next step',
+    euDelivery: 'EU delivery projects',
+    directOrQuote: 'Direct checkout or written quote',
+    planningTitle: (country: string) => `Battery kit planning for ${country}`,
+    planningBody: 'Compare floor-standing caster enclosures, 6U rack enclosures, high-voltage BMS control hardware, and configured commercial energy storage cabinets from the real installation, inverter, documentation, delivery, and project scope.',
+    scopeBody: 'JKESS battery kits are enclosure and integration-hardware products. Compatible LiFePO4 cells, inverter equipment, site cabling, installation, and commissioning are outside the standard package unless a written quotation confirms otherwise.',
+    inputsTitle: 'EU shipping and quotation inputs',
+    inputsBody: 'A faster quotation should include delivery city, postal code, address type, unloading access, selected option, quantity, and whether the order is for resale, installation, or a configured project.',
+    quoteTitle: 'When to request a written quote',
+    quoteBody: 'Request a written quotation for several kits, bulk resale, special packing, high-voltage BMS architecture, configured C&I cabinets, custom documentation, or freight-sensitive delivery.',
+    faqShip: (country: string) => `Can JKESS ship battery kits to ${country}?`,
+    faqShipAnswer: (country: string) => `${country} is handled as an EU destination for website shipping review. Larger quantities, remote delivery, or project shipments may still require a written quotation before payment.`,
+    faqCells: (country: string) => `Are LiFePO4 cells included with JKESS battery kits for ${country}?`,
+    faqCellsAnswer: 'No. The kits provide the enclosure and selected hardware package. Compatible LiFePO4 cells must be sourced separately unless a written quotation says otherwise.',
+    faqCabinet: 'What should C&I ESS buyers send before quotation?',
+    faqCabinetAnswer: 'Send capacity target, AC power, site location, grid information, cooling preference, installation scope, documentation requirements, delivery conditions, and monitoring expectations.',
+  },
+  de: {
+    buyers: 'Käufer von Batteriespeichern',
+    title: (country: string) => `LiFePO4-Batterie-Kits und ESS-Schränke für ${country}`,
+    description: (country: string) => `Bereiten Sie Angebote für ${country} zu LiFePO4-Batterie-Kits, 48V-Gehäusen, Hochvolt-BMS und gewerblichen Energiespeicherschränken mit EU-Versandprüfung vor.`,
+    intro: (country: string) => `Käufer in ${country} können diese Seite nutzen, um eine JKESS-Anfrage für 48V-LiFePO4-Gehäuse, Rack-Kits, Hochvolt-BMS oder konfigurierte gewerbliche ESS-Schränke vorzubereiten.`,
+    targetMarket: 'Zielmarkt', coreSearch: 'Kernsuche', productRoute: 'Produktpfad', nextStep: 'Nächster Schritt', euDelivery: 'EU-Lieferprojekte', directOrQuote: 'Direktkauf oder schriftliches Angebot',
+    planningTitle: (country: string) => `Batterie-Kit-Planung für ${country}`,
+    planningBody: 'Vergleichen Sie Standgehäuse mit Rollen, 6U-Rack-Gehäuse, Hochvolt-BMS-Hardware und konfigurierte gewerbliche Energiespeicherschränke anhand von Installation, Wechselrichter, Dokumentation, Lieferung und Projektumfang.',
+    scopeBody: 'JKESS-Batterie-Kits sind Gehäuse- und Integrationshardware. LiFePO4-Zellen, Wechselrichter, Standortverkabelung, Installation und Inbetriebnahme sind nicht enthalten, sofern kein schriftliches Angebot dies bestätigt.',
+    inputsTitle: 'EU-Versand und Angebotsdaten',
+    inputsBody: 'Für ein schnelleres Angebot nennen Sie Stadt, Postleitzahl, Adresstyp, Entladung, gewählte Option, Menge und ob es um Wiederverkauf, Installation oder ein konfiguriertes Projekt geht.',
+    quoteTitle: 'Wann ein schriftliches Angebot nötig ist',
+    quoteBody: 'Fordern Sie ein Angebot für mehrere Kits, Wiederverkauf, Sonderverpackung, Hochvolt-BMS, C&I-Schränke, spezielle Dokumente oder frachtsensible Lieferung an.',
+    faqShip: (country: string) => `Kann JKESS Batterie-Kits nach ${country} liefern?`,
+    faqShipAnswer: (country: string) => `${country} gilt als EU-Ziel für die Versandprüfung. Größere Mengen, abgelegene Lieferorte oder Projektlieferungen können ein schriftliches Angebot erfordern.`,
+    faqCells: (country: string) => `Sind LiFePO4-Zellen bei JKESS-Kits für ${country} enthalten?`,
+    faqCellsAnswer: 'Nein. Die Kits enthalten das Gehäuse und die gewählte Hardware. Kompatible LiFePO4-Zellen müssen separat beschafft werden, sofern kein Angebot etwas anderes bestätigt.',
+    faqCabinet: 'Welche Angaben brauchen C&I-ESS-Käufer vor dem Angebot?',
+    faqCabinetAnswer: 'Senden Sie Kapazität, AC-Leistung, Standort, Netzdaten, Kühlwunsch, Installationsumfang, Dokumente, Lieferbedingungen und Monitoring-Anforderungen.',
+  },
+  fr: {
+    buyers: 'acheteurs de stockage batterie',
+    title: (country: string) => `Kits batterie LiFePO4 et armoires ESS pour ${country}`,
+    description: (country: string) => `Préparez des devis pour ${country} concernant kits LiFePO4, boîtiers 48V, BMS haute tension et armoires ESS commerciales avec vérification de livraison UE.`,
+    intro: (country: string) => `Les acheteurs en ${country} peuvent préparer une demande JKESS pour boîtiers LiFePO4 48V, kits rack, BMS haute tension ou armoires ESS commerciales configurées.`,
+    targetMarket: 'Marché cible', coreSearch: 'Recherche principale', productRoute: 'Parcours produit', nextStep: 'Étape suivante', euDelivery: 'Projets avec livraison UE', directOrQuote: 'Paiement direct ou devis écrit',
+    planningTitle: (country: string) => `Planification des kits batterie pour ${country}`,
+    planningBody: 'Comparez boîtiers au sol à roulettes, boîtiers rack 6U, matériel BMS haute tension et armoires ESS commerciales configurées selon l’installation, l’onduleur, les documents, la livraison et le périmètre projet.',
+    scopeBody: 'Les kits batterie JKESS sont des boîtiers et matériels d’intégration. Cellules LiFePO4, onduleur, câblage site, installation et mise en service sont exclus sauf confirmation écrite.',
+    inputsTitle: 'Livraison UE et données de devis',
+    inputsBody: 'Pour un devis plus rapide, indiquez ville, code postal, type d’adresse, déchargement, option choisie, quantité et usage revente, installation ou projet configuré.',
+    quoteTitle: 'Quand demander un devis écrit',
+    quoteBody: 'Demandez un devis pour plusieurs kits, revente, emballage spécial, architecture BMS haute tension, armoires C&I, documents spécifiques ou livraison sensible au fret.',
+    faqShip: (country: string) => `JKESS peut-il livrer des kits batterie vers ${country} ?`,
+    faqShipAnswer: (country: string) => `${country} est traité comme destination UE pour la vérification de livraison. Les grandes quantités ou projets peuvent nécessiter un devis écrit.`,
+    faqCells: (country: string) => `Les cellules LiFePO4 sont-elles incluses pour ${country} ?`,
+    faqCellsAnswer: 'Non. Les kits comprennent le boîtier et le matériel sélectionné. Les cellules LiFePO4 compatibles sont à acheter séparément sauf mention dans le devis.',
+    faqCabinet: 'Quelles informations envoyer pour une armoire ESS C&I ?',
+    faqCabinetAnswer: 'Envoyez capacité, puissance AC, site, données réseau, refroidissement, périmètre d’installation, documents, livraison et exigences de supervision.',
+  },
+  es: mkCountryCopy({ buyers: 'compradores de almacenamiento en baterías', title: 'Kits de batería LiFePO4 y armarios ESS para', description: 'Prepare cotizaciones de kits LiFePO4, cajas 48V, BMS de alto voltaje y armarios ESS comerciales para', intro: 'Los compradores pueden preparar una solicitud JKESS para cajas LiFePO4 48V, kits rack, BMS de alto voltaje o armarios ESS comerciales configurados en', targetMarket: 'Mercado objetivo', coreSearch: 'Búsqueda principal', productRoute: 'Ruta de producto', nextStep: 'Siguiente paso', euDelivery: 'proyectos con entrega UE', directOrQuote: 'Pago directo o cotización escrita', planning: 'Planificación de kits de batería para', planningBody: 'Compare cajas con ruedas, cajas rack 6U, hardware BMS de alto voltaje y armarios ESS comerciales según instalación, inversor, documentación, entrega y alcance del proyecto.', scopeBody: 'Los kits JKESS son cajas y hardware de integración. Las celdas LiFePO4, inversor, cableado, instalación y puesta en marcha no están incluidos salvo cotización escrita.', inputs: 'Envío UE y datos para cotización', inputsBody: 'Indique ciudad, código postal, tipo de dirección, descarga, opción, cantidad y si es reventa, instalación o proyecto configurado.', quote: 'Cuándo pedir una cotización escrita', quoteBody: 'Pida cotización para varios kits, reventa, embalaje especial, BMS de alto voltaje, armarios C&I, documentación o entrega sensible al flete.', shipQ: '¿Puede JKESS enviar kits de batería a', shipA: 'es destino UE para revisión de envío; cantidades grandes o proyectos pueden requerir cotización escrita.', cellsQ: '¿Incluyen celdas LiFePO4 los kits JKESS para', cellsA: 'No. Los kits incluyen la caja y el hardware seleccionado. Las celdas LiFePO4 compatibles se compran por separado salvo cotización.', cabinetQ: '¿Qué deben enviar los compradores de ESS C&I?', cabinetA: 'Envíe capacidad, potencia AC, ubicación, red, refrigeración, alcance de instalación, documentos, entrega y requisitos de monitorización.' }),
+  it: mkCountryCopy({ buyers: 'acquirenti di accumulo batterie', title: 'Kit batteria LiFePO4 e armadi ESS per', description: 'Prepara preventivi per kit LiFePO4, box 48V, BMS alta tensione e armadi ESS commerciali per', intro: 'Gli acquirenti possono preparare una richiesta JKESS per box LiFePO4 48V, kit rack, BMS alta tensione o armadi ESS commerciali configurati in', targetMarket: 'Mercato target', coreSearch: 'Ricerca principale', productRoute: 'Percorso prodotto', nextStep: 'Passo successivo', euDelivery: 'progetti con consegna UE', directOrQuote: 'Checkout diretto o preventivo scritto', planning: 'Pianificazione kit batteria per', planningBody: 'Confronta box con ruote, box rack 6U, hardware BMS alta tensione e armadi ESS commerciali in base a installazione, inverter, documenti, consegna e ambito progetto.', scopeBody: 'I kit JKESS sono box e hardware di integrazione. Celle LiFePO4, inverter, cablaggio, installazione e avviamento non sono inclusi salvo preventivo scritto.', inputs: 'Spedizione UE e dati per preventivo', inputsBody: 'Indica città, CAP, tipo indirizzo, scarico, opzione, quantità e se si tratta di rivendita, installazione o progetto configurato.', quote: 'Quando richiedere un preventivo scritto', quoteBody: 'Richiedi preventivo per più kit, rivendita, imballo speciale, BMS alta tensione, armadi C&I, documenti o consegna sensibile al trasporto.', shipQ: 'JKESS può spedire kit batteria in', shipA: 'è una destinazione UE per revisione spedizione; quantità elevate o progetti possono richiedere preventivo scritto.', cellsQ: 'Le celle LiFePO4 sono incluse nei kit JKESS per', cellsA: 'No. I kit includono il box e l’hardware selezionato. Le celle LiFePO4 compatibili sono acquistate separatamente salvo preventivo.', cabinetQ: 'Cosa devono inviare gli acquirenti ESS C&I?', cabinetA: 'Inviare capacità, potenza AC, sito, rete, raffreddamento, ambito installazione, documenti, consegna e monitoraggio.' }),
+  nl: mkCountryCopy({ buyers: 'kopers van batterijopslag', title: 'LiFePO4-batterijkits en ESS-kasten voor', description: 'Bereid offertes voor LiFePO4-kits, 48V behuizingen, hoogspannings-BMS en commerciële ESS-kasten voor', intro: 'Kopers kunnen een JKESS-aanvraag voorbereiden voor 48V LiFePO4-behuizingen, rackkits, hoogspannings-BMS of geconfigureerde commerciële ESS-kasten in', targetMarket: 'Doelmarkt', coreSearch: 'Belangrijkste zoekterm', productRoute: 'Productroute', nextStep: 'Volgende stap', euDelivery: 'projecten met EU-levering', directOrQuote: 'Direct afrekenen of schriftelijke offerte', planning: 'Planning van batterijkits voor', planningBody: 'Vergelijk verrijdbare behuizingen, 6U rackbehuizingen, hoogspannings-BMS en commerciële ESS-kasten op installatie, omvormer, documentatie, levering en projectscope.', scopeBody: 'JKESS-kits zijn behuizing en integratiehardware. LiFePO4-cellen, omvormer, bekabeling, installatie en inbedrijfstelling zijn uitgesloten tenzij schriftelijk bevestigd.', inputs: 'EU-verzending en offertegegevens', inputsBody: 'Geef stad, postcode, adrestype, lossen, optie, hoeveelheid en doel zoals wederverkoop, installatie of geconfigureerd project.', quote: 'Wanneer een schriftelijke offerte nodig is', quoteBody: 'Vraag offerte voor meerdere kits, wederverkoop, speciale verpakking, hoogspannings-BMS, C&I-kasten, documentatie of vrachtgevoelige levering.', shipQ: 'Kan JKESS batterijkits verzenden naar', shipA: 'is een EU-bestemming voor verzendcontrole; grotere aantallen of projecten kunnen een schriftelijke offerte vereisen.', cellsQ: 'Zijn LiFePO4-cellen inbegrepen bij JKESS-kits voor', cellsA: 'Nee. De kits bevatten de behuizing en gekozen hardware. Compatibele LiFePO4-cellen worden apart gekocht tenzij de offerte anders zegt.', cabinetQ: 'Wat moeten C&I ESS-kopers sturen?', cabinetA: 'Stuur capaciteit, AC-vermogen, locatie, netgegevens, koeling, installatiescope, documenten, levering en monitoringvereisten.' }),
+  pt: mkCountryCopy({ buyers: 'compradores de armazenamento em baterias', title: 'Kits de bateria LiFePO4 e armários ESS para', description: 'Prepare cotações de kits LiFePO4, caixas 48V, BMS de alta tensão e armários ESS comerciais para', intro: 'Os compradores podem preparar uma solicitação JKESS para caixas LiFePO4 48V, kits rack, BMS de alta tensão ou armários ESS comerciais configurados em', targetMarket: 'Mercado-alvo', coreSearch: 'Pesquisa principal', productRoute: 'Rota de produto', nextStep: 'Próximo passo', euDelivery: 'projetos com entrega UE', directOrQuote: 'Pagamento direto ou cotação escrita', planning: 'Planeamento de kits de bateria para', planningBody: 'Compare caixas com rodas, caixas rack 6U, hardware BMS de alta tensão e armários ESS comerciais conforme instalação, inversor, documentação, entrega e escopo.', scopeBody: 'Os kits JKESS são caixas e hardware de integração. Células LiFePO4, inversor, cablagem, instalação e comissionamento não estão incluídos salvo cotação escrita.', inputs: 'Envio UE e dados de cotação', inputsBody: 'Informe cidade, código postal, tipo de endereço, descarga, opção, quantidade e se é revenda, instalação ou projeto configurado.', quote: 'Quando pedir cotação escrita', quoteBody: 'Peça cotação para vários kits, revenda, embalagem especial, BMS de alta tensão, armários C&I, documentos ou entrega sensível ao frete.', shipQ: 'A JKESS pode enviar kits de bateria para', shipA: 'é destino UE para revisão de envio; quantidades maiores ou projetos podem exigir cotação escrita.', cellsQ: 'As células LiFePO4 estão incluídas nos kits JKESS para', cellsA: 'Não. Os kits incluem a caixa e o hardware selecionado. Células LiFePO4 compatíveis são compradas separadamente salvo cotação.', cabinetQ: 'O que compradores ESS C&I devem enviar?', cabinetA: 'Envie capacidade, potência AC, local, rede, refrigeração, escopo de instalação, documentos, entrega e monitorização.' }),
+  sv: mkCountryCopy({ buyers: 'köpare av batterilagring', title: 'LiFePO4-batterikit och ESS-skåp för', description: 'Förbered offerter för LiFePO4-kit, 48V höljen, högspännings-BMS och kommersiella ESS-skåp för', intro: 'Köpare kan förbereda en JKESS-förfrågan för 48V LiFePO4-höljen, rackkit, högspännings-BMS eller konfigurerade kommersiella ESS-skåp i', targetMarket: 'Målmarknad', coreSearch: 'Huvudsökning', productRoute: 'Produktväg', nextStep: 'Nästa steg', euDelivery: 'projekt med EU-leverans', directOrQuote: 'Direktköp eller skriftlig offert', planning: 'Planering av batterikit för', planningBody: 'Jämför rullbara höljen, 6U rackhöljen, högspännings-BMS och kommersiella ESS-skåp efter installation, växelriktare, dokument, leverans och projektscope.', scopeBody: 'JKESS-kit är höljen och integrationshårdvara. LiFePO4-celler, växelriktare, kablage, installation och driftsättning ingår inte utan skriftlig offert.', inputs: 'EU-frakt och offertuppgifter', inputsBody: 'Ange stad, postnummer, adresstyp, lossning, alternativ, antal och om det gäller återförsäljning, installation eller konfigurerat projekt.', quote: 'När skriftlig offert behövs', quoteBody: 'Begär offert för flera kit, återförsäljning, specialpackning, högspännings-BMS, C&I-skåp, dokument eller fraktkänslig leverans.', shipQ: 'Kan JKESS skicka batterikit till', shipA: 'är en EU-destination för fraktgranskning; större antal eller projekt kan kräva skriftlig offert.', cellsQ: 'Ingår LiFePO4-celler i JKESS-kit för', cellsA: 'Nej. Kiten innehåller hölje och vald hårdvara. Kompatibla LiFePO4-celler köps separat om inte offerten anger annat.', cabinetQ: 'Vad ska C&I ESS-köpare skicka?', cabinetA: 'Skicka kapacitet, AC-effekt, plats, nätdata, kylning, installationsscope, dokument, leverans och övervakningskrav.' }),
+  da: mkCountryCopy({ buyers: 'købere af batterilagring', title: 'LiFePO4-batterisæt og ESS-kabinetter til', description: 'Forbered tilbud på LiFePO4-sæt, 48V kabinetter, højspændings-BMS og kommercielle ESS-kabinetter til', intro: 'Købere kan forberede en JKESS-forespørgsel for 48V LiFePO4-kabinetter, rack-sæt, højspændings-BMS eller konfigurerede kommercielle ESS-kabinetter i', targetMarket: 'Målmarked', coreSearch: 'Kernesøgning', productRoute: 'Produktrute', nextStep: 'Næste trin', euDelivery: 'projekter med EU-levering', directOrQuote: 'Direkte checkout eller skriftligt tilbud', planning: 'Planlægning af batterisæt til', planningBody: 'Sammenlign kabinetter med hjul, 6U rackkabinetter, højspændings-BMS og kommercielle ESS-kabinetter efter installation, inverter, dokumenter, levering og projektscope.', scopeBody: 'JKESS-sæt er kabinetter og integrationshardware. LiFePO4-celler, inverter, kabler, installation og idriftsættelse er ikke inkluderet uden skriftligt tilbud.', inputs: 'EU-forsendelse og tilbudsdata', inputsBody: 'Angiv by, postnummer, adressetype, aflæsning, valgmulighed, mængde og om det er videresalg, installation eller konfigureret projekt.', quote: 'Hvornår skriftligt tilbud er nødvendigt', quoteBody: 'Anmod om tilbud for flere sæt, videresalg, specialpakning, højspændings-BMS, C&I-kabinetter, dokumenter eller fragtfølsom levering.', shipQ: 'Kan JKESS sende batterisæt til', shipA: 'er en EU-destination til forsendelsesgennemgang; større mængder eller projekter kan kræve skriftligt tilbud.', cellsQ: 'Er LiFePO4-celler inkluderet i JKESS-sæt til', cellsA: 'Nej. Sættene indeholder kabinet og valgt hardware. Kompatible LiFePO4-celler købes separat medmindre tilbuddet siger andet.', cabinetQ: 'Hvad skal C&I ESS-købere sende?', cabinetA: 'Send kapacitet, AC-effekt, placering, netdata, køling, installationsscope, dokumenter, levering og overvågningskrav.' }),
+  pl: mkCountryCopy({ buyers: 'kupujący magazyny energii', title: 'Zestawy baterii LiFePO4 i szafy ESS dla', description: 'Przygotuj oferty zestawów LiFePO4, obudów 48V, BMS wysokiego napięcia i komercyjnych szaf ESS dla', intro: 'Kupujący mogą przygotować zapytanie JKESS dla obudów LiFePO4 48V, zestawów rack, BMS wysokiego napięcia lub konfigurowanych komercyjnych szaf ESS w', targetMarket: 'Rynek docelowy', coreSearch: 'Główna fraza', productRoute: 'Ścieżka produktu', nextStep: 'Następny krok', euDelivery: 'projekty z dostawą UE', directOrQuote: 'Zakup bezpośredni lub pisemna oferta', planning: 'Planowanie zestawów baterii dla', planningBody: 'Porównaj obudowy na kołach, obudowy rack 6U, BMS wysokiego napięcia i komercyjne szafy ESS według instalacji, falownika, dokumentów, dostawy i zakresu projektu.', scopeBody: 'Zestawy JKESS to obudowy i hardware integracyjny. Ogniwa LiFePO4, falownik, okablowanie, instalacja i uruchomienie nie są zawarte bez pisemnej oferty.', inputs: 'Wysyłka UE i dane do oferty', inputsBody: 'Podaj miasto, kod pocztowy, typ adresu, rozładunek, opcję, ilość oraz czy to odsprzedaż, instalacja czy projekt konfigurowany.', quote: 'Kiedy poprosić o pisemną ofertę', quoteBody: 'Poproś o ofertę dla wielu zestawów, odsprzedaży, specjalnego pakowania, BMS HV, szaf C&I, dokumentów lub dostawy zależnej od frachtu.', shipQ: 'Czy JKESS może wysłać zestawy baterii do', shipA: 'jest miejscem dostawy UE do weryfikacji wysyłki; większe ilości lub projekty mogą wymagać pisemnej oferty.', cellsQ: 'Czy ogniwa LiFePO4 są w zestawach JKESS dla', cellsA: 'Nie. Zestawy obejmują obudowę i wybrany hardware. Kompatybilne ogniwa LiFePO4 kupuje się osobno, chyba że oferta stanowi inaczej.', cabinetQ: 'Co powinni wysłać kupujący ESS C&I?', cabinetA: 'Wyślij pojemność, moc AC, lokalizację, dane sieci, chłodzenie, zakres instalacji, dokumenty, dostawę i wymagania monitoringu.' }),
+}
+
+const countryPageFallbackLocales = ['fi', 'cs', 'sk', 'hu', 'ro', 'bg', 'el', 'hr', 'sl', 'lt', 'lv', 'et', 'ru', 'uk', 'fa', 'tr'] as const
+
+function countryCopy(lang: string) {
+  if (lang === 'de') return countryPageCopy.de
+  if (lang === 'fr') return countryPageCopy.fr
+  if (lang === 'es') return countryPageCopy.es
+  if (lang === 'it') return countryPageCopy.it
+  if (lang === 'nl') return countryPageCopy.nl
+  if (lang === 'pt') return countryPageCopy.pt
+  if (lang === 'sv') return countryPageCopy.sv
+  if (lang === 'da') return countryPageCopy.da
+  if (lang === 'pl') return countryPageCopy.pl
+  if (countryPageFallbackLocales.includes(lang as typeof countryPageFallbackLocales[number])) {
+    const guide = guideCopy[lang as keyof typeof guideCopy] || guideCopy.en
+    return mkCountryCopy({
+      buyers: guide.europe,
+      title: `${guide.lifepo4Europe} / ${guide.commercialEurope} -`,
+      description: `${guide.desc}`,
+      intro: `${guide.desc}`,
+      targetMarket: guide.europe,
+      coreSearch: guide.lifepo4Europe,
+      productRoute: guide.commercialEurope,
+      nextStep: guide.quote,
+      euDelivery: guide.enclosureEu,
+      directOrQuote: guide.quote,
+      planning: `${guide.lifepo4Europe} -`,
+      planningBody: guide.desc,
+      scopeBody: guide.quote,
+      inputs: guide.enclosureEu,
+      inputsBody: guide.desc,
+      quote: guide.quote,
+      quoteBody: guide.desc,
+      shipQ: guide.enclosureEu,
+      shipA: guide.desc,
+      cellsQ: guide.lifepo4Europe,
+      cellsA: guide.desc,
+      cabinetQ: guide.commercialEurope,
+      cabinetA: guide.desc,
+    })
+  }
+  return countryPageCopy.en
+}
+
+function localizedCountryName(lang: string, config: EuropeanCountryPageConfig) {
+  try {
+    return new Intl.DisplayNames([lang], { type: 'region' }).of(config.code) || config.country
+  } catch {
+    return config.country
+  }
+}
+
+function localizedGuide(lang: string) {
+  return guideCopy[lang as keyof typeof guideCopy] || guideCopy.en
+}
+
+function localizedTopic(path: string, guide: typeof guideCopy.en) {
+  if (path.includes('rack')) return guide.rackPlanning
+  if (path.includes('high-voltage') || path.includes('100a-vs-200a') || path.includes('bcu')) return guide.hvEss
+  if (path.includes('commercial') || path.includes('cabinet') || path.includes('peak-shaving')) return guide.commercialEurope
+  if (path.includes('can-rs485') || path.includes('inverter')) return guide.canRs485
+  if (path.includes('europe')) return guide.lifepo4Europe
+  if (path.includes('compare')) return guide.rackVsFloor
+  return guide.enclosureEu
+}
+
+function localizedRelatedLabel(href: string, guide: typeof guideCopy.en) {
+  const path = href.replace(/^\//, '')
+  if (path.includes('rack')) return guide.rackVsFloor
+  if (path.includes('high-voltage') || path.includes('100a-vs-200a') || path.includes('bcu')) return guide.hvEss
+  if (path.includes('commercial') || path.includes('cabinet')) return guide.commercialEurope
+  if (path.includes('can-rs485') || path.includes('inverter')) return guide.canRs485
+  if (path.includes('europe')) return guide.lifepo4Europe
+  return guide.enclosureEu
+}
+
+function localizeGenericNonBrandLandingPage(page: NonBrandLandingPage, lang: string): NonBrandLandingPage {
+  const guide = localizedGuide(lang)
+  const topic = localizedTopic(page.path, guide)
+  const secondary = page.path.includes('commercial') ? guide.cooling : guide.enclosureEu
+
+  return {
+    ...page,
+    eyebrow: guide.europe,
+    title: topic,
+    description: guide.desc,
+    intro: guide.desc,
+    highlights: [
+      { label: guide.lifepo4Europe, value: topic },
+      { label: guide.enclosureEu, value: secondary },
+      { label: guide.commercialEurope, value: guide.quote },
+      { label: guide.hvEss, value: guide.canRs485 },
+    ],
+    sections: [
+      {
+        title: topic,
+        paragraphs: [guide.desc, guide.quote],
+        bullets: [guide.enclosureEu, guide.hvEss, guide.commercialEurope, guide.canRs485],
+      },
+      {
+        title: secondary,
+        paragraphs: [guide.desc],
+      },
+      {
+        title: guide.quote,
+        paragraphs: [guide.desc],
+      },
+    ],
+    products: page.products.map((product) => ({
+      ...product,
+      description: guide.desc,
+    })),
+    faqs: [
+      { question: topic, answer: guide.desc },
+      { question: guide.enclosureEu, answer: guide.desc },
+      { question: guide.quote, answer: guide.desc },
+    ],
+    related: page.related.map((link) => ({
+      ...link,
+      label: localizedRelatedLabel(link.href, guide),
+      description: guide.desc,
+    })),
+  }
+}
+
+function buildLocalizedEuropeanCountryPage(config: EuropeanCountryPageConfig, lang: string): NonBrandLandingPage {
+  const copy = countryCopy(lang)
+  const country = localizedCountryName(lang, config)
+  const guide = localizedGuide(lang)
+
+  return {
+    path: `europe/${config.slug}`,
+    kind: 'solution',
+    eyebrow: `${country} ${copy.buyers}`,
+    title: copy.title(country),
+    description: copy.description(country),
+    intro: copy.intro(country),
+    image: config.image,
+    highlights: [
+      { label: copy.targetMarket, value: `${country} ${copy.euDelivery}` },
+      { label: copy.coreSearch, value: guide.lifepo4Europe },
+      { label: copy.productRoute, value: `${guide.enclosureEu} / ${guide.hvEss}` },
+      { label: copy.nextStep, value: copy.directOrQuote },
+    ],
+    sections: [
+      {
+        title: copy.planningTitle(country),
+        paragraphs: [copy.planningBody, copy.scopeBody],
+      },
+      {
+        title: copy.inputsTitle,
+        paragraphs: [copy.inputsBody],
+        bullets: [
+          `${guide.lifepo4Europe} / ${guide.enclosureEu}`,
+          `${guide.hvEss} / ${guide.currentCompare}`,
+          `${guide.commercialEurope} / ${guide.cooling}`,
+          `${guide.quote} / ${guide.europe}`,
+        ],
+      },
+      {
+        title: copy.quoteTitle,
+        paragraphs: [copy.quoteBody],
+      },
+    ],
+    products: [
+      { slug: 'battery-kit', label: 'Battery Kit With Caster', description: copy.planningBody },
+      { slug: '6u-battery-kit', label: '6U Battery Kit', description: copy.inputsBody },
+      { slug: 'high-voltage-kit', label: 'High Voltage Kit', description: copy.quoteBody },
+      { slug: 'tness-ci-ess-cabinet', label: 'C&I High Voltage ESS Cabinet', description: copy.faqCabinetAnswer },
+    ],
+    faqs: [
+      { question: copy.faqShip(country), answer: copy.faqShipAnswer(country) },
+      { question: copy.faqCells(country), answer: copy.faqCellsAnswer },
+      { question: copy.faqCabinet, answer: copy.faqCabinetAnswer },
+    ],
+    related: [
+      { href: '/europe', label: copy.title('Europe'), description: copy.intro('Europe') },
+      { href: '/europe/eu-warehouse-battery-kit', label: copy.inputsTitle, description: copy.inputsBody },
+      { href: '/europe/commercial-energy-storage-cabinet-europe', label: copy.faqCabinet, description: copy.faqCabinetAnswer },
+      { href: '/can-rs485-bms-inverter-compatibility', label: copy.productRoute, description: copy.scopeBody },
+    ],
+  }
+}
+
+export function localizeNonBrandLandingPage(page: NonBrandLandingPage, lang: string): NonBrandLandingPage {
+  if (lang === 'en') return page
+  const config = allEuropeanCountryConfigs.find((item) => page.path === `europe/${item.slug}`)
+  return config ? buildLocalizedEuropeanCountryPage(config, lang) : localizeGenericNonBrandLandingPage(page, lang)
 }
 
 const baseNonBrandLandingPages: NonBrandLandingPage[] = [

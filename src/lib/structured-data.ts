@@ -150,6 +150,12 @@ export const jkessOrganization = {
     'EU warehouse battery kit shipping',
     'Commercial energy storage cabinet project review',
     'Global energy storage distributor cooperation',
+    'Spain LiFePO4 battery kit projects',
+    'Austria battery kit shipping review',
+    'Belgium battery storage distributor support',
+    'Sweden commercial energy storage quotations',
+    'Denmark rack battery kit planning',
+    'Portugal solar storage battery kits',
   ],
   areaServed: [
     'European Union direct checkout',

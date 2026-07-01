@@ -26,6 +26,12 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
         'high voltage kit',
         'commercial ESS cabinet',
         'LiFePO4 storage system',
+        'Spain LiFePO4 battery kit',
+        'Austria battery kit shipping',
+        'Belgium battery storage distributor',
+        'Sweden commercial energy storage',
+        'Denmark rack battery kit',
+        'Portugal solar storage battery kit',
       ],
       image: products[0]?.images[0] || '/images/jkess-logo.png',
     })

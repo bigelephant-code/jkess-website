@@ -197,6 +197,36 @@ const technicalSearchPages = [
     text: 'Prepare Polish battery kit, high-voltage BMS, C&I cabinet, and EU shipping quotation details.',
   },
   {
+    href: '/europe/spain-lifepo4-battery-kit',
+    title: 'Spain solar storage kits',
+    text: 'Prepare Spanish LiFePO4 battery kit, inverter compatibility, EU delivery, and C&I ESS inputs.',
+  },
+  {
+    href: '/europe/austria-lifepo4-battery-kit',
+    title: 'Austria battery kit shipping',
+    text: 'Plan Austrian 48V enclosure, 6U rack kit, mountain-region delivery, and ESS quotation details.',
+  },
+  {
+    href: '/europe/belgium-lifepo4-battery-kit',
+    title: 'Belgium storage distributor quote',
+    text: 'Review Belgian battery kit, resale, logistics, high-voltage BMS, and C&I cabinet requirements.',
+  },
+  {
+    href: '/europe/sweden-lifepo4-battery-kit',
+    title: 'Sweden battery kit and ESS',
+    text: 'Prepare Swedish battery kit, cold-climate planning, HV BMS, and commercial cabinet quotations.',
+  },
+  {
+    href: '/europe/denmark-lifepo4-battery-kit',
+    title: 'Denmark rack battery planning',
+    text: 'Compare Danish 6U rack kit, EU delivery, inverter communication, and C&I ESS quote inputs.',
+  },
+  {
+    href: '/europe/portugal-lifepo4-battery-kit',
+    title: 'Portugal LiFePO4 battery kits',
+    text: 'Plan Portuguese solar storage kit, EU shipping, 48V enclosure, and commercial ESS requests.',
+  },
+  {
     href: '/commercial-energy-storage/261kwh',
     title: '261kWh C&I ESS cabinet',
     text: 'Review the larger cabinet energy class, logistics, cooling, duty cycle, and multi-cabinet planning.',

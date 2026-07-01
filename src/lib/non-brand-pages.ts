@@ -41,7 +41,172 @@ export interface NonBrandLandingPage {
   related: NonBrandPageLink[]
 }
 
-export const nonBrandLandingPages: NonBrandLandingPage[] = [
+type EuropeanCountryPageConfig = {
+  country: string
+  adjective: string
+  slug: string
+  image: string
+  priorityPhrase: string
+  buyerFocus: string
+}
+
+const additionalEuropeanCountryConfigs: EuropeanCountryPageConfig[] = [
+  {
+    country: 'Spain',
+    adjective: 'Spanish',
+    slug: 'spain-lifepo4-battery-kit',
+    image: '/images/battery-kit-system.webp',
+    priorityPhrase: 'solar self-consumption and 48V battery enclosure projects',
+    buyerFocus: 'residential solar installers, distributors, and commercial project buyers',
+  },
+  {
+    country: 'Austria',
+    adjective: 'Austrian',
+    slug: 'austria-lifepo4-battery-kit',
+    image: '/images/6u-kit/3.webp',
+    priorityPhrase: 'EU warehouse battery kit shipping and mountain-region delivery review',
+    buyerFocus: 'installers and integrators comparing rack kits, caster kits, and C&I cabinet quotations',
+  },
+  {
+    country: 'Belgium',
+    adjective: 'Belgian',
+    slug: 'belgium-lifepo4-battery-kit',
+    image: '/images/battery-kit-hero.webp',
+    priorityPhrase: 'EU logistics, distributor resale, and commercial ESS planning',
+    buyerFocus: 'battery storage distributors, EPCs, and solar storage buyers',
+  },
+  {
+    country: 'Sweden',
+    adjective: 'Swedish',
+    slug: 'sweden-lifepo4-battery-kit',
+    image: '/images/tness-ci-ess/main-2.webp',
+    priorityPhrase: 'cold-climate battery kit planning and commercial ESS quotation review',
+    buyerFocus: 'Nordic solar storage buyers and commercial energy storage project owners',
+  },
+  {
+    country: 'Denmark',
+    adjective: 'Danish',
+    slug: 'denmark-lifepo4-battery-kit',
+    image: '/images/6u-kit/2.webp',
+    priorityPhrase: 'compact rack battery kits and C&I ESS cabinet quotation planning',
+    buyerFocus: 'installers, distributors, and project buyers comparing EU delivery routes',
+  },
+  {
+    country: 'Portugal',
+    adjective: 'Portuguese',
+    slug: 'portugal-lifepo4-battery-kit',
+    image: '/images/battery-kit-system.webp',
+    priorityPhrase: 'solar storage battery kit Europe searches and EU shipping review',
+    buyerFocus: 'solar installers, residential storage buyers, and small commercial ESS buyers',
+  },
+]
+
+function buildEuropeanCountryPage(config: EuropeanCountryPageConfig): NonBrandLandingPage {
+  return {
+    path: `europe/${config.slug}`,
+    kind: 'solution',
+    eyebrow: `${config.country} battery storage buyers`,
+    title: `LiFePO4 Battery Kits and ESS Cabinets for ${config.country}`,
+    description:
+      `Prepare ${config.country}-focused quotations for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping review.`,
+    intro:
+      `${config.adjective} ${config.buyerFocus} can use this page to prepare a JKESS quotation request for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS control boxes, or configured commercial ESS cabinets. The page focuses on ${config.priorityPhrase}.`,
+    image: config.image,
+    highlights: [
+      { label: 'Target market', value: `${config.country} and EU delivery projects` },
+      { label: 'Core search', value: 'LiFePO4 battery kit Europe' },
+      { label: 'Product route', value: '48V enclosure, HV BMS, C&I cabinet' },
+      { label: 'Next step', value: 'Direct checkout or written quote' },
+    ],
+    sections: [
+      {
+        title: `Battery kit planning for ${config.country}`,
+        paragraphs: [
+          `For ${config.country}, buyers usually begin by comparing the battery format: floor-standing caster enclosure, 6U rack enclosure, high-voltage BMS control hardware, or a configured commercial energy storage cabinet. The right path depends on cell model, inverter protocol, installation space, documentation needs, shipment size, and final responsibility for assembly and commissioning.`,
+          'JKESS battery kits are enclosure and integration-hardware products. Compatible LiFePO4 cells, inverter equipment, site cabling, installation, and commissioning are outside the standard package unless a written quotation confirms otherwise.',
+        ],
+      },
+      {
+        title: `EU shipping and quotation inputs for ${config.country}`,
+        paragraphs: [
+          `A faster ${config.country} quotation should include the delivery city, postal code, delivery address type, unloading access, selected product option, required quantity, and whether the order is for resale, installation, or a configured project.`,
+        ],
+        bullets: [
+          'For battery kits: cell model, enclosure format, BMS and LCD option, inverter protocol, quantity, and delivery postal code.',
+          'For high-voltage BMS: pack voltage, module count, current class, PCS or EMS protocol, and contactor logic.',
+          'For C&I cabinets: capacity target, AC power, cooling preference, site conditions, documentation, unloading, and installation boundary.',
+          'For logistics: delivery city, address type, unloading limitations, requested Incoterm, deadline, and any documentation requirements.',
+        ],
+      },
+      {
+        title: `When ${config.adjective} buyers should request a written quote`,
+        paragraphs: [
+          'Request a written quotation when the order includes several kits, bulk resale, special packing, high-voltage BMS architecture, configured C&I cabinets, custom documentation, or delivery conditions that can affect freight, lead time, and included scope.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: `Movable 51.2V LiFePO4 battery enclosure kit for ${config.adjective.toLowerCase()} residential and small commercial assembly projects.`,
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: `Rack-mount LiFePO4 battery enclosure for ${config.adjective.toLowerCase()} 19-inch cabinet and equipment-room installations.`,
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: `100A and 200A BCU or BMU control boxes for ${config.adjective.toLowerCase()} high-voltage ESS rack integrators.`,
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: `Configured commercial energy storage cabinet for ${config.country}-focused project quotation review.`,
+      },
+    ],
+    faqs: [
+      {
+        question: `Can JKESS ship battery kits to ${config.country}?`,
+        answer: `${config.country} is handled as an EU destination for website shipping review. Larger quantities, remote delivery, or project shipments may still require a written quotation before payment.`,
+      },
+      {
+        question: `Are LiFePO4 cells included with JKESS battery kits for ${config.country}?`,
+        answer: 'No. The kits provide the enclosure and selected hardware package. Compatible LiFePO4 cells must be sourced separately unless a written quotation says otherwise.',
+      },
+      {
+        question: `What should ${config.adjective.toLowerCase()} C&I ESS buyers send before quotation?`,
+        answer: 'Send capacity target, AC power, site location, grid information, cooling preference, installation scope, documentation requirements, delivery conditions, and any commissioning or monitoring expectations.',
+      },
+    ],
+    related: [
+      {
+        href: '/europe',
+        label: 'Europe battery storage hub',
+        description: 'Navigate EU battery kit, country page, 48V enclosure, and C&I ESS quotation paths.',
+      },
+      {
+        href: '/europe/eu-warehouse-battery-kit',
+        label: 'EU warehouse battery kit checklist',
+        description: 'Prepare delivery country, postal code, quantity, kit option, and freight review details.',
+      },
+      {
+        href: '/europe/commercial-energy-storage-cabinet-europe',
+        label: 'Commercial energy storage cabinet Europe',
+        description: 'Prepare C&I cabinet capacity, PCS power, cooling, documentation, and delivery scope.',
+      },
+      {
+        href: '/can-rs485-bms-inverter-compatibility',
+        label: 'CAN and RS485 compatibility checklist',
+        description: 'Review protocol, pinout, firmware, and commissioning checks before ordering.',
+      },
+    ],
+  }
+}
+
+const baseNonBrandLandingPages: NonBrandLandingPage[] = [
   {
     path: 'battery-enclosures',
     kind: 'category',
@@ -913,7 +1078,7 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
       {
         title: 'Country pages for more specific search traffic',
         paragraphs: [
-          'Germany, France, Italy, the Netherlands, and Poland each have dedicated pages that connect local search wording to the same product and quotation path. These pages create clearer internal links for search engines and give buyers a country-specific checklist before contacting JKESS.',
+          'Germany, France, Italy, the Netherlands, Poland, Spain, Austria, Belgium, Sweden, Denmark, and Portugal each have dedicated pages that connect local search wording to the same product and quotation path. These pages create clearer internal links for search engines and give buyers a country-specific checklist before contacting JKESS.',
         ],
       },
     ],
@@ -946,7 +1111,7 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
       },
       {
         question: 'Which European countries have dedicated JKESS market pages?',
-        answer: 'The current Europe cluster includes Germany, France, Italy, the Netherlands, and Poland, with room to add more country pages as search data and sales priorities develop.',
+        answer: 'The current Europe cluster includes Germany, France, Italy, the Netherlands, Poland, Spain, Austria, Belgium, Sweden, Denmark, and Portugal, with room to add more country pages as search data and sales priorities develop.',
       },
       {
         question: 'Should European C&I cabinet buyers use direct checkout?',
@@ -998,6 +1163,36 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
         href: '/europe/poland-lifepo4-battery-kit',
         label: 'Poland battery storage quotation',
         description: 'Prepare Polish battery kit, HV BMS, and C&I cabinet quotation details.',
+      },
+      {
+        href: '/europe/spain-lifepo4-battery-kit',
+        label: 'Spain solar storage battery kits',
+        description: 'Prepare Spanish battery kit, inverter compatibility, EU shipping, and C&I cabinet inputs.',
+      },
+      {
+        href: '/europe/austria-lifepo4-battery-kit',
+        label: 'Austria EU warehouse battery kit',
+        description: 'Plan Austrian rack kit, caster kit, delivery, and commercial ESS quotation details.',
+      },
+      {
+        href: '/europe/belgium-lifepo4-battery-kit',
+        label: 'Belgium battery storage distributor quote',
+        description: 'Prepare Belgian product, resale, logistics, and commercial ESS buying requirements.',
+      },
+      {
+        href: '/europe/sweden-lifepo4-battery-kit',
+        label: 'Sweden battery kit and ESS quote',
+        description: 'Review Swedish battery kit, cold-climate planning, HV BMS, and C&I cabinet inputs.',
+      },
+      {
+        href: '/europe/denmark-lifepo4-battery-kit',
+        label: 'Denmark rack battery kit planning',
+        description: 'Prepare Danish 6U rack kit, EU shipping, inverter, and C&I ESS quotation details.',
+      },
+      {
+        href: '/europe/portugal-lifepo4-battery-kit',
+        label: 'Portugal LiFePO4 battery kits',
+        description: 'Plan Portuguese solar storage kit, EU delivery, and commercial ESS cabinet requests.',
       },
     ],
   },
@@ -2195,6 +2390,11 @@ export const nonBrandLandingPages: NonBrandLandingPage[] = [
       },
     ],
   },
+]
+
+export const nonBrandLandingPages: NonBrandLandingPage[] = [
+  ...baseNonBrandLandingPages,
+  ...additionalEuropeanCountryConfigs.map(buildEuropeanCountryPage),
 ]
 
 export function getNonBrandLandingPage(path: string) {

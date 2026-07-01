@@ -192,6 +192,40 @@ export function localizedCategoryLabel(lang: string, label: string) {
   return labels[label] || guide.europe
 }
 
+const navGroupLabels = {
+  en: { solutions: 'Solutions', resources: 'Resources', company: 'Company' },
+  de: { solutions: 'Lösungen', resources: 'Ressourcen', company: 'Unternehmen' },
+  fr: { solutions: 'Solutions', resources: 'Ressources', company: 'Entreprise' },
+  es: { solutions: 'Soluciones', resources: 'Recursos', company: 'Empresa' },
+  it: { solutions: 'Soluzioni', resources: 'Risorse', company: 'Azienda' },
+  nl: { solutions: 'Oplossingen', resources: 'Bronnen', company: 'Bedrijf' },
+  pt: { solutions: 'Soluções', resources: 'Recursos', company: 'Empresa' },
+  sv: { solutions: 'Lösningar', resources: 'Resurser', company: 'Företag' },
+  da: { solutions: 'Løsninger', resources: 'Ressourcer', company: 'Virksomhed' },
+  fi: { solutions: 'Ratkaisut', resources: 'Resurssit', company: 'Yritys' },
+  pl: { solutions: 'Rozwiązania', resources: 'Zasoby', company: 'Firma' },
+  cs: { solutions: 'Řešení', resources: 'Zdroje', company: 'Společnost' },
+  sk: { solutions: 'Riešenia', resources: 'Zdroje', company: 'Spoločnosť' },
+  hu: { solutions: 'Megoldások', resources: 'Források', company: 'Vállalat' },
+  ro: { solutions: 'Soluții', resources: 'Resurse', company: 'Companie' },
+  bg: { solutions: 'Решения', resources: 'Ресурси', company: 'Компания' },
+  el: { solutions: 'Λύσεις', resources: 'Πόροι', company: 'Εταιρεία' },
+  hr: { solutions: 'Rješenja', resources: 'Resursi', company: 'Tvrtka' },
+  sl: { solutions: 'Rešitve', resources: 'Viri', company: 'Podjetje' },
+  lt: { solutions: 'Sprendimai', resources: 'Ištekliai', company: 'Įmonė' },
+  lv: { solutions: 'Risinājumi', resources: 'Resursi', company: 'Uzņēmums' },
+  et: { solutions: 'Lahendused', resources: 'Ressursid', company: 'Ettevõte' },
+  ru: { solutions: 'Решения', resources: 'Ресурсы', company: 'Компания' },
+  uk: { solutions: 'Рішення', resources: 'Ресурси', company: 'Компанія' },
+  fa: { solutions: 'راهکارها', resources: 'منابع', company: 'شرکت' },
+  tr: { solutions: 'Çözümler', resources: 'Kaynaklar', company: 'Şirket' },
+} as const
+
+export function localizedNavGroupLabel(lang: string, key: string, fallback: string) {
+  const labels = navGroupLabels[lang as keyof typeof navGroupLabels]
+  return labels?.[key as keyof typeof labels] || fallback
+}
+
 export function localizedNavItem(lang: string, label: string, href: string, description: string) {
   const guide = getLocalizedGuide(lang)
   if (lang === 'en') return { label, description }

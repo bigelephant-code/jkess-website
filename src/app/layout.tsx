@@ -5,7 +5,7 @@ import PaidOrderEmailBridge from '@/components/PaidOrderEmailBridge'
 import { absoluteUrl, siteUrl } from '@/lib/site'
 import { companyProfile } from '@/lib/company-profile'
 import { navigationGroups } from '@/lib/navigation-menu'
-import { getLocalizedUiCopy, localizedNavItem } from '@/lib/localized-ui'
+import { getLocalizedUiCopy, localizedNavGroupLabel, localizedNavItem } from '@/lib/localized-ui'
 import {
   jkessMerchantReturnPolicy,
   jkessMerchantShippingPolicy,
@@ -115,7 +115,9 @@ export default async function RootLayout({
   let navigationPosition = 0
   const siteNavigationJsonLd = navigationGroups.flatMap((group) => {
     const localizedGroup = localizedNavItem(lang, group.label, group.href || '/', group.description || '')
-    const groupName = group.key === 'home' ? companyProfile.brandName : localizedGroup.label
+    const groupName = group.key === 'home'
+      ? companyProfile.brandName
+      : localizedNavGroupLabel(lang, group.key, localizedGroup.label)
     const groupDescription = lang === 'en' ? group.description : localizedGroup.description || ui.technicalGuides
     const groupItem = group.href
       ? [{

@@ -11,7 +11,7 @@ import { useI18n } from '@/i18n/client'
 import { localeMap, locales } from '@/i18n/config'
 import type { LangCode } from '@/i18n/config'
 import { navigationGroups } from '@/lib/navigation-menu'
-import { getLocalizedUiCopy, localizedNavItem } from '@/lib/localized-ui'
+import { getLocalizedUiCopy, localizedNavGroupLabel, localizedNavItem } from '@/lib/localized-ui'
 
 const languageGroups = [
   ['nav.languageGroup.westCentralEurope', 'West & Central Europe', ['en', 'de', 'fr', 'es', 'it', 'nl', 'pt']],
@@ -42,7 +42,7 @@ export default function NavbarMegaMenuV2() {
   const currentLocale = localeMap.get(lang)!
   const languageHref = (code: LangCode) => code === 'en' ? neutralPath : `/${code}${neutralPath === '/' ? '' : neutralPath}`
   const ui = getLocalizedUiCopy(lang)
-  const groupLabel = (key: string, fallback: string) => t(`nav.${key}`, fallback)
+  const groupLabel = (key: string, fallback: string) => localizedNavGroupLabel(lang, key, t(`nav.${key}`, fallback))
   const groupDescription = (description?: string) => lang === 'en' ? description : getLocalizedUiCopy(lang).technicalGuides
 
   const cancelMenuClose = () => {
@@ -170,12 +170,12 @@ export default function NavbarMegaMenuV2() {
               aria-expanded={activeMenu === group.key}
               className={`flex items-center gap-1 rounded-xl px-3 py-2 text-base font-semibold transition ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
             >
-              {t(`nav.${group.key}`, group.label)}
+              {groupLabel(group.key, group.label)}
               <motion.span animate={{ rotate: activeMenu === group.key ? 180 : 0 }} transition={{ duration: 0.2 }}><ChevronDown size={15} /></motion.span>
             </button>
           ) : (
             <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="rounded-xl px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-green-400">
-              {t(`nav.${group.key}`, group.label)}
+              {groupLabel(group.key, group.label)}
             </a>
           ))}
         </div>
@@ -257,7 +257,7 @@ export default function NavbarMegaMenuV2() {
                 return (
                   <div key={group.key} className="border-t border-white/[0.06]">
                     <button type="button" onClick={() => setMobileGroup(expanded ? null : group.key)} className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-lg font-semibold text-white hover:bg-white/10" aria-expanded={expanded}>
-                      {t(`nav.${group.key}`, group.label)}<motion.span animate={{ rotate: expanded ? 180 : 0 }}><ChevronDown size={18} /></motion.span>
+                      {groupLabel(group.key, group.label)}<motion.span animate={{ rotate: expanded ? 180 : 0 }}><ChevronDown size={18} /></motion.span>
                     </button>
                     <AnimatePresence initial={false}>{expanded && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">

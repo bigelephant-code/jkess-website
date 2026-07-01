@@ -1,4 +1,4 @@
-import { products, getProductBySlug, getProductFaqs, getProductSeoContent, getProductUseCases, getRelatedProducts } from '@/lib/products'
+import { products, getProductBuyingGuideLinks, getProductBySlug, getProductFaqs, getProductSeoContent, getProductUseCases, getRelatedProducts } from '@/lib/products'
 import { ProductDetailClient } from './client'
 import type { Product } from '@/lib/products'
 import { locales, defaultLocale } from '@/i18n/config'
@@ -120,7 +120,11 @@ function productKeywords(product: Product) {
     ],
   }
 
-  return [...base, ...(bySlug[product.slug] || [])]
+  return [
+    ...base,
+    ...(bySlug[product.slug] || []),
+    ...getProductBuyingGuideLinks(product).map((guide) => guide.title),
+  ]
 }
 
 function productLanguageAlternates(product: Product) {
@@ -207,6 +211,16 @@ async function productJsonLd(sourceProduct: Product, lang: string) {
   const faqs = localizedRoute
     ? localizedContent.product.localizedFaqs ?? getProductFaqs(sourceProduct)
     : getProductFaqs(sourceProduct)
+  const buyingGuideItems = getProductBuyingGuideLinks(sourceProduct).map((guide, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'WebPage',
+      name: guide.title,
+      description: guide.description,
+      url: absoluteUrl(canonicalSeoPath(schemaLang, guide.href)),
+    },
+  }))
   const useCases = localizedRoute ? localizedContent.useCases : getProductUseCases(sourceProduct)
   const seoContent = localizedRoute ? localizedContent.seoContent : getProductSeoContent(sourceProduct)
   const purchaseNotice = localizedRoute
@@ -379,6 +393,12 @@ async function productJsonLd(sourceProduct: Product, lang: string) {
             text: faq.answer,
           },
         })),
+      },
+      {
+        '@type': 'ItemList',
+        inLanguage: schemaLang,
+        name: `Buying guides for ${p.name}`,
+        itemListElement: buyingGuideItems,
       },
     ],
   }

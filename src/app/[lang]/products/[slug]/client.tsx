@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
+  ArrowRight,
   ArrowLeft,
   Check,
   FileText,
@@ -17,7 +18,7 @@ import {
   Truck,
 } from 'lucide-react'
 import type { Product, ProductFaq, ProductSeoContent, ProductUseCases } from '@/lib/products'
-import { getProductFaqs } from '@/lib/products'
+import { getProductBuyingGuideLinks, getProductFaqs } from '@/lib/products'
 import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
@@ -60,6 +61,8 @@ type ProductDetailCopy = {
   projectInquiry: string
   projectInquiryText: string
   relatedProducts: string
+  buyingGuides: string
+  buyingGuidesText: string
 }
 
 const mediaCopyByLanguage = {
@@ -184,7 +187,13 @@ export function ProductDetailClient({
       'Ask for configuration support or a quotation.'
     ),
     relatedProducts: t('product.relatedProducts', 'Related Products'),
+    buyingGuides: t('product.buyingGuides', 'Buying guides and planning pages'),
+    buyingGuidesText: t(
+      'product.buyingGuidesText',
+      'Continue with focused pages for EU shipping, product selection, compatibility, and project quotation planning.'
+    ),
   }
+  const buyingGuides = getProductBuyingGuideLinks(product)
 
   const handleAddToCart = () => {
     if (soldOut || noMoreAvailable) return
@@ -553,6 +562,30 @@ export function ProductDetailClient({
               <ResourceLink href={`${prefix}/news`} icon={Newspaper} title={detailCopy.industryInsights} text={detailCopy.industryInsightsText} />
               <ResourceLink href={quoteHref} icon={Send} title={detailCopy.projectInquiry} text={detailCopy.projectInquiryText} />
             </div>
+
+            {buyingGuides.length > 0 && (
+              <div className="mb-8">
+                <div className="mb-4 max-w-3xl">
+                  <h3 className="text-gray-900 font-semibold">{detailCopy.buyingGuides}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">{detailCopy.buyingGuidesText}</p>
+                </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {buyingGuides.map((guide) => (
+                    <Link
+                      key={guide.href}
+                      href={`${prefix}${guide.href}`}
+                      className="group rounded-2xl border border-gray-200 bg-white p-5 transition-colors hover:border-green-300 hover:bg-green-50"
+                    >
+                      <h4 className="flex items-center justify-between gap-4 text-sm font-bold text-gray-950">
+                        {guide.title}
+                        <ArrowRight className="shrink-0 text-green-600 transition group-hover:translate-x-1" size={17} />
+                      </h4>
+                      <p className="mt-3 text-xs leading-5 text-gray-600">{guide.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {relatedProducts.length > 0 && (
               <div className="mb-8">

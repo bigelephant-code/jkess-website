@@ -20,6 +20,12 @@ export interface ProductSeoContent {
   procurementNotes: string[]
 }
 
+export interface ProductBuyingGuideLink {
+  href: string
+  title: string
+  description: string
+}
+
 export interface Product {
   slug: string
   name: string
@@ -107,6 +113,116 @@ export function getProductSeoContent(product: Product): ProductSeoContent {
     installationNotes: ['Confirm system voltage, communication method, installation environment, and safety requirements.'],
     procurementNotes: ['Contact JKESS with project drawings and quantity requirements for configuration support.'],
   }
+}
+
+export function getProductBuyingGuideLinks(product: Product): ProductBuyingGuideLink[] {
+  const sharedEurope = [
+    {
+      href: '/europe',
+      title: 'Europe battery storage buying hub',
+      description: 'Navigate EU warehouse, LiFePO4 battery kit, 48V enclosure, and C&I ESS quotation pages.',
+    },
+    {
+      href: '/shipping-quote',
+      title: 'Product and shipping quote request',
+      description: 'Prepare quantity, destination, delivery conditions, and project requirements before payment.',
+    },
+  ]
+
+  if (product.slug === 'battery-kit') {
+    return [
+      {
+        href: '/europe/lifepo4-battery-kit-europe',
+        title: 'LiFePO4 battery kit Europe',
+        description: 'Compare caster and rack kit options, EU delivery review, and inverter compatibility inputs.',
+      },
+      {
+        href: '/europe/48v-battery-enclosure-eu-shipping',
+        title: '48V battery enclosure EU shipping',
+        description: 'Confirm enclosure fit, BMS option, destination country, and postal code for EU delivery.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        title: 'Rack vs floor-standing battery kit',
+        description: 'Compare caster placement with 6U rack installation, service access, and shipment planning.',
+      },
+      ...sharedEurope,
+    ]
+  }
+
+  if (product.slug === '6u-battery-kit') {
+    return [
+      {
+        href: '/rack-battery-enclosures',
+        title: '6U rack battery enclosure planning',
+        description: 'Check rack depth, cabinet airflow, service access, parallel expansion, and communication.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        title: 'Rack vs floor-standing battery kit',
+        description: 'Choose between 19-inch rack assembly and caster enclosure placement for the project.',
+      },
+      {
+        href: '/europe/lifepo4-battery-kit-europe',
+        title: 'LiFePO4 battery kit Europe',
+        description: 'Prepare EU delivery details, inverter model, quantity, and enclosure option requirements.',
+      },
+      ...sharedEurope,
+    ]
+  }
+
+  if (product.slug === 'high-voltage-kit') {
+    return [
+      {
+        href: '/high-voltage-bms-for-ess',
+        title: 'High-voltage BMS for ESS',
+        description: 'Plan BCU/BMU quantities, PCS communication, current class, protection, and quotation inputs.',
+      },
+      {
+        href: '/compare/100a-vs-200a-high-voltage-bms',
+        title: '100A vs 200A high-voltage BMS',
+        description: 'Compare current classes from PCS power, pack voltage, cables, contactors, and duty cycle.',
+      },
+      {
+        href: '/guides/bcu-vs-bmu',
+        title: 'BCU vs BMU technical guide',
+        description: 'Understand master and slave roles before selecting high-voltage battery control hardware.',
+      },
+      {
+        href: '/can-rs485-bms-inverter-compatibility',
+        title: 'CAN/RS485 inverter compatibility',
+        description: 'Check protocol, firmware, pinout, baud rate, message map, and commissioning requirements.',
+      },
+    ]
+  }
+
+  if (product.slug === 'tness-ci-ess-cabinet') {
+    return [
+      {
+        href: '/europe/commercial-energy-storage-cabinet-europe',
+        title: 'Commercial energy storage cabinet Europe',
+        description: 'Prepare capacity, PCS power, cooling, delivery country, documentation, and site inputs.',
+      },
+      {
+        href: '/commercial-battery-storage-cabinet',
+        title: 'Commercial battery storage cabinet planning',
+        description: 'Define cabinet capacity, AC power, cooling, fire protection, logistics, and project scope.',
+      },
+      {
+        href: '/compare/battery-kit-vs-ci-ess-cabinet',
+        title: 'Battery kit vs C&I ESS cabinet',
+        description: 'Compare component kit buying with configured commercial cabinet quotation requirements.',
+      },
+      {
+        href: '/guides/air-cooled-vs-liquid-cooled-ess',
+        title: 'Air-cooled vs liquid-cooled ESS',
+        description: 'Compare thermal design, duty cycle, maintenance, footprint, and project cost factors.',
+      },
+      ...sharedEurope,
+    ]
+  }
+
+  return sharedEurope
 }
 
 export function getProductUseCases(product: Product): ProductUseCases {
@@ -217,6 +333,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
         answer: 'European Union delivery addresses can use the current direct-checkout shipping rule where available. For bulk quantities, remote areas, or project delivery requirements, request a written quotation before ordering.',
       },
       {
+        question: 'When should I request a quote instead of using direct checkout?',
+        answer: 'Request a quote if the order includes multiple kits, repeat-project quantities, special packing, remote delivery, distributor resale, or any delivery condition that affects freight, unloading, customs, documentation, or final landed cost.',
+      },
+      {
+        question: 'Can JKESS confirm inverter compatibility before I order?',
+        answer: 'Yes. Share the inverter brand, model, firmware version, CAN or RS485 requirement, cell plan, and selected BMS option so JKESS can review whether the selected package is suitable before purchase.',
+      },
+      {
         question: 'Can JKESS support OEM color, logo, or repeat project requirements?',
         answer: 'Yes. Share the target quantity, color requirement, logo placement, cell plan, inverter model, and destination country so JKESS can review feasible OEM or repeat-project options.',
       },
@@ -240,6 +364,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
       {
         question: 'Is the 6U Battery Kit suitable for EU residential solar storage projects?',
         answer: 'It can be used in EU-oriented residential or small commercial storage assembly projects when the final battery cells, BMS, inverter communication, protection devices, and installation rules are confirmed by the installer.',
+      },
+      {
+        question: 'Does the 6U Battery Kit include the rack cabinet?',
+        answer: 'No. The product is a 6U battery enclosure and assembly hardware kit. The external 19-inch rack cabinet, battery cells, inverter, external breakers, cabling, installation, and commissioning are not included unless separately confirmed.',
+      },
+      {
+        question: 'Can I order 6U kits for several EU installation sites?',
+        answer: 'Yes, but multi-site or bulk orders should be reviewed by quotation so product options, quantities, packaging, delivery addresses, unloading conditions, and documentation requirements can be confirmed before payment.',
       },
       {
         question: 'What information should I provide before buying several 6U kits?',
@@ -270,6 +402,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
         question: 'Can JKESS review PCS or EMS communication compatibility?',
         answer: 'Yes. Send the PCS or EMS model, protocol requirement, voltage range, current rating, contactor logic, and project diagram so JKESS can review CAN, RS485, or isoSPI integration requirements.',
       },
+      {
+        question: 'How many BCU and BMU boxes does one project need?',
+        answer: 'The required quantity depends on rack count, module arrangement, series cell count, voltage range, current class, communication topology, and EMS design. Send the pack diagram and JKESS can review the master and slave control box quantities.',
+      },
+      {
+        question: 'Can the High Voltage Kit be used for European commercial ESS projects?',
+        answer: 'Yes. It can be reviewed for European high-voltage ESS projects when the PCS, EMS, grid interface, safety interlock, documentation, and delivery requirements are defined before ordering.',
+      },
     ]
   }
 
@@ -294,6 +434,14 @@ export function getProductFaqs(product: Product): ProductFaq[] {
       {
         question: 'Does the quotation include freight, duty, tax, or onsite installation?',
         answer: 'Only the signed written quotation defines whether freight, duty, tax, installation, commissioning, training, or site services are included. Items not listed in the quotation should be treated as excluded.',
+      },
+      {
+        question: 'What information is needed for a faster C&I ESS Cabinet quotation?',
+        answer: 'Provide the target capacity, AC power, backup duration, site country and address type, grid requirements, cooling preference, operating environment, fire protection expectations, installation boundary, and required documentation.',
+      },
+      {
+        question: 'Can one quotation cover several European project sites?',
+        answer: 'Yes. Send the country, city, quantity, target capacity, site conditions, and delivery schedule for each site so JKESS can review whether the same cabinet configuration and logistics route can be used.',
       },
     ]
   }

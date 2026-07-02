@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type SyntheticEvent } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type SyntheticEvent } from 'react'
 import Link from 'next/link'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
@@ -45,6 +45,18 @@ function persistConsent(nextChoice: ConsentChoice) {
   } catch {
     // Cookie persistence is best effort; the UI still dismisses for this session.
   }
+
+  window.dispatchEvent(new Event('jkess-cookie-consent-change'))
+}
+
+function subscribeToConsentChange(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange)
+  window.addEventListener('jkess-cookie-consent-change', onStoreChange)
+
+  return () => {
+    window.removeEventListener('storage', onStoreChange)
+    window.removeEventListener('jkess-cookie-consent-change', onStoreChange)
+  }
 }
 
 function loadGoogleAnalytics(gaId: string) {
@@ -69,11 +81,13 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
   const { lang, t } = useI18n()
   const bannerRef = useRef<HTMLDivElement>(null)
   const [dismissed, setDismissed] = useState(false)
-  const [choice, setChoice] = useState<ConsentChoice | null>(() => readStoredConsent())
+  const storedChoice = useSyncExternalStore(subscribeToConsentChange, readStoredConsent, () => null)
+  const [choice, setChoice] = useState<ConsentChoice | null>(null)
+  const effectiveChoice = choice || storedChoice
 
   useEffect(() => {
-    if (choice === 'accepted') loadGoogleAnalytics(gaId)
-  }, [choice, gaId])
+    if (effectiveChoice === 'accepted') loadGoogleAnalytics(gaId)
+  }, [effectiveChoice, gaId])
 
   const saveChoice = (nextChoice: ConsentChoice, event?: SyntheticEvent<HTMLButtonElement>) => {
     event?.preventDefault()
@@ -92,7 +106,7 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
     }
   }
 
-  if (dismissed || choice || !gaId) return null
+  if (dismissed || effectiveChoice || !gaId) return null
 
   return (
     <div ref={bannerRef} className="pointer-events-auto fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-[2147483647] mx-auto max-h-[calc(100dvh-1.5rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-gray-950/95 p-4 text-white shadow-2xl shadow-black/40 backdrop-blur md:bottom-5 md:p-5">

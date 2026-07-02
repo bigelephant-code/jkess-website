@@ -196,5 +196,14 @@
   "warehouse.desc1": "Spoločnosť JKESS udržiava strategicky umiestnené sklady v troch hlavných regiónoch Číny — Sichuan, Shandong a Shenzhen — čo zaručuje rýchle vybavenie objednávok a nákladovo efektívnu domácu logistiku. V kombinácii s našimi zámorskými skladmi v Poľsku (pre európsky trh), Spojených štátoch (pre Severnú Ameriku) a Brazílii (pre Južnú Ameriku) ponúkame skutočne globálnu distribučnú sieť, ktorá zaručuje rýchle doručenie, znížené náklady na prepravu a lokalizovanú podporu zákazníkom na celom svete.",
   "warehouse.desc2": "Či už zadávate malú vzorovú objednávku alebo veľkoobjemovú kontajnerovú zásielku, náš multi-skladový inventárny systém zaisťuje dostupnosť produktov, flexibilné možnosti expedície a bezproblémovú cezhraničnú logistiku. So skladmi na štyroch kontinentoch sa spoločnosť JKESS zaväzuje dodávať riešenia na skladovanie energie až k vašim dverám — nech ste kdekoľvek.",
   "about.offices": "Naše kancelárie a továreň",
-  "about.officesDesc": "JKESS pôsobí na troch strategických miestach v Číne, aby vám lepšie slúžila"
+  "about.officesDesc": "JKESS pôsobí na troch strategických miestach v Číne, aby vám lepšie slúžila",
+  "stats.established": "T?m zalo?en?",
+  "stats.markets": "Obsluhovan? krajiny a regi?ny",
+  "timeline.2017.period": "2017-2022",
+  "timeline.2023.period": "2023",
+  "timeline.2024.period": "2024-2025",
+  "timeline.2024.title": "SPUSTENIE ZNA?KY JKESS",
+  "timeline.2024.line1": "Zna?ka JKESS bola spusten? pre bat?riov? sady, vysokonap??ov? BMS riadiace syst?my a komer?n? a priemyseln? ESS rie?enia.",
+  "timeline.2024.line2": "Medzin?rodn? distrib?cia a projektov? podpora sa roz??rili do reziden?n?ch, komer?n?ch, priemyseln?ch a obnovite?n?ch energetick?ch aplik?ci?.",
+  "timeline.2026.period": "S??asn? rozsah"
 }

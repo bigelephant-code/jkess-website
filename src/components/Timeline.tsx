@@ -48,6 +48,11 @@ export default function Timeline() {
           <div className="grid grid-cols-4 gap-8">
             {companyMilestones.map((item, index) => {
               const isTop = index % 2 === 0
+              const title = t(`timeline.${item.year}.title`, item.title)
+              const period = t(`timeline.${item.year}.period`, item.period)
+              const content = item.content.map((paragraph, paragraphIndex) =>
+                t(`timeline.${item.year}.line${paragraphIndex + 1}`, paragraph)
+              )
 
               return (
                 <motion.div
@@ -67,13 +72,13 @@ export default function Timeline() {
                       <span className="absolute right-0 bottom-0 h-4 w-4 border-r-2 border-b-2 border-green-500" />
                       <div className="flex items-center justify-between gap-3 mb-3">
                         <h3 className="text-xs md:text-sm font-bold tracking-[0.16em] text-green-600">
-                          {item.title}
+                          {title}
                         </h3>
-                        <span className="text-[11px] font-semibold text-gray-400">{item.period}</span>
+                        <span className="text-[11px] font-semibold text-gray-400">{period}</span>
                       </div>
                       <div className="h-px w-full bg-gradient-to-r from-green-500/50 via-gray-200 to-transparent mb-3" />
                       <div className="space-y-2">
-                        {item.content.map((paragraph) => (
+                        {content.map((paragraph) => (
                           <p key={paragraph} className="text-[12px] text-gray-600 leading-relaxed">
                             {paragraph}
                           </p>
@@ -128,13 +133,17 @@ export default function Timeline() {
                 <span className="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-green-500" />
                 <span className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-green-500" />
                 <div className="flex items-center justify-between gap-3 mb-2">
-                  <h3 className="text-xs font-bold tracking-[0.12em] text-green-600">{item.title}</h3>
-                  <span className="text-[11px] text-gray-400">{item.period}</span>
+                  <h3 className="text-xs font-bold tracking-[0.12em] text-green-600">
+                    {t(`timeline.${item.year}.title`, item.title)}
+                  </h3>
+                  <span className="text-[11px] text-gray-400">
+                    {t(`timeline.${item.year}.period`, item.period)}
+                  </span>
                 </div>
                 <div className="space-y-1.5">
-                  {item.content.map((paragraph) => (
-                    <p key={paragraph} className="text-xs text-gray-600 leading-relaxed">
-                      {paragraph}
+                  {item.content.map((paragraph, paragraphIndex) => (
+                    <p key={`${item.year}-${paragraphIndex}`} className="text-xs text-gray-600 leading-relaxed">
+                      {t(`timeline.${item.year}.line${paragraphIndex + 1}`, paragraph)}
                     </p>
                   ))}
                 </div>

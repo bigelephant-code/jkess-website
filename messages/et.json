@@ -96,8 +96,8 @@
   "product.customerReviews": "Klientide arvustused",
   "product.model": "Mudel",
   "search.placeholder": "Otsi tooteid...",
-  "timeline.title.part1": "Development",
-  "timeline.title.part2": "History",
+  "timeline.title.part1": "Arengu",
+  "timeline.title.part2": "ajalugu",
   "timeline.2017.title": "ASUTAMINE",
   "timeline.2017.line1": "Meeskonna loomine Shandong Tunan all, sisenemine uue energia tööstusesse ning energiasalvestustoodete T&A tegevuse alustamine.",
   "timeline.2017.line2": "Esimese põlvkonna toodete turuletoomine, mis pälvisid klientidelt positiivset tagasisidet.",
@@ -196,5 +196,14 @@
   "warehouse.desc1": "JKESS haldab strateegiliselt paigutatud ladusid kolmes Hiina suuremas piirkonnas — Sichuanis, Shandongis ja Shenzhenis — tagades kiire tellimuste täitmise ja kulutõhusa kodumaise logistika. Koos meie välismaiste ladudega Poolas (teenindades Euroopa turgu), Ameerika Ühendriikides (hõlmates Põhja-Ameerikat) ja Brasiilias (hõlmates Lõuna-Ameerikat) pakume tõeliselt ülemaailmset jaotusvõrku, mis tagab kiire tarne, vähendatud saatmiskulud ja lokaliseeritud toe klientidele kogu maailmas.",
   "warehouse.desc2": "Olenemata sellest, kas teete väikese näidistellimuse või suure mahuga konteinersaadetise, tagab meie mitme lao laosüsteem toodete kättesaadavuse, paindlikud saatmisvõimalused ja sujuva piiriülese logistika. Ladudega neljal mandril on JKESS pühendunud energia salvestamise lahenduste tarnimisele teie ukse taha — olenemata sellest, kus te viibite.",
   "about.offices": "Meie kontorid ja tehas",
-  "about.officesDesc": "JKESS tegutseb kolmes strateegilises asukohas Hiinas, et teid paremini teenindada"
+  "about.officesDesc": "JKESS tegutseb kolmes strateegilises asukohas Hiinas, et teid paremini teenindada",
+  "stats.established": "Meeskond loodud",
+  "stats.markets": "Teenindatavad riigid ja piirkonnad",
+  "timeline.2017.period": "2017-2022",
+  "timeline.2023.period": "2023",
+  "timeline.2024.period": "2024-2025",
+  "timeline.2024.title": "JKESS-I KAUBAM?RK K?IVITATI",
+  "timeline.2024.line1": "JKESS-i kaubam?rk k?ivitati akukomplektide, k?rgepinge BMS-juhtimiss?steemide ning kaubanduslike ja t??stuslike ESS-lahenduste jaoks.",
+  "timeline.2024.line2": "Rahvusvaheline turustus ja projektitugi laienesid elamu-, ?ri-, t??stus- ja taastuvenergia rakendustele.",
+  "timeline.2026.period": "Praegune ulatus"
 }

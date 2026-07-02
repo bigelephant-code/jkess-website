@@ -196,5 +196,14 @@
   "warehouse.desc1": "JKESS har strategiskt placerade lager i tre större regioner i Kina — Sichuan, Shandong och Shenzhen — vilket säkerställer snabb orderhantering och kostnadseffektiv inrikeslogistik. I kombination med våra utländska lager i Polen (för den europeiska marknaden), USA (för Nordamerika) och Brasilien (för Sydamerika) erbjuder vi ett verkligt globalt distributionsnätverk som garanterar snabb leverans, minskade fraktkostnader och lokaliserad support för kunder över hela världen.",
   "warehouse.desc2": "Oavsett om du lägger en liten provbeställning eller en stor volymcontainerleverans, säkerställer vårt multi-lagerinventeringssystem produkttillgänglighet, flexibla leveransalternativ och sömlös gränsöverskridande logistik. Med lager på fyra kontinenter är JKESS engagerat i att leverera energilagringslösningar till din dörr — var du än befinner dig.",
   "about.offices": "Våra kontor och fabrik",
-  "about.officesDesc": "JKESS verkar på tre strategiska platser i Kina för att betjäna dig bättre"
+  "about.officesDesc": "JKESS verkar på tre strategiska platser i Kina för att betjäna dig bättre",
+  "stats.established": "Team etablerat",
+  "stats.markets": "Betj?nade l?nder och regioner",
+  "timeline.2017.period": "2017-2022",
+  "timeline.2023.period": "2023",
+  "timeline.2024.period": "2024-2025",
+  "timeline.2024.title": "JKESS-VARUM?RKET LANSERADES",
+  "timeline.2024.line1": "JKESS-varum?rket lanserades f?r batterikit, h?gsp?nnings-BMS-styrsystem och kommersiella och industriella ESS-l?sningar.",
+  "timeline.2024.line2": "Internationell distribution och projektst?d ut?kades inom bostads-, kommersiella, industriella och f?rnybara energiapplikationer.",
+  "timeline.2026.period": "Nuvarande skala"
 }

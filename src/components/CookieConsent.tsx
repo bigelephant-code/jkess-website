@@ -59,6 +59,10 @@ function subscribeToConsentChange(onStoreChange: () => void) {
   }
 }
 
+function subscribeToClientReady() {
+  return () => undefined
+}
+
 function loadGoogleAnalytics(gaId: string) {
   if (!gaId || typeof window === 'undefined') return
   if (document.querySelector(`script[data-jkess-ga="${gaId}"]`)) return
@@ -80,6 +84,7 @@ function loadGoogleAnalytics(gaId: string) {
 export default function CookieConsent({ gaId }: { gaId: string }) {
   const { lang, t } = useI18n()
   const bannerRef = useRef<HTMLDivElement>(null)
+  const isClientReady = useSyncExternalStore(subscribeToClientReady, () => true, () => false)
   const [dismissed, setDismissed] = useState(false)
   const storedChoice = useSyncExternalStore(subscribeToConsentChange, readStoredConsent, () => null)
   const [choice, setChoice] = useState<ConsentChoice | null>(null)
@@ -106,7 +111,7 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
     }
   }
 
-  if (dismissed || effectiveChoice || !gaId) return null
+  if (!isClientReady || dismissed || effectiveChoice || !gaId) return null
 
   return (
     <div ref={bannerRef} className="pointer-events-auto fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-[2147483647] mx-auto max-h-[calc(100dvh-1.5rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-gray-950/95 p-4 text-white shadow-2xl shadow-black/40 backdrop-blur md:bottom-5 md:p-5">

@@ -29,8 +29,12 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
   const { lang, t } = useI18n()
   const [choice, setChoice] = useState<'accepted' | 'declined' | null>(() => {
     if (typeof window === 'undefined') return null
-    const saved = window.localStorage.getItem(CONSENT_KEY)
-    return saved === 'accepted' || saved === 'declined' ? saved : null
+    try {
+      const saved = window.localStorage.getItem(CONSENT_KEY)
+      return saved === 'accepted' || saved === 'declined' ? saved : null
+    } catch {
+      return null
+    }
   })
 
   useEffect(() => {
@@ -38,17 +42,21 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
   }, [choice, gaId])
 
   const saveChoice = (nextChoice: 'accepted' | 'declined') => {
-    window.localStorage.setItem(CONSENT_KEY, nextChoice)
     setChoice(nextChoice)
+    try {
+      window.localStorage.setItem(CONSENT_KEY, nextChoice)
+    } catch {
+      // Consent still applies for the current session even if persistence is blocked.
+    }
     if (nextChoice === 'accepted') loadGoogleAnalytics(gaId)
   }
 
   if (choice || !gaId) return null
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[80] mx-auto max-w-3xl rounded-2xl border border-white/10 bg-gray-950/95 p-4 text-white shadow-2xl shadow-black/40 backdrop-blur md:bottom-5 md:p-5">
+    <div className="pointer-events-auto fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-[2147483647] mx-auto max-h-[calc(100dvh-1.5rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-gray-950/95 p-4 text-white shadow-2xl shadow-black/40 backdrop-blur md:bottom-5 md:p-5">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-bold">
             {t('cookies.title', 'Cookie and analytics preferences')}
           </p>
@@ -62,18 +70,18 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
             </Link>
           </p>
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="grid shrink-0 grid-cols-2 gap-2 sm:flex">
           <button
             type="button"
             onClick={() => saveChoice('declined')}
-            className="rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-gray-200 transition hover:bg-white/10"
+            className="min-h-11 rounded-xl border border-white/15 px-4 py-2 text-xs font-bold text-gray-200 transition hover:bg-white/10 active:bg-white/15"
           >
             {t('cookies.decline', 'Decline')}
           </button>
           <button
             type="button"
             onClick={() => saveChoice('accepted')}
-            className="rounded-xl bg-green-500 px-4 py-2 text-xs font-bold text-black transition hover:bg-green-400"
+            className="min-h-11 rounded-xl bg-green-500 px-4 py-2 text-xs font-bold text-black transition hover:bg-green-400 active:bg-green-300"
           >
             {t('cookies.accept', 'Accept analytics')}
           </button>

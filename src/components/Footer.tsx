@@ -68,9 +68,9 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-black py-12">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-8 border-b border-white/10 pb-10 md:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl justify-items-center gap-8 border-b border-white/10 pb-10 text-center md:grid-cols-3 md:text-left">
           {footerGroups.map((group) => (
-            <nav key={group.title} aria-label={localizedFooterGroupTitle(group.title)}>
+            <nav key={group.title} aria-label={localizedFooterGroupTitle(group.title)} className="w-full max-w-56">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">{localizedFooterGroupTitle(group.title)}</p>
               <div className="mt-4 grid gap-2">
                 {group.links.map(([label, path]) => {

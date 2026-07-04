@@ -22,22 +22,6 @@ function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname.startsWith(p))
 }
 
-function getNegotiatedLocale(request: NextRequest): string {
-  const acceptLang = request.headers.get('accept-language')
-  if (!acceptLang) return defaultLocale
-  const preferred = acceptLang
-    .split(',')
-    .map((entry) => {
-      const [lang, q = '1'] = entry.trim().split(';q=')
-      return { lang: lang.split('-')[0].toLowerCase(), q: parseFloat(q) || 1 }
-    })
-    .sort((a, b) => b.q - a.q)
-  for (const pref of preferred) {
-    if (isValidLocale(pref.lang)) return pref.lang
-  }
-  return defaultLocale
-}
-
 function requestHeadersWithLocale(request: NextRequest, locale: string) {
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set(REQUEST_LOCALE_HEADER, locale)
@@ -46,11 +30,9 @@ function requestHeadersWithLocale(request: NextRequest, locale: string) {
 
 function setLocaleResponseHeaders(
   response: NextResponse,
-  locale: string,
-  varyByAcceptLanguage = false
+  locale: string
 ) {
   response.headers.set('Content-Language', locale)
-  if (varyByAcceptLanguage) response.headers.append('Vary', 'Accept-Language')
   return response
 }
 
@@ -73,15 +55,6 @@ export function proxy(request: NextRequest) {
     return setLocaleResponseHeaders(response, firstSegment)
   }
 
-  const locale = getNegotiatedLocale(request)
-
-  if (locale !== defaultLocale) {
-    const newUrl = new URL(request.nextUrl)
-    newUrl.pathname = `/${locale}${pathname}`
-    const response = NextResponse.redirect(newUrl, 307)
-    return setLocaleResponseHeaders(response, locale, true)
-  }
-
   const rewriteUrl = new URL(request.nextUrl)
   rewriteUrl.pathname = `/en${pathname === '/' ? '' : pathname}`
   const response = NextResponse.rewrite(rewriteUrl, {
@@ -89,7 +62,7 @@ export function proxy(request: NextRequest) {
       headers: requestHeadersWithLocale(request, defaultLocale),
     },
   })
-  return setLocaleResponseHeaders(response, defaultLocale, true)
+  return setLocaleResponseHeaders(response, defaultLocale)
 }
 
 export const config = {

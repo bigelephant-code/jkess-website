@@ -4,16 +4,10 @@ import type { LangCode } from '@/i18n/config'
 import { absoluteUrl } from '@/lib/site'
 
 export const euSeoPilotLocales: readonly LangCode[] = ['de', 'fr', 'es', 'it', 'nl', 'pl']
-export const fullyLocalizedSeoLocales: readonly LangCode[] = [
-  defaultLocale,
-  ...euSeoPilotLocales,
-]
-export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
-export const batteryKitIndexableSeoLocales: readonly LangCode[] = [
-  defaultLocale,
-  ...euSeoPilotLocales,
-]
 export const allPublishedSeoLocales: readonly LangCode[] = locales.map((locale) => locale.code)
+export const fullyLocalizedSeoLocales: readonly LangCode[] = allPublishedSeoLocales
+export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
+export const batteryKitIndexableSeoLocales: readonly LangCode[] = allPublishedSeoLocales
 
 const productIndexableSeoLocalesBySlug: Readonly<Record<string, readonly LangCode[]>> = {
   'battery-kit': batteryKitIndexableSeoLocales,

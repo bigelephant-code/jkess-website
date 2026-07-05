@@ -153,12 +153,12 @@ export default function NavbarMegaMenuV2() {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start px-5 lg:px-7">
+      <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start gap-3 px-5 lg:px-6 xl:px-7">
         <a href={prefix || '/'} className="shrink-0" onMouseEnter={closeMenu}>
           <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={160} height={48} className="h-12 w-auto brightness-0 invert" priority />
         </a>
 
-        <div className="ml-auto hidden items-center gap-2 lg:flex xl:gap-4">
+        <div className="ml-auto hidden min-w-0 flex-1 items-center justify-end gap-1 lg:flex xl:gap-2 2xl:gap-4">
           {navigationGroups.map((group) => group.items ? (
             <button
               key={group.key}
@@ -168,19 +168,19 @@ export default function NavbarMegaMenuV2() {
               onFocus={() => openMenu(group.key)}
               onClick={() => setActiveMenu(activeMenu === group.key ? null : group.key)}
               aria-expanded={activeMenu === group.key}
-              className={`flex items-center gap-1 rounded-xl px-3 py-2 text-base font-semibold transition ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
+              className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-sm font-semibold transition xl:px-3 xl:text-base ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
             >
               {groupLabel(group.key, group.label)}
               <motion.span animate={{ rotate: activeMenu === group.key ? 180 : 0 }} transition={{ duration: 0.2 }}><ChevronDown size={15} /></motion.span>
             </button>
           ) : (
-            <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="rounded-xl px-3 py-2 text-base font-semibold text-white transition hover:bg-white/10 hover:text-green-400">
+            <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="shrink-0 rounded-xl px-2.5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-green-400 xl:px-3 xl:text-base">
               {groupLabel(group.key, group.label)}
             </a>
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex" onMouseEnter={closeMenu}>
+        <div className="hidden shrink-0 items-center gap-2 lg:flex xl:gap-3" onMouseEnter={closeMenu}>
           <button
             type="button"
             onClick={() => { setActiveMenu(null); setLanguageOpen((current) => !current) }}
@@ -194,7 +194,7 @@ export default function NavbarMegaMenuV2() {
             <ShoppingCart size={22} />
             {itemCount > 0 && <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-green-500 text-[10px] font-bold text-white">{itemCount > 99 ? '99+' : itemCount}</span>}
           </a>
-          <a href={`${prefix}/shipping-quote`} className="rounded-xl bg-green-500 px-4 py-2.5 text-base font-bold text-black transition hover:bg-green-400">
+          <a href={`${prefix}/shipping-quote`} className="shrink-0 rounded-xl bg-green-500 px-3.5 py-2.5 text-sm font-bold text-black transition hover:bg-green-400 xl:px-4 xl:text-base">
             {t('nav.getQuote', 'Get a Quote')}
           </a>
         </div>

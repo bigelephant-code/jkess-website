@@ -46,6 +46,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
             className="inline-flex items-center gap-2 border border-white/20 hover:border-white/40 text-white px-8 py-3 rounded-full text-lg transition-all"
           >
             {t('hero.learnMore', 'Learn More')}
+            <span className="sr-only"> {t('about.title', 'About JKESS')}</span>
           </a>
         </div>
       </div>

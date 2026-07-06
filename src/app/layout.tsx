@@ -159,8 +159,6 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={dir} className={`${inter.variable} h-full antialiased`}>
       <head>
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.google-analytics.com" />
         {googleSiteVerification && (
           <meta name="google-site-verification" content={googleSiteVerification} />
         )}

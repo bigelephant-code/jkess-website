@@ -21,11 +21,14 @@ export default function TechLines() {
     if (!ctx) return
 
     let animId: number
+    let idleCallbackId: number | null = null
+    let startTimeoutId: ReturnType<typeof setTimeout> | null = null
+    let started = false
     let points: Point[] = []
     let time = 0
-    const CONNECT_DIST = 220
-    const POINT_COUNT = 130
-    const BASE_SPEED = 0.7
+    const CONNECT_DIST = 180
+    const POINT_COUNT = 72
+    const BASE_SPEED = 0.45
 
     function resize() {
       if (!canvas) return
@@ -126,12 +129,22 @@ export default function TechLines() {
       animId = requestAnimationFrame(draw)
     }
 
-    // Initial setup with a delay to ensure parent is laid out
-    setTimeout(() => {
+    function startAnimation() {
+      if (started) return
+      started = true
       resize()
       initPoints()
-    }, 50)
-    draw()
+      draw()
+    }
+
+    function scheduleStart() {
+      if ('requestIdleCallback' in window) {
+        idleCallbackId = window.requestIdleCallback(startAnimation, { timeout: 1200 })
+        return
+      }
+
+      startTimeoutId = setTimeout(startAnimation, 250)
+    }
 
     const handleResize = () => {
       resize()
@@ -142,6 +155,17 @@ export default function TechLines() {
     }
     window.addEventListener('resize', handleResize)
 
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          visibilityObserver.disconnect()
+          scheduleStart()
+        }
+      },
+      { rootMargin: '300px 0px' }
+    )
+    visibilityObserver.observe(canvas)
+
     // Also observe parent for layout changes
     const parent = canvas.parentElement
     let observer: ResizeObserver | null = null
@@ -151,7 +175,10 @@ export default function TechLines() {
     }
 
     return () => {
-      cancelAnimationFrame(animId)
+      if (animId) cancelAnimationFrame(animId)
+      if (idleCallbackId !== null) window.cancelIdleCallback(idleCallbackId)
+      if (startTimeoutId !== null) clearTimeout(startTimeoutId)
+      visibilityObserver.disconnect()
       window.removeEventListener('resize', handleResize)
       observer?.disconnect()
     }

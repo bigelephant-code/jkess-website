@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight, ChevronDown, Globe, Menu, ShoppingCart, X } from 'lucide-react'
 import LanguageFlag from '@/components/LanguageFlag'
 import { useCart } from '@/context/CartContext'
@@ -117,15 +116,8 @@ export default function NavbarMegaMenuV2() {
       style={{ transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})` }}
       className="fixed left-1/2 top-2 z-50 w-[97%] max-w-[1580px] rounded-[17px] border border-white/[0.07] bg-black/70 shadow-2xl shadow-black/30 backdrop-blur-xl transition-transform duration-500"
     >
-      <AnimatePresence initial={false}>
-        {languageOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="hidden overflow-hidden rounded-t-[17px] border-b border-white/[0.06] bg-black/90 lg:block"
-          >
+      {languageOpen && (
+          <div className="hidden overflow-hidden rounded-t-[17px] border-b border-white/[0.06] bg-black/90 lg:block">
             <div className="px-8 py-6">
               <div className="mx-auto grid max-w-[1400px] grid-cols-5 gap-x-6">
                 {languageGroups.map(([labelKey, fallbackLabel, codes]) => (
@@ -149,9 +141,8 @@ export default function NavbarMegaMenuV2() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start gap-3 px-5 lg:px-6 xl:px-7">
         <a href={prefix || '/'} className="shrink-0" onMouseEnter={closeMenu}>
@@ -171,7 +162,7 @@ export default function NavbarMegaMenuV2() {
               className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-sm font-semibold transition xl:px-3 xl:text-base ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
             >
               {groupLabel(group.key, group.label)}
-              <motion.span animate={{ rotate: activeMenu === group.key ? 180 : 0 }} transition={{ duration: 0.2 }}><ChevronDown size={15} /></motion.span>
+              <span className={`transition-transform duration-200 ${activeMenu === group.key ? 'rotate-180' : ''}`}><ChevronDown size={15} /></span>
             </button>
           ) : (
             <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="shrink-0 rounded-xl px-2.5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-green-400 xl:px-3 xl:text-base">
@@ -208,15 +199,9 @@ export default function NavbarMegaMenuV2() {
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {activeGroup?.items && (
-          <motion.div
+      {activeGroup?.items && (
+          <div
             key={activeGroup.key}
-            initial={{ opacity: 0, y: -12, scaleY: 0.96 }}
-            animate={{ opacity: 1, y: 0, scaleY: 1 }}
-            exit={{ opacity: 0, y: -10, scaleY: 0.97 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformOrigin: 'top' }}
             onMouseEnter={() => openMenu(activeGroup.key)}
             onMouseLeave={scheduleMenuClose}
             className="absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(94vw,1180px)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#090909]/[0.98] shadow-2xl shadow-black/60 backdrop-blur-2xl lg:block"
@@ -229,26 +214,24 @@ export default function NavbarMegaMenuV2() {
                 <a href={`${prefix}${activeGroup.href}`} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-green-400 hover:text-green-300">{ui.viewOverview} <ArrowUpRight size={16} /></a>
               </div>
               <div className={`grid gap-2 p-4 ${activeGroup.items.length > 4 ? 'xl:grid-cols-3' : 'md:grid-cols-2'}`}>
-                {activeGroup.items.map((item, index) => {
+                {activeGroup.items.map((item) => {
                   const localizedItem = localizedNavItem(lang, item.label, item.href, item.description)
                   return (
-                  <motion.a key={item.href} href={`${prefix}${item.href}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 + index * 0.035, duration: 0.18 }} className="group rounded-xl border border-transparent p-4 transition hover:border-green-400/25 hover:bg-white/[0.06]">
+                  <a key={item.href} href={`${prefix}${item.href}`} className="group rounded-xl border border-transparent p-4 transition hover:border-green-400/25 hover:bg-white/[0.06]">
                     <div className="flex items-start justify-between gap-4">
                       <div><h3 className="text-sm font-bold text-white group-hover:text-green-400">{localizedItem.label}</h3><p className="mt-2 text-xs leading-5 text-gray-500 group-hover:text-gray-300">{localizedItem.description}</p></div>
                       <ArrowUpRight size={15} className="mt-0.5 shrink-0 text-gray-600 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-green-400" />
                     </div>
-                  </motion.a>
+                  </a>
                   )
                 })}
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28 }} className="overflow-hidden border-t border-white/[0.06] bg-black/90 lg:hidden">
+      {mobileOpen && (
+          <div className="overflow-hidden border-t border-white/[0.06] bg-black/90 lg:hidden">
             <div className="max-h-[calc(100vh-96px)] overflow-y-auto px-5 py-5">
               <a href={prefix || '/'} className="block rounded-xl px-4 py-3 text-lg font-semibold text-white hover:bg-white/10">{t('nav.home', 'Home')}</a>
               <a href={`${prefix}/products`} className="block rounded-xl px-4 py-3 text-lg font-semibold text-white hover:bg-white/10">{t('nav.shop', 'Shop')}</a>
@@ -257,10 +240,10 @@ export default function NavbarMegaMenuV2() {
                 return (
                   <div key={group.key} className="border-t border-white/[0.06]">
                     <button type="button" onClick={() => setMobileGroup(expanded ? null : group.key)} className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-lg font-semibold text-white hover:bg-white/10" aria-expanded={expanded}>
-                      {groupLabel(group.key, group.label)}<motion.span animate={{ rotate: expanded ? 180 : 0 }}><ChevronDown size={18} /></motion.span>
+                      {groupLabel(group.key, group.label)}<span className={`transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}><ChevronDown size={18} /></span>
                     </button>
-                    <AnimatePresence initial={false}>{expanded && (
-                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                    {expanded && (
+                      <div className="overflow-hidden">
                         <div className="space-y-1 pb-3 pl-3">
                           <a href={`${prefix}${group.href}`} className="flex items-center justify-between rounded-xl bg-green-500/10 px-4 py-3 text-sm font-bold text-green-400">{ui.viewOverview} <ArrowUpRight size={15} /></a>
                           {group.items?.map((item) => {
@@ -268,8 +251,8 @@ export default function NavbarMegaMenuV2() {
                             return <a key={item.href} href={`${prefix}${item.href}`} className="block rounded-xl px-4 py-3 hover:bg-white/[0.06]"><p className="text-sm font-semibold text-white">{localizedItem.label}</p><p className="mt-1 text-xs leading-5 text-gray-500">{localizedItem.description}</p></a>
                           })}
                         </div>
-                      </motion.div>
-                    )}</AnimatePresence>
+                      </div>
+                    )}
                   </div>
                 )
               })}
@@ -279,9 +262,8 @@ export default function NavbarMegaMenuV2() {
               </div>
               <a href={`${prefix}/shipping-quote`} className="mt-5 block rounded-xl bg-green-500 px-6 py-3.5 text-center font-bold text-black">{t('nav.getQuote', 'Get a Quote')}</a>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </nav>
   )
 }

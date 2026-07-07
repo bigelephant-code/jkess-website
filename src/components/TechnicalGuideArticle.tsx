@@ -85,13 +85,15 @@ function guideJsonLd(guide: TechnicalGuide, lang: string) {
         '@type': 'ListItem',
         position: index + 1,
         item: {
-          '@type': 'Product',
+          '@type': 'WebPage',
           name: product.name,
           description: product.tagline,
           image: product.images[0] ? absoluteUrl(product.images[0]) : undefined,
           url: absoluteUrl(canonicalSeoPath(lang, `/products/${product.slug}`)),
-          brand: { '@type': 'Brand', name: 'JKESS' },
-          manufacturer: { '@id': organizationId },
+          about: {
+            '@type': 'Thing',
+            name: product.name,
+          },
         },
       }
     })

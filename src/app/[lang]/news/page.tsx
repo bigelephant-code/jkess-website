@@ -11,13 +11,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return buildPageMetadata({
     lang,
     path: '/news',
-    title: 'JKESS Technical Guides and Curated Energy Storage Sources',
+    title: 'Energy Storage News, ESS Tech News and JKESS Technical Guides',
     description:
-      'Read original JKESS technical guides on battery enclosures, BMS communication, cell selection, and inverter compatibility, plus a clearly labeled directory of external energy storage sources.',
+      'Read JKESS technical guides and curated energy storage news on ESS cooling, battery enclosures, BMS communication, BMU modules, peak shaving, cabinet projects, and inverter compatibility.',
     keywords: [
       'JKESS technical guides',
+      'energy storage news',
+      'battery news',
+      'ESS news',
+      'ESS tech news',
       'battery enclosure guide',
+      'ESS cooling system',
+      'peak shaving battery storage',
       'BMS communication guide',
+      'BMU battery module',
       'LiFePO4 cell selection',
       'energy storage sources',
     ],
@@ -33,9 +40,9 @@ function newsJsonLd(lang: string) {
     '@graph': [
       {
         '@type': 'CollectionPage',
-        name: 'JKESS Technical Guides and Curated Energy Storage Sources',
+        name: 'Energy Storage News, ESS Tech News and JKESS Technical Guides',
         description:
-          'Original JKESS technical guidance and a clearly labeled directory of third-party energy storage sources.',
+          'Original JKESS technical guidance and curated third-party energy storage sources covering ESS cooling, BMS communication, BMU modules, peak shaving, battery enclosures, and cabinet projects.',
         url: pageUrl,
         publisher: { '@id': organizationId },
         hasPart: [

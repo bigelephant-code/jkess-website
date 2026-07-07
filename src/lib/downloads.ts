@@ -55,11 +55,11 @@ const allDownloadCategories: DownloadCategory[] = [
   },
   {
     label: 'Kits',
-    description: 'Battery enclosure kit specifications and manuals for low-voltage LiFePO4 assembly projects.',
+    description: 'JKESS battery box manuals, 6U rack battery kit specifications, and enclosure documents for low-voltage LiFePO4 assembly projects.',
     audience: 'Battery enclosure buyers',
     files: [
-      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf', description: 'Rack-mount 6U battery kit specification for 51.2V LiFePO4 module assembly.' },
-      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf', description: 'Caster battery enclosure kit manual for movable residential and small commercial storage assembly.' },
+      { name: '6U Lithium Battery Kit Specification 3.2', url: '/downloads/Kits/6U-Lithium-Battery-Kit-Specification-3.2.pdf', description: 'JKESS 6U rack battery box specification for 51.2V LiFePO4 ESS rack mount battery module assembly.' },
+      { name: 'Roller Lithium Battery Sheet Metal Kit Manual', url: '/downloads/Kits/Roller-Lithium-Battery-Sheet-Metal-Kit-Manual.pdf', description: 'JKESS battery box manual for the caster battery enclosure kit used in movable residential and small commercial storage assembly.' },
     ],
   },
   {
@@ -82,13 +82,13 @@ const allDownloadCategories: DownloadCategory[] = [
   },
   {
     label: 'High Voltage',
-    description: 'High-voltage BCU, BMU, EMS, and controller specifications for engineered ESS racks.',
+    description: 'High-voltage BCU, BMU module, EMS, and ESS BMS controller specifications for engineered battery racks.',
     audience: 'C&I ESS engineers',
     files: [
-      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx', description: 'Master controller specification for high-voltage energy storage BMS architecture.' },
-      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf', description: 'Energy management unit document for C&I ESS monitoring and control integration.' },
-      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx', updated: '2026-06-01', description: 'Slave control box specification for high-voltage battery rack sampling and monitoring.' },
-      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf', updated: '2026-05-20', description: 'High-voltage BMS controller specification for 250A-class ESS control applications.' },
+      { name: 'BCU-B3 Energy Storage Controller Specification', url: '/downloads/High-Voltage/BCU-B3-Energy-Storage-Controller-Specification.docx', description: 'Master BCU controller specification for high-voltage ESS BMS architecture.' },
+      { name: 'EMS-E2 Energy Management Unit Specification', url: '/downloads/High-Voltage/EMS-E2-Energy-Management-Unit-Specification.pdf', description: 'Peak shaving EMS and energy management unit document for C&I ESS monitoring and control integration.' },
+      { name: 'HV-B6U Slave Control Box Specification V1.0 (2026.06.01)', url: '/downloads/High-Voltage/HV-B6U-Slave-Control-Box-Specification-V1.0-20260601.docx', updated: '2026-06-01', description: 'BMU slave control box specification for high-voltage battery rack sampling, monitoring, and ESS BMS architecture.' },
+      { name: 'HV-BC250 Specification (2026.05.20)', url: '/downloads/High-Voltage/HV-BC250-Specification-20260520.pdf', updated: '2026-05-20', description: 'High-voltage BMS controller specification for 250A-class commercial ESS control applications.' },
     ],
   },
 ]

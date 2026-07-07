@@ -2767,9 +2767,556 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
   },
 ]
 
+const searchConsoleLandingPages: NonBrandLandingPage[] = [
+  {
+    path: 'battery-box-manual',
+    kind: 'guide',
+    eyebrow: 'JKESS battery box documents',
+    title: 'JKESS Battery Box Manual and Battery Kit Downloads',
+    description:
+      'Find JKESS battery box manual downloads, 6U rack battery kit specifications, roller battery enclosure documents, LCD manuals, and BMS integration resources for LiFePO4 projects.',
+    intro:
+      'Customers searching for a JKESS battery box manual usually need the correct enclosure document before assembly, installation, or quotation review. This page points buyers to the current battery kit downloads and explains which document fits each enclosure route.',
+    image: '/images/downloads-banner-bg.webp',
+    highlights: [
+      { label: 'Primary search', value: 'JKESS battery box manual' },
+      { label: 'Covered products', value: 'Caster battery box and 6U rack kit' },
+      { label: 'Document types', value: 'Manuals, specifications, LCD, BMS support' },
+      { label: 'Next step', value: 'Download files or request confirmation' },
+    ],
+    sections: [
+      {
+        title: 'Which manual should a battery box buyer use?',
+        paragraphs: [
+          'Use the roller lithium battery sheet metal kit manual for the floor-standing caster battery enclosure route. Use the 6U lithium battery kit specification when the project is based on a 19-inch rack-mount battery module.',
+          'If the project also includes LCD, BMS, communication accessories, or high-voltage control hardware, review the accessory and high-voltage downloads together with the product page.',
+        ],
+        bullets: [
+          'Check the product form factor before downloading: floor-standing caster box or 6U rack enclosure.',
+          'Confirm cell dimensions, BMS option, LCD requirement, inverter protocol, and cable route before assembly.',
+          'Use the Downloads page when searching for JKESS battery box manual, JK BA424S manual, or battery kit datasheet terms.',
+        ],
+      },
+      {
+        title: 'When to ask JKESS before assembly',
+        paragraphs: [
+          'A manual does not replace project confirmation. Send the cell model, inverter model, BMS requirement, quantity, destination country, and installation environment if the battery box is being used for a customer project or resale order.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing JKESS battery box route for 51.2V LiFePO4 enclosure projects.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount battery enclosure route for compact 51.2V LiFePO4 module projects.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Where can I download the JKESS battery box manual?',
+        answer: 'Use the Downloads page and open the Kits category for the roller battery enclosure manual and 6U battery kit specification.',
+      },
+      {
+        question: 'Is the manual enough to confirm cell compatibility?',
+        answer: 'No. Confirm the exact cell dimensions, terminal layout, BMS hardware, inverter protocol, and enclosure option before ordering or assembly.',
+      },
+      {
+        question: 'Does JKESS provide BMS and LCD manuals?',
+        answer: 'Yes. Accessory, BMS, and high-voltage control documents are listed in the technical Downloads library where available.',
+      },
+    ],
+    related: [
+      {
+        href: '/downloads',
+        label: 'JKESS downloads',
+        description: 'Open battery kit manuals, specifications, BMS documents, LCD manuals, and high-voltage control files.',
+      },
+      {
+        href: '/battery-enclosures',
+        label: 'Battery enclosure selection guide',
+        description: 'Choose the correct battery box route before using the manual for assembly planning.',
+      },
+    ],
+  },
+  {
+    path: 'ess-cooling-system',
+    kind: 'guide',
+    eyebrow: 'ESS cooling system selection',
+    title: 'ESS Cooling System Guide: Air-Cooled and Liquid-Cooled Storage',
+    description:
+      'Compare ESS cooling system choices for commercial energy storage cabinets, including air cooled energy storage system design, liquid cooling, duty cycle, climate, maintenance, and quotation inputs.',
+    intro:
+      'Cooling is one of the main design choices in a commercial energy storage system. Buyers searching for ESS cooling, air-cooling ESS, or air cooled energy storage system should compare the thermal method against power density, ambient conditions, operating schedule, service capability, and final cabinet scope.',
+    image: '/images/tness-ci-ess/main-3.webp',
+    highlights: [
+      { label: 'Search intent', value: 'ESS cooling system' },
+      { label: 'Common options', value: 'Air cooling and liquid cooling' },
+      { label: 'Main inputs', value: 'Duty cycle, C-rate, climate, footprint' },
+      { label: 'Product route', value: 'Configured C&I ESS cabinet' },
+    ],
+    sections: [
+      {
+        title: 'How air-cooled energy storage is evaluated',
+        paragraphs: [
+          'An air cooled energy storage system uses controlled airflow, fans, ducts, heat exchangers, and cabinet control logic to manage battery temperature. It can be appropriate when power density, ambient conditions, dust exposure, acoustic limits, and service expectations fit the project.',
+        ],
+        bullets: [
+          'Review airflow path, filter access, fan redundancy, cabinet spacing, and room ventilation.',
+          'Confirm ambient temperature, altitude, humidity, dust, salt mist, and outdoor exposure.',
+          'Check whether the cabinet duty cycle creates short peaks or sustained high thermal load.',
+        ],
+      },
+      {
+        title: 'When liquid cooling should be reviewed',
+        paragraphs: [
+          'Liquid cooling is often reviewed when high cabinet density, sustained charge or discharge, hot ambient conditions, or tighter cell temperature uniformity is required. It can improve thermal control, but introduces pumps, coolant circuits, leak detection, and additional service requirements.',
+        ],
+      },
+      {
+        title: 'Quotation inputs for the cooling system',
+        paragraphs: [
+          'Send the required kWh, PCS power, operating schedule, charge and discharge duration, installation country, minimum and maximum ambient temperature, available footprint, and maintenance constraints. The final quotation should identify the supplied thermal-management system.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configurable commercial cabinet platform with project-specific air-cooled or liquid-cooled options.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is air cooling enough for every ESS cabinet?',
+        answer: 'No. Air cooling can be suitable for many projects, but cabinet density, duty cycle, climate, and temperature-uniformity requirements must be reviewed.',
+      },
+      {
+        question: 'Is liquid cooling always better?',
+        answer: 'No. Liquid cooling can support tighter thermal control, but it adds coolant circuits, pumps, leak monitoring, and service requirements.',
+      },
+      {
+        question: 'Can JKESS quote both cooling routes?',
+        answer: 'Selected C&I cabinet configurations can be reviewed with intelligent air cooling or liquid cooling depending on the project scope.',
+      },
+    ],
+    related: [
+      {
+        href: '/guides/air-cooled-vs-liquid-cooled-ess',
+        label: 'Air-cooled vs liquid-cooled ESS',
+        description: 'Detailed comparison of thermal-management choices for commercial ESS cabinets.',
+      },
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Plan capacity, PCS power, cooling method, site conditions, and quote scope.',
+      },
+    ],
+  },
+  {
+    path: 'peak-shaving-battery-storage',
+    kind: 'solution',
+    eyebrow: 'Commercial peak shaving ESS',
+    title: 'Peak Shaving With Battery Energy Storage Systems',
+    description:
+      'Plan peak shaving with battery storage for commercial sites, including ESS peak shaving, battery containers, EMS control, load data, PCS power, usable kWh, and cabinet quotation inputs.',
+    intro:
+      'Peak shaving uses battery energy storage to reduce short grid-import peaks that drive demand charges or contracted-capacity limits. The correct system cannot be selected from cabinet kWh alone; it must be sized from load data, tariff structure, peak duration, PCS power, EMS strategy, and reserve requirements.',
+    image: '/images/tness-ci-ess/main-2.webp',
+    highlights: [
+      { label: 'Main search', value: 'Peak shaving with battery storage' },
+      { label: 'Control layer', value: 'EMS, PCS, meter, dispatch threshold' },
+      { label: 'Sizing input', value: 'Interval load data and tariff rules' },
+      { label: 'Product route', value: 'C&I ESS cabinet quotation' },
+    ],
+    sections: [
+      {
+        title: 'What data is needed before sizing',
+        paragraphs: [
+          'The most useful starting point is measured 15-minute or finer interval load data. This shows how high the peaks are, how long they last, how often they repeat, and whether the battery has time to recharge between events.',
+        ],
+        bullets: [
+          'Demand charge rules, contracted capacity, tariff periods, and export restrictions.',
+          'Target kW reduction, required backup reserve, and allowable state-of-charge window.',
+          'Existing solar generation, generators, EV charging, large motors, or variable production loads.',
+        ],
+      },
+      {
+        title: 'Battery containers and cabinets for peak shaving',
+        paragraphs: [
+          'Some buyers search for peak shaving battery containers, while others need compact commercial ESS cabinets. The right enclosure format depends on required capacity, PCS power, installation space, outdoor rating, fire protection, grid connection, and service access.',
+        ],
+      },
+      {
+        title: 'EMS logic matters',
+        paragraphs: [
+          'A peak-shaving EMS must decide when to discharge, how much reserve to keep, when to recharge, and how to avoid creating a second peak later in the billing period. Communication with meters, PCS, BMS, and site monitoring should be confirmed before quotation.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial ESS cabinet route for peak shaving, backup, and solar self-consumption projects.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BMS control hardware route for integrators building custom high-voltage ESS racks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can peak shaving be sized from one electricity bill?',
+        answer: 'Usually not. Bills show monthly charges, but interval data is needed to understand peak duration, frequency, and dispatch timing.',
+      },
+      {
+        question: 'Does peak shaving require an EMS?',
+        answer: 'Yes. The battery needs control logic connected to metering, PCS, BMS, and site constraints to discharge at the right time.',
+      },
+      {
+        question: 'Can the same battery provide backup power?',
+        answer: 'Yes, but backup reserve reduces the energy available for peak shaving unless the system is sized for both objectives.',
+      },
+    ],
+    related: [
+      {
+        href: '/solutions/commercial-peak-shaving',
+        label: 'Commercial peak shaving sizing',
+        description: 'Review the existing peak-shaving solution page and required project inputs.',
+      },
+      {
+        href: '/commercial-energy-storage',
+        label: 'Commercial energy storage overview',
+        description: 'Compare capacity, PCS power, cooling, monitoring, and quotation scope.',
+      },
+    ],
+  },
+  {
+    path: 'bmu-battery-module',
+    kind: 'guide',
+    eyebrow: 'BMU and ESS BMS guide',
+    title: 'What Is a BMU in Battery and ESS BMS Systems?',
+    description:
+      'Understand what a BMU battery module controller does in ESS BMS architecture, how it works with BCU master control, CAN or RS485 communication, and high-voltage battery rack design.',
+    intro:
+      'A BMU, or battery monitoring unit, is normally the module-level control and measurement layer in a high-voltage battery management system. Buyers searching for BMU battery, BMU module, BMU in battery, ESS BMS, or what is a BMU are usually trying to understand how slave monitoring hardware fits into a complete rack architecture.',
+    image: '/images/hv-kit/1.jpg',
+    highlights: [
+      { label: 'Primary term', value: 'BMU battery module' },
+      { label: 'System role', value: 'Cell voltage and temperature monitoring' },
+      { label: 'Master layer', value: 'BCU coordinates rack control' },
+      { label: 'Interfaces', value: 'CAN, RS485, isolated internal bus' },
+    ],
+    sections: [
+      {
+        title: 'What a BMU does',
+        paragraphs: [
+          'A BMU typically collects cell voltage, temperature, balancing status, and module-level diagnostic information. It sends this information upstream to the BCU or rack master controller so the system can calculate limits, alarms, and operating status.',
+        ],
+        bullets: [
+          'Monitors cell and temperature channels assigned to the module or slave box.',
+          'Supports balancing or reports balancing status depending on the architecture.',
+          'Communicates with the BCU, which then interfaces with PCS, EMS, or inverter systems.',
+        ],
+      },
+      {
+        title: 'Why BMU quantity is project-specific',
+        paragraphs: [
+          'One BMU is not automatically enough for a rack. Required quantity depends on cell count, module layout, channel count, isolation design, wiring route, and the selected high-voltage BMS architecture.',
+        ],
+      },
+      {
+        title: 'BMU, BCU, CAN, and RS485 compatibility',
+        paragraphs: [
+          'Physical ports are not enough to prove compatibility. Confirm protocol, message map, address handling, baud rate, firmware version, state logic, alarms, and commissioning settings before purchasing ESS BMS hardware.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: '100A and 200A BCU or BMU control-box options for engineered high-voltage ESS racks.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet route when the buyer needs complete system scope instead of BMS hardware only.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is a BMU in battery systems?',
+        answer: 'A BMU is a battery monitoring unit used to collect module-level cell and temperature information and report it to the rack-level controller.',
+      },
+      {
+        question: 'Is a BMU the same as a complete BMS?',
+        answer: 'No. A BMU is one part of the BMS architecture. A complete system also needs master control, sensors, contactors, wiring, protection, and communication logic.',
+      },
+      {
+        question: 'Can JKESS help select BMU quantity?',
+        answer: 'Yes. Send rack voltage, cell count, module arrangement, current requirement, PCS interface, and communication requirements for review.',
+      },
+    ],
+    related: [
+      {
+        href: '/guides/bcu-vs-bmu',
+        label: 'BCU vs BMU guide',
+        description: 'Compare master and slave controller roles in high-voltage BMS architecture.',
+      },
+      {
+        href: '/can-rs485-bms-inverter-compatibility',
+        label: 'CAN and RS485 compatibility',
+        description: 'Check communication requirements before selecting BMS hardware.',
+      },
+    ],
+  },
+  {
+    path: 'ess-rack-mount-battery-modules',
+    kind: 'category',
+    eyebrow: 'Rack battery enclosure planning',
+    title: 'ESS Rack Mount Battery Modules and 6U Enclosures',
+    description:
+      'Plan ESS rack mount battery modules with 6U battery kit enclosures, 19-inch rack fit, airflow, service access, cell compatibility, BMS wiring, and EU shipping review.',
+    intro:
+      'Rack mount battery modules are common in telecom rooms, residential storage cabinets, and compact commercial ESS assemblies. Before selecting a 6U enclosure, confirm rack depth, rail load, airflow, cable routing, cell dimensions, BMS option, and service access.',
+    image: '/images/6u-kit/1.webp',
+    highlights: [
+      { label: 'Search intent', value: 'ESS rack mount battery modules' },
+      { label: 'Form factor', value: '6U, 19-inch rack enclosure' },
+      { label: 'Main checks', value: 'Depth, airflow, cell fit, wiring' },
+      { label: 'Product route', value: '6U Battery Kit' },
+    ],
+    sections: [
+      {
+        title: 'Mechanical rack checks',
+        paragraphs: [
+          'A rack-mount battery enclosure must fit the actual cabinet, not only the nominal 19-inch width. Depth, rail position, front and rear clearance, floor loading, cable bend radius, and service access should be confirmed before ordering.',
+        ],
+      },
+      {
+        title: 'Electrical integration checks',
+        paragraphs: [
+          'The completed rack battery module needs compatible cells, BMS current rating, LCD or communication accessories, inverter protocol, protection hardware, and commissioning settings. Enclosure selection should follow these electrical inputs.',
+        ],
+        bullets: [
+          'Confirm 51.2V nominal 16S LiFePO4 platform requirements.',
+          'Confirm CAN or RS485 communication and inverter protocol before assembly.',
+          'Confirm airflow path and heat generation for the intended current profile.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount 51.2V LiFePO4 enclosure kit for compact battery module projects.',
+      },
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing enclosure alternative when rack infrastructure is not available.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is every 6U battery kit compatible with every rack?',
+        answer: 'No. Confirm rack depth, rail rating, mounting position, airflow, cable route, and service clearance.',
+      },
+      {
+        question: 'Are cells included in the rack battery module enclosure?',
+        answer: 'No. JKESS enclosure kits do not include cells unless a written quotation states otherwise.',
+      },
+      {
+        question: 'Can JKESS review rack cabinet compatibility?',
+        answer: 'Yes. Send rack dimensions, target cells, BMS option, inverter model, quantity, and destination country.',
+      },
+    ],
+    related: [
+      {
+        href: '/rack-battery-enclosures',
+        label: 'Rack battery enclosures',
+        description: 'Review 6U enclosure planning details and product options.',
+      },
+      {
+        href: '/compare/rack-vs-floor-standing-battery-kit',
+        label: 'Rack vs floor-standing battery kit',
+        description: 'Compare rack and caster enclosure formats before purchase.',
+      },
+    ],
+  },
+  {
+    path: 'energy-storage-enclosures',
+    kind: 'category',
+    eyebrow: 'Battery enclosure manufacturing',
+    title: 'Energy Storage Enclosures for Lithium Battery Projects',
+    description:
+      'Review energy storage enclosures for lithium battery projects, including battery box manufacturing, 48V LiFePO4 enclosure kits, 6U rack enclosures, and C&I ESS cabinet scope.',
+    intro:
+      'Energy storage enclosure searches can refer to several different products: a low-voltage battery box, a 6U rack battery enclosure, high-voltage BMS control hardware, or a configured commercial ESS cabinet. The right route depends on whether the buyer needs only mechanical enclosure supply or a broader engineered system.',
+    image: '/images/battery-kit-system.webp',
+    highlights: [
+      { label: 'Search intent', value: 'Energy storage enclosures' },
+      { label: 'Material route', value: 'Sheet-metal battery enclosure kits' },
+      { label: 'Battery platform', value: '48V / 51.2V LiFePO4 projects' },
+      { label: 'Project route', value: 'Enclosure kit or C&I cabinet' },
+    ],
+    sections: [
+      {
+        title: 'Enclosure kit versus complete ESS cabinet',
+        paragraphs: [
+          'A battery enclosure kit helps house cells and selected integration hardware. It is not automatically a complete energy storage system. A C&I ESS cabinet can include a wider project scope such as modules, BMS, PCS, EMS, cooling, fire protection, monitoring, and documentation when quoted.',
+        ],
+      },
+      {
+        title: 'Lithium battery enclosure manufacturing checks',
+        paragraphs: [
+          'Before comparing enclosure options, confirm cell dimensions, compression needs, busbar route, insulation clearance, terminal position, BMS hardware, cable exits, weight, ventilation, and installation environment.',
+        ],
+        bullets: [
+          'Use floor-standing caster enclosure when movement and direct floor access matter.',
+          'Use 6U rack enclosure when 19-inch cabinet infrastructure and modular stacking are planned.',
+          'Use C&I cabinet quotation when the project requires PCS, EMS, cooling, and broader system documentation.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'battery-kit',
+        label: 'Battery Kit With Caster',
+        description: 'Floor-standing energy storage enclosure for compatible 51.2V LiFePO4 assembly projects.',
+      },
+      {
+        slug: '6u-battery-kit',
+        label: '6U Battery Kit',
+        description: 'Rack-mount energy storage enclosure for compact 51.2V LiFePO4 module projects.',
+      },
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured commercial cabinet route when the buyer needs a complete system quotation.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Does an energy storage enclosure include battery cells?',
+        answer: 'JKESS enclosure kits do not include cells unless a written quotation specifically includes them.',
+      },
+      {
+        question: 'Can JKESS support enclosure manufacturing for lithium batteries?',
+        answer: 'JKESS supplies battery enclosure kit routes and configured ESS cabinet routes. Final scope depends on the selected product and quotation.',
+      },
+      {
+        question: 'Which enclosure should I choose?',
+        answer: 'Choose from cell dimensions, installation format, BMS and inverter requirements, service access, logistics, and whether the project needs a complete cabinet system.',
+      },
+    ],
+    related: [
+      {
+        href: '/battery-enclosures',
+        label: 'LiFePO4 battery enclosures',
+        description: 'Review floor-standing and rack battery enclosure options.',
+      },
+      {
+        href: '/compare/battery-kit-vs-ci-ess-cabinet',
+        label: 'Battery kit vs C&I ESS cabinet',
+        description: 'Understand the difference between enclosure supply and complete cabinet quotation.',
+      },
+    ],
+  },
+  {
+    path: 'commercial-ess-cabinet-manufacturer',
+    kind: 'solution',
+    eyebrow: 'C&I ESS sourcing',
+    title: 'Commercial ESS Cabinet Manufacturer and Custom Sourcing Guide',
+    description:
+      'Source commercial ESS cabinets for C&I projects with JKESS, including industrial and commercial energy storage cabinet configuration, cooling, PCS, EMS, BMS, documentation, and quote scope.',
+    intro:
+      'Buyers searching for an ESS cabinet manufacturer or C&I ESS custom sourcing usually need more than a product card. A commercial cabinet quotation should define capacity, AC power, PCS, EMS, BMS, cooling, fire protection, site conditions, documentation, shipping, and installation boundary.',
+    image: '/images/tness-ci-ess/main-1.webp',
+    highlights: [
+      { label: 'Search intent', value: 'Commercial ESS cabinet manufacturer' },
+      { label: 'Project type', value: 'Industrial and commercial energy storage cabinet' },
+      { label: 'Scope', value: 'Battery modules, PCS, EMS, BMS, cooling' },
+      { label: 'Commercial path', value: 'Custom quotation review' },
+    ],
+    sections: [
+      {
+        title: 'What custom sourcing must define',
+        paragraphs: [
+          'A C&I ESS cabinet should be sourced from a written project scope, not only a model name. The quotation should state included capacity, PCS power, cooling method, communication, monitoring, safety equipment, documents, freight, and any excluded installation work.',
+        ],
+        bullets: [
+          'Application: peak shaving, backup, solar self-consumption, demand management, or hybrid use.',
+          'Site inputs: country, ambient temperature, altitude, grid voltage, footprint, access, and maintenance limits.',
+          'Commercial inputs: delivery term, documentation, warranty, commissioning support, and quantity.',
+        ],
+      },
+      {
+        title: 'When to choose a cabinet instead of parts',
+        paragraphs: [
+          'A cabinet route is better when the buyer needs coordinated system scope. Component sourcing can work for experienced integrators, but they must own the engineering responsibility for rack design, PCS compatibility, protection, thermal design, and commissioning.',
+        ],
+      },
+      {
+        title: 'C&I energy storage system cases',
+        paragraphs: [
+          'Typical C&I cases include demand-charge reduction, backup for critical loads, solar self-consumption, EV charging support, and facility energy management. Each case changes the required power, energy, EMS logic, and reserve strategy.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Quotation-based commercial cabinet platform for configured C&I energy storage projects.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BMS control hardware route for integrators sourcing components for custom ESS racks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can JKESS act as a commercial ESS cabinet manufacturer for custom projects?',
+        answer: 'JKESS can review configured C&I cabinet projects and provide quotation-based supply scope according to the final project requirements.',
+      },
+      {
+        question: 'Why is the C&I cabinet not sold with a fixed online price?',
+        answer: 'Capacity, PCS power, cooling, documentation, shipping, installation boundary, and site requirements vary by project, so the final scope must be quoted.',
+      },
+      {
+        question: 'What should I send for C&I ESS custom sourcing?',
+        answer: 'Send application, target capacity, AC power, site country, grid information, cooling preference, monitoring needs, delivery scope, and required documents.',
+      },
+    ],
+    related: [
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Prepare the technical inputs needed for an accurate cabinet quotation.',
+      },
+      {
+        href: '/peak-shaving-battery-storage',
+        label: 'Peak shaving battery storage',
+        description: 'Review a common C&I use case before cabinet sizing.',
+      },
+    ],
+  },
+]
+
 export const nonBrandLandingPages: NonBrandLandingPage[] = [
   ...baseNonBrandLandingPages,
   ...additionalEuropeanCountryConfigs.map(buildEuropeanCountryPage),
+  ...searchConsoleLandingPages,
 ]
 
 export function getNonBrandLandingPage(path: string) {

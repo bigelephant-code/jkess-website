@@ -159,13 +159,13 @@ export default function NavbarMegaMenuV2() {
               onFocus={() => openMenu(group.key)}
               onClick={() => setActiveMenu(activeMenu === group.key ? null : group.key)}
               aria-expanded={activeMenu === group.key}
-              className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-sm font-semibold transition xl:px-3 xl:text-lg ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
+              className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-sm font-semibold transition xl:px-3 xl:text-[19px] ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
             >
               {groupLabel(group.key, group.label)}
               <span className={`transition-transform duration-200 ${activeMenu === group.key ? 'rotate-180' : ''}`}><ChevronDown size={15} /></span>
             </button>
           ) : (
-            <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="shrink-0 rounded-xl px-2.5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-green-400 xl:px-3 xl:text-lg">
+            <a key={group.key} href={`${prefix}${group.href}`} onMouseEnter={closeMenu} className="shrink-0 rounded-xl px-2.5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 hover:text-green-400 xl:px-3 xl:text-[19px]">
               {groupLabel(group.key, group.label)}
             </a>
           ))}

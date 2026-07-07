@@ -144,7 +144,7 @@ export default function NavbarMegaMenuV2() {
           </div>
         )}
 
-      <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start gap-3 px-5 lg:px-6 xl:px-7">
+      <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-start gap-3 px-5 lg:gap-1 lg:px-6 xl:px-7">
         <a href={prefix || '/'} className="shrink-0" onMouseEnter={closeMenu}>
           <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={160} height={48} className="h-12 w-auto brightness-0 invert" priority />
         </a>

@@ -674,6 +674,11 @@ export function getProductBuyingGuideLinks(product: Product, lang = 'en'): Produ
         description: guideText(lang, 'desc'),
       },
       {
+        href: '/quote-preparation/commercial-ess-project-checklist',
+        title: guideText(lang, 'quote'),
+        description: guideText(lang, 'desc'),
+      },
+      {
         href: '/can-rs485-bms-inverter-compatibility',
         title: guideText(lang, 'canRs485'),
         description: guideText(lang, 'desc'),
@@ -701,6 +706,21 @@ export function getProductBuyingGuideLinks(product: Product, lang = 'en'): Produ
       {
         href: '/guides/air-cooled-vs-liquid-cooled-ess',
         title: guideText(lang, 'cooling'),
+        description: guideText(lang, 'desc'),
+      },
+      {
+        href: '/applications/solar-self-consumption-battery-storage',
+        title: guideText(lang, 'commercialCabinet'),
+        description: guideText(lang, 'desc'),
+      },
+      {
+        href: '/applications/commercial-backup-power-battery-storage',
+        title: guideText(lang, 'commercialEurope'),
+        description: guideText(lang, 'desc'),
+      },
+      {
+        href: '/quote-preparation/commercial-ess-project-checklist',
+        title: guideText(lang, 'quote'),
         description: guideText(lang, 'desc'),
       },
       ...sharedEurope,

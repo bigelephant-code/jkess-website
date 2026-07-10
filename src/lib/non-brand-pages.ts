@@ -448,6 +448,12 @@ function localizedGuide(lang: string) {
 }
 
 function localizedTopic(path: string, guide: typeof guideCopy.en) {
+  if (path.includes('solar-self-consumption')) return guide.commercialEurope
+  if (path.includes('commercial-backup-power')) return guide.commercialEurope
+  if (path.includes('ev-charging-station')) return guide.commercialEurope
+  if (path.includes('factory-energy-storage')) return guide.commercialEurope
+  if (path.includes('warehouse-supermarket')) return guide.commercialEurope
+  if (path.includes('quote-preparation')) return guide.quote
   if (path.includes('rack')) return guide.rackPlanning
   if (path.includes('high-voltage') || path.includes('100a-vs-200a') || path.includes('bcu')) return guide.hvEss
   if (path.includes('commercial') || path.includes('cabinet') || path.includes('peak-shaving')) return guide.commercialEurope
@@ -3308,6 +3314,459 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
         href: '/peak-shaving-battery-storage',
         label: 'Peak shaving battery storage',
         description: 'Review a common C&I use case before cabinet sizing.',
+      },
+      {
+        href: '/applications/solar-self-consumption-battery-storage',
+        label: 'Solar self-consumption battery storage',
+        description: 'Plan PV surplus capture, EMS control, and cabinet configuration inputs.',
+      },
+      {
+        href: '/quote-preparation/commercial-ess-project-checklist',
+        label: 'Commercial ESS quote checklist',
+        description: 'Prepare load data, site conditions, documents, logistics, and project scope before requesting a quote.',
+      },
+    ],
+  },
+  {
+    path: 'applications/solar-self-consumption-battery-storage',
+    kind: 'solution',
+    eyebrow: 'Solar self-consumption storage',
+    title: 'Battery Storage for Solar Self-Consumption in Commercial Sites',
+    description:
+      'Plan commercial battery storage for solar self-consumption, including PV surplus capture, PCS sizing, EMS control, backup reserve, cooling, and C&I ESS cabinet quotation inputs.',
+    intro:
+      'Commercial solar self-consumption projects use battery storage to capture PV energy that would otherwise be exported, curtailed, or used at a lower value. The storage system should be sized from PV production, load profile, tariff rules, export limits, backup reserve, and site operating schedule.',
+    image: '/images/tness-ci-ess/main-2.webp',
+    highlights: [
+      { label: 'Application', value: 'Commercial solar self-consumption' },
+      { label: 'Main inputs', value: 'PV curve, load profile, export rules' },
+      { label: 'Control layer', value: 'EMS, PCS, BMS, meter integration' },
+      { label: 'Product route', value: 'Configured C&I ESS cabinet quotation' },
+    ],
+    sections: [
+      {
+        title: 'Start from PV production and site load',
+        paragraphs: [
+          'A solar storage cabinet should not be selected from PV capacity alone. The useful battery capacity depends on how much daytime PV surplus exists, when the site consumes power, whether export is limited, and how much energy should be reserved for backup.',
+          'For a faster review, provide PV inverter capacity, historical generation data where available, interval load data, export rules, AC connection point, and the target operating objective.',
+        ],
+        bullets: [
+          'Shift daytime PV surplus into evening or tariff-peak periods.',
+          'Reduce export, curtailment, or low-value grid feed-in where local rules allow.',
+          'Reserve part of the battery for backup only when the electrical architecture supports it.',
+        ],
+      },
+      {
+        title: 'How the cabinet configuration is reviewed',
+        paragraphs: [
+          'The correct cabinet configuration depends on usable kWh, PCS power, charge duration, discharge duration, cooling method, outdoor rating, monitoring, and local documentation requirements. The final quotation should define whether PV coupling, EMS logic, installation, and commissioning are included or excluded.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet route for solar self-consumption, backup reserve, and commercial energy management.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BMS control hardware route for integrators building custom high-voltage PV storage racks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can battery storage increase solar self-consumption?',
+        answer: 'Yes, when there is usable PV surplus and the EMS can charge and discharge according to load, tariff, export, and reserve rules.',
+      },
+      {
+        question: 'What data is needed for a solar storage quote?',
+        answer: 'Send PV capacity, inverter model, generation profile, load data, export rules, target backup reserve, site country, and available installation space.',
+      },
+      {
+        question: 'Is this the same as peak shaving?',
+        answer: 'Not exactly. Solar self-consumption focuses on PV energy use, while peak shaving focuses on reducing demand peaks. One system can be designed for both if the capacity and control strategy allow it.',
+      },
+    ],
+    related: [
+      {
+        href: '/peak-shaving-battery-storage',
+        label: 'Peak shaving battery storage',
+        description: 'Compare demand reduction with solar self-consumption control objectives.',
+      },
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Prepare capacity, PCS power, cooling, and project quote inputs.',
+      },
+    ],
+  },
+  {
+    path: 'applications/commercial-backup-power-battery-storage',
+    kind: 'solution',
+    eyebrow: 'Commercial backup storage',
+    title: 'Commercial Backup Power Battery Storage Planning Guide',
+    description:
+      'Plan commercial backup power with battery storage, including critical-load selection, backup duration, PCS power, transfer architecture, reserve strategy, and C&I ESS cabinet quotation inputs.',
+    intro:
+      'Backup power projects require a different review from simple energy shifting. The first question is which loads must stay online, how long they must run, and whether the site electrical design supports automatic transfer, islanding, or only supported load backup.',
+    image: '/images/tness-ci-ess/main-4.webp',
+    highlights: [
+      { label: 'Application', value: 'Commercial backup power' },
+      { label: 'Sizing basis', value: 'Critical load kW and backup hours' },
+      { label: 'Electrical review', value: 'Transfer, islanding, protection' },
+      { label: 'Product route', value: 'Configured C&I ESS cabinet' },
+    ],
+    sections: [
+      {
+        title: 'Define critical loads before capacity',
+        paragraphs: [
+          'A backup storage system should be sized from the supported load list rather than the total site load. Separate critical lighting, servers, controls, security, refrigeration, pumps, production equipment, or emergency circuits from non-critical loads.',
+        ],
+        bullets: [
+          'List each critical load, rated power, startup current, and required backup duration.',
+          'Confirm whether the battery must support black start, UPS-like transfer, or longer-duration backup.',
+          'Review local electrical code, transfer equipment, protection coordination, and grid interconnection rules.',
+        ],
+      },
+      {
+        title: 'Reserve strategy and daily operation',
+        paragraphs: [
+          'If the same battery is also used for peak shaving or solar self-consumption, the EMS must reserve enough state of charge for backup. This reserve reduces the energy available for daily economic dispatch unless the system is sized for both functions.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Quotation-based cabinet platform for commercial backup, peak shaving, and solar storage projects.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can a C&I battery cabinet replace a generator?',
+        answer: 'It can support selected backup loads when designed correctly, but generator replacement depends on runtime, load profile, transfer architecture, local rules, and redundancy requirements.',
+      },
+      {
+        question: 'What should I send for backup sizing?',
+        answer: 'Send the critical-load list, required backup duration, single-line diagram, site voltage, transfer requirement, installation country, and any grid or fire-safety documentation needs.',
+      },
+      {
+        question: 'Can backup and peak shaving run on the same battery?',
+        answer: 'Yes, but the EMS must reserve state of charge for backup, and this reserve must be included in the system sizing.',
+      },
+    ],
+    related: [
+      {
+        href: '/applications/solar-self-consumption-battery-storage',
+        label: 'Solar self-consumption battery storage',
+        description: 'Plan PV surplus capture and backup reserve together.',
+      },
+      {
+        href: '/peak-shaving-battery-storage',
+        label: 'Peak shaving battery storage',
+        description: 'Review demand-charge reduction and EMS dispatch requirements.',
+      },
+    ],
+  },
+  {
+    path: 'applications/ev-charging-station-battery-storage',
+    kind: 'solution',
+    eyebrow: 'EV charging site storage',
+    title: 'Battery Storage for EV Charging Stations',
+    description:
+      'Plan battery storage for EV charging stations, including grid capacity limits, peak shaving, solar charging, charger power, EMS control, and commercial ESS cabinet quotation inputs.',
+    intro:
+      'EV charging sites can create sharp demand peaks that exceed transformer capacity or increase demand charges. Battery storage can buffer charger load, support solar charging, and reduce grid peaks when the PCS, EMS, and charger control strategy are designed together.',
+    image: '/images/tness-ci-ess/main-5.webp',
+    highlights: [
+      { label: 'Application', value: 'EV charging station battery storage' },
+      { label: 'Main issue', value: 'Grid capacity and demand peaks' },
+      { label: 'Sizing input', value: 'Charger power, sessions, daily energy' },
+      { label: 'Product route', value: 'C&I ESS cabinet quotation' },
+    ],
+    sections: [
+      {
+        title: 'Review charger power and grid limits',
+        paragraphs: [
+          'A battery can help when the charging site has limited grid capacity, expensive peak demand, or variable solar generation. The system must be reviewed against charger count, charger rating, session timing, transformer capacity, grid contract, and expected utilization.',
+        ],
+        bullets: [
+          'Number of AC or DC chargers and maximum simultaneous power.',
+          'Expected daily charging sessions, average energy per session, and peak arrival periods.',
+          'Grid capacity, transformer rating, demand charges, export limits, and PV generation if present.',
+        ],
+      },
+      {
+        title: 'EMS coordination is essential',
+        paragraphs: [
+          'The EMS should decide when to charge from grid or PV, when to discharge into charging peaks, and how much reserve to keep for site backup or grid constraints. Communication with chargers, meters, PCS, and BMS should be confirmed before quotation.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet platform for EV charging support, peak shaving, and solar charging sites.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can battery storage reduce EV charging demand peaks?',
+        answer: 'Yes, if the PCS power, usable kWh, EMS logic, and grid metering are designed around charger demand and utilization.',
+      },
+      {
+        question: 'What data is needed for an EV charging ESS quote?',
+        answer: 'Send charger quantity, charger power, utilization estimate, grid capacity, tariff rules, PV information, site country, and installation space.',
+      },
+      {
+        question: 'Can the cabinet support fast chargers directly?',
+        answer: 'The final electrical architecture depends on charger type, PCS design, AC or DC coupling, protection, metering, and local interconnection rules.',
+      },
+    ],
+    related: [
+      {
+        href: '/peak-shaving-battery-storage',
+        label: 'Peak shaving with battery storage',
+        description: 'Review how batteries reduce short commercial demand peaks.',
+      },
+      {
+        href: '/guides/air-cooled-vs-liquid-cooled-ess',
+        label: 'ESS cooling system guide',
+        description: 'Check thermal-management choices for high-duty charging sites.',
+      },
+    ],
+  },
+  {
+    path: 'applications/factory-energy-storage-system',
+    kind: 'solution',
+    eyebrow: 'Factory ESS planning',
+    title: 'Factory Energy Storage System for Peak Shaving and Backup',
+    description:
+      'Plan a factory energy storage system for peak shaving, backup power, solar self-consumption, EMS control, load data review, cooling, and commercial ESS cabinet quotation.',
+    intro:
+      'Factories often combine high demand peaks, production schedules, motor loads, solar generation, and critical backup needs. A factory ESS should be reviewed from interval load data, production constraints, transformer capacity, backup priorities, and site installation conditions.',
+    image: '/images/tness-ci-ess/main-1.webp',
+    highlights: [
+      { label: 'Application', value: 'Factory energy storage system' },
+      { label: 'Use cases', value: 'Peak shaving, backup, solar self-use' },
+      { label: 'Key data', value: 'Load profile and production schedule' },
+      { label: 'Product route', value: 'C&I ESS cabinet' },
+    ],
+    sections: [
+      {
+        title: 'Map the factory load profile',
+        paragraphs: [
+          'Factory storage sizing should start with measured load data and production timing. Large motors, compressors, furnaces, pumps, HVAC, and process equipment can create short peaks that require a different power-to-energy ratio than office or retail loads.',
+        ],
+        bullets: [
+          'Provide interval load data and production schedule by shift.',
+          'Identify critical loads that require backup and non-critical loads that can be shed.',
+          'Confirm transformer capacity, grid contract, tariff rules, and expansion plans.',
+        ],
+      },
+      {
+        title: 'Installation and safety review',
+        paragraphs: [
+          'The quotation should define cabinet location, outdoor rating, cooling method, fire protection, access for service, crane or forklift route, electrical boundary, monitoring, and local documentation requirements.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet platform for factory peak shaving, backup, and solar self-consumption.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BMS control hardware route for factory integrators building custom ESS racks.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What factory data is needed before sizing ESS?',
+        answer: 'Send interval load data, tariff rules, critical load list, production schedule, transformer capacity, backup needs, site country, and available installation space.',
+      },
+      {
+        question: 'Can a factory ESS reduce demand charges?',
+        answer: 'Yes, when peak events are predictable enough and the PCS, usable kWh, EMS logic, and metering support peak shaving.',
+      },
+      {
+        question: 'Can the same system support solar self-consumption?',
+        answer: 'Yes, if PV generation, load timing, battery capacity, and EMS priorities are reviewed together.',
+      },
+    ],
+    related: [
+      {
+        href: '/peak-shaving-battery-storage',
+        label: 'Peak shaving battery storage',
+        description: 'Review demand reduction inputs for factory load profiles.',
+      },
+      {
+        href: '/applications/commercial-backup-power-battery-storage',
+        label: 'Commercial backup battery storage',
+        description: 'Plan backup reserve and critical-load support.',
+      },
+    ],
+  },
+  {
+    path: 'applications/warehouse-supermarket-battery-storage',
+    kind: 'solution',
+    eyebrow: 'Warehouse and retail storage',
+    title: 'Battery Storage for Warehouses and Supermarkets',
+    description:
+      'Plan battery storage for warehouses and supermarkets, including refrigeration backup, peak shaving, solar self-consumption, EV charging support, and C&I ESS cabinet quotation inputs.',
+    intro:
+      'Warehouses and supermarkets can have steady daytime loads, refrigeration equipment, HVAC peaks, rooftop solar, and growing EV charging demand. Battery storage can support peak shaving, backup reserve, and solar self-consumption when the site load and critical equipment are defined clearly.',
+    image: '/images/tness-ci-ess/main-3.webp',
+    highlights: [
+      { label: 'Application', value: 'Warehouse and supermarket battery storage' },
+      { label: 'Common loads', value: 'Refrigeration, HVAC, lighting, EV charging' },
+      { label: 'Use cases', value: 'Backup, peak shaving, solar self-use' },
+      { label: 'Product route', value: 'C&I ESS cabinet quotation' },
+    ],
+    sections: [
+      {
+        title: 'Separate critical refrigeration and normal loads',
+        paragraphs: [
+          'For supermarkets and cold-chain warehouses, backup requirements should separate refrigeration, controls, lighting, and safety systems from non-critical loads. The battery reserve strategy depends on how long critical loads must run during an outage.',
+        ],
+        bullets: [
+          'List refrigeration compressors, HVAC, lighting, controls, and emergency systems separately.',
+          'Confirm rooftop PV generation and daytime load overlap.',
+          'Review EV charging plans because charger peaks can change the storage size.',
+        ],
+      },
+      {
+        title: 'Economic and operational review',
+        paragraphs: [
+          'The storage value can come from demand reduction, PV self-consumption, backup protection, or EV charging support. Each objective changes the battery reserve, discharge schedule, and EMS priorities.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Configured cabinet route for warehouse, retail, refrigeration, and EV charging support.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can battery storage support supermarket refrigeration backup?',
+        answer: 'Yes, if critical refrigeration loads, startup current, backup duration, transfer architecture, and reserve strategy are correctly designed.',
+      },
+      {
+        question: 'What information should a warehouse send for a quote?',
+        answer: 'Send load data, critical equipment list, PV capacity, EV charging plan, backup duration, site country, and available outdoor or indoor installation space.',
+      },
+      {
+        question: 'Can one cabinet support both peak shaving and backup?',
+        answer: 'Yes, but backup reserve must be included in the sizing and EMS dispatch strategy.',
+      },
+    ],
+    related: [
+      {
+        href: '/applications/commercial-backup-power-battery-storage',
+        label: 'Commercial backup power storage',
+        description: 'Plan critical-load backup and reserve requirements.',
+      },
+      {
+        href: '/applications/ev-charging-station-battery-storage',
+        label: 'EV charging station battery storage',
+        description: 'Review charger peak buffering and grid-capacity constraints.',
+      },
+    ],
+  },
+  {
+    path: 'quote-preparation/commercial-ess-project-checklist',
+    kind: 'guide',
+    eyebrow: 'ESS quote preparation',
+    title: 'Commercial ESS Project Quote Preparation Checklist',
+    description:
+      'Prepare a commercial ESS quote request with the required load data, target application, capacity, PCS power, cooling, site conditions, documents, shipping scope, and installation boundary.',
+    intro:
+      'A complete quote request helps suppliers review the correct commercial ESS cabinet configuration faster. Use this checklist before asking for a C&I energy storage cabinet, peak-shaving battery, backup storage system, solar self-consumption battery, or EV charging site storage.',
+    image: '/images/contact-banner-bg.webp',
+    highlights: [
+      { label: 'Best use', value: 'Before requesting a C&I ESS quotation' },
+      { label: 'Application inputs', value: 'Peak shaving, backup, solar, EV charging' },
+      { label: 'Technical inputs', value: 'Load data, PCS power, cooling, grid data' },
+      { label: 'Commercial inputs', value: 'Delivery country, documents, installation scope' },
+    ],
+    sections: [
+      {
+        title: 'Project objective',
+        paragraphs: [
+          'State the primary and secondary objectives. A cabinet used only for peak shaving is sized differently from a system that must also reserve energy for backup or absorb PV surplus.',
+        ],
+        bullets: [
+          'Peak shaving or contracted-capacity reduction.',
+          'Solar self-consumption or export limitation.',
+          'Backup power for critical loads.',
+          'EV charging support or grid-capacity buffering.',
+        ],
+      },
+      {
+        title: 'Technical data to send',
+        paragraphs: [
+          'Send enough data for an initial configuration review. If measured data is not available, provide the best current design estimates and clearly mark them as estimates.',
+        ],
+        bullets: [
+          'Interval load data, monthly bills, tariff rules, and grid capacity.',
+          'Target kWh, PCS kW, backup duration, PV capacity, and charger power where relevant.',
+          'Site country, ambient temperature range, altitude, humidity, dust, corrosion, and available footprint.',
+          'Required cooling method, fire protection, communication, monitoring, and documentation.',
+        ],
+      },
+      {
+        title: 'Commercial and logistics scope',
+        paragraphs: [
+          'Clarify whether the quote should include freight, customs documents, taxes, installation support, commissioning, training, spare parts, and service. Items not listed in the final written quotation should be treated as excluded.',
+        ],
+      },
+    ],
+    products: [
+      {
+        slug: 'tness-ci-ess-cabinet',
+        label: 'C&I High Voltage ESS Cabinet',
+        description: 'Quotation-based cabinet platform for commercial and industrial storage projects.',
+      },
+      {
+        slug: 'high-voltage-kit',
+        label: 'High Voltage Kit',
+        description: 'BMS control hardware route when the buyer owns rack engineering responsibility.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Can JKESS quote without load data?',
+        answer: 'An initial discussion is possible, but accurate sizing for peak shaving, backup, or solar self-consumption requires load and site data.',
+      },
+      {
+        question: 'What is the most common missing input?',
+        answer: 'The most common missing inputs are interval load data, backup-load list, site voltage, cooling requirement, and final delivery scope.',
+      },
+      {
+        question: 'Does the quote include installation?',
+        answer: 'Only if installation, commissioning, training, or travel support are expressly included in the signed quotation.',
+      },
+    ],
+    related: [
+      {
+        href: '/commercial-ess-cabinet-manufacturer',
+        label: 'Commercial ESS cabinet custom sourcing',
+        description: 'Review what must be defined before sourcing a configured cabinet.',
+      },
+      {
+        href: '/commercial-battery-storage-cabinet',
+        label: 'Commercial battery storage cabinet planning',
+        description: 'Understand capacity, PCS power, cooling, and site-review inputs.',
       },
     ],
   },

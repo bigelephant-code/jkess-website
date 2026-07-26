@@ -33,6 +33,14 @@ const staticPaths = [
   ...policyPaths,
 ]
 const siteLastModified = new Date('2026-07-01')
+// Landing pages whose title/description were revised after siteLastModified.
+// Without this the sitemap would still advertise the older shared date and give
+// crawlers no reason to re-fetch the page.
+const nonBrandPageLastModified: Record<string, string> = {
+  'commercial-ess-cabinet-manufacturer': '2026-07-27',
+  'peak-shaving-battery-storage': '2026-07-27',
+  'solutions/commercial-peak-shaving': '2026-07-27',
+}
 const staticImages: Record<string, string[]> = {
   '': ['/images/mountain-bg.webp', '/images/battery-kit-hero.webp'],
   '/about': ['/images/company-building.webp'],
@@ -112,11 +120,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const page of [...nonBrandLandingPages, ...specificationLandingPages]) {
     const path = `/${page.path}`
     const languageAlternates = indexableSeoAlternates(path)
+    const revisedOn = nonBrandPageLastModified[page.path]
+    const pageLastModified = revisedOn
+      ? new Date(`${revisedOn}T00:00:00.000Z`)
+      : siteLastModified
 
     for (const locale of defaultIndexableSeoLocales) {
       entries.push({
         url: absoluteUrl(localizedSeoPath(locale, path)),
-        lastModified: siteLastModified,
+        lastModified: pageLastModified,
         changeFrequency: page.kind === 'guide' ? 'monthly' : 'weekly',
         priority: page.kind === 'category' ? 0.9 : 0.85,
         images: [absoluteUrl(page.image)],
@@ -130,11 +142,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const guide of technicalGuides) {
     const path = `/guides/${guide.slug}`
     const languageAlternates = indexableSeoAlternates(path)
+    // Guides carry their own revision date. Reporting the shared site date here
+    // would tell crawlers the page is unchanged on the day it was edited.
+    const guideLastModified = new Date(`${guide.dateModified}T00:00:00.000Z`)
 
     for (const locale of defaultIndexableSeoLocales) {
       entries.push({
         url: absoluteUrl(localizedSeoPath(locale, path)),
-        lastModified: siteLastModified,
+        lastModified: guideLastModified,
         changeFrequency: 'monthly',
         priority: 0.82,
         images: [absoluteUrl(guide.image)],

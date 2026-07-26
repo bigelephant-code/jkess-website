@@ -33,6 +33,13 @@ export interface NonBrandLandingPage {
   kind: 'category' | 'solution' | 'guide'
   eyebrow: string
   title: string
+  /**
+   * English-only override for the SERP/meta title. The on-page H1 keeps the
+   * longer descriptive `title`. Set where Search Console shows the page ranking
+   * for a phrasing the H1 does not contain literally. Localized variants drop
+   * this so translated titles are never replaced by English text.
+   */
+  seoTitle?: string
   description: string
   intro: string
   image: string
@@ -482,6 +489,8 @@ function localizeGenericNonBrandLandingPage(page: NonBrandLandingPage, lang: str
     ...page,
     eyebrow: guide.europe,
     title: topic,
+    // The English SERP-title override must not leak into translated pages.
+    seoTitle: undefined,
     description: guide.desc,
     intro: guide.desc,
     highlights: [
@@ -920,8 +929,12 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Demand management solution',
     title: 'Commercial Battery Storage for Peak Shaving',
+    // Picks up the container/cabinet phrasings ("peak shaving battery
+    // containers", ~63rd) so the enclosure-format intent lands here rather than
+    // on /peak-shaving-battery-storage, which now owns the EMS phrasings.
+    seoTitle: 'Peak Shaving Battery Containers and ESS Cabinets',
     description:
-      'Learn how commercial battery storage can reduce short demand peaks, what load data is required, and how power, energy capacity, PCS, EMS, cooling, and grid constraints affect system sizing.',
+      'Choosing between peak shaving battery containers and commercial ESS cabinets: required capacity, PCS power, installation space, outdoor rating, fire protection, and grid connection.',
     intro:
       'Peak shaving uses stored energy to reduce the highest grid-import periods that influence demand charges or contracted-capacity limits. A battery is dispatched when facility load approaches a defined threshold and is recharged when site conditions, tariffs, and operating rules allow.',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -2929,8 +2942,12 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Commercial peak shaving ESS',
     title: 'Peak Shaving With Battery Energy Storage Systems',
+    // This page's strongest signal is "peak shaving ems" (~30th). Leaning the
+    // SERP title into EMS/sizing keeps it from competing with
+    // /solutions/commercial-peak-shaving for the same container queries.
+    seoTitle: 'Peak Shaving EMS and Battery Storage Sizing',
     description:
-      'Plan peak shaving with battery storage for commercial sites, including ESS peak shaving, battery containers, EMS control, load data, PCS power, usable kWh, and cabinet quotation inputs.',
+      'How a peak shaving EMS dispatches battery storage: interval load data, demand-charge rules, target kW reduction, PCS power, usable kWh, reserve state of charge, and recharge windows.',
     intro:
       'Peak shaving uses battery energy storage to reduce short grid-import peaks that drive demand charges or contracted-capacity limits. The correct system cannot be selected from cabinet kWh alone; it must be sized from load data, tariff structure, peak duration, PCS power, EMS strategy, and reserve requirements.',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -3242,8 +3259,12 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'C&I ESS sourcing',
     title: 'Commercial ESS Cabinet Manufacturer and Custom Sourcing Guide',
+    // Ranks ~3rd for "c&i ess custom sourcing" with no clicks. The old SERP
+    // title ran to 68 characters and never showed the literal "C&I" the buyer
+    // typed, so nothing in the result matched their query visually.
+    seoTitle: 'C&I ESS Cabinet Custom Sourcing & Manufacturing',
     description:
-      'Source commercial ESS cabinets for C&I projects with JKESS, including industrial and commercial energy storage cabinet configuration, cooling, PCS, EMS, BMS, documentation, and quote scope.',
+      'Custom sourcing for C&I ESS cabinets: configuration, cooling, PCS, EMS, BMS, certification documents, lead time, and what to send for a commercial energy storage cabinet quote.',
     intro:
       'Buyers searching for an ESS cabinet manufacturer or C&I ESS custom sourcing usually need more than a product card. A commercial cabinet quotation should define capacity, AC power, PCS, EMS, BMS, cooling, fire protection, site conditions, documentation, shipping, and installation boundary.',
     image: '/images/tness-ci-ess/main-1.webp',

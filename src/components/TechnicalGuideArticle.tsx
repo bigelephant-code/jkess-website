@@ -15,6 +15,21 @@ import {
 } from '@/lib/seo'
 import { getLocalizedUiCopy } from '@/lib/localized-ui'
 
+// The published date was previously hardcoded in English on every locale.
+// Intl renders it in the reader's language and degrades to the ISO date if the
+// runtime does not recognise the locale tag.
+function formatGuideDate(isoDate: string, lang: string) {
+  try {
+    return new Intl.DateTimeFormat(lang, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(new Date(`${isoDate}T00:00:00Z`))
+  } catch {
+    return isoDate
+  }
+}
+
 function guideKeywords(guide: TechnicalGuide) {
   return Array.from(new Set([
     guide.title,
@@ -31,7 +46,7 @@ export function buildTechnicalGuideMetadata(guide: TechnicalGuide, lang: string)
   const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
 
   return {
-    title: `${guide.title} | JKESS Technical Guide`,
+    title: `${guide.seoTitle} | JKESS`,
     description: guide.description,
     keywords: guideKeywords(guide),
     alternates: {
@@ -121,8 +136,8 @@ function guideJsonLd(guide: TechnicalGuide, lang: string) {
         url,
         mainEntityOfPage: url,
         inLanguage: lang,
-        datePublished: '2026-06-29',
-        dateModified: '2026-06-30',
+        datePublished: guide.datePublished,
+        dateModified: guide.dateModified,
         author: { '@id': organizationId },
         publisher: { '@id': organizationId },
       },
@@ -144,6 +159,22 @@ function guideJsonLd(guide: TechnicalGuide, lang: string) {
         name: `${ui.readMore}: ${guide.title}`,
         itemListElement: relatedPageItems,
       },
+      ...(guide.faqs.length > 0
+        ? [
+            {
+              '@type': 'FAQPage',
+              '@id': `${url}#faq`,
+              mainEntity: guide.faqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            },
+          ]
+        : []),
     ],
   })
 }
@@ -176,7 +207,10 @@ export default function TechnicalGuideArticle({
               <h1 className="mt-5 text-4xl font-bold tracking-tight text-white md:text-6xl">{guide.title}</h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-300 md:text-xl">{guide.summary}</p>
               <div className="mt-8 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
-                <span>{ui.updated} June 29, 2026</span>
+                <span>
+                  {ui.updated}{' '}
+                  <time dateTime={guide.dateModified}>{formatGuideDate(guide.dateModified, lang)}</time>
+                </span>
                 <span>•</span>
                 <span>{ui.technicalGuides}</span>
               </div>
@@ -240,6 +274,22 @@ export default function TechnicalGuideArticle({
               </div>
             </div>
           </section>
+
+          {guide.faqs.length > 0 && (
+            <section className="border-t border-gray-100 bg-white py-20">
+              <div className="mx-auto max-w-7xl px-6">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-green-600">{ui.faqEyebrow}</p>
+                <div className="mt-8 grid gap-4 lg:grid-cols-2">
+                  {guide.faqs.map((faq) => (
+                    <div key={faq.question} className="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+                      <h2 className="text-lg font-bold leading-7 text-gray-950">{faq.question}</h2>
+                      <p className="mt-3 text-sm leading-7 text-gray-600">{faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
 
           <section className="border-t border-gray-100 bg-gray-50 py-16">
             <div className="mx-auto max-w-7xl px-6">

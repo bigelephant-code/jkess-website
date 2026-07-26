@@ -124,7 +124,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
 
   return {
-    title: `${page.title} | JKESS`,
+    title: `${page.seoTitle ?? page.title} | JKESS`,
     description: page.description,
     keywords: pageKeywords(page),
     alternates: {

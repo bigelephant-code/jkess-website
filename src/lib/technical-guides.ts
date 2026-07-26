@@ -4,15 +4,30 @@ export type TechnicalGuideSection = {
   bullets?: string[]
 }
 
+export type TechnicalGuideFaq = {
+  question: string
+  answer: string
+}
+
 export type TechnicalGuide = {
   slug: string
   eyebrow: string
   title: string
+  /**
+   * Short title used for the SERP/meta title only. The on-page H1 keeps the
+   * longer descriptive `title`. Google truncates around 60 characters, and the
+   * full title plus the brand suffix runs well past that on every guide.
+   */
+  seoTitle: string
   description: string
   image: string
   summary: string
+  datePublished: string
+  dateModified: string
   sections: TechnicalGuideSection[]
   takeaways: string[]
+  /** Answers the question-form queries these guides already rank for. */
+  faqs: TechnicalGuideFaq[]
   relatedProducts: string[]
   relatedLinks: Array<{ href: string; label: string }>
 }
@@ -22,9 +37,12 @@ export const technicalGuides: TechnicalGuide[] = [
     slug: 'bcu-vs-bmu',
     eyebrow: 'High-voltage BMS architecture',
     title: 'BCU vs BMU: Roles in a High-Voltage Battery Management System',
+    seoTitle: 'BCU vs BMU: What a BMU Is in a Battery System',
     description:
-      'Understand the difference between a BCU master controller and BMU slave controller, including measurements, balancing, contactor control, communication, and selection inputs.',
+      'What a BMU (battery monitoring unit) does, how it differs from a BCU master controller, and how the two work together for measurement, balancing, contactor control, and communication.',
     image: '/images/hv-kit/1.jpg',
+    datePublished: '2026-06-29',
+    dateModified: '2026-07-27',
     summary:
       'A high-voltage BMS normally divides control between a rack-level master and module-level slave boards. The BCU coordinates the battery rack, while BMUs collect individual cell data and perform module-level functions. The exact quantities and interfaces depend on the pack topology.',
     sections: [
@@ -67,6 +85,33 @@ export const technicalGuides: TechnicalGuide[] = [
       'A master or slave control box is not a complete battery pack.',
       'PCS and EMS compatibility must be verified from protocol documents and commissioning requirements.',
     ],
+    faqs: [
+      {
+        question: 'What does BMU stand for?',
+        answer:
+          'BMU stands for battery monitoring unit. It is the module-level board in a battery management system that measures individual cell voltages and temperatures and reports them to the rack-level master controller.',
+      },
+      {
+        question: 'What is a BMU in a battery system?',
+        answer:
+          'A BMU is installed at module or cell-group level. It collects cell voltage and temperature data, forwards the measurements upstream to the BCU, and supports cell balancing when the selected hardware provides that function. It does not control the rack on its own.',
+      },
+      {
+        question: 'What is the difference between a BCU and a BMU?',
+        answer:
+          'The BCU is the rack-level master: it evaluates rack state, coordinates contactors and pre-charge logic, and communicates with the PCS or EMS. The BMU is the module-level slave that measures cells and reports to the BCU. One rack normally has one BCU and several BMUs.',
+      },
+      {
+        question: 'How many BMUs does a battery rack need?',
+        answer:
+          'The quantity follows the number of series cells, the module arrangement, the voltage and temperature channel count of the selected BMU, and the isolation and communication architecture. It is not derived from rack power alone, so the cell and module topology must be confirmed before selection.',
+      },
+      {
+        question: 'Is a BMU the same as a BMS?',
+        answer:
+          'No. BMS describes the complete battery management system. A BMU is one component inside it. A functioning high-voltage system normally needs the correct combination of BCU, BMUs, sensors, contactors, protection devices, harnesses, and commissioned firmware.',
+      },
+    ],
     relatedProducts: ['high-voltage-kit', 'tness-ci-ess-cabinet'],
     relatedLinks: [
       { href: '/high-voltage-bms', label: 'High-voltage BMS selection guide' },
@@ -78,9 +123,12 @@ export const technicalGuides: TechnicalGuide[] = [
     slug: 'can-vs-rs485-battery-communication',
     eyebrow: 'Battery communication guide',
     title: 'CAN vs RS485 for Battery, Inverter, PCS, and EMS Communication',
+    seoTitle: 'CAN vs RS485: Which to Use for Battery Communication',
     description:
-      'Compare CAN and RS485 battery communication, including topology, protocol compatibility, wiring, termination, addressing, baud rate, and commissioning checks.',
+      'The practical difference between CAN and RS485 for battery communication: topology, protocol compatibility, wiring, termination, addressing, baud rate, and commissioning checks.',
     image: '/images/hv-kit/3.jpg',
+    datePublished: '2026-06-29',
+    dateModified: '2026-07-27',
     summary:
       'CAN and RS485 describe physical and data-link communication methods, but neither name defines the application protocol. Two devices can both have CAN or RS485 ports and still be incompatible if message formats, addresses, timing, scaling, or state logic differ.',
     sections: [
@@ -123,6 +171,28 @@ export const technicalGuides: TechnicalGuide[] = [
       'CAN is often used for real-time BMS-to-inverter control; RS485 is common for monitoring and Modbus-style networks.',
       'Use the interface officially supported by the complete system rather than selecting from a generic comparison.',
     ],
+    faqs: [
+      {
+        question: 'What is the difference between CAN and RS485?',
+        answer:
+          'RS485 defines a differential physical layer, usually paired with Modbus RTU or a manufacturer protocol. CAN defines both a physical and data-link layer with message identifiers, arbitration, and error detection. Neither name specifies the application protocol, so two devices can share an interface and still be incompatible.',
+      },
+      {
+        question: 'Should a battery use CAN or RS485 to talk to an inverter?',
+        answer:
+          'Use the interface and protocol officially supported by both devices for the firmware versions involved. CAN is common for real-time BMS-to-inverter control; RS485 is common for monitoring, meters, and Modbus-style networks. Theoretical speed or cable length should not drive the decision.',
+      },
+      {
+        question: 'Can a CAN device communicate with an RS485 device?',
+        answer:
+          'Not directly. They are different electrical layers and require a gateway or a device with both interfaces. Even then, the application protocol, register or message map, scaling, and state logic must be translated correctly.',
+      },
+      {
+        question: 'Why is my BMS not communicating with the inverter?',
+        answer:
+          'Frequent causes are swapped differential wires, missing termination resistance, duplicated node addresses, wrong baud rate, incorrect cable pinout, unsupported firmware, incompatible message maps, and equipment that expects a different master-slave relationship.',
+      },
+    ],
     relatedProducts: ['battery-kit', '6u-battery-kit', 'high-voltage-kit'],
     relatedLinks: [
       { href: '/guides/how-to-match-bms-with-inverter', label: 'How to match a BMS with an inverter' },
@@ -134,9 +204,12 @@ export const technicalGuides: TechnicalGuide[] = [
     slug: '280ah-vs-314ah-lifepo4-cells',
     eyebrow: 'LiFePO4 cell selection',
     title: '280Ah vs 314Ah LiFePO4 Cells for Battery Enclosure Projects',
+    seoTitle: '280Ah vs 314Ah LiFePO4 Cells: How to Choose',
     description:
-      'Compare 280Ah and 314Ah LiFePO4 cells for enclosure projects by nominal energy, dimensions, terminals, current, compression, thermal design, and lifecycle requirements.',
+      'How 280Ah and 314Ah LiFePO4 cells differ in nominal energy, dimensions, terminals, current, compression, thermal design, and lifecycle requirements for enclosure projects.',
     image: '/images/battery-kit-system.webp',
+    datePublished: '2026-06-29',
+    dateModified: '2026-07-27',
     summary:
       'A higher amp-hour rating can increase nominal energy, but capacity alone does not confirm that a cell fits an enclosure or suits a battery design. Mechanical dimensions, terminal layout, current limits, compression, thermal behaviour, quality documentation, and the completed BMS and inverter design must also be checked.',
     sections: [
@@ -177,6 +250,23 @@ export const technicalGuides: TechnicalGuide[] = [
       'Use the exact cell datasheet and dimensional drawing before ordering an enclosure.',
       'Usable system energy depends on the complete battery, inverter, operating limits, and ageing assumptions.',
     ],
+    faqs: [
+      {
+        question: 'Is a 314Ah cell better than a 280Ah cell?',
+        answer:
+          'Not automatically. At the same nominal voltage and series count a 314Ah cell provides more nominal energy, but a higher capacity rating does not by itself mean higher power capability, longer life, or a physical fit in an existing enclosure.',
+      },
+      {
+        question: 'Will 314Ah cells fit an enclosure designed for 280Ah cells?',
+        answer:
+          'Only if the dimensional drawing confirms it. Cells with similar capacity labels can differ in width, depth, height, terminal spacing, terminal type, vent location, and recommended compression. Confirm fit from the exact cell model rather than the capacity label.',
+      },
+      {
+        question: 'How much usable energy does a 314Ah battery actually deliver?',
+        answer:
+          'Less than the nominal calculation. Usable AC energy is reduced by operating voltage limits, reserve state of charge, conversion losses, temperature, auxiliary loads, and an ageing allowance over the design life.',
+      },
+    ],
     relatedProducts: ['battery-kit', '6u-battery-kit'],
     relatedLinks: [
       { href: '/battery-enclosures/15kwh-lifepo4', label: '15kWh LiFePO4 enclosure' },
@@ -188,9 +278,12 @@ export const technicalGuides: TechnicalGuide[] = [
     slug: 'how-to-match-bms-with-inverter',
     eyebrow: 'Compatibility checklist',
     title: 'How to Match a Battery BMS With an Inverter or PCS',
+    seoTitle: 'How to Match a BMS With an Inverter: Checklist',
     description:
-      'Use this checklist to match a battery BMS with an inverter or PCS by voltage, current, protocol, firmware, contactor logic, protection limits, and commissioning tests.',
+      'A step-by-step checklist for matching a battery BMS to an inverter or PCS: voltage window, current limits, protocol, firmware, contactor logic, protection limits, and commissioning tests.',
     image: '/images/battery-kit-display.webp',
+    datePublished: '2026-06-29',
+    dateModified: '2026-07-27',
     summary:
       'A BMS and inverter must be compatible electrically and through communication. Matching only the nominal battery voltage or connector type is not enough. The completed system must agree on voltage limits, current limits, protocol, wiring, operating states, alarms, and fault recovery.',
     sections: [
@@ -230,6 +323,23 @@ export const technicalGuides: TechnicalGuide[] = [
       'A shared CAN or RS485 connector does not prove protocol compatibility.',
       'Firmware, message maps, wiring, and state logic must match.',
       'Complete controlled commissioning before full-power operation.',
+    ],
+    faqs: [
+      {
+        question: 'How do I know if a BMS is compatible with my inverter?',
+        answer:
+          'Compare the inverter or PCS DC voltage window against the battery cell count and charge and discharge limits, compare continuous and peak current against the full current path, then confirm the communication protocol from official protocol documents for the exact firmware versions.',
+      },
+      {
+        question: 'Does a matching CAN port mean the BMS and inverter will work together?',
+        answer:
+          'No. A shared connector does not prove compatibility. Baud rate, identifier or register map, scaling, byte order, update rate, addresses, master-slave roles, and operating-state logic must all agree before the system will run correctly.',
+      },
+      {
+        question: 'What should be tested during commissioning?',
+        answer:
+          'Start with controlled settings and verify voltage, current direction, state of charge, and charge and discharge limits on both devices. Test low- and high-voltage warnings, protective shutdowns, communication-loss response, and fault recovery before increasing power.',
+      },
     ],
     relatedProducts: ['battery-kit', '6u-battery-kit', 'high-voltage-kit'],
     relatedLinks: [

@@ -7,8 +7,17 @@ import {
 } from '@/lib/shipping-zones'
 
 export const organizationId = `${siteUrl}/#organization`
+export const brandId = `${siteUrl}/#brand`
+export const websiteId = `${siteUrl}/#website`
 export const merchantShippingPolicyId = `${siteUrl}/shipping-policy#policy`
 export const merchantReturnPolicyId = `${siteUrl}/returns-refunds#policy`
+
+const officialBrandProfiles = [
+  'https://www.jkess.com/',
+  'https://www.jkbms.net/',
+  'https://apps.apple.com/us/app/jkess/id6502400975',
+  'https://play.google.com/store/apps/details?id=com.jkess.bms',
+]
 
 const handlingTime = {
   '@type': 'QuantitativeValue',
@@ -128,8 +137,9 @@ export const jkessMerchantReturnPolicy = {
 export const jkessOrganization = {
   '@id': organizationId,
   '@type': ['Organization', 'LocalBusiness', 'ManufacturingBusiness'],
-  name: companyProfile.companyName,
-  alternateName: companyProfile.brandName,
+  name: companyProfile.brandName,
+  legalName: companyProfile.companyName,
+  alternateName: 'JKBMS',
   url: siteUrl,
   logo: absoluteUrl('/images/jkess-logo.png'),
   image: absoluteUrl('/images/company-building.webp'),
@@ -221,7 +231,23 @@ export const jkessOrganization = {
       availableLanguage: ['English', 'Chinese'],
     },
   ],
-  sameAs: ['https://www.jkesstech.com/'],
+  brand: {
+    '@id': brandId,
+  },
+  sameAs: officialBrandProfiles,
+}
+
+export const jkessBrand = {
+  '@id': brandId,
+  '@type': 'Brand',
+  name: companyProfile.brandName,
+  alternateName: 'JKESS Energy Storage',
+  url: siteUrl,
+  logo: absoluteUrl('/images/jkess-logo.png'),
+  slogan: 'Powering a Cleaner Future',
+  description:
+    'JKESS is the official energy storage brand of JKBMS Electronic Technology Co.,Ltd for BMS hardware, battery enclosure kits, high-voltage battery management systems, and commercial energy storage solutions.',
+  sameAs: officialBrandProfiles,
 }
 
 export function jsonLd(data: unknown) {

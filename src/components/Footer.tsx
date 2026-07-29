@@ -28,6 +28,7 @@ const footerGroups = [
     title: 'Company & Support',
     links: [
       ['Quality & Manufacturing', '/quality-and-manufacturing'],
+      ['Authorized Distributors', '/authorized-distributors'],
       ['EU Compliance', '/eu-compliance'],
       ['Shipping Quote', '/shipping-quote'],
       ['Technical Downloads', '/downloads'],
@@ -102,6 +103,9 @@ export default function Footer() {
             {t('footer.tagline', 'Powering a Cleaner Future')}
           </p>
         </div>
+        <p className="mt-3 text-center text-xs text-gray-600">
+          JKESS is the official energy storage brand of JKBMS Electronic Technology Co.,Ltd.
+        </p>
       </div>
     </footer>
   )

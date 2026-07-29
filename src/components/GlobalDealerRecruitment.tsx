@@ -17,6 +17,7 @@ export default function GlobalDealerRecruitment() {
   const shouldReduceMotion = useReducedMotion()
   const [copiedEmail, setCopiedEmail] = useState(false)
   const contactHref = localizedPath(lang, '/contact')
+  const authorizedDistributorsHref = localizedPath(lang, '/authorized-distributors')
   const copy = getDealerRecruitmentCopy(lang)
   const emailHref = `mailto:${partnerEmail}?subject=${encodeURIComponent(copy.emailSubject)}`
 
@@ -114,13 +115,22 @@ export default function GlobalDealerRecruitment() {
                 })}
               </div>
             </div>
-            <Link
-              href={contactHref}
-              onClick={() => trackEvent('dealer_contact_page_click', { context: 'about_dealer_section' })}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 border border-green-200 bg-green-50 px-5 py-3 text-sm font-bold text-green-800 transition hover:border-green-500 hover:bg-green-100"
-            >
-              {copy.contactPage} <ArrowRight size={16} />
-            </Link>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <Link
+                href={authorizedDistributorsHref}
+                onClick={() => trackEvent('authorized_distributors_click', { context: 'about_dealer_section' })}
+                className="inline-flex items-center justify-center gap-2 border border-green-200 bg-green-50 px-5 py-3 text-center text-sm font-bold text-green-800 transition hover:border-green-500 hover:bg-green-100"
+              >
+                {copy.authorizedDistributors} <ArrowRight size={16} />
+              </Link>
+              <Link
+                href={contactHref}
+                onClick={() => trackEvent('dealer_contact_page_click', { context: 'about_dealer_section' })}
+                className="inline-flex items-center justify-center gap-2 border border-gray-200 bg-white px-5 py-3 text-center text-sm font-bold text-gray-800 transition hover:border-green-500 hover:text-green-800"
+              >
+                {copy.contactPage} <ArrowRight size={16} />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

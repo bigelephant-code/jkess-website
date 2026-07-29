@@ -8,6 +8,7 @@ export const allPublishedSeoLocales: readonly LangCode[] = locales.map((locale) 
 export const fullyLocalizedSeoLocales: readonly LangCode[] = allPublishedSeoLocales
 export const defaultIndexableSeoLocales: readonly LangCode[] = fullyLocalizedSeoLocales
 export const batteryKitIndexableSeoLocales: readonly LangCode[] = allPublishedSeoLocales
+export const authorizedDistributorIndexableSeoLocales: readonly LangCode[] = ['en', 'de']
 
 const productIndexableSeoLocalesBySlug: Readonly<Record<string, readonly LangCode[]>> = {
   'battery-kit': batteryKitIndexableSeoLocales,

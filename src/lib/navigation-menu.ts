@@ -61,6 +61,7 @@ export const navigationGroups: NavigationGroup[] = [
     description: 'Company information, quality controls, logistics support, and contact channels.',
     items: [
       { label: 'About', href: '/about', description: 'Company background, manufacturing facts, and energy storage focus.' },
+      { label: 'Authorized Distributors', href: '/authorized-distributors', description: 'Verify independent distributors authorized by JKESS.' },
       { label: 'Quality & Manufacturing', href: '/quality-and-manufacturing', description: 'Inspection workflow, documentation, and order-specific checks.' },
       { label: 'EU Compliance', href: '/eu-compliance', description: 'European documentation review and order-scope guidance.' },
       { label: 'Request a Quote', href: '/shipping-quote', description: 'Request destination review, multiple products, quantities, or volume pricing.' },

@@ -41,7 +41,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
       path: '/',
       title: 'JKESS | BMS, Battery Kits and Energy Storage Systems',
       description:
-        'JKESS supplies BMS control hardware, LiFePO4 battery enclosure kits, high voltage battery management systems, and configured commercial energy storage cabinet solutions.',
+        'JKESS is the official energy storage brand of JKBMS, supplying BMS hardware, LiFePO4 battery kits, high-voltage BMS, and commercial energy storage systems.',
       keywords: [
         'JKESS',
         'JKBMS',

@@ -245,6 +245,9 @@ export function localizedNavItem(lang: string, label: string, href: string, desc
   else if (lower.includes('quality')) localizedLabel = guide.quote
   else if (lower.includes('shipping-quote')) localizedLabel = guide.quote
   else if (lower.includes('contact')) localizedLabel = guide.quote
+  else if (lower.includes('authorized') || lower.includes('distributor')) {
+    localizedLabel = lang === 'de' ? 'Autorisierte Vertriebspartner' : label
+  }
 
   return { label: localizedLabel, description: guide.desc }
 }
@@ -264,6 +267,7 @@ export function getDealerRecruitmentCopy(lang: string) {
       copyEmailAria: 'Copy distributor application email address',
       fitLabel: 'Partner fit',
       contactPage: 'Send a partnership inquiry',
+      authorizedDistributors: 'View authorized distributors',
       profiles: [
         'Solar and energy storage distributors',
         'Battery system integrators',
@@ -290,6 +294,7 @@ export function getDealerRecruitmentCopy(lang: string) {
     copyEmailAria: guide.quote,
     fitLabel: guide.commercialEurope,
     contactPage: guide.quote,
+    authorizedDistributors: lang === 'de' ? 'Autorisierte Vertriebspartner ansehen' : 'View authorized distributors',
     profiles: [guide.lifepo4Europe, guide.hvEss, guide.commercialEurope, guide.quote],
     signals: [
       { label: guide.europe, value: guide.lifepo4Europe },

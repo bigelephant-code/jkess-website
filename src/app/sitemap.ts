@@ -6,6 +6,7 @@ import { specificationLandingPages } from '@/lib/specification-pages'
 import { technicalGuides } from '@/lib/technical-guides'
 import { absoluteUrl } from '@/lib/site'
 import {
+  authorizedDistributorIndexableSeoLocales,
   defaultIndexableSeoLocales,
   localizedSeoPath,
   pageLanguageAlternates,
@@ -30,9 +31,13 @@ const staticPaths = [
   '/contact',
   '/quality-and-manufacturing',
   '/shipping-quote',
+  '/authorized-distributors',
   ...policyPaths,
 ]
 const siteLastModified = new Date('2026-07-01')
+const staticPageLastModified: Record<string, Date> = {
+  '/authorized-distributors': new Date('2026-07-29'),
+}
 // Landing pages whose title/description were revised after siteLastModified.
 // Without this the sitemap would still advertise the older shared date and give
 // crawlers no reason to re-fetch the page.
@@ -50,6 +55,7 @@ const staticImages: Record<string, string[]> = {
   '/contact': ['/images/contact-banner-bg.webp'],
   '/quality-and-manufacturing': ['/images/company-building.webp'],
   '/shipping-quote': ['/images/contact-banner-bg.webp'],
+  '/authorized-distributors': ['/images/company-building.webp'],
   '/eu-compliance': ['/images/company-building.webp'],
 }
 
@@ -65,6 +71,7 @@ function staticPriority(path: string) {
   if (path === '') return 1
   if (path === '/products') return 0.9
   if (path === '/contact' || path === '/shipping-quote') return 0.85
+  if (path === '/authorized-distributors') return 0.8
   if (path === '/downloads' || path === '/news' || path === '/quality-and-manufacturing' || path === '/eu-compliance') return 0.75
   if (policyPaths.includes(path)) return 0.5
   return 0.7
@@ -80,19 +87,28 @@ function indexableSeoAlternates(path: string) {
   return pageLanguageAlternates(path, defaultIndexableSeoLocales)
 }
 
+function staticIndexableLocales(path: string) {
+  return path === '/authorized-distributors'
+    ? authorizedDistributorIndexableSeoLocales
+    : defaultIndexableSeoLocales
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []
 
-  for (const locale of defaultIndexableSeoLocales) {
-    for (const path of staticPaths) {
+  for (const path of staticPaths) {
+    const indexableLocales = staticIndexableLocales(path)
+    const languageAlternates = pageLanguageAlternates(sitemapPath(path), indexableLocales)
+
+    for (const locale of indexableLocales) {
       entries.push({
         url: absoluteUrl(localizedPath(locale, path)),
-        lastModified: siteLastModified,
+        lastModified: staticPageLastModified[path] || siteLastModified,
         changeFrequency: staticChangeFrequency(path),
         priority: staticPriority(path),
         images: (staticImages[path] || []).map((image) => absoluteUrl(image)),
         alternates: {
-          languages: indexableSeoAlternates(sitemapPath(path)),
+          languages: languageAlternates,
         },
       })
     }

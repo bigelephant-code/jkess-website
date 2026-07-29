@@ -20,6 +20,10 @@ export default function HeroSection({ data }: { data?: HeroData }) {
       <AnimatedBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-green-400/25 bg-green-400/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-green-300 backdrop-blur-sm">
+          <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.9)]" />
+          JKESS · Official energy storage brand of JKBMS
+        </p>
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
           <span className="animate-gradient-text">{data?.title || t('hero.title.part1', 'Powering a')}</span>
           <br />
@@ -27,7 +31,7 @@ export default function HeroSection({ data }: { data?: HeroData }) {
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           {data?.subtitle ||
-            t('hero.subtitle', 'JKBMS Electronic Technology Co.,Ltd — your trusted partner in energy storage solutions, from BMS to complete battery systems.')}
+            t('hero.subtitle', 'JKESS is the official energy storage brand of JKBMS Electronic Technology Co.,Ltd, delivering BMS, battery kits, and complete energy storage systems.')}
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a

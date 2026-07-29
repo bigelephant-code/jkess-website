@@ -7,10 +7,14 @@ import { companyProfile } from '@/lib/company-profile'
 import { navigationGroups } from '@/lib/navigation-menu'
 import { getLocalizedUiCopy, localizedNavGroupLabel, localizedNavItem } from '@/lib/localized-ui'
 import {
+  brandId,
+  jkessBrand,
   jkessMerchantReturnPolicy,
   jkessMerchantShippingPolicy,
   jkessOrganization,
   jsonLd,
+  organizationId,
+  websiteId,
 } from '@/lib/structured-data'
 import { defaultLocale, isValidLocale, localeMap } from '@/i18n/config'
 import { REQUEST_LOCALE_HEADER } from '@/lib/request-locale'
@@ -34,7 +38,7 @@ export const metadata: Metadata = {
     template: '%s',
   },
   description:
-    'JKBMS Electronic Technology Co.,Ltd develops BMS control hardware, battery enclosure kits, high-voltage battery management systems, and configured commercial energy storage solutions with direct checkout in selected destinations and quotation review for other regions.',
+    'JKESS is the official energy storage brand of JKBMS Electronic Technology Co.,Ltd, supplying BMS hardware, battery kits, and configured commercial energy storage systems.',
   keywords: [
     'JKESS',
     'BMS',
@@ -93,13 +97,16 @@ export const viewport: Viewport = {
 }
 
 const websiteJsonLd = {
+  '@id': websiteId,
   '@type': 'WebSite',
   name: companyProfile.brandName,
+  alternateName: ['JKESS Official Website', 'JKESS Energy Storage'],
   url: siteUrl,
   publisher: {
-    '@type': 'Organization',
-    name: companyProfile.companyName,
-    logo: absoluteUrl('/images/jkess-logo.png'),
+    '@id': organizationId,
+  },
+  about: {
+    '@id': brandId,
   },
 }
 
@@ -149,6 +156,7 @@ export default async function RootLayout({
     '@context': 'https://schema.org',
     '@graph': [
       jkessOrganization,
+      jkessBrand,
       jkessMerchantShippingPolicy,
       jkessMerchantReturnPolicy,
       websiteJsonLd,

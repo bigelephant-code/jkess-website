@@ -23,39 +23,28 @@ const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''
 const SALES_EMAIL = 'zhou@jkess.com'
 const POLICY_VERSION = '2026-06-29'
 
-interface PayPalCapturedOrder {
-  id: string
-  status?: string
-}
-
-type PayPalActions = {
-  order: {
-    create: (payload: unknown) => Promise<string>
-    capture: () => Promise<PayPalCapturedOrder>
-  }
-}
-
 type PayPalButtons = {
-  render: (container: HTMLElement) => void
+  isEligible: () => boolean
+  render: (container: HTMLElement) => Promise<void> | void
+  close?: () => void
 }
 
 type PayPalNamespace = {
   Buttons: (options: {
-    style: Record<string, string>
-    createOrder: (_data: unknown, actions: PayPalActions) => Promise<string>
-    onApprove: (_data: unknown, actions: PayPalActions) => Promise<void>
+    fundingSource?: string
+    style: Record<string, string | number>
+    createOrder: () => Promise<string>
+    onApprove: (data: { orderID: string }) => Promise<void>
+    onCancel: () => void
     onError: (error: unknown) => void
   }) => PayPalButtons
+  getFundingSources?: () => string[]
 }
 
 declare global {
   interface Window {
     paypal?: PayPalNamespace
   }
-}
-
-function compactReference(value: string, maxLength = 127) {
-  return value.replace(/\s+/g, ' ').trim().slice(0, maxLength)
 }
 
 function priceNumber(price: string) {
@@ -158,8 +147,16 @@ export default function CheckoutPage() {
     preconnect.crossOrigin = 'anonymous'
     document.head.appendChild(preconnect)
 
+    const scriptParams = new URLSearchParams({
+      'client-id': PAYPAL_CLIENT_ID,
+      currency: 'USD',
+      intent: 'capture',
+      components: 'buttons,funding-eligibility',
+      'enable-funding': 'card,paylater,venmo',
+      'integration-date': '2026-08-09',
+    })
     const script = document.createElement('script')
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture&components=buttons`
+    script.src = `https://www.paypal.com/sdk/js?${scriptParams.toString()}`
     script.async = true
     script.onload = () => setSdkReady(true)
     script.onerror = () => {
@@ -182,118 +179,156 @@ export default function CheckoutPage() {
     if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError) return
 
     const container = paypalRef.current
+    const paypal = window.paypal
     container.innerHTML = ''
     if (!formComplete) return
 
-    const contactReference = compactReference(
-      `Name:${formData.name} | Email:${formData.email} | Phone:${formData.phone} | Company:${formData.company || '-'}`
-    )
-    const deliveryReference = compactReference(
-      `Country:${shippingCountry} | Delivery reference:${formData.address} | Notes:${formData.notes || '-'}`
-    )
+    const checkoutPayload = {
+      orderNumber: invoiceNumber,
+      customer: formData,
+      items: items.map((item) => ({
+        slug: item.slug,
+        variant: item.variant,
+        quantity: item.quantity,
+      })),
+    }
+    let disposed = false
+    const renderedButtons: PayPalButtons[] = []
 
-    try {
-      window.paypal.Buttons({
-        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay' },
-        createOrder: (_data, actions) =>
-          actions.order.create({
-            application_context: {
-              brand_name: 'JKESS',
-              user_action: 'PAY_NOW',
-              shipping_preference: 'GET_FROM_FILE',
-            },
-            purchase_units: [
-              {
-                reference_id: invoiceNumber,
-                invoice_id: invoiceNumber,
-                custom_id: contactReference,
-                description: deliveryReference,
-                items: items.map((item) => ({
-                  name: compactReference(`${item.name} - ${item.variant}`),
-                  sku: compactReference(`${item.slug}-${item.variant}`, 127),
-                  quantity: String(item.quantity),
-                  category: 'PHYSICAL_GOODS',
-                  unit_amount: {
-                    currency_code: 'USD',
-                    value: priceNumber(item.price).toFixed(2),
-                  },
-                })),
-                amount: {
-                  currency_code: 'USD',
-                  value: orderTotal,
-                  breakdown: {
-                    item_total: {
-                      currency_code: 'USD',
-                      value: productSubtotal,
-                    },
-                    ...(shippingAmountNumber > 0
-                      ? {
-                          shipping: {
-                            currency_code: 'USD',
-                            value: shippingAmount,
-                          },
-                        }
-                      : {}),
-                  },
-                },
-              },
-            ],
-          }),
-        onApprove: async (_data, actions) => {
-          const order = await actions.order.capture()
-          setPaypalOrderId(order.id)
+    const paymentOptions = {
+      style: { layout: 'vertical', shape: 'rect', height: 48 },
+      createOrder: async () => {
+        setPaymentError('')
+        const response = await fetch('/api/paypal/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(checkoutPayload),
+        })
+        const result = (await response.json().catch(() => null)) as
+          | { id?: string; error?: string }
+          | null
 
-          const orderSnapshot = {
-            jkessOrderNumber: invoiceNumber,
-            paypalOrderId: order.id,
-            paypalStatus: order.status || 'COMPLETED',
-            total: orderTotal,
-            productSubtotal,
-            shippingAmount,
-            shippingTier,
-            shippingCountry,
-            currency: 'USD',
-            items,
-            customer: formData,
-            policyVersion: POLICY_VERSION,
-            policiesAcceptedAt: new Date().toISOString(),
-            createdAt: new Date().toISOString(),
+        if (!response.ok || !result?.id) {
+          throw new Error(result?.error || 'Unable to create the PayPal order.')
+        }
+
+        return result.id
+      },
+      onApprove: async (data: { orderID: string }) => {
+        const response = await fetch(
+          `/api/paypal/orders/${encodeURIComponent(data.orderID)}/capture`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(checkoutPayload),
           }
+        )
+        const order = (await response.json().catch(() => null)) as
+          | { id?: string; status?: string; error?: string }
+          | null
 
-          try {
-            window.localStorage.setItem(
-              `jkess-order-${invoiceNumber}`,
-              JSON.stringify(orderSnapshot)
-            )
-            window.dispatchEvent(new Event('jkess:order-created'))
-          } catch {
-            // PayPal remains the authoritative payment record if local storage is unavailable.
-          }
+        if (
+          !response.ok ||
+          !order?.id ||
+          order.id !== data.orderID ||
+          order.status !== 'COMPLETED'
+        ) {
+          throw new Error(order?.error || 'Unable to complete the PayPal payment.')
+        }
 
-          trackEvent('purchase', {
-            transaction_id: order.id,
-            order_number: invoiceNumber,
-            value: orderTotalNumber,
-            shipping: shippingAmountNumber,
-            shipping_country: shippingCountry,
-            currency: 'USD',
-            items: items.length,
-          })
+        setPaypalOrderId(order.id)
 
-          setSubmitted(true)
-          window.setTimeout(clearCart, 500)
-        },
-        onError: () => {
-          setPaymentError(
-            t(
-              'checkout.paymentFailed',
-              'Payment failed. Please try again or contact zhou@jkess.com.'
-            )
+        const orderSnapshot = {
+          jkessOrderNumber: invoiceNumber,
+          paypalOrderId: order.id,
+          paypalStatus: order.status,
+          total: orderTotal,
+          productSubtotal,
+          shippingAmount,
+          shippingTier,
+          shippingCountry,
+          currency: 'USD',
+          items,
+          customer: formData,
+          policyVersion: POLICY_VERSION,
+          policiesAcceptedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+        }
+
+        try {
+          window.localStorage.setItem(
+            `jkess-order-${invoiceNumber}`,
+            JSON.stringify(orderSnapshot)
           )
-        },
-      }).render(container)
-    } catch {
-      window.setTimeout(() => setSdkError(true), 0)
+          window.dispatchEvent(new Event('jkess:order-created'))
+        } catch {
+          // PayPal remains the authoritative payment record if local storage is unavailable.
+        }
+
+        trackEvent('purchase', {
+          transaction_id: order.id,
+          order_number: invoiceNumber,
+          value: orderTotalNumber,
+          shipping: shippingAmountNumber,
+          shipping_country: shippingCountry,
+          currency: 'USD',
+          items: items.length,
+        })
+
+        setSubmitted(true)
+        window.setTimeout(clearCart, 500)
+      },
+      onCancel: () => setPaymentError(''),
+      onError: (error: unknown) => {
+        console.error('PayPal checkout failed:', error)
+        setPaymentError(
+          t(
+            'checkout.paymentFailed',
+            'Payment failed. Please try again or contact zhou@jkess.com.'
+          )
+        )
+      },
+    }
+
+    async function renderEligiblePaymentMethods() {
+      try {
+        const fundingSources = paypal.getFundingSources?.() || []
+        const sources: Array<string | undefined> = fundingSources.length
+          ? fundingSources
+          : [undefined]
+        let renderedCount = 0
+
+        for (const fundingSource of sources) {
+          if (disposed) return
+
+          const button = paypal.Buttons({
+            ...paymentOptions,
+            ...(fundingSource ? { fundingSource } : {}),
+          })
+          if (!button.isEligible()) continue
+
+          const buttonContainer = document.createElement('div')
+          buttonContainer.className = 'mb-3 last:mb-0'
+          buttonContainer.dataset.paypalFundingSource = fundingSource || 'automatic'
+          container.appendChild(buttonContainer)
+          renderedButtons.push(button)
+          await Promise.resolve(button.render(buttonContainer))
+          renderedCount += 1
+        }
+
+        if (!disposed && renderedCount === 0) setSdkError(true)
+      } catch (error) {
+        console.error('Unable to render eligible PayPal payment methods:', error)
+        if (!disposed) setSdkError(true)
+      }
+    }
+
+    void renderEligiblePaymentMethods()
+
+    return () => {
+      disposed = true
+      renderedButtons.forEach((button) => button.close?.())
+      container.innerHTML = ''
     }
   }, [
     sdkReady,

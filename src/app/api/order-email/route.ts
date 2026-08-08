@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
 import { getStoredOrder, savePaidOrder, type StoredOrderRecord } from '@/lib/order-store'
+import { validateCheckoutPayload } from '@/lib/paypal-checkout'
 import { verifyCompletedPayPalOrder } from '@/lib/paypal-server'
-import { getProductBySlug } from '@/lib/products'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -20,60 +20,25 @@ export async function POST(request: Request) {
     const rawItems = Array.isArray(body.items) ? body.items : []
     const orderNumber = clean(body.orderNumber, 80)
     const paypalOrderId = clean(body.paypalOrderId, 120)
-    const customer = {
-      name: clean(customerRaw.name, 120),
-      email: clean(customerRaw.email, 200).toLowerCase(),
-      phone: clean(customerRaw.phone, 80),
-      company: clean(customerRaw.company, 160),
-      address: clean(customerRaw.address, 800),
-      notes: clean(customerRaw.notes, 1500),
-    }
 
-    if (!orderNumber || !paypalOrderId) {
+    if (!paypalOrderId) {
       return NextResponse.json({ error: 'Order references are required.' }, { status: 400 })
     }
-    if (!customer.name || !customer.email || !customer.phone || !customer.address) {
-      return NextResponse.json({ error: 'Customer information is incomplete.' }, { status: 400 })
-    }
-    if (rawItems.length === 0 || rawItems.length > 25) {
-      return NextResponse.json({ error: 'Order items are invalid.' }, { status: 400 })
-    }
-
-    const items = rawItems.map((value, index) => {
-      const item = value && typeof value === 'object' ? (value as Record<string, unknown>) : {}
-      const slug = clean(item.slug, 100)
-      const variantLabel = clean(item.variant, 160)
-      const quantity = Number(item.quantity)
-      const product = getProductBySlug(slug)
-      const variant = product?.variants?.find((entry) => entry.label === variantLabel)
-      const unitPriceCents = Math.round(
-        Number.parseFloat((variant?.price || '').replace(/[$,]/g, '')) * 100
-      )
-
-      if (
-        !product ||
-        product.type !== 'shop' ||
-        !variant ||
-        !Number.isInteger(quantity) ||
-        quantity < 1 ||
-        quantity > 50 ||
-        !Number.isInteger(unitPriceCents) ||
-        unitPriceCents <= 0
-      ) {
-        throw new Error(`Invalid order item ${index + 1}.`)
-      }
-
-      return {
-        slug,
-        name: product.name,
-        variant: variant.label,
-        quantity,
-        unitPriceCents,
-        lineTotalCents: unitPriceCents * quantity,
-      }
+    const checkout = validateCheckoutPayload({
+      orderNumber,
+      customer: customerRaw,
+      items: rawItems,
     })
+    const customer = {
+      name: checkout.customer.name,
+      email: checkout.customer.email,
+      phone: checkout.customer.phone,
+      company: checkout.customer.company,
+      address: checkout.customer.address,
+      notes: checkout.customer.notes,
+    }
 
-    const expectedTotalCents = items.reduce((sum, item) => sum + item.lineTotalCents, 0)
+    const expectedTotalCents = checkout.totalCents
     const verified = await verifyCompletedPayPalOrder({
       paypalOrderId,
       orderNumber,
@@ -81,6 +46,10 @@ export async function POST(request: Request) {
     })
     const purchaseUnit = verified.order.purchase_units?.[0]
     const paypalAddress = purchaseUnit?.shipping?.address
+    const paypalCountryCode = clean(paypalAddress?.country_code, 8).toUpperCase()
+    if (paypalCountryCode !== checkout.customer.countryCode) {
+      throw new Error('PayPal shipping country does not match the checkout country.')
+    }
     const existing = await getStoredOrder(orderNumber)
     const now = new Date().toISOString()
     const payerName = [
@@ -109,9 +78,9 @@ export async function POST(request: Request) {
         postalCode: clean(paypalAddress?.postal_code, 40),
         countryCode: clean(paypalAddress?.country_code, 8),
       },
-      items: items.map((item) => ({
+      items: checkout.items.map((item) => ({
         name: `${item.name} - ${item.variant}`,
-        sku: `${item.slug}-${item.variant}`.slice(0, 180),
+        sku: item.sku,
         quantity: item.quantity,
         unitAmount: (item.unitPriceCents / 100).toFixed(2),
         currency: 'USD',

@@ -31,7 +31,8 @@ function crc32(input: Buffer) {
 }
 
 function allowedCertificateHosts() {
-  return process.env.PAYPAL_ENVIRONMENT === 'sandbox'
+  const environment = process.env.PAYPAL_ENVIRONMENT || process.env.PAYPAL_ENV
+  return environment === 'sandbox'
     ? new Set(['api.sandbox.paypal.com', 'api-m.sandbox.paypal.com'])
     : new Set(['api.paypal.com', 'api-m.paypal.com'])
 }

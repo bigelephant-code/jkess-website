@@ -73,8 +73,19 @@ export type PayPalOrderDetails = {
   purchase_units?: PayPalPurchaseUnit[]
 }
 
+type PayPalApiErrorBody = {
+  name?: string
+  message?: string
+  debug_id?: string
+  details?: Array<{
+    issue?: string
+    description?: string
+  }>
+}
+
 export function paypalBaseUrl() {
-  return process.env.PAYPAL_ENVIRONMENT === 'sandbox'
+  const environment = process.env.PAYPAL_ENVIRONMENT || process.env.PAYPAL_ENV
+  return environment === 'sandbox'
     ? 'https://api-m.sandbox.paypal.com'
     : 'https://api-m.paypal.com'
 }
@@ -132,6 +143,65 @@ export async function getPayPalOrder(paypalOrderId: string) {
   }
 
   return body
+}
+
+async function paypalOrdersRequest(
+  path: string,
+  init: {
+    method: 'POST'
+    body?: unknown
+    requestId: string
+  }
+) {
+  const accessToken = await getPayPalAccessToken()
+  const response = await fetch(`${paypalBaseUrl()}${path}`, {
+    method: init.method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'PayPal-Request-Id': init.requestId.slice(0, 108),
+      Prefer: 'return=representation',
+    },
+    body: init.body === undefined ? undefined : JSON.stringify(init.body),
+    cache: 'no-store',
+  })
+
+  const body = (await response.json().catch(() => null)) as
+    | PayPalOrderDetails
+    | PayPalApiErrorBody
+    | null
+
+  if (!response.ok || !body || !('id' in body) || !body.id) {
+    const errorBody = body as PayPalApiErrorBody | null
+    const detail = errorBody?.details?.[0]
+    throw new PayPalVerificationError(
+      detail?.description ||
+        detail?.issue ||
+        errorBody?.message ||
+        `PayPal order request failed with status ${response.status}.`
+    )
+  }
+
+  return body as PayPalOrderDetails
+}
+
+export async function createPayPalOrder(payload: unknown, requestId: string) {
+  return paypalOrdersRequest('/v2/checkout/orders', {
+    method: 'POST',
+    body: payload,
+    requestId,
+  })
+}
+
+export async function capturePayPalOrder(paypalOrderId: string) {
+  return paypalOrdersRequest(
+    `/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`,
+    {
+      method: 'POST',
+      body: {},
+      requestId: `capture-${paypalOrderId}`,
+    }
+  )
 }
 
 export function amountToCents(value: string | undefined) {

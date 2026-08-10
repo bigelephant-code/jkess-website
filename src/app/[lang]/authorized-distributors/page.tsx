@@ -32,7 +32,7 @@ const directoryCopy = {
     updated: 'Authorization status confirmed by JKESS on July 29, 2026.',
     metadataTitle: 'Authorized JKESS Distributors | Official Dealer Directory',
     metadataDescription:
-      'Verify authorized JKESS distributors. jkess.de is listed as an independent authorized distributor for Germany; jkesstech.com is the official global JKESS brand website.',
+      'Verify authorized JKESS distributors. jkess.de is an independent authorized distributor for Germany; jkesstech.com is the official global site.',
   },
   de: {
     eyebrow: 'Offizielles JKESS Händlerverzeichnis',

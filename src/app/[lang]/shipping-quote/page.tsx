@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     path: '/shipping-quote',
     title: 'Product, Bulk Purchase and Shipping Quote | JKESS',
     description:
-      'Request a JKESS quotation for multiple products, large quantities, volume pricing, project configurations, or destinations that require individual shipping review.',
+      'Request a JKESS quotation for multiple products, large quantities, volume pricing, or destinations that require individual shipping review.',
     keywords: [
       'JKESS shipping quote',
       'battery kit bulk quote',

@@ -11,7 +11,7 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
       path: '/about',
       title: 'About JKESS | JKBMS Energy Storage Manufacturer',
       description:
-        'The JKESS team began in 2017, JKBMS was established in 2023, and the JKESS brand launched in 2024. Learn about our factory scale, global warehouses, R&D team, and distributor partnership opportunities.',
+        'JKESS began as a team in 2017, JKBMS was established in 2023, and the brand launched in 2024. Factory scale, global warehouses, R&D, and distributors.',
       keywords: [
         'about JKESS',
         'JKBMS manufacturer',

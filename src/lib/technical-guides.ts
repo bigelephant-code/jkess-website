@@ -39,7 +39,7 @@ export const technicalGuides: TechnicalGuide[] = [
     title: 'BCU vs BMU: Roles in a High-Voltage Battery Management System',
     seoTitle: 'BCU vs BMU: What a BMU Is in a Battery System',
     description:
-      'What a BMU (battery monitoring unit) does, how it differs from a BCU master controller, and how the two work together for measurement, balancing, contactor control, and communication.',
+      'A BMU (battery monitoring unit) is the module-level board in a high-voltage BMS. See how it differs from the BCU master controller and how they work together.',
     image: '/images/hv-kit/1.jpg',
     datePublished: '2026-06-29',
     dateModified: '2026-07-27',
@@ -125,7 +125,7 @@ export const technicalGuides: TechnicalGuide[] = [
     title: 'CAN vs RS485 for Battery, Inverter, PCS, and EMS Communication',
     seoTitle: 'CAN vs RS485: Which to Use for Battery Communication',
     description:
-      'The practical difference between CAN and RS485 for battery communication: topology, protocol compatibility, wiring, termination, addressing, baud rate, and commissioning checks.',
+      'The practical difference between CAN and RS485 for battery communication: topology, protocol compatibility, wiring, termination, and commissioning checks.',
     image: '/images/hv-kit/3.jpg',
     datePublished: '2026-06-29',
     dateModified: '2026-07-27',
@@ -206,7 +206,7 @@ export const technicalGuides: TechnicalGuide[] = [
     title: '280Ah vs 314Ah LiFePO4 Cells for Battery Enclosure Projects',
     seoTitle: '280Ah vs 314Ah LiFePO4 Cells: How to Choose',
     description:
-      'How 280Ah and 314Ah LiFePO4 cells differ in nominal energy, dimensions, terminals, current, compression, thermal design, and lifecycle requirements for enclosure projects.',
+      'How 280Ah and 314Ah LiFePO4 cells differ in nominal energy, dimensions, terminals, current, compression, and thermal design.',
     image: '/images/battery-kit-system.webp',
     datePublished: '2026-06-29',
     dateModified: '2026-07-27',
@@ -280,7 +280,7 @@ export const technicalGuides: TechnicalGuide[] = [
     title: 'How to Match a Battery BMS With an Inverter or PCS',
     seoTitle: 'How to Match a BMS With an Inverter: Checklist',
     description:
-      'A step-by-step checklist for matching a battery BMS to an inverter or PCS: voltage window, current limits, protocol, firmware, contactor logic, protection limits, and commissioning tests.',
+      'A step-by-step checklist for matching a battery BMS to an inverter or PCS: voltage window, current limits, protocol, firmware, and contactor logic.',
     image: '/images/battery-kit-display.webp',
     datePublished: '2026-06-29',
     dateModified: '2026-07-27',

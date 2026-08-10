@@ -6,6 +6,7 @@ export const specificationLandingPages: NonBrandLandingPage[] = [
     kind: 'category',
     eyebrow: '15kWh-class battery enclosure',
     title: '15kWh LiFePO4 Battery Enclosure Kit for 51.2V Systems',
+    seoTitle: '15kWh LiFePO4 Battery Enclosure Kit',
     description:
       'Review a 15kWh-class 51.2V LiFePO4 battery enclosure kit for compatible 280Ah to 320Ah cells, with enclosure-only or BMS and LCD package options.',
     intro:
@@ -95,6 +96,7 @@ export const specificationLandingPages: NonBrandLandingPage[] = [
     kind: 'category',
     eyebrow: '16kWh-class battery enclosure',
     title: '16kWh LiFePO4 Battery Enclosure for 280Ah to 320Ah Cells',
+    seoTitle: '16kWh LiFePO4 Battery Enclosure',
     description:
       'Explore a 16kWh-class 51.2V LiFePO4 battery enclosure for compatible 280Ah to 320Ah cells, with optional BMS and LCD integration hardware.',
     intro:
@@ -362,6 +364,7 @@ export const specificationLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: '215.04kWh C&I cabinet configuration',
     title: '215kWh Commercial and Industrial Energy Storage Cabinet',
+    seoTitle: '215kWh Commercial ESS Cabinet',
     description:
       'Review a configurable 215.04kWh C&I energy storage cabinet for peak shaving, solar self-consumption, demand management, and backup projects.',
     intro:
@@ -451,6 +454,7 @@ export const specificationLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: '261kWh C&I cabinet configuration',
     title: '261kWh Commercial Energy Storage Cabinet Configuration',
+    seoTitle: '261kWh Commercial ESS Cabinet',
     description:
       'Explore a configurable 261kWh commercial energy storage cabinet for longer peak-shaving events, solar self-consumption, demand management, and backup projects.',
     intro:

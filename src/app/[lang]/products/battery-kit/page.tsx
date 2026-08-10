@@ -67,6 +67,10 @@ export async function generateMetadata(props: { params: Promise<{ lang: string }
   const description = truncateMetadataDescription(
     `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`
   )
+  // Same rule as the generic product route: drop the category label rather than
+  // let the SERP title get truncated.
+  const fullTitle = `${product.name} | ${product.categoryLabel} | JKESS`
+  const title = fullTitle.length > 60 ? `${product.name} | JKESS` : fullTitle
   const indexableLocales = productIndexableSeoLocales(PRODUCT_SLUG)
   const openGraphLocale = openGraphLocales[lang] ?? openGraphLocales.en
   const openGraphAlternateLocales = Object.entries(openGraphLocales)
@@ -76,7 +80,7 @@ export async function generateMetadata(props: { params: Promise<{ lang: string }
   return buildPageMetadata({
     lang,
     path: PRODUCT_PATH,
-    title: `${product.name} | ${product.categoryLabel} | JKESS`,
+    title,
     description,
     keywords: [
       product.name,

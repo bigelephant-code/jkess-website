@@ -10,9 +10,9 @@ export function generateMetadata({ params }: { params: Promise<{ lang: string }>
     buildPageMetadata({
       lang,
       path: '/downloads',
-      title: 'JKESS Battery Box Manual, BMS Documents and Technical Downloads',
+      title: 'JKESS Battery Box Manual and BMS Documents',
       description:
-        'Download JKESS battery box manuals, 6U battery kit specifications, roller enclosure documents, BMS and BMU resources, LCD manuals, and energy storage technical files.',
+        'Download JKESS battery box manuals, 6U battery kit specifications, roller enclosure documents, BMS and BMU resources, and LCD manuals.',
       keywords: [
         'JKESS downloads',
         'JKESS battery box manual',
@@ -40,7 +40,7 @@ function downloadsJsonLd(lang: string) {
         '@type': 'CollectionPage',
         name: 'JKESS Battery Box Manual and Technical Downloads',
         description:
-          'Download JKESS battery box manuals, 6U battery kit specifications, roller enclosure documents, BMS and BMU resources, LCD manuals, and energy storage technical files.',
+          'Download JKESS battery box manuals, 6U battery kit specifications, roller enclosure documents, BMS and BMU resources, and LCD manuals.',
         url: pageUrl,
         publisher: { '@id': organizationId },
         mainEntity: {

@@ -28,7 +28,7 @@ export const policyPages: Record<PolicySlug, PolicyPage> = {
     slug: 'shipping-policy',
     title: 'Shipping Policy',
     summary:
-      'How JKESS processes, dispatches, and delivers orders, including EU free standard shipping, selected-region flat-rate shipping, quote-only destinations, customs, and shipment issues.',
+      'How JKESS processes and delivers orders: EU free standard shipping, selected-region flat-rate shipping, quote-only destinations, and customs.',
     sections: [
       {
         heading: 'Order processing',

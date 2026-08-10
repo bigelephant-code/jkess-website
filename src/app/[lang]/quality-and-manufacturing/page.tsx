@@ -11,9 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return buildPageMetadata({
     lang,
     path: '/quality-and-manufacturing',
-    title: 'Quality, Manufacturing and Pre-Shipment Documentation | JKESS',
+    title: 'Quality and Pre-Shipment Documentation | JKESS',
     description:
-      'Review JKESS manufacturing facts, configuration control, incoming inspection, assembly checks, functional testing, packing verification, and the documents customers should confirm before shipment.',
+      'JKESS manufacturing facts, configuration control, incoming inspection, assembly checks, functional testing, and packing verification.',
     keywords: [
       'JKESS manufacturing',
       'battery kit quality control',

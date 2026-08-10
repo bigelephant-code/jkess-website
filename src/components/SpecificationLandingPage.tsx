@@ -32,7 +32,9 @@ export function buildSpecificationMetadata(page: NonBrandLandingPage, lang: stri
   const indexable = isSeoLocaleIndexable(lang, defaultIndexableSeoLocales)
 
   return {
-    title: `${page.title} | JKESS`,
+    // Honour the short SERP-title override the page type already carries; the
+    // on-page H1 keeps the longer descriptive `title`.
+    title: `${page.seoTitle ?? page.title} | JKESS`,
     description: page.description,
     keywords: specificationKeywords(page),
     alternates: {

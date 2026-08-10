@@ -9,7 +9,7 @@ import type { LangCode } from '@/i18n/config'
 
 const pageTitle = 'EU Compliance and Project Documentation'
 const pageDescription =
-  'Review how JKESS handles EU project documentation, product-specific certification checks, transport paperwork, safety information, warranty terms, and quote-stage compliance review.'
+  'How JKESS handles EU project documentation, product-specific certification checks, transport paperwork, safety information, and warranty terms.'
 
 const documentationBlocks = [
   {

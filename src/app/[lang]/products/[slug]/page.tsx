@@ -426,8 +426,14 @@ export async function generateMetadata(props: { params: Promise<{ lang: string; 
     `${product.tagline}.${noticeSentence}${shippingSentence} ${product.description}`
   )
 
+  // The category label is dropped when the combined title would be truncated in
+  // search results. On the C&I cabinet it also repeated the product name almost
+  // verbatim ("C&I High Voltage ESS Cabinet | Configurable C&I ESS Cabinet").
+  const fullTitle = `${product.name} | ${product.categoryLabel} | JKESS`
+  const title = fullTitle.length > 60 ? `${product.name} | JKESS` : fullTitle
+
   return {
-    title: `${product.name} | ${product.categoryLabel} | JKESS`,
+    title,
     description,
     keywords: productKeywords(product),
     alternates: {

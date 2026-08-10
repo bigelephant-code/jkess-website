@@ -172,7 +172,7 @@ function buildEuropeanCountryPage(config: EuropeanCountryPageConfig): NonBrandLa
     eyebrow: `${config.country} battery storage buyers`,
     title: `LiFePO4 Battery Kits and ESS Cabinets for ${config.country}`,
     description:
-      `Prepare ${config.country}-focused quotations for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping review.`,
+      `${config.country} quotations for LiFePO4 battery kits, 48V enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping.`,
     intro:
       `${config.adjective} ${config.buyerFocus} can use this page to prepare a JKESS quotation request for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS control boxes, or configured commercial ESS cabinets. The page focuses on ${config.priorityPhrase}.`,
     image: config.image,
@@ -328,7 +328,7 @@ const countryPageCopy = {
   en: {
     buyers: 'battery storage buyers',
     title: (country: string) => `LiFePO4 Battery Kits and ESS Cabinets for ${country}`,
-    description: (country: string) => `Prepare ${country}-focused quotations for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping review.`,
+    description: (country: string) => `${country} quotations for LiFePO4 battery kits, 48V enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping.`,
     intro: (country: string) => `Buyers in ${country} can use this page to prepare a JKESS quotation request for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS control boxes, or configured commercial ESS cabinets.`,
     targetMarket: 'Target market',
     coreSearch: 'Core search',
@@ -473,7 +473,8 @@ function localizedTopic(path: string, guide: typeof guideCopy.en) {
 function localizedRelatedLabel(href: string, guide: typeof guideCopy.en) {
   const path = href.replace(/^\//, '')
   if (path.includes('rack')) return guide.rackVsFloor
-  if (path.includes('high-voltage') || path.includes('100a-vs-200a') || path.includes('bcu')) return guide.hvEss
+  if (path.includes('high-voltage') || path.includes('100a-vs-200a') || path.includes('bcu') || path.includes('bmu')) return guide.hvEss
+  if (path.includes('cooling')) return guide.cooling
   if (path.includes('commercial') || path.includes('cabinet')) return guide.commercialEurope
   if (path.includes('can-rs485') || path.includes('inverter')) return guide.canRs485
   if (path.includes('europe')) return guide.lifepo4Europe
@@ -677,6 +678,21 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'High-voltage BMS hardware',
         description: 'Review BCU and BMU control hardware for commercial battery racks.',
       },
+      {
+        href: '/energy-storage-enclosures',
+        label: 'Energy storage enclosures',
+        description: 'Compare enclosure formats for lithium battery projects before fixing the mechanical scope.',
+      },
+      {
+        href: '/ess-rack-mount-battery-modules',
+        label: 'Rack-mount battery modules',
+        description: 'Check module height, depth, and rack layout when the project uses 19-inch equipment cabinets.',
+      },
+      {
+        href: '/battery-box-manual',
+        label: 'Battery box manual and assembly documents',
+        description: 'Read the assembly, wiring, and commissioning documentation supplied with each enclosure kit.',
+      },
     ],
   },
   {
@@ -758,6 +774,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'High-voltage BMS systems',
         description: 'Compare BCU and BMU architectures for larger commercial battery racks.',
       },
+      {
+        href: '/ess-rack-mount-battery-modules',
+        label: 'ESS rack-mount battery modules',
+        description: 'Review module dimensions, mounting, and stacking limits for rack-based assemblies.',
+      },
     ],
   },
   {
@@ -765,6 +786,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'category',
     eyebrow: 'BCU and BMU control architecture',
     title: 'High-Voltage BMS Hardware for Commercial Energy Storage',
+    seoTitle: 'High-Voltage BMS Hardware: BCU and BMU Boxes',
     description:
       'Compare 100A and 200A high-voltage BMS control hardware with BCU master boxes, BMU slave boxes, active balancing, insulation monitoring, CAN, RS485, and isoSPI.',
     intro:
@@ -840,6 +862,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'Air cooling vs liquid cooling',
         description: 'Compare thermal-management choices for commercial energy storage cabinets.',
       },
+      {
+        href: '/bmu-battery-module',
+        label: 'BMU battery module unit',
+        description: 'Understand what the BMU slave control box measures and reports back to the BCU master.',
+      },
     ],
   },
   {
@@ -848,7 +875,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Commercial and industrial BESS',
     title: '64.3kWh to 261kWh Commercial Energy Storage Cabinets',
     description:
-      'Explore configurable C&I energy storage cabinets from 64.3kWh to 261kWh with 30kW to 125kW AC power, air or liquid cooling, IP55 outdoor design, PCS, EMS, and fire-protection options.',
+      'Configurable C&I energy storage cabinets from 64.3kWh to 261kWh with 30kW to 125kW AC power, air or liquid cooling, and IP55 outdoor design.',
     intro:
       'Commercial and industrial energy storage cabinets combine battery modules and project-specific control, conversion, thermal-management, monitoring, and protection equipment. The JKESS cabinet platform is configured to order, so the signed quotation—not a generic web page—defines the final supplied equipment and services.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -922,6 +949,16 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'Air-cooled vs liquid-cooled ESS',
         description: 'Compare thermal-management approaches before requesting a cabinet configuration.',
       },
+      {
+        href: '/ess-cooling-system',
+        label: 'ESS cooling system selection',
+        description: 'Match the cooling method to duty cycle, climate, service access, and lifecycle targets.',
+      },
+      {
+        href: '/applications/factory-energy-storage-system',
+        label: 'Factory energy storage system',
+        description: 'See how manufacturing load profiles drive cabinet capacity, PCS power, and dispatch rules.',
+      },
     ],
   },
   {
@@ -934,7 +971,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     // on /peak-shaving-battery-storage, which now owns the EMS phrasings.
     seoTitle: 'Peak Shaving Battery Containers and ESS Cabinets',
     description:
-      'Choosing between peak shaving battery containers and commercial ESS cabinets: required capacity, PCS power, installation space, outdoor rating, fire protection, and grid connection.',
+      'Peak shaving battery containers vs commercial ESS cabinets: capacity, PCS power, installation space, outdoor rating, and grid connection.',
     intro:
       'Peak shaving uses stored energy to reduce the highest grid-import periods that influence demand charges or contracted-capacity limits. A battery is dispatched when facility load approaches a defined threshold and is recharged when site conditions, tariffs, and operating rules allow.',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -1022,7 +1059,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'ESS thermal-management guide',
     title: 'Air-Cooled vs Liquid-Cooled Energy Storage Systems',
     description:
-      'Compare air-cooled and liquid-cooled commercial energy storage cabinets by thermal uniformity, power density, maintenance, climate, duty cycle, noise, footprint, and project cost.',
+      'Compare air-cooled and liquid-cooled energy storage cabinets by thermal uniformity, power density, maintenance, climate, noise, and cost.',
     intro:
       'Cooling controls battery temperature and temperature difference across modules. Both intelligent air cooling and liquid cooling can be suitable when correctly engineered. The decision should be based on heat generation, cabinet density, ambient conditions, operating schedule, service capability, footprint, lifecycle expectations, and the final project configuration.',
     image: '/images/tness-ci-ess/main-3.webp',
@@ -1107,6 +1144,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'Peak-shaving system sizing',
         description: 'Learn how load peaks and duty cycle influence power, capacity, and cooling requirements.',
       },
+      {
+        href: '/ess-cooling-system',
+        label: 'ESS cooling system selection',
+        description: 'Continue from the comparison to the full cooling selection inputs and quotation scope.',
+      },
     ],
   },
   {
@@ -1189,6 +1231,16 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'BMS and inverter matching checklist',
         description: 'Review voltage, current, protocol, firmware, and commissioning checks.',
       },
+      {
+        href: '/battery-box-manual',
+        label: 'Battery box manual',
+        description: 'Check the assembly and wiring documentation before planning a 48V or 51.2V build.',
+      },
+      {
+        href: '/energy-storage-enclosures',
+        label: 'Energy storage enclosure formats',
+        description: 'Compare floor-standing, rack, and outdoor enclosure routes for the same cell format.',
+      },
     ],
   },
   {
@@ -1197,7 +1249,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'ESS rack control hardware',
     title: 'High Voltage BMS for ESS Battery Racks',
     description:
-      'Review high voltage BMS hardware for ESS projects, including BCU master control, BMU slave monitoring, 100A and 200A options, PCS communication, and quotation inputs.',
+      'High-voltage BMS hardware for ESS projects: BCU master control, BMU slave monitoring, 100A and 200A options, and PCS communication.',
     intro:
       'A high voltage BMS for energy storage systems coordinates rack safety, cell monitoring, contactor logic, current limits, and communication with a PCS or EMS. The correct hardware combination depends on voltage, current, module topology, protocol requirements, and the final system boundary.',
     image: '/images/hv-kit/1.jpg',
@@ -1269,6 +1321,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'BCU vs BMU guide',
         description: 'Understand master and slave controller roles in high-voltage BMS architecture.',
       },
+      {
+        href: '/bmu-battery-module',
+        label: 'BMU battery module unit',
+        description: 'Review module-level monitoring, balancing, and communication back to the master controller.',
+      },
     ],
   },
   {
@@ -1277,7 +1334,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'C&I energy storage planning',
     title: 'Commercial Battery Storage Cabinet Planning Guide',
     description:
-      'Plan a commercial battery storage cabinet by reviewing capacity, PCS power, cooling method, outdoor rating, communication, safety documentation, and project quotation scope.',
+      'Plan a commercial battery storage cabinet: capacity, PCS power, cooling method, outdoor rating, communication, and safety documentation.',
     intro:
       'Commercial battery storage cabinets are project-configured systems. The right solution depends on load profile, tariff structure, backup requirement, PCS power, site conditions, installation boundary, logistics route, and local documentation requirements.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -1351,6 +1408,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: 'Air-cooled vs liquid-cooled ESS',
         description: 'Compare thermal management choices for cabinet projects.',
       },
+      {
+        href: '/applications/warehouse-supermarket-battery-storage',
+        label: 'Warehouse and supermarket storage',
+        description: 'See how refrigeration and lighting load profiles change the cabinet configuration.',
+      },
     ],
   },
   {
@@ -1359,7 +1421,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Communication compatibility',
     title: 'CAN and RS485 BMS Inverter Compatibility Checklist',
     description:
-      'Check BMS and inverter compatibility through CAN or RS485 by reviewing protocol, firmware, pinout, baud rate, message map, operating limits, and commissioning tests.',
+      'Check BMS and inverter compatibility over CAN or RS485: protocol, firmware, pinout, baud rate, message map, and commissioning tests.',
     intro:
       'CAN or RS485 on a product label does not guarantee that a battery, BMS, inverter, PCS, or EMS will work together. Compatibility depends on the exact protocol, firmware, wiring, message format, state logic, and protection limits used by the completed system.',
     image: '/images/battery-kit-display.webp',
@@ -1439,7 +1501,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Europe battery storage market',
     title: 'LiFePO4 Battery Kits and ESS Cabinets for Europe',
     description:
-      'Compare JKESS LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, EU shipping review, and commercial energy storage cabinet quotation paths for European buyers.',
+      'JKESS LiFePO4 battery kits, 48V enclosures, high-voltage BMS hardware, and commercial ESS cabinet quotation paths for European buyers.',
     intro:
       'European battery storage buyers often search from several directions at once: EU warehouse availability, LiFePO4 battery kit Europe, 48V battery enclosure EU shipping, high-voltage BMS for ESS, and commercial energy storage cabinet Europe. This hub connects those search intents to the relevant JKESS product pages, country pages, and quotation workflow.',
     image: '/images/battery-kit-system.webp',
@@ -1596,7 +1658,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Germany energy storage buyers',
     title: 'LiFePO4 Battery Kits and ESS Cabinets for Germany',
     description:
-      'Plan LiFePO4 battery kit, 48V battery enclosure, high-voltage BMS, and commercial energy storage cabinet purchases for Germany with EU shipping and project quotation support.',
+      'LiFePO4 battery kits, 48V enclosures, high-voltage BMS, and commercial energy storage cabinets for Germany with EU shipping and quotation support.',
     intro:
       'German buyers often compare low-voltage LiFePO4 battery kits, 48V or 51.2V battery enclosures, rack battery modules, and commercial energy storage cabinets before requesting a quotation. This page helps installers, distributors, and project owners prepare the product, documentation, and delivery details JKESS needs for Germany-focused review.',
     image: '/images/battery-kit-hero.webp',
@@ -1683,7 +1745,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'France storage project planning',
     title: 'LiFePO4 Battery Kits and ESS Cabinets for France',
     description:
-      'Prepare a France-focused quotation for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping review.',
+      'France quotations for LiFePO4 battery kits, 48V enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU shipping.',
     intro:
       'French residential solar installers, distributors, and C&I energy storage buyers can use this page to prepare a JKESS quotation request for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS control boxes, or configured commercial ESS cabinets.',
     image: '/images/6u-kit/1.webp',
@@ -1769,8 +1831,9 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Italy solar storage buyers',
     title: 'LiFePO4 Battery Kits and Commercial ESS Cabinets for Italy',
+    seoTitle: 'LiFePO4 Battery Kits for Italy',
     description:
-      'Plan Italy-focused purchases for 48V LiFePO4 battery enclosures, rack battery kits, high-voltage BMS hardware, and C&I energy storage cabinets with EU shipping support.',
+      'Italy purchases of 48V LiFePO4 enclosures, rack battery kits, high-voltage BMS hardware, and C&I energy storage cabinets with EU shipping.',
     intro:
       'Italian residential solar, small commercial, and C&I buyers often compare 48V LiFePO4 battery kit options with larger commercial energy storage cabinets. JKESS supports quotation review for enclosure kits, high-voltage BMS hardware, and configured ESS cabinet projects based on the real delivery and integration requirements.',
     image: '/images/battery-kit-system.webp',
@@ -1855,8 +1918,9 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Netherlands ESS buyers',
     title: 'LiFePO4 Battery Kits and ESS Cabinets for the Netherlands',
+    seoTitle: 'LiFePO4 Battery Kits for the Netherlands',
     description:
-      'Prepare Netherlands-focused quotations for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU delivery review.',
+      'Netherlands quotations for LiFePO4 battery kits, 48V enclosures, high-voltage BMS hardware, and commercial energy storage cabinets with EU delivery.',
     intro:
       'Dutch buyers evaluating solar storage, battery enclosures, and commercial energy storage projects can use this page to prepare a focused JKESS quotation request. The main inputs are battery format, inverter or PCS compatibility, destination details, documentation requirements, and final supply boundary.',
     image: '/images/6u-kit/2.webp',
@@ -1942,7 +2006,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Poland battery storage planning',
     title: 'LiFePO4 Battery Kits and ESS Cabinets for Poland',
     description:
-      'Plan Poland-focused EU shipping and quotation review for LiFePO4 battery kits, 48V battery enclosures, high-voltage BMS control boxes, and commercial energy storage cabinets.',
+      'Poland EU shipping and quotation review for LiFePO4 battery kits, 48V enclosures, high-voltage BMS boxes, and commercial energy storage cabinets.',
     intro:
       'Polish residential storage installers, distributors, and commercial project owners can prepare a JKESS quotation request by defining the battery enclosure format, inverter or PCS compatibility, delivery conditions, and whether the purchase is a direct product order or a configured project.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -2028,7 +2092,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'EU warehouse battery kit search',
     title: 'EU Warehouse Battery Kit Buying Checklist',
     description:
-      'Use this EU warehouse battery kit checklist to prepare LiFePO4 battery enclosure, 6U rack kit, delivery country, quantity, inverter compatibility, and shipping quotation details.',
+      'EU warehouse battery kit checklist: LiFePO4 enclosure, 6U rack kit, delivery country, quantity, inverter compatibility, and shipping details.',
     intro:
       'Buyers searching for an EU warehouse battery kit usually want fast delivery, clear landed cost, and a battery enclosure that fits the planned cells and inverter. This page explains what to confirm before requesting a JKESS battery kit or rack kit quotation for European delivery.',
     image: '/images/battery-kit-hero.webp',
@@ -2110,7 +2174,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'LiFePO4 battery kit Europe',
     title: 'LiFePO4 Battery Kit Europe Selection Guide',
     description:
-      'Compare LiFePO4 battery kit Europe options, including 48V caster enclosures, 6U rack battery kits, BMS and LCD options, inverter communication, and EU shipping review.',
+      'LiFePO4 battery kit options for Europe: 48V caster enclosures, 6U rack kits, BMS and LCD choices, inverter communication, and EU shipping.',
     intro:
       'A European buyer searching for a LiFePO4 battery kit may need a movable 51.2V enclosure, a 6U rack battery kit, or a project quotation that combines several products. The right JKESS option depends on installation format, cell dimensions, electronics scope, inverter communication, and delivery country.',
     image: '/images/6u-kit/1.webp',
@@ -2191,8 +2255,9 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Commercial ESS cabinet Europe',
     title: 'Commercial Energy Storage Cabinet Europe Quotation Guide',
+    seoTitle: 'Commercial ESS Cabinet Europe Quotation',
     description:
-      'Prepare a commercial energy storage cabinet Europe quotation by defining capacity, PCS power, cooling method, site conditions, documentation, delivery country, and installation scope.',
+      'Prepare a commercial energy storage cabinet quotation for Europe: capacity, PCS power, cooling method, site conditions, and delivery country.',
     intro:
       'Commercial energy storage cabinet Europe searches usually come from project owners, EPCs, distributors, or integrators who need more than a web price. A C&I ESS cabinet must be quoted from the project capacity, power, thermal design, site conditions, delivery route, and final scope of supply.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -2274,7 +2339,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: '48V enclosure EU shipping',
     title: '48V Battery Enclosure EU Shipping Checklist',
     description:
-      'Prepare a 48V battery enclosure EU shipping request by confirming 51.2V LiFePO4 kit format, cell fit, BMS option, inverter protocol, delivery country, and postal code.',
+      '48V battery enclosure EU shipping: confirm 51.2V LiFePO4 kit format, cell fit, BMS option, inverter protocol, and delivery country.',
     intro:
       'A 48V battery enclosure EU shipping request should combine technical fit and delivery planning. The enclosure must match the selected LiFePO4 cells and inverter communication, while the shipment needs a clear country, postal code, quantity, and delivery condition.',
     image: '/images/battery-kit-system.webp',
@@ -2355,7 +2420,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Battery storage comparison guides',
     title: 'Battery Kit, BMS, and ESS Cabinet Comparison Guides',
     description:
-      'Compare JKESS battery enclosure kits, 48V and 51.2V LiFePO4 platforms, rack and floor-standing formats, 100A and 200A high-voltage BMS options, and C&I cabinet project routes.',
+      'Compare JKESS enclosure kits, 48V and 51.2V LiFePO4 platforms, rack and floor-standing formats, and 100A or 200A high-voltage BMS options.',
     intro:
       'Comparison pages help buyers move from a general search to a practical purchase path. Use these guides to understand whether a project needs a 48V-class enclosure kit, a rack-mount battery kit, a high-voltage BMS control box, or a configured commercial energy storage cabinet.',
     image: '/images/battery-kit-system.webp',
@@ -2456,6 +2521,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'guide',
     eyebrow: 'Voltage wording comparison',
     title: '48V vs 51.2V LiFePO4 Battery: What Buyers Should Check',
+    seoTitle: '48V vs 51.2V LiFePO4 Battery',
     description:
       'Compare 48V and 51.2V LiFePO4 battery wording for enclosure projects, including 16S cell count, inverter voltage range, BMS settings, and quotation inputs.',
     intro:
@@ -2539,7 +2605,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Battery enclosure format comparison',
     title: 'Rack Battery Kit vs Floor-Standing Battery Kit',
     description:
-      'Compare rack-mount 6U battery kits and floor-standing caster battery kits by installation space, service access, airflow, cable routing, movement, and EU shipping requirements.',
+      'Rack-mount 6U battery kits vs floor-standing caster kits: installation space, service access, airflow, cable routing, and EU shipping.',
     intro:
       'A rack battery kit and a floor-standing battery kit can both support 51.2V LiFePO4 assembly projects, but they solve different installation problems. The best choice depends on cabinet availability, floor space, service access, airflow, cable route, quantity, and how the completed battery will be maintained.',
     image: '/images/6u-kit/2.webp',
@@ -2621,7 +2687,7 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'High-voltage BMS current comparison',
     title: '100A vs 200A High-Voltage BMS: Selection Inputs',
     description:
-      'Compare 100A and 200A high-voltage BMS control hardware by PCS power, pack voltage, current rating, contactors, busbars, cables, thermal design, and quotation scope.',
+      'Compare 100A and 200A high-voltage BMS control hardware by PCS power, pack voltage, current rating, contactors, busbars, and thermal design.',
     intro:
       'The choice between 100A and 200A high-voltage BMS hardware should come from the complete ESS rack design, not from a desire for the largest number. PCS power, pack voltage, current profile, thermal design, conductors, contactors, fuses, and protection logic all affect the correct selection.',
     image: '/images/hv-kit/1.jpg',
@@ -2695,6 +2761,11 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
         label: '200A high-voltage BMS option',
         description: 'Review higher-current control hardware and system boundaries.',
       },
+      {
+        href: '/bmu-battery-module',
+        label: 'BMU battery module unit',
+        description: 'Check how many slave units the chosen master current rating has to supervise.',
+      },
     ],
   },
   {
@@ -2702,8 +2773,9 @@ const baseNonBrandLandingPages: NonBrandLandingPage[] = [
     kind: 'guide',
     eyebrow: 'Product scope comparison',
     title: 'Battery Kit vs C&I ESS Cabinet: Which Route Fits the Project?',
+    seoTitle: 'Battery Kit vs C&I ESS Cabinet',
     description:
-      'Compare a LiFePO4 battery enclosure kit with a configured C&I ESS cabinet by supply scope, engineering responsibility, capacity, PCS integration, cooling, safety, and quotation needs.',
+      'LiFePO4 battery enclosure kit vs configured C&I ESS cabinet: supply scope, engineering responsibility, capacity, PCS integration, and cooling.',
     intro:
       'A battery kit and a C&I ESS cabinet are not different sizes of the same product. A battery kit is an enclosure and selected integration-hardware route for building a battery from separately sourced cells. A C&I ESS cabinet is a configured project product that can include battery modules, BMS, PCS, EMS, cooling, fire protection, monitoring, and documentation when quoted.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -2793,7 +2865,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'JKESS battery box documents',
     title: 'JKESS Battery Box Manual and Battery Kit Downloads',
     description:
-      'Find JKESS battery box manual downloads, 6U rack battery kit specifications, roller battery enclosure documents, LCD manuals, and BMS integration resources for LiFePO4 projects.',
+      'Find JKESS battery box manual downloads, 6U rack battery kit specifications, roller battery enclosure documents, LCD manuals, and BMS resources.',
     intro:
       'Customers searching for a JKESS battery box manual usually need the correct enclosure document before assembly, installation, or quotation review. This page points buyers to the current battery kit downloads and explains which document fits each enclosure route.',
     image: '/images/downloads-banner-bg.webp',
@@ -2867,8 +2939,9 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'guide',
     eyebrow: 'ESS cooling system selection',
     title: 'ESS Cooling System Guide: Air-Cooled and Liquid-Cooled Storage',
+    seoTitle: 'ESS Cooling System: Air vs Liquid Cooling',
     description:
-      'Compare ESS cooling system choices for commercial energy storage cabinets, including air cooled energy storage system design, liquid cooling, duty cycle, climate, maintenance, and quotation inputs.',
+      'Compare ESS cooling options for commercial storage cabinets: air cooling vs liquid cooling, duty cycle, climate, maintenance, and cost.',
     intro:
       'Cooling is one of the main design choices in a commercial energy storage system. Buyers searching for ESS cooling, air-cooling ESS, or air cooled energy storage system should compare the thermal method against power density, ambient conditions, operating schedule, service capability, and final cabinet scope.',
     image: '/images/tness-ci-ess/main-3.webp',
@@ -2947,7 +3020,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     // /solutions/commercial-peak-shaving for the same container queries.
     seoTitle: 'Peak Shaving EMS and Battery Storage Sizing',
     description:
-      'How a peak shaving EMS dispatches battery storage: interval load data, demand-charge rules, target kW reduction, PCS power, usable kWh, reserve state of charge, and recharge windows.',
+      'How a peak shaving EMS dispatches battery storage: interval load data, demand-charge rules, target kW reduction, PCS power, and usable kWh.',
     intro:
       'Peak shaving uses battery energy storage to reduce short grid-import peaks that drive demand charges or contracted-capacity limits. The correct system cannot be selected from cabinet kWh alone; it must be sized from load data, tariff structure, peak duration, PCS power, EMS strategy, and reserve requirements.',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -3019,17 +3092,26 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
         label: 'Commercial energy storage overview',
         description: 'Compare capacity, PCS power, cooling, monitoring, and quotation scope.',
       },
+      {
+        href: '/applications/factory-energy-storage-system',
+        label: 'Factory energy storage system',
+        description: 'Apply the same demand-charge logic to a manufacturing site with shift-based load peaks.',
+      },
     ],
   },
   {
     path: 'bmu-battery-module',
     kind: 'guide',
     eyebrow: 'BMU and ESS BMS guide',
-    title: 'What Is a BMU in Battery and ESS BMS Systems?',
+    title: 'BMU Battery Module Unit and Slave Control Box Selection',
+    // Definitional BMU queries ("what is a bmu", "bmu meaning") are left to
+    // /guides/bcu-vs-bmu, which already outranks this page on them. This page
+    // targets the hardware-selection intent instead so the two stop competing.
+    seoTitle: 'BMU Battery Module Unit and Slave Control Box',
     description:
-      'Understand what a BMU battery module controller does in ESS BMS architecture, how it works with BCU master control, CAN or RS485 communication, and high-voltage battery rack design.',
+      'BMU slave control box selection for an ESS BMS: module-level cell monitoring, balancing, and reporting to the BCU master over CAN or RS485.',
     intro:
-      'A BMU, or battery monitoring unit, is normally the module-level control and measurement layer in a high-voltage battery management system. Buyers searching for BMU battery, BMU module, BMU in battery, ESS BMS, or what is a BMU are usually trying to understand how slave monitoring hardware fits into a complete rack architecture.',
+      'A BMU, or battery monitoring unit, is normally the module-level control and measurement layer in a high-voltage battery management system. Buyers searching for BMU battery, BMU module, or BMU BMS hardware are usually specifying how many slave units a rack needs and how they report to the BCU master.',
     image: '/images/hv-kit/1.jpg',
     highlights: [
       { label: 'Primary term', value: 'BMU battery module' },
@@ -3107,7 +3189,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Rack battery enclosure planning',
     title: 'ESS Rack Mount Battery Modules and 6U Enclosures',
     description:
-      'Plan ESS rack mount battery modules with 6U battery kit enclosures, 19-inch rack fit, airflow, service access, cell compatibility, BMS wiring, and EU shipping review.',
+      'ESS rack-mount battery modules: 6U enclosures, 19-inch rack fit, airflow, service access, cell compatibility, and BMS wiring.',
     intro:
       'Rack mount battery modules are common in telecom rooms, residential storage cabinets, and compact commercial ESS assemblies. Before selecting a 6U enclosure, confirm rack depth, rail load, airflow, cable routing, cell dimensions, BMS option, and service access.',
     image: '/images/6u-kit/1.webp',
@@ -3180,8 +3262,9 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'category',
     eyebrow: 'Battery enclosure manufacturing',
     title: 'Energy Storage Enclosures for Lithium Battery Projects',
+    seoTitle: 'Energy Storage Enclosures for Lithium Projects',
     description:
-      'Review energy storage enclosures for lithium battery projects, including battery box manufacturing, 48V LiFePO4 enclosure kits, 6U rack enclosures, and C&I ESS cabinet scope.',
+      'Energy storage enclosures for lithium battery projects: battery box manufacturing, 48V LiFePO4 kits, 6U rack enclosures, and C&I cabinet scope.',
     intro:
       'Energy storage enclosure searches can refer to several different products: a low-voltage battery box, a 6U rack battery enclosure, high-voltage BMS control hardware, or a configured commercial ESS cabinet. The right route depends on whether the buyer needs only mechanical enclosure supply or a broader engineered system.',
     image: '/images/battery-kit-system.webp',
@@ -3264,7 +3347,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     // typed, so nothing in the result matched their query visually.
     seoTitle: 'C&I ESS Cabinet Custom Sourcing & Manufacturing',
     description:
-      'Custom sourcing for C&I ESS cabinets: configuration, cooling, PCS, EMS, BMS, certification documents, lead time, and what to send for a commercial energy storage cabinet quote.',
+      'C&I ESS cabinet custom sourcing: configuration, cooling, PCS, EMS, BMS, certification documents, lead time, and what to send for a quotation.',
     intro:
       'Buyers searching for an ESS cabinet manufacturer or C&I ESS custom sourcing usually need more than a product card. A commercial cabinet quotation should define capacity, AC power, PCS, EMS, BMS, cooling, fire protection, site conditions, documentation, shipping, and installation boundary.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -3353,8 +3436,9 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Solar self-consumption storage',
     title: 'Battery Storage for Solar Self-Consumption in Commercial Sites',
+    seoTitle: 'Solar Self-Consumption Battery Storage',
     description:
-      'Plan commercial battery storage for solar self-consumption, including PV surplus capture, PCS sizing, EMS control, backup reserve, cooling, and C&I ESS cabinet quotation inputs.',
+      'Commercial battery storage for solar self-consumption: PV surplus capture, PCS sizing, EMS control, backup reserve, and cooling.',
     intro:
       'Commercial solar self-consumption projects use battery storage to capture PV energy that would otherwise be exported, curtailed, or used at a lower value. The storage system should be sized from PV production, load profile, tariff rules, export limits, backup reserve, and site operating schedule.',
     image: '/images/tness-ci-ess/main-2.webp',
@@ -3428,8 +3512,9 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Commercial backup storage',
     title: 'Commercial Backup Power Battery Storage Planning Guide',
+    seoTitle: 'Commercial Backup Power Battery Storage',
     description:
-      'Plan commercial backup power with battery storage, including critical-load selection, backup duration, PCS power, transfer architecture, reserve strategy, and C&I ESS cabinet quotation inputs.',
+      'Plan commercial backup power with battery storage: critical-load selection, backup duration, PCS power, transfer architecture, and reserve strategy.',
     intro:
       'Backup power projects require a different review from simple energy shifting. The first question is which loads must stay online, how long they must run, and whether the site electrical design supports automatic transfer, islanding, or only supported load backup.',
     image: '/images/tness-ci-ess/main-4.webp',
@@ -3490,6 +3575,11 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
         label: 'Peak shaving battery storage',
         description: 'Review demand-charge reduction and EMS dispatch requirements.',
       },
+      {
+        href: '/applications/warehouse-supermarket-battery-storage',
+        label: 'Warehouse and supermarket storage',
+        description: 'Compare backup priorities for sites where refrigeration cannot be interrupted.',
+      },
     ],
   },
   {
@@ -3498,7 +3588,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'EV charging site storage',
     title: 'Battery Storage for EV Charging Stations',
     description:
-      'Plan battery storage for EV charging stations, including grid capacity limits, peak shaving, solar charging, charger power, EMS control, and commercial ESS cabinet quotation inputs.',
+      'Battery storage for EV charging stations: grid capacity limits, peak shaving, solar charging, charger power, and EMS control.',
     intro:
       'EV charging sites can create sharp demand peaks that exceed transformer capacity or increase demand charges. Battery storage can buffer charger load, support solar charging, and reduce grid peaks when the PCS, EMS, and charger control strategy are designed together.',
     image: '/images/tness-ci-ess/main-5.webp',
@@ -3566,8 +3656,9 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     kind: 'solution',
     eyebrow: 'Factory ESS planning',
     title: 'Factory Energy Storage System for Peak Shaving and Backup',
+    seoTitle: 'Factory Energy Storage for Peak Shaving',
     description:
-      'Plan a factory energy storage system for peak shaving, backup power, solar self-consumption, EMS control, load data review, cooling, and commercial ESS cabinet quotation.',
+      'Factory energy storage systems for peak shaving, backup power, and solar self-consumption, with EMS control and load data review.',
     intro:
       'Factories often combine high demand peaks, production schedules, motor loads, solar generation, and critical backup needs. A factory ESS should be reviewed from interval load data, production constraints, transformer capacity, backup priorities, and site installation conditions.',
     image: '/images/tness-ci-ess/main-1.webp',
@@ -3641,7 +3732,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'Warehouse and retail storage',
     title: 'Battery Storage for Warehouses and Supermarkets',
     description:
-      'Plan battery storage for warehouses and supermarkets, including refrigeration backup, peak shaving, solar self-consumption, EV charging support, and C&I ESS cabinet quotation inputs.',
+      'Battery storage for warehouses and supermarkets: refrigeration backup, peak shaving, solar self-consumption, and EV charging support.',
     intro:
       'Warehouses and supermarkets can have steady daytime loads, refrigeration equipment, HVAC peaks, rooftop solar, and growing EV charging demand. Battery storage can support peak shaving, backup reserve, and solar self-consumption when the site load and critical equipment are defined clearly.',
     image: '/images/tness-ci-ess/main-3.webp',
@@ -3710,7 +3801,7 @@ const searchConsoleLandingPages: NonBrandLandingPage[] = [
     eyebrow: 'ESS quote preparation',
     title: 'Commercial ESS Project Quote Preparation Checklist',
     description:
-      'Prepare a commercial ESS quote request with the required load data, target application, capacity, PCS power, cooling, site conditions, documents, shipping scope, and installation boundary.',
+      'What to send for a commercial ESS quote: load data, target application, capacity, PCS power, cooling, site conditions, and installation boundary.',
     intro:
       'A complete quote request helps suppliers review the correct commercial ESS cabinet configuration faster. Use this checklist before asking for a C&I energy storage cabinet, peak-shaving battery, backup storage system, solar self-consumption battery, or EV charging site storage.',
     image: '/images/contact-banner-bg.webp',

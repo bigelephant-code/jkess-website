@@ -230,7 +230,14 @@ export function assertPayPalOrderMatchesCheckout(
   if (currency !== 'USD' || totalCents !== checkout.totalCents) {
     throw new CheckoutValidationError('PayPal returned a different order total.')
   }
-  if (!shippingCountryCode || shippingCountryCode !== checkout.customer.countryCode) {
+  // Bank-redirect methods (iDEAL, Bancontact, EPS, Przelewy24) settle without a
+  // PayPal-side shipping address, so requiring one here would reject those
+  // payments before capture. When PayPal does supply an address it must still
+  // match. Nothing else is relaxed: the order reference, currency, total, item
+  // SKUs, quantities and unit prices are all still verified above, and
+  // fulfilment uses the address collected by this site's own checkout form,
+  // which is also what the server priced the shipping from.
+  if (shippingCountryCode && shippingCountryCode !== checkout.customer.countryCode) {
     throw new CheckoutValidationError(
       'The PayPal shipping country must match the selected delivery country.'
     )

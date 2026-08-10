@@ -152,7 +152,12 @@ export default function CheckoutPage() {
       currency: 'USD',
       intent: 'capture',
       components: 'buttons,funding-eligibility',
-      'enable-funding': 'card,paylater,venmo',
+      // iDEAL, Bancontact, EPS and Przelewy24 are disabled by default in the
+      // SDK and only become eligible when named here. Checked against the live
+      // client id on 2026-08-10: with this list they report eligible under USD,
+      // with the previous list they did not. blik, trustly and multibanco need
+      // PLN or EUR, so they stay out while the store prices in USD.
+      'enable-funding': 'card,paylater,venmo,ideal,bancontact,eps,p24',
       'integration-date': '2026-08-09',
     })
     const script = document.createElement('script')

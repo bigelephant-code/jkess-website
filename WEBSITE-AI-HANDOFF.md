@@ -418,6 +418,72 @@ Country-focused European SEO pages exist for Germany, France, Italy, the Netherl
 Poland, Spain, Austria, Belgium, Sweden, Denmark, and Portugal, alongside Europe,
 product-selection, application, specification, and technical-guide clusters.
 
+### Google Search Console API automation
+
+Search Console API access is already configured in a separate local automation
+workspace. It is not part of the Next.js website and must not be deployed to Vercel.
+
+```text
+Automation workspace: D:\CodexWorkspace\jkess-search-console-api
+Instructions:         D:\CodexWorkspace\jkess-search-console-api\README.md
+Configuration:        D:\CodexWorkspace\jkess-search-console-api\config.json
+Generated reports:    D:\CodexWorkspace\jkess-search-console-api\reports
+Credential key:       D:\CodexWorkspace\keys\jkess-search-console-service-account.json
+```
+
+Configured identity and scope:
+
+```text
+Google Cloud project: jkbms-seo
+Service account:      jkess-search-console-api@jkbms-seo.iam.gserviceaccount.com
+Search property:      sc-domain:jkesstech.com
+Permission:           siteFullUser (Full permission)
+Enabled API:          searchconsole.googleapis.com
+OAuth scope:          https://www.googleapis.com/auth/webmasters
+```
+
+The credential file is a service-account JSON key and contains a private key. Its
+path and service-account email are safe operational metadata; the JSON contents,
+`private_key`, `private_key_id`, access tokens, and any copied key material are
+secret. Never print, paste, upload, commit, or send that file through chat. If access
+must move to another machine, transfer it through an approved secret channel or
+create and authorize a replacement key, then revoke the old key when appropriate.
+
+The automation folder is not currently a Git repository. Its `.gitignore` excludes
+`config.json`, generated reports, credential JSON, and token files. Preserve this
+separation from the public website repository.
+
+Verified read commands:
+
+```powershell
+Set-Location 'D:\CodexWorkspace\jkess-search-console-api'
+npm run access:test
+npm run sitemaps:list
+npm run inspect -- --url=https://www.jkesstech.com/
+npm run report -- --start=2026-07-01 --end=2026-07-31
+npm run report -- --start=2026-07-01 --end=2026-08-06 --fresh
+```
+
+Guarded sitemap commands:
+
+```powershell
+npm run sitemap:submit -- --url=https://www.jkesstech.com/sitemap.xml --apply --confirm=JKESS
+npm run sitemap:delete -- --url=https://www.jkesstech.com/sitemap.xml --apply --confirm=JKESS
+```
+
+Sitemap writes require both `--apply` and `--confirm=JKESS` and are restricted to
+the URLs allowed by `config.json`. Do not delete a sitemap merely to refresh it;
+resubmit it. Although the local allowlist also contains `/image-sitemap.xml`, that
+endpoint is not live in the current production branch, so do not submit it until the
+unpublished image-sitemap work is reviewed, deployed, and verified.
+
+Live verification on 2026-08-10 confirmed `siteFullUser` access. The API listed
+`https://www.jkesstech.com/sitemap.xml` with zero warnings and zero errors. The API
+can read Search Analytics, site permissions, URL Inspection results, and sitemaps;
+it cannot change rankings, clicks, impressions, CTR, or Google's indexing decisions.
+The Google Indexing API is intentionally not used for ordinary JKESS product and
+content pages because those page types are not eligible.
+
 Cookie and analytics control:
 
 ```text
@@ -559,6 +625,7 @@ through the platform account or a password manager to:
 - Resend and its verified sending domain.
 - Upstash Redis or compatible Vercel KV store.
 - Google Analytics and Google Search Console.
+- The local Search Console service-account key and its Google Cloud IAM controls.
 - Bing Webmaster Tools and IndexNow settings.
 - The real `zhou@jkess.com` mailbox provider.
 - Sanity only if the dormant CMS integration is reactivated.
@@ -593,4 +660,7 @@ not Sanity. Keep all secrets out of chat and Git. For each task, inspect the exi
 implementation, make a scoped change, run npm run lint and npm run build, review the
 diff, fetch again, and push HEAD to origin/main only after confirming publication is
 intended. Verify the Vercel deployment and the exact live behavior afterward.
+For Search Console API work, read
+D:\CodexWorkspace\jkess-search-console-api\README.md, use the existing guarded CLI,
+and never display or copy the service-account JSON key contents.
 ```

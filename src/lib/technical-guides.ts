@@ -42,7 +42,7 @@ export const technicalGuides: TechnicalGuide[] = [
       'A BMU (battery monitoring unit) is the module-level board in a high-voltage BMS. See how it differs from the BCU master controller and how they work together.',
     image: '/images/hv-kit/1.jpg',
     datePublished: '2026-06-29',
-    dateModified: '2026-07-27',
+    dateModified: '2026-08-10',
     summary:
       'A high-voltage BMS normally divides control between a rack-level master and module-level slave boards. The BCU coordinates the battery rack, while BMUs collect individual cell data and perform module-level functions. The exact quantities and interfaces depend on the pack topology.',
     sections: [
@@ -128,7 +128,7 @@ export const technicalGuides: TechnicalGuide[] = [
       'The practical difference between CAN and RS485 for battery communication: topology, protocol compatibility, wiring, termination, and commissioning checks.',
     image: '/images/hv-kit/3.jpg',
     datePublished: '2026-06-29',
-    dateModified: '2026-07-27',
+    dateModified: '2026-08-10',
     summary:
       'CAN and RS485 describe physical and data-link communication methods, but neither name defines the application protocol. Two devices can both have CAN or RS485 ports and still be incompatible if message formats, addresses, timing, scaling, or state logic differ.',
     sections: [
@@ -209,7 +209,7 @@ export const technicalGuides: TechnicalGuide[] = [
       'How 280Ah and 314Ah LiFePO4 cells differ in nominal energy, dimensions, terminals, current, compression, and thermal design.',
     image: '/images/battery-kit-system.webp',
     datePublished: '2026-06-29',
-    dateModified: '2026-07-27',
+    dateModified: '2026-08-10',
     summary:
       'A higher amp-hour rating can increase nominal energy, but capacity alone does not confirm that a cell fits an enclosure or suits a battery design. Mechanical dimensions, terminal layout, current limits, compression, thermal behaviour, quality documentation, and the completed BMS and inverter design must also be checked.',
     sections: [
@@ -283,7 +283,7 @@ export const technicalGuides: TechnicalGuide[] = [
       'A step-by-step checklist for matching a battery BMS to an inverter or PCS: voltage window, current limits, protocol, firmware, and contactor logic.',
     image: '/images/battery-kit-display.webp',
     datePublished: '2026-06-29',
-    dateModified: '2026-07-27',
+    dateModified: '2026-08-10',
     summary:
       'A BMS and inverter must be compatible electrically and through communication. Matching only the nominal battery voltage or connector type is not enough. The completed system must agree on voltage limits, current limits, protocol, wiring, operating states, alarms, and fault recovery.',
     sections: [

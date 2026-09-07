@@ -664,7 +664,7 @@ function QuotationPreview({
           <div className={styles.footerDock}>
             <footer className={styles.quoteFooter}>
               <div className={styles.footerBrand}>
-                <strong>{brand.name}</strong>
+                <strong>JKBMS</strong>
                 <span>PROFORMA INVOICE</span>
               </div>
               <div className={styles.footerDocument}>

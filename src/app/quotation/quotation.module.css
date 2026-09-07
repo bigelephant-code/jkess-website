@@ -423,6 +423,10 @@
   font-size: 11px;
 }
 
+.printPageSpacer {
+  display: none;
+}
+
 .quoteTable th {
   background: #172033;
   color: #fff;
@@ -672,10 +676,39 @@
     width: 180px;
   }
 
+  .tableScroll {
+    overflow: visible;
+  }
+
+  .productPages {
+    break-before: page;
+  }
+
+  .closingPage {
+    break-before: page;
+    padding-top: 9mm;
+  }
+
+  .quoteTable thead {
+    display: table-header-group;
+  }
+
+  .printPageSpacer {
+    display: table-row;
+  }
+
+  .printPageSpacer th {
+    height: 9mm;
+    border: 0;
+    background: #fff;
+    padding: 0;
+  }
+
   .quoteTable tr,
   .bankBlock,
   .notesBlock,
-  .summaryArea {
+  .summaryArea,
+  .closingSections {
     break-inside: avoid;
   }
 }

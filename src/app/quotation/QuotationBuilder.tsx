@@ -143,6 +143,13 @@ function displayDate(value: string) {
   return parts.length === 3 ? `${parts[0]}-${parts[1]}-${parts[2]}` : value
 }
 
+function estimatedPrintRows(items: QuoteItem[]) {
+  return items.reduce((rows, item) => {
+    const descriptionLength = item.model.trim().length
+    return rows + Math.max(1, Math.ceil(descriptionLength / 52))
+  }, 0)
+}
+
 export default function QuotationBuilder({
   initialDates,
 }: {
@@ -400,6 +407,7 @@ function QuotationPreview({
   selectedBank?: QuotationBankAccount
 }) {
   const currency = currencyDetails(draft)
+  const separateProductPages = estimatedPrintRows(draft.items) > 8
 
   return (
     <section className={styles.previewWrap} aria-label="报价单预览">
@@ -435,9 +443,14 @@ function QuotationPreview({
           </dl>
         </div>
 
-        <div className={styles.tableScroll}>
+        <div className={`${styles.tableScroll} ${separateProductPages ? styles.productPages : ''}`}>
           <table className={styles.quoteTable}>
             <thead>
+              {separateProductPages && (
+                <tr className={styles.printPageSpacer} aria-hidden="true">
+                  <th colSpan={5} />
+                </tr>
+              )}
               <tr>
                 <th>#</th>
                 <th>MODEL / DESCRIPTION</th>
@@ -460,38 +473,40 @@ function QuotationPreview({
           </table>
         </div>
 
-        <div className={styles.summaryArea}>
-          <section className={styles.shippingBlock}>
-            <p className={styles.blockLabel}>SHIPPING</p>
-            <p><strong>Method:</strong> {draft.shippingMethod || '—'}</p>
-          </section>
-          <dl className={styles.totals}>
-            <div><dt>Subtotal</dt><dd>{formatAmount(subtotal, draft)}</dd></div>
-            <div><dt>Shipping</dt><dd>{formatAmount(shipping, draft)}</dd></div>
-            <div className={styles.grandTotal}><dt>TOTAL</dt><dd>{formatAmount(total, draft)}</dd></div>
-          </dl>
-        </div>
-
-        <section className={styles.bankBlock}>
-          <p className={styles.blockLabel}>BANK INFORMATION</p>
-          {selectedBank ? <BankAccountDetails account={selectedBank} /> : (
-            <p className={styles.pendingBank}>Verified bank account details will appear here after an account is selected.</p>
-          )}
-        </section>
-
-        {draft.notes && (
-          <section className={styles.notesBlock}>
-            <p className={styles.blockLabel}>NOTES / TERMS</p>
-            <p className={styles.preserveLines}>{draft.notes}</p>
-          </section>
-        )}
-
-        <footer className={styles.quoteFooter}>
-          <div>
-            <strong>JKESS</strong>
-            <span>JKBMS Electronic Technology Co.,Ltd</span>
+        <div className={`${styles.closingSections} ${separateProductPages ? styles.closingPage : ''}`}>
+          <div className={styles.summaryArea}>
+            <section className={styles.shippingBlock}>
+              <p className={styles.blockLabel}>SHIPPING</p>
+              <p><strong>Method:</strong> {draft.shippingMethod || '—'}</p>
+            </section>
+            <dl className={styles.totals}>
+              <div><dt>Subtotal</dt><dd>{formatAmount(subtotal, draft)}</dd></div>
+              <div><dt>Shipping</dt><dd>{formatAmount(shipping, draft)}</dd></div>
+              <div className={styles.grandTotal}><dt>TOTAL</dt><dd>{formatAmount(total, draft)}</dd></div>
+            </dl>
           </div>
-        </footer>
+
+          <section className={styles.bankBlock}>
+            <p className={styles.blockLabel}>BANK INFORMATION</p>
+            {selectedBank ? <BankAccountDetails account={selectedBank} /> : (
+              <p className={styles.pendingBank}>Verified bank account details will appear here after an account is selected.</p>
+            )}
+          </section>
+
+          {draft.notes && (
+            <section className={styles.notesBlock}>
+              <p className={styles.blockLabel}>NOTES / TERMS</p>
+              <p className={styles.preserveLines}>{draft.notes}</p>
+            </section>
+          )}
+
+          <footer className={styles.quoteFooter}>
+            <div>
+              <strong>JKESS</strong>
+              <span>JKBMS Electronic Technology Co.,Ltd</span>
+            </div>
+          </footer>
+        </div>
       </article>
     </section>
   )

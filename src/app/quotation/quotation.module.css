@@ -337,6 +337,10 @@
   box-shadow: none;
 }
 
+.pdfExport.singlePageDocument {
+  min-height: 296mm;
+}
+
 .pdfExport .quoteLogo {
   width: 180px;
 }
@@ -389,6 +393,10 @@
 }
 
 .pdfExport .closingPage {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 288mm;
+  flex-direction: column;
   break-before: page;
   page-break-before: always;
   padding-top: 9mm;
@@ -409,6 +417,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 32px;
+}
+
+.singlePageDocument {
+  display: flex;
+  flex-direction: column;
+}
+
+.singlePageDocument .closingSections {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .documentBrand {
@@ -685,6 +704,11 @@
   white-space: pre-line;
 }
 
+.footerDock {
+  margin-top: auto;
+  padding-top: 30px;
+}
+
 .quoteFooter {
   position: relative;
   display: grid;
@@ -692,7 +716,6 @@
   align-items: center;
   gap: 20px;
   overflow: hidden;
-  margin-top: 30px;
   border: 1px solid #dbe2e8;
   border-radius: 10px;
   background: linear-gradient(135deg, #fff 0%, #f8fafc 72%, #f1f5f9 100%);
@@ -746,6 +769,14 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.footerCompany em {
+  color: #16a34a;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.035em;
 }
 
 .footerDocument {
@@ -915,6 +946,10 @@
   }
 
   .closingPage {
+    box-sizing: border-box;
+    display: flex;
+    min-height: 288mm;
+    flex-direction: column;
     break-before: page;
     padding-top: 9mm;
   }

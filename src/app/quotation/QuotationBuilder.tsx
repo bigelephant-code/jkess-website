@@ -563,7 +563,10 @@ function QuotationPreview({
   return (
     <section className={styles.previewWrap} aria-label="报价单预览">
       <div className={styles.previewLabel}>实时预览 · PRINT PREVIEW</div>
-      <article ref={articleRef} className={`${styles.paper} ${isPdfExport ? styles.pdfExport : ''}`}>
+      <article
+        ref={articleRef}
+        className={`${styles.paper} ${isPdfExport ? styles.pdfExport : ''} ${!separateProductPages ? styles.singlePageDocument : ''}`}
+      >
         <header className={styles.quoteHeader}>
           <div className={styles.documentBrand}>
             <Image
@@ -650,20 +653,23 @@ function QuotationPreview({
             </section>
           )}
 
-          <footer className={styles.quoteFooter}>
-            <div className={styles.footerBrand}>
-              <span>OFFICIAL PROFORMA INVOICE</span>
-              <strong>{brand.name}</strong>
-            </div>
-            <div className={styles.footerCompany}>
-              <strong>JKBMS Electronic Technology Co., Ltd.</strong>
-              <span>{brand.tagline}</span>
-            </div>
-            <div className={styles.footerDocument}>
-              <span>COMMERCIAL DOCUMENT</span>
-              <strong>{draft.quoteNumber || 'DRAFT'}</strong>
-            </div>
-          </footer>
+          <div className={styles.footerDock}>
+            <footer className={styles.quoteFooter}>
+              <div className={styles.footerBrand}>
+                <span>OFFICIAL PROFORMA INVOICE</span>
+                <strong>{brand.name}</strong>
+              </div>
+              <div className={styles.footerCompany}>
+                <strong>JKBMS Electronic Technology Co., Ltd.</strong>
+                <span>{brand.tagline}</span>
+                <em>Powering a Cleaner Future</em>
+              </div>
+              <div className={styles.footerDocument}>
+                <span>COMMERCIAL DOCUMENT</span>
+                <strong>{draft.quoteNumber || 'DRAFT'}</strong>
+              </div>
+            </footer>
+          </div>
         </div>
       </article>
     </section>

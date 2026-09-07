@@ -426,13 +426,6 @@
   letter-spacing: 0.12em;
 }
 
-.quoteHeading p {
-  margin-top: 5px;
-  color: #16a34a;
-  font-size: 12px;
-  letter-spacing: 0.28em;
-}
-
 .rule {
   height: 4px;
   margin: 22px 0 26px;

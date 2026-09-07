@@ -116,7 +116,7 @@ function datedDefaults(brand: QuotationBrand = 'JKESS') {
   return {
     issueDate: isoDate(today),
     validUntil: isoDate(validUntil),
-    quoteNumber: `${brand}-Q-${stamp}-${suffix}`,
+    quoteNumber: `${brand}-PI-${stamp}-${suffix}`,
   }
 }
 
@@ -192,7 +192,7 @@ function paginateQuoteItems(items: QuoteItem[], rowsPerPage = 24) {
 }
 
 function pdfFilename(draft: QuoteDraft) {
-  const fallback = `${draft.brand}-Quotation-${draft.issueDate || 'Draft'}`
+  const fallback = `${draft.brand}-Proforma-Invoice-${draft.issueDate || 'Draft'}`
   const safeName = (draft.quoteNumber.trim() || fallback)
     .replace(/[\\/:*?"<>|]+/g, '-')
     .replace(/\s+/g, '-')
@@ -253,8 +253,8 @@ export default function QuotationBuilder({
     setDraft((current) => ({
       ...current,
       brand,
-      quoteNumber: /^(JKESS|JKBMS)-Q-/.test(current.quoteNumber)
-        ? current.quoteNumber.replace(/^(JKESS|JKBMS)-Q-/, `${brand}-Q-`)
+      quoteNumber: /^(JKESS|JKBMS)-(?:Q|PI)-/.test(current.quoteNumber)
+        ? current.quoteNumber.replace(/^(JKESS|JKBMS)-(?:Q|PI)-/, `${brand}-PI-`)
         : current.quoteNumber,
     }))
   }
@@ -576,8 +576,7 @@ function QuotationPreview({
             <p>{brand.tagline}</p>
           </div>
           <div className={styles.quoteHeading}>
-            <h2>QUOTATION</h2>
-            <p>报价单</p>
+            <h2>PROFORMA INVOICE</h2>
           </div>
         </header>
 
@@ -585,7 +584,7 @@ function QuotationPreview({
 
         <div className={styles.quoteMeta}>
           <section>
-            <p className={styles.blockLabel}>QUOTATION TO</p>
+            <p className={styles.blockLabel}>BILL TO</p>
             <h3>{draft.customerCompany || 'Customer / Company'}</h3>
             <p>{draft.contactName || 'Contact name'}</p>
             <p>{draft.phone || 'Phone'}</p>
@@ -593,7 +592,7 @@ function QuotationPreview({
             <p className={styles.preserveLines}>{draft.address || 'Customer address'}</p>
           </section>
           <dl>
-            <div><dt>Quotation No.</dt><dd>{draft.quoteNumber || '—'}</dd></div>
+            <div><dt>PI No.</dt><dd>{draft.quoteNumber || '—'}</dd></div>
             <div><dt>Date</dt><dd>{displayDate(draft.issueDate)}</dd></div>
             <div><dt>Valid Until</dt><dd>{displayDate(draft.validUntil)}</dd></div>
             <div><dt>Currency</dt><dd>{currency.code}</dd></div>
@@ -648,7 +647,7 @@ function QuotationPreview({
 
           <footer className={styles.quoteFooter}>
             <div className={styles.footerBrand}>
-              <span>OFFICIAL QUOTATION</span>
+              <span>OFFICIAL PROFORMA INVOICE</span>
               <strong>{brand.name}</strong>
             </div>
             <div className={styles.footerCompany}>

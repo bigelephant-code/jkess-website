@@ -4,8 +4,8 @@ import QuotationBuilder from './QuotationBuilder'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'JKESS Quotation Builder',
-  description: 'Internal JKESS tool for preparing customer quotations.',
+  title: 'JKESS Proforma Invoice Builder',
+  description: 'Internal JKESS tool for preparing customer proforma invoices.',
   robots: {
     index: false,
     follow: false,
@@ -27,7 +27,7 @@ export default function QuotationPage() {
       initialDates={{
         issueDate,
         validUntil: localIsoDate(validUntil),
-        quoteNumber: `JKESS-Q-${stamp}-${String(today.getTime()).slice(-4)}`,
+        quoteNumber: `JKESS-PI-${stamp}-${String(today.getTime()).slice(-4)}`,
       }}
     />
   )

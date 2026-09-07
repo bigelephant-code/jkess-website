@@ -491,7 +491,6 @@ function QuotationPreview({
             <strong>JKESS</strong>
             <span>JKBMS Electronic Technology Co.,Ltd</span>
           </div>
-          <span>www.jkesstech.com</span>
         </footer>
       </article>
     </section>

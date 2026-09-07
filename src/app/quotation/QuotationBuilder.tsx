@@ -19,6 +19,8 @@ import styles from './quotation.module.css'
 
 type CurrencyPreset = 'USD' | 'CNY' | 'CUSTOM'
 
+const INCOTERMS = ['DDP', 'EXW', 'FOB', 'CIF', 'CFR', 'CPT', 'CIP', 'DAP', 'DPU', 'FCA'] as const
+
 type QuoteItem = {
   id: string
   model: string
@@ -270,7 +272,13 @@ export default function QuotationBuilder({
             </button>
             <div className={`${styles.twoColumns} ${styles.shippingFields}`}>
               <Field label="运费（可填 0）" type="number" min="0" step="0.01" value={draft.shippingFee} onChange={(value) => updateDraft('shippingFee', value)} />
-              <Field label="运输方式" value={draft.shippingMethod} placeholder="例如 DHL / 海运 / 空运" onChange={(value) => updateDraft('shippingMethod', value)} />
+              <label className={styles.field}>
+                <span>运输方式 / Incoterm</span>
+                <select value={draft.shippingMethod} onChange={(event) => updateDraft('shippingMethod', event.target.value)}>
+                  <option value="">请选择</option>
+                  {INCOTERMS.map((term) => <option value={term} key={term}>{term}</option>)}
+                </select>
+              </label>
             </div>
           </EditorSection>
 

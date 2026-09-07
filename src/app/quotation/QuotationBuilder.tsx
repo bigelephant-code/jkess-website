@@ -624,6 +624,10 @@ function QuotationPreview({
             <section className={styles.shippingBlock}>
               <p className={styles.blockLabel}>SHIPPING</p>
               <p><strong>Method:</strong> {draft.shippingMethod || '—'}</p>
+              <p className={styles.warrantyTerm}>
+                <strong>Warranty:</strong>
+                <span>One year, excluding damage caused by misuse or accidental damage.</span>
+              </p>
             </section>
             <dl className={styles.totals}>
               <div><dt>Subtotal</dt><dd>{formatAmount(subtotal, draft)}</dd></div>

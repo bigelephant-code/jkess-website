@@ -604,6 +604,17 @@
   font-size: 11px;
 }
 
+.shippingBlock .warrantyTerm {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 5px;
+  max-width: 430px;
+  margin-top: 12px;
+  border-left: 2px solid #16a34a;
+  padding-left: 9px;
+  line-height: 1.5;
+}
+
 .grandTotal {
   margin-top: 4px;
   border-bottom: 0 !important;

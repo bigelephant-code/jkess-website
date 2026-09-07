@@ -237,7 +237,6 @@ export default function QuotationBuilder({
           <div>
             <p className={styles.eyebrow}>Standalone quotation workspace</p>
             <h1>JKESS / JKBMS 报价单工具</h1>
-            <p>客户资料只在当前浏览器页面中处理，不会提交到服务器。</p>
           </div>
         </div>
         <div className={styles.toolbarActions}>

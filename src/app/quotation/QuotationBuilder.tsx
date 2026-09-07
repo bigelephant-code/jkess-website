@@ -1,12 +1,13 @@
 'use client'
 
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   Building2,
+  Download,
   FileText,
+  LoaderCircle,
   Plus,
-  Printer,
   RotateCcw,
   ShieldCheck,
   Trash2,
@@ -170,12 +171,70 @@ function estimatedPrintRows(items: QuoteItem[]) {
   }, 0)
 }
 
+function paginateQuoteItems(items: QuoteItem[], rowsPerPage = 24) {
+  const pages: Array<Array<{ item: QuoteItem; index: number }>> = []
+  let page: Array<{ item: QuoteItem; index: number }> = []
+  let rows = 0
+
+  items.forEach((item, index) => {
+    const itemRows = Math.max(1, Math.ceil(item.model.trim().length / 52))
+    if (page.length > 0 && rows + itemRows > rowsPerPage) {
+      pages.push(page)
+      page = []
+      rows = 0
+    }
+    page.push({ item, index })
+    rows += itemRows
+  })
+
+  if (page.length > 0) pages.push(page)
+  return pages
+}
+
+function pdfFilename(draft: QuoteDraft) {
+  const fallback = `${draft.brand}-Quotation-${draft.issueDate || 'Draft'}`
+  const safeName = (draft.quoteNumber.trim() || fallback)
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, '-')
+    .slice(0, 120)
+  return `${safeName}.pdf`
+}
+
+function waitForImages(element: HTMLElement) {
+  const images = Array.from(element.querySelectorAll('img'))
+  return Promise.all(
+    images.map((image) => {
+      if (image.naturalWidth > 0) return Promise.resolve()
+      return new Promise<void>((resolve) => {
+        const finish = () => {
+          window.clearTimeout(timeout)
+          image.removeEventListener('load', finish)
+          image.removeEventListener('error', finish)
+          resolve()
+        }
+        const timeout = window.setTimeout(finish, 3000)
+        image.addEventListener('load', finish, { once: true })
+        image.addEventListener('error', finish, { once: true })
+      })
+    })
+  )
+}
+
+function nextPaint() {
+  return new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  })
+}
+
 export default function QuotationBuilder({
   initialDates,
 }: {
   initialDates: Pick<QuoteDraft, 'quoteNumber' | 'issueDate' | 'validUntil'>
 }) {
   const [draft, setDraft] = useState<QuoteDraft>(() => ({ ...INITIAL_DRAFT, ...initialDates }))
+  const [isDownloading, setIsDownloading] = useState(false)
+  const [isPdfExport, setIsPdfExport] = useState(false)
+  const quotationRef = useRef<HTMLElement>(null)
 
   const lineTotals = useMemo(
     () => draft.items.map((item) => numberValue(item.quantity) * nonNegativeValue(item.unitPrice)),
@@ -227,6 +286,47 @@ export default function QuotationBuilder({
     setDraft({ ...INITIAL_DRAFT, brand: draft.brand, items: [{ ...EMPTY_ITEM }], ...datedDefaults(draft.brand) })
   }
 
+  const downloadPdf = async () => {
+    if (!quotationRef.current || isDownloading) return
+
+    setIsDownloading(true)
+    setIsPdfExport(true)
+    try {
+      await nextPaint()
+      const quotation = quotationRef.current
+      await document.fonts.ready
+      await waitForImages(quotation)
+      const { default: html2pdf } = await import('html2pdf.js')
+      const options = {
+        margin: 0,
+        filename: pdfFilename(draft),
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+        pagebreak: {
+          mode: ['css', 'legacy'],
+          before: [`.${styles.pdfProductPage}`, `.${styles.closingPage}`],
+          avoid: ['tr', `.${styles.summaryArea}`, `.${styles.bankBlock}`, `.${styles.notesBlock}`],
+        },
+      }
+
+      await html2pdf().set(options).from(quotation).save()
+    } catch (error) {
+      console.error('Failed to generate quotation PDF', error)
+      window.alert('PDF 生成失败，请重试。')
+    } finally {
+      setIsPdfExport(false)
+      setIsDownloading(false)
+    }
+  }
+
   return (
     <main className={styles.shell}>
       <header className={`${styles.toolbar} ${styles.noPrint}`}>
@@ -243,8 +343,15 @@ export default function QuotationBuilder({
           <button type="button" className={styles.secondaryButton} onClick={resetDraft}>
             <RotateCcw size={17} /> 清空
           </button>
-          <button type="button" className={styles.primaryButton} onClick={() => window.print()}>
-            <Printer size={17} /> 打印 / 保存 PDF
+          <button
+            type="button"
+            className={styles.primaryButton}
+            onClick={downloadPdf}
+            disabled={isDownloading}
+            aria-busy={isDownloading}
+          >
+            {isDownloading ? <LoaderCircle className={styles.spinning} size={17} /> : <Download size={17} />}
+            {isDownloading ? '正在生成 PDF…' : '下载 PDF'}
           </button>
         </div>
       </header>
@@ -358,7 +465,9 @@ export default function QuotationBuilder({
         </section>
 
         <QuotationPreview
+          articleRef={quotationRef}
           draft={draft}
+          isPdfExport={isPdfExport}
           lineTotals={lineTotals}
           subtotal={subtotal}
           shipping={shipping}
@@ -428,14 +537,18 @@ function Field({
 }
 
 function QuotationPreview({
+  articleRef,
   draft,
+  isPdfExport,
   lineTotals,
   subtotal,
   shipping,
   total,
   selectedBank,
 }: {
+  articleRef: React.RefObject<HTMLElement | null>
   draft: QuoteDraft
+  isPdfExport: boolean
   lineTotals: number[]
   subtotal: number
   shipping: number
@@ -445,11 +558,12 @@ function QuotationPreview({
   const currency = currencyDetails(draft)
   const brand = QUOTATION_BRANDS[draft.brand]
   const separateProductPages = estimatedPrintRows(draft.items) > 8
+  const pdfProductPages = isPdfExport && separateProductPages ? paginateQuoteItems(draft.items) : []
 
   return (
     <section className={styles.previewWrap} aria-label="报价单预览">
       <div className={styles.previewLabel}>实时预览 · PRINT PREVIEW</div>
-      <article className={styles.paper}>
+      <article ref={articleRef} className={`${styles.paper} ${isPdfExport ? styles.pdfExport : ''}`}>
         <header className={styles.quoteHeader}>
           <div>
             <Image
@@ -486,35 +600,24 @@ function QuotationPreview({
           </dl>
         </div>
 
-        <div className={`${styles.tableScroll} ${separateProductPages ? styles.productPages : ''}`}>
-          <table className={styles.quoteTable}>
-            <thead>
-              {separateProductPages && (
-                <tr className={styles.printPageSpacer} aria-hidden="true">
-                  <th colSpan={5} />
-                </tr>
-              )}
-              <tr>
-                <th>#</th>
-                <th>MODEL / DESCRIPTION</th>
-                <th>QTY</th>
-                <th>UNIT PRICE</th>
-                <th>AMOUNT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {draft.items.map((item, index) => (
-                <tr key={item.id}>
-                  <td>{index + 1}</td>
-                  <td>{item.model || '—'}</td>
-                  <td>{item.quantity || '0'}</td>
-                  <td>{formatAmount(nonNegativeValue(item.unitPrice), draft)}</td>
-                  <td>{formatAmount(lineTotals[index], draft)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {pdfProductPages.length > 0 ? (
+          <div className={styles.pdfProductPages}>
+            {pdfProductPages.map((page, pageIndex) => (
+              <div className={styles.pdfProductPage} key={`pdf-page-${pageIndex}`}>
+                <QuoteTable rows={page} draft={draft} lineTotals={lineTotals} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`${styles.tableScroll} ${separateProductPages ? styles.productPages : ''}`}>
+            <QuoteTable
+              rows={draft.items.map((item, index) => ({ item, index }))}
+              draft={draft}
+              lineTotals={lineTotals}
+              includePrintSpacer={separateProductPages}
+            />
+          </div>
+        )}
 
         <div className={`${styles.closingSections} ${separateProductPages ? styles.closingPage : ''}`}>
           <div className={styles.summaryArea}>
@@ -552,6 +655,48 @@ function QuotationPreview({
         </div>
       </article>
     </section>
+  )
+}
+
+function QuoteTable({
+  rows,
+  draft,
+  lineTotals,
+  includePrintSpacer = false,
+}: {
+  rows: Array<{ item: QuoteItem; index: number }>
+  draft: QuoteDraft
+  lineTotals: number[]
+  includePrintSpacer?: boolean
+}) {
+  return (
+    <table className={styles.quoteTable}>
+      <thead>
+        {includePrintSpacer && (
+          <tr className={styles.printPageSpacer} aria-hidden="true">
+            <th colSpan={5} />
+          </tr>
+        )}
+        <tr>
+          <th>#</th>
+          <th>MODEL / DESCRIPTION</th>
+          <th>QTY</th>
+          <th>UNIT PRICE</th>
+          <th>AMOUNT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ item, index }) => (
+          <tr key={item.id}>
+            <td>{index + 1}</td>
+            <td>{item.model || '—'}</td>
+            <td>{item.quantity || '0'}</td>
+            <td>{formatAmount(nonNegativeValue(item.unitPrice), draft)}</td>
+            <td>{formatAmount(lineTotals[index], draft)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }
 

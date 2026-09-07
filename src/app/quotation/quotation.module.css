@@ -93,6 +93,21 @@
   background: #15803d;
 }
 
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .secondaryButton,
 .addButton {
   border: 1px solid #d3d8de;
@@ -310,6 +325,50 @@
   padding: 44px 46px 32px;
   color: #172033;
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.17);
+}
+
+.pdfExport {
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 0;
+  overflow: visible;
+  border-radius: 0;
+  padding: 9mm;
+  box-shadow: none;
+}
+
+.pdfExport .quoteLogo {
+  width: 180px;
+}
+
+.pdfExport .jkbmsQuoteLogo {
+  width: auto;
+  height: 80px;
+}
+
+.pdfExport .tableScroll {
+  overflow: visible;
+}
+
+.pdfProductPage {
+  break-before: page;
+  page-break-before: always;
+  padding-top: 9mm;
+}
+
+.pdfExport .closingPage {
+  break-before: page;
+  page-break-before: always;
+  padding-top: 9mm;
+}
+
+.pdfExport .quoteTable tr,
+.pdfExport .bankBlock,
+.pdfExport .notesBlock,
+.pdfExport .summaryArea,
+.pdfExport .closingSections {
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 .quoteHeader {

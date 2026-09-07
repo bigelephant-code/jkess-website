@@ -16,6 +16,7 @@ const PUBLIC_PATHS = [
   '/manifest.webmanifest',
   '/apple-touch-icon.png',
   '/icon-',
+  '/quotation',
 ]
 
 function isPublicPath(pathname: string): boolean {

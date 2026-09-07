@@ -407,7 +407,7 @@ function QuotationPreview({
       <article className={styles.paper}>
         <header className={styles.quoteHeader}>
           <div>
-            <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={172} height={65} className={styles.quoteLogo} />
+            <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={225} height={85} className={styles.quoteLogo} />
             <p>Energy Storage Solutions</p>
           </div>
           <div className={styles.quoteHeading}>

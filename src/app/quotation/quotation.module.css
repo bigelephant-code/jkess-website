@@ -371,18 +371,21 @@
 }
 
 .pdfExport .quoteFooter {
-  grid-template-columns: minmax(105px, 0.52fr) minmax(250px, 1.48fr) minmax(150px, 0.8fr);
+  grid-template-columns: minmax(105px, 0.52fr) minmax(150px, 0.8fr) minmax(250px, 1.48fr);
   gap: 24px;
 }
 
-.pdfExport .footerCompany {
+.pdfExport .footerDocument {
   border-top: 0;
   border-left: 1px solid #d7dee6;
   padding-top: 0;
   padding-left: 20px;
+  text-align: left;
 }
 
-.pdfExport .footerDocument {
+.pdfExport .footerCompany {
+  border: 0;
+  padding: 0;
   text-align: right;
 }
 
@@ -752,7 +755,7 @@
 .quoteFooter {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(105px, 0.52fr) minmax(250px, 1.48fr) minmax(150px, 0.8fr);
+  grid-template-columns: minmax(105px, 0.52fr) minmax(150px, 0.8fr) minmax(250px, 1.48fr);
   align-items: center;
   gap: 24px;
   border-top: 2px solid #172033;
@@ -793,8 +796,7 @@
 }
 
 .footerCompany {
-  border-left: 1px solid #d7dee6;
-  padding-left: 20px;
+  text-align: right;
 }
 
 .footerCompany span {
@@ -811,7 +813,9 @@
 }
 
 .footerDocument {
-  text-align: right;
+  border-left: 1px solid #d7dee6;
+  padding-left: 20px;
+  text-align: left;
 }
 
 .footerDocument span {
@@ -908,13 +912,16 @@
   }
 
   .footerCompany {
+    border-left: 0;
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .footerDocument {
     border-top: 1px solid #d7dee6;
     border-left: 0;
     padding-top: 10px;
     padding-left: 0;
-  }
-
-  .footerDocument {
     text-align: left;
   }
 }

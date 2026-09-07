@@ -667,13 +667,13 @@ function QuotationPreview({
                 <strong>{brand.name}</strong>
                 <span>PROFORMA INVOICE</span>
               </div>
-              <div className={styles.footerCompany}>
-                <em>Powering a Cleaner Future</em>
-                <span>JKBMS Electronic Technology Co., Ltd.</span>
-              </div>
               <div className={styles.footerDocument}>
                 <span>PI NUMBER</span>
                 <strong>{draft.quoteNumber || 'DRAFT'}</strong>
+              </div>
+              <div className={styles.footerCompany}>
+                <em>Powering a Cleaner Future</em>
+                <span>JKBMS Electronic Technology Co., Ltd.</span>
               </div>
             </footer>
           </div>

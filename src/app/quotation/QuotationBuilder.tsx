@@ -625,11 +625,19 @@ function QuotationPreview({
         <div className={`${styles.closingSections} ${separateProductPages ? styles.closingPage : ''}`}>
           <div className={styles.summaryArea}>
             <section className={styles.shippingBlock}>
-              <p className={styles.blockLabel}>SHIPPING</p>
-              <p><strong>Method:</strong> {draft.shippingMethod || '—'}</p>
-              <p className={styles.warrantyTerm}>
-                <strong>Warranty:</strong>
-                <span>One year, excluding damage caused by misuse or accidental damage.</span>
+              <p className={styles.blockLabel}>SHIPPING &amp; WARRANTY</p>
+              <dl className={styles.shippingTerms}>
+                <div>
+                  <dt>Shipping Method</dt>
+                  <dd>{draft.shippingMethod || '—'}</dd>
+                </div>
+                <div>
+                  <dt>Warranty Period</dt>
+                  <dd>One Year</dd>
+                </div>
+              </dl>
+              <p className={styles.warrantyCoverage}>
+                Coverage excludes damage caused by misuse or accidental damage.
               </p>
             </section>
             <dl className={styles.totals}>
@@ -656,16 +664,15 @@ function QuotationPreview({
           <div className={styles.footerDock}>
             <footer className={styles.quoteFooter}>
               <div className={styles.footerBrand}>
-                <span>OFFICIAL PROFORMA INVOICE</span>
                 <strong>{brand.name}</strong>
+                <span>PROFORMA INVOICE</span>
               </div>
               <div className={styles.footerCompany}>
-                <strong>JKBMS Electronic Technology Co., Ltd.</strong>
-                <span>{brand.tagline}</span>
                 <em>Powering a Cleaner Future</em>
+                <span>JKBMS Electronic Technology Co., Ltd.</span>
               </div>
               <div className={styles.footerDocument}>
-                <span>COMMERCIAL DOCUMENT</span>
+                <span>PI NUMBER</span>
                 <strong>{draft.quoteNumber || 'DRAFT'}</strong>
               </div>
             </footer>

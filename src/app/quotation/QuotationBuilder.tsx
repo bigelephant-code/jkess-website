@@ -21,6 +21,8 @@ type CurrencyPreset = 'USD' | 'CNY' | 'CUSTOM'
 
 const INCOTERMS = ['DDP', 'EXW', 'FOB', 'CIF', 'CFR', 'CPT', 'CIP', 'DAP', 'DPU', 'FCA'] as const
 
+const BANK_ACCOUNT_GROUPS = Array.from(new Set(quotationBankAccounts.map((account) => account.group)))
+
 type QuoteItem = {
   id: string
   model: string
@@ -291,12 +293,20 @@ export default function QuotationBuilder({
                 onChange={(event) => updateDraft('bankAccountId', event.target.value)}
               >
                 <option value="">{quotationBankAccounts.length ? '请选择账户' : '银行账户资料待补充'}</option>
-                {quotationBankAccounts.map((account) => (
-                  <option value={account.id} key={account.id}>{account.label}</option>
+                {BANK_ACCOUNT_GROUPS.map((group) => (
+                  <optgroup label={group} key={group}>
+                    {quotationBankAccounts
+                      .filter((account) => account.group === group)
+                      .map((account) => (
+                        <option value={account.id} key={account.id}>{account.label}</option>
+                      ))}
+                  </optgroup>
                 ))}
               </select>
             </label>
-            <p className={styles.bankHint}>账户结构已经做好；收到你提供的核实资料后，即可加入多个可选账户。</p>
+            <p className={styles.bankHint}>
+              {selectedBank?.internalHint || '请按收款主体、币种和付款地区选择账户，并在出具报价前再次核对。'}
+            </p>
             <label className={styles.field}>
               <span>补充说明 / 条款</span>
               <textarea rows={4} value={draft.notes} onChange={(event) => updateDraft('notes', event.target.value)} placeholder="付款条件、交期、报价范围或其他备注" />
@@ -491,11 +501,20 @@ function QuotationPreview({
 function BankAccountDetails({ account }: { account: QuotationBankAccount }) {
   const rows = [
     ['Beneficiary', account.beneficiary],
+    ['Beneficiary address', account.beneficiaryAddress],
     ['Bank name', account.bankName],
     ['Account number', account.accountNumber],
+    ['IBAN', account.iban],
     ['SWIFT / BIC', account.swiftCode],
     ['Routing number', account.routingNumber],
+    ['CNAPS code', account.cnapsCode],
+    ['Sort code', account.sortCode],
+    ['Bank code', account.bankCode],
+    ['Branch code', account.branchCode],
     ['Bank address', account.bankAddress],
+    ['Bank country / region', account.bankCountry],
+    ['Account type', account.accountType],
+    ['Payment method', account.paymentMethod],
     ['Account currency', account.currency],
   ].filter((row): row is [string, string] => Boolean(row[1]))
 

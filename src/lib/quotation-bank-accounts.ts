@@ -1,16 +1,198 @@
 export type QuotationBankAccount = {
   id: string
+  group: string
   label: string
   beneficiary: string
+  beneficiaryAddress?: string
   bankName: string
-  accountNumber: string
+  accountNumber?: string
+  iban?: string
   swiftCode?: string
   bankAddress?: string
   routingNumber?: string
+  cnapsCode?: string
+  sortCode?: string
+  bankCode?: string
+  branchCode?: string
+  bankCountry?: string
+  accountType?: string
+  paymentMethod?: string
   currency?: string
   notes?: string
+  internalHint?: string
 }
 
-// Bank details intentionally remain empty until the verified account information
-// is supplied. Add each account here and it will become selectable in the builder.
-export const quotationBankAccounts: readonly QuotationBankAccount[] = []
+export const quotationBankAccounts: readonly QuotationBankAccount[] = [
+  {
+    id: 'jkbms-boc-usd',
+    group: 'JKBMS · 中国境内账户',
+    label: '中国银行 · USD',
+    beneficiary: 'JKBMS Electronic Technology Co., Ltd',
+    beneficiaryAddress: 'Building 3A, Building 1001, Yunzhi Science and Technology Park, South Side of Shuangming Avenue, Dongzhou Community, Guangming Street, Guangming District, Shenzhen, China',
+    bankName: 'BANK OF CHINA SHENZHEN BRANCH GONGMING SUB-BRANCH',
+    accountNumber: '753676038224',
+    swiftCode: 'BKCHCNBJ45A',
+    cnapsCode: '104584001612',
+    bankAddress: 'No. 1 Xingfa Road, Gongming Town, Guangming District, Shenzhen, China',
+    bankCountry: 'China',
+    currency: 'USD',
+  },
+  {
+    id: 'jkbms-boc-cny',
+    group: 'JKBMS · 中国境内账户',
+    label: '中国银行 · CNY / CNH',
+    beneficiary: 'JKBMS Electronic Technology Co., Ltd',
+    beneficiaryAddress: 'Building 3A, Building 1001, Yunzhi Science and Technology Park, South Side of Shuangming Avenue, Dongzhou Community, Guangming Street, Guangming District, Shenzhen, China',
+    bankName: 'BANK OF CHINA SHENZHEN BRANCH GONGMING SUB-BRANCH',
+    accountNumber: '766676033364',
+    swiftCode: 'BKCHCNBJ45A',
+    cnapsCode: '104584001612',
+    bankAddress: 'No. 1 Xingfa Road, Gongming Town, Guangming District, Shenzhen, China',
+    bankCountry: 'China',
+    currency: 'CNY / CNH',
+  },
+  {
+    id: 'jkbms-mybank-multicurrency',
+    group: 'JKBMS · 中国境内账户',
+    label: '浙江网商银行 · USD / 多币种',
+    beneficiary: 'JKBMS Electronic Technology Co., Ltd',
+    beneficiaryAddress: '1001, Block A, Building 3, Yunzhi Science Park, Guangming District, Shenzhen, China',
+    bankName: 'ZHEJIANG E-COMMERCE BANK CO., LTD.',
+    accountNumber: '8888888524494802',
+    swiftCode: 'ZHECCNBBXXX',
+    bankAddress: 'D9/E3-8 Ali Center, 556 Xixi Road, Xihu District, Hangzhou, China',
+    bankCountry: 'China',
+    currency: 'USD / supported foreign currencies',
+    internalHint: '外币多币种账户；高风险国家或地区来款前需先向财务确认。',
+  },
+  {
+    id: 'jkbms-mybank-cny',
+    group: 'JKBMS · 中国境内账户',
+    label: '浙江网商银行 · CNY / CNH',
+    beneficiary: '深圳市能亿电子科技有限公司 / JKBMS Electronic Technology Co., Ltd',
+    beneficiaryAddress: '1001, Block A, Building 3, Yunzhi Science Park, Guangming District, Shenzhen, China',
+    bankName: 'ZHEJIANG E-COMMERCE BANK CO., LTD.',
+    accountNumber: '8888888094079843',
+    swiftCode: 'ZHECCNBBXXX',
+    cnapsCode: '323331000001',
+    bankAddress: 'D9/E3-8 Ali Center, 556 Xixi Road, Xihu District, Hangzhou, China',
+    bankCountry: 'China',
+    currency: 'CNY / CNH',
+    internalHint: '境内对公付款的开票抬头与付款方应一致；境外人民币可使用。',
+  },
+  {
+    id: 'new-young-jpm-hk-global',
+    group: 'NEW YOUNG INTERNATIONAL · 香港公司',
+    label: 'JPMorgan Chase Hong Kong · 多币种',
+    beneficiary: 'New Young International Co., Limited',
+    beneficiaryAddress: 'Room D18, 3rd Floor, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Wong Tai Sin District, Kowloon, Hong Kong (China)',
+    bankName: 'JPMorgan Chase Bank N.A., Hong Kong Branch',
+    accountNumber: '63004769421',
+    swiftCode: 'CHASHKHH (use CHASHKHHXXX if 11 characters are required)',
+    sortCode: '007',
+    branchCode: '863',
+    bankAddress: '18/F, 20/F, 22-29/F, Chater House, 8 Connaught Road Central, Hong Kong',
+    bankCountry: 'Hong Kong (China)',
+    accountType: 'Business Account',
+    paymentMethod: 'SWIFT / CHATS / FPS',
+    currency: 'Multi-currency',
+    notes: "Please include the Buyer's Name, Invoice/Contract Number, and Product Name in the payment memo.",
+    internalHint: '仅用于未报关订单及海外仓发货的套件订单；不可收取受制裁或高风险地区款项。',
+  },
+  {
+    id: 'new-young-jpm-usd',
+    group: 'NEW YOUNG INTERNATIONAL · 香港公司',
+    label: 'JPMorgan Chase USA · USD',
+    beneficiary: 'New Young International Co., Limited',
+    beneficiaryAddress: 'Room D18, 3rd Floor, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Wong Tai Sin District, Kowloon, Hong Kong (China)',
+    bankName: 'JPMorgan Chase Bank, N.A.',
+    accountNumber: '30000009529056',
+    swiftCode: 'CHASUS33 (use CHASUS33XXX if 11 characters are required)',
+    routingNumber: '021000021',
+    bankAddress: 'JPMorgan Chase, 383 Madison Ave, New York, NY 10017, USA',
+    bankCountry: 'United States of America',
+    accountType: 'Business Account',
+    paymentMethod: 'SWIFT / Fedwire',
+    currency: 'USD only',
+    notes: "Please include the Buyer's Name, Invoice/Contract Number, and Product Name in the payment memo.",
+    internalHint: '此账户仅接受美元。',
+  },
+  {
+    id: 'new-young-currency-cloud-eur',
+    group: 'NEW YOUNG INTERNATIONAL · 香港公司',
+    label: 'The Currency Cloud · EUR / SEPA',
+    beneficiary: 'New Young International Co., Limited',
+    beneficiaryAddress: 'Room D18, 3rd Floor, Wong King Industrial Building, 2-4 Tai Yau Street, San Po Kong, Wong Tai Sin District, Kowloon, Hong Kong (China)',
+    bankName: 'The Currency Cloud',
+    iban: 'GB47TCCL00997996041025',
+    swiftCode: 'TCCLGB31 (use TCCLGB31XXX if 11 characters are required)',
+    bankAddress: '12 Steward Street, The Steward Building, London, E1 6FQ, United Kingdom',
+    bankCountry: 'United Kingdom',
+    accountType: 'Business Account',
+    paymentMethod: 'SEPA',
+    currency: 'EUR only',
+    notes: "Eurozone SEPA payments only; international SWIFT/TT is not supported. Please include the Buyer's Name, Invoice/Contract Number, and Product Name in the payment memo.",
+    internalHint: '仅收取欧元区的欧元付款；不支持 SWIFT / 国际 TT。',
+  },
+  {
+    id: 'worldfirst-jikong-citi-hk',
+    group: '万里汇 · WorldFirst',
+    label: 'Citibank Hong Kong · 多币种',
+    beneficiary: 'Shenzhen Jikong Technology Co., Ltd.',
+    bankName: 'CITIBANK N.A., HONG KONG BRANCH',
+    accountNumber: '342500605',
+    swiftCode: 'CITIHKHX',
+    branchCode: '391',
+    bankAddress: 'Champion Tower, Three Garden Road, Central, Hong Kong',
+    bankCountry: 'Hong Kong (China)',
+    currency: 'USD, EUR, GBP, HKD, CNH, CAD, SGD, JPY, AUD, NZD',
+    internalHint: '原表“Bank code”单元格仅显示为 0，未写入报价单，请向财务核实后再补。',
+  },
+  {
+    id: 'worldfirst-jkbms-jpm-hk',
+    group: '万里汇 · WorldFirst',
+    label: 'JPMorgan Chase Hong Kong · JKBMS 多币种',
+    beneficiary: 'JKBMS Electronic Technology Co., Ltd.',
+    bankName: 'JPMorgan Chase Bank N.A., Hong Kong Branch',
+    accountNumber: '63115224258',
+    swiftCode: 'CHASHKHHXXX',
+    bankCode: '007',
+    branchCode: '863',
+    bankAddress: 'The Quayside, 18/F Tower 1, 77 Hoi Bun Road, Kwun Tong, Hong Kong',
+    bankCountry: 'Hong Kong (China)',
+    currency: 'Multi-currency',
+  },
+  {
+    id: 'worldfirst-jkbms-thb',
+    group: '万里汇 · WorldFirst',
+    label: 'HSBC Bangkok · THB 本地账户',
+    beneficiary: 'AIHK Markets Limited',
+    bankName: 'The Hongkong and Shanghai Banking Corporation Limited, Bangkok Branch',
+    accountNumber: '818215436001',
+    swiftCode: 'HSBCTHBKXXX',
+    bankCode: '031',
+    branchCode: '0001',
+    bankAddress: 'HSBC Building, Level 4, 968 Rama IV Road, Silom, Bangrak, Bangkok 10500, Thailand',
+    bankCountry: 'Thailand',
+    currency: 'THB',
+    paymentMethod: 'Bahtnet / BOOK transfer',
+    notes: 'Use AIHK Markets Limited as the account holder name for Bahtnet or BOOK transfers; otherwise payment may fail. Account owner: JKBMS Electronic Technology Co., Ltd.',
+    internalHint: '付款时收款人名称必须填写 AIHK Markets Limited。',
+  },
+  {
+    id: 'pingpong-neey-standard-chartered-hk',
+    group: 'PingPong · 深圳能亿能源',
+    label: 'Standard Chartered Hong Kong · 多币种',
+    beneficiary: 'Shenzhen Neey Energy Co Ltd',
+    bankName: 'STANDARD CHARTERED BANK (HONG KONG) LIMITED',
+    accountNumber: '566409102267',
+    swiftCode: 'SCBLHKHHXXX',
+    bankCode: '003',
+    branchCode: '438',
+    bankAddress: '15/F Standard Chartered Tower, 388 Kwun Tong Road, Kwun Tong, Hong Kong',
+    bankCountry: 'Hong Kong (China)',
+    accountType: 'Savings',
+    currency: 'HKD, AUD, CHF, SGD, JPY, EUR, GBP, CAD, USD, NZD, CNH',
+    notes: "Please include the Buyer's Name, Invoice/Contract Number, and Product Name in the payment memo.",
+  },
+] as const

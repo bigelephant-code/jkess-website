@@ -565,7 +565,7 @@ function QuotationPreview({
       <div className={styles.previewLabel}>实时预览 · PRINT PREVIEW</div>
       <article ref={articleRef} className={`${styles.paper} ${isPdfExport ? styles.pdfExport : ''}`}>
         <header className={styles.quoteHeader}>
-          <div>
+          <div className={styles.documentBrand}>
             <Image
               src={brand.logo}
               alt={brand.name}
@@ -573,9 +573,10 @@ function QuotationPreview({
               height={brand.logoHeight}
               className={`${styles.quoteLogo} ${draft.brand === 'JKBMS' ? styles.jkbmsQuoteLogo : ''}`}
             />
-            <p>{brand.tagline}</p>
+            <p className={styles.brandTagline}>{brand.tagline}</p>
           </div>
           <div className={styles.quoteHeading}>
+            <p className={styles.invoiceKicker}>International Trade Document</p>
             <h2>PROFORMA INVOICE</h2>
           </div>
         </header>

@@ -346,6 +346,22 @@
   height: 80px;
 }
 
+.pdfExport .quoteHeader {
+  min-height: 82px;
+  gap: 32px;
+}
+
+.pdfExport .quoteHeading h2 {
+  font-size: 28px;
+  letter-spacing: 0.075em;
+  white-space: nowrap;
+}
+
+.pdfExport .invoiceKicker {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+}
+
 .pdfExport .tableScroll {
   overflow: visible;
 }
@@ -389,12 +405,20 @@
 
 .quoteHeader {
   display: flex;
-  align-items: flex-start;
+  min-height: 82px;
+  align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
 }
 
-.quoteHeader p {
+.documentBrand {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  min-width: 0;
+}
+
+.brandTagline {
   margin: 5px 0 0 3px;
   color: #475569;
   font-size: 11px;
@@ -415,15 +439,41 @@
 }
 
 .quoteHeading {
+  display: grid;
+  flex: 0 0 auto;
+  justify-items: end;
+  gap: 7px;
   text-align: right;
+}
+
+.invoiceKicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: #16a34a;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.invoiceKicker::before {
+  width: 28px;
+  height: 2px;
+  background: #16a34a;
+  content: '';
 }
 
 .quoteHeading h2 {
   margin: 0;
   color: #111827;
-  font-size: 29px;
+  font-size: 28px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.075em;
+  line-height: 1.05;
+  white-space: nowrap;
 }
 
 .rule {
@@ -751,6 +801,7 @@
 
   .quoteHeader {
     align-items: center;
+    gap: 16px;
   }
 
   .quoteLogo {
@@ -763,7 +814,19 @@
   }
 
   .quoteHeading h2 {
-    font-size: 20px;
+    font-size: 19px;
+    letter-spacing: 0.045em;
+    white-space: normal;
+  }
+
+  .invoiceKicker {
+    gap: 6px;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+  }
+
+  .invoiceKicker::before {
+    width: 18px;
   }
 
   .quoteFooter {

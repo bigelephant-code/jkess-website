@@ -647,9 +647,17 @@ function QuotationPreview({
           )}
 
           <footer className={styles.quoteFooter}>
-            <div>
+            <div className={styles.footerBrand}>
+              <span>OFFICIAL QUOTATION</span>
               <strong>{brand.name}</strong>
-              <span>JKBMS Electronic Technology Co.,Ltd</span>
+            </div>
+            <div className={styles.footerCompany}>
+              <strong>JKBMS Electronic Technology Co., Ltd.</strong>
+              <span>{brand.tagline}</span>
+            </div>
+            <div className={styles.footerDocument}>
+              <span>COMMERCIAL DOCUMENT</span>
+              <strong>{draft.quoteNumber || 'DRAFT'}</strong>
             </div>
           </footer>
         </div>

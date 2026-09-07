@@ -333,6 +333,12 @@
   height: auto;
 }
 
+.jkbmsQuoteLogo {
+  width: auto;
+  height: 76px;
+  margin-top: -4px;
+}
+
 .quoteHeading {
   text-align: right;
 }
@@ -627,6 +633,11 @@
     width: 145px;
   }
 
+  .jkbmsQuoteLogo {
+    width: auto;
+    height: 66px;
+  }
+
   .quoteHeading h2 {
     font-size: 20px;
   }
@@ -674,6 +685,11 @@
 
   .quoteLogo {
     width: 180px;
+  }
+
+  .jkbmsQuoteLogo {
+    width: auto;
+    height: 80px;
   }
 
   .tableScroll {

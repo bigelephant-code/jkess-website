@@ -18,6 +18,24 @@ import {
 import styles from './quotation.module.css'
 
 type CurrencyPreset = 'USD' | 'CNY' | 'CUSTOM'
+type QuotationBrand = 'JKESS' | 'JKBMS'
+
+const QUOTATION_BRANDS = {
+  JKESS: {
+    name: 'JKESS',
+    logo: '/images/jkess-logo-cropped.png',
+    logoWidth: 225,
+    logoHeight: 85,
+    tagline: 'Energy Storage Solutions',
+  },
+  JKBMS: {
+    name: 'JKBMS',
+    logo: '/images/jkbms-logo.png',
+    logoWidth: 883,
+    logoHeight: 774,
+    tagline: 'Smart Battery Management Systems',
+  },
+} as const
 
 const INCOTERMS = ['DDP', 'EXW', 'FOB', 'CIF', 'CFR', 'CPT', 'CIP', 'DAP', 'DPU', 'FCA'] as const
 
@@ -31,6 +49,7 @@ type QuoteItem = {
 }
 
 type QuoteDraft = {
+  brand: QuotationBrand
   quoteNumber: string
   issueDate: string
   validUntil: string
@@ -57,6 +76,7 @@ const EMPTY_ITEM: QuoteItem = {
 }
 
 const INITIAL_DRAFT: QuoteDraft = {
+  brand: 'JKESS',
   quoteNumber: '',
   issueDate: '',
   validUntil: '',
@@ -82,7 +102,7 @@ function isoDate(date: Date) {
   return `${year}-${month}-${day}`
 }
 
-function datedDefaults() {
+function datedDefaults(brand: QuotationBrand = 'JKESS') {
   const today = new Date()
   const validUntil = new Date(today)
   validUntil.setDate(validUntil.getDate() + 15)
@@ -95,7 +115,7 @@ function datedDefaults() {
   return {
     issueDate: isoDate(today),
     validUntil: isoDate(validUntil),
-    quoteNumber: `JKESS-Q-${stamp}-${suffix}`,
+    quoteNumber: `${brand}-Q-${stamp}-${suffix}`,
   }
 }
 
@@ -170,6 +190,16 @@ export default function QuotationBuilder({
     setDraft((current) => ({ ...current, [key]: value }))
   }
 
+  const updateBrand = (brand: QuotationBrand) => {
+    setDraft((current) => ({
+      ...current,
+      brand,
+      quoteNumber: /^(JKESS|JKBMS)-Q-/.test(current.quoteNumber)
+        ? current.quoteNumber.replace(/^(JKESS|JKBMS)-Q-/, `${brand}-Q-`)
+        : current.quoteNumber,
+    }))
+  }
+
   const updateItem = (id: string, patch: Partial<QuoteItem>) => {
     updateDraft(
       'items',
@@ -194,7 +224,7 @@ export default function QuotationBuilder({
 
   const resetDraft = () => {
     if (!window.confirm('确定清空当前填写的报价信息吗？')) return
-    setDraft({ ...INITIAL_DRAFT, items: [{ ...EMPTY_ITEM }], ...datedDefaults() })
+    setDraft({ ...INITIAL_DRAFT, brand: draft.brand, items: [{ ...EMPTY_ITEM }], ...datedDefaults(draft.brand) })
   }
 
   return (
@@ -206,7 +236,7 @@ export default function QuotationBuilder({
           </div>
           <div>
             <p className={styles.eyebrow}>Standalone quotation workspace</p>
-            <h1>JKESS 报价单工具</h1>
+            <h1>JKESS / JKBMS 报价单工具</h1>
             <p>客户资料只在当前浏览器页面中处理，不会提交到服务器。</p>
           </div>
         </div>
@@ -224,6 +254,13 @@ export default function QuotationBuilder({
         <section className={`${styles.editor} ${styles.noPrint}`} aria-label="报价信息输入">
           <EditorSection icon={<FileText size={18} />} title="报价信息" subtitle="Quotation details">
             <div className={styles.twoColumns}>
+              <label className={styles.field}>
+                <span>报价单品牌</span>
+                <select value={draft.brand} onChange={(event) => updateBrand(event.target.value as QuotationBrand)}>
+                  <option value="JKESS">JKESS 抬头</option>
+                  <option value="JKBMS">JKBMS 抬头</option>
+                </select>
+              </label>
               <Field label="报价单号" value={draft.quoteNumber} onChange={(value) => updateDraft('quoteNumber', value)} />
               <Field label="报价日期" type="date" value={draft.issueDate} onChange={(value) => updateDraft('issueDate', value)} />
               <Field label="有效期至" type="date" value={draft.validUntil} onChange={(value) => updateDraft('validUntil', value)} />
@@ -407,6 +444,7 @@ function QuotationPreview({
   selectedBank?: QuotationBankAccount
 }) {
   const currency = currencyDetails(draft)
+  const brand = QUOTATION_BRANDS[draft.brand]
   const separateProductPages = estimatedPrintRows(draft.items) > 8
 
   return (
@@ -415,8 +453,14 @@ function QuotationPreview({
       <article className={styles.paper}>
         <header className={styles.quoteHeader}>
           <div>
-            <Image src="/images/jkess-logo-cropped.png" alt="JKESS" width={225} height={85} className={styles.quoteLogo} />
-            <p>Energy Storage Solutions</p>
+            <Image
+              src={brand.logo}
+              alt={brand.name}
+              width={brand.logoWidth}
+              height={brand.logoHeight}
+              className={`${styles.quoteLogo} ${draft.brand === 'JKBMS' ? styles.jkbmsQuoteLogo : ''}`}
+            />
+            <p>{brand.tagline}</p>
           </div>
           <div className={styles.quoteHeading}>
             <h2>QUOTATION</h2>
@@ -502,7 +546,7 @@ function QuotationPreview({
 
           <footer className={styles.quoteFooter}>
             <div>
-              <strong>JKESS</strong>
+              <strong>{brand.name}</strong>
               <span>JKBMS Electronic Technology Co.,Ltd</span>
             </div>
           </footer>

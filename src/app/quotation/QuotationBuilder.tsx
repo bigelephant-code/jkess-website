@@ -652,6 +652,10 @@ function QuotationPreview({
             {selectedBank ? <BankAccountDetails account={selectedBank} /> : (
               <p className={styles.pendingBank}>Verified bank account details will appear here after an account is selected.</p>
             )}
+            <p className={styles.bankCharges}>
+              <span>Transfer Charges</span>
+              <strong>All bank transfer charges shall be borne by the Buyer.</strong>
+            </p>
           </section>
 
           {draft.notes && (

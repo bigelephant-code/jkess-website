@@ -729,6 +729,30 @@
   overflow-wrap: anywhere;
 }
 
+.bankCharges {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 16px;
+  margin: 7px 0 0;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 10px;
+}
+
+.bankCharges span {
+  color: #15803d;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.bankCharges strong {
+  color: #172033;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
 .bankNotes {
   grid-column: 1 / -1;
   margin: 5px 0 0;
@@ -869,6 +893,11 @@
   .summaryArea,
   .bankGrid {
     grid-template-columns: 1fr;
+  }
+
+  .bankCharges {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .paper {

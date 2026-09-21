@@ -4,19 +4,25 @@ Prepared on 2026-09-21 for the low-voltage enclosure kits and the High Voltage K
 This pack prepares the website and campaign structure. It does not create or spend
 from a Google Ads account.
 
-## Recommended first launch
+## Recommended EU-wide launch
 
 - Run two separate Search campaigns: low-voltage kits and high-voltage BMS.
+- Target all 27 European Union member states listed in `eu27-targets.csv`. Do not
+  include the United Kingdom, Switzerland, Norway, Iceland, Liechtenstein, Serbia,
+  or other non-EU European markets in this launch.
 - Start with exact and phrase match. Add broad match only after the account has a
   stable qualified-lead conversion history.
 - Turn off the Display Network and Search Partners during the initial test.
 - Use location targeting based on physical presence, not people merely interested
   in the target countries.
-- Initial EU test markets: Germany, Poland, Netherlands, Spain, Romania, Italy,
-  France, and Belgium. These markets combine current organic visibility with the
-  website's EU delivery proposition.
-- Keep English ads in one campaign. Build separate local-language campaigns only
-  after each market has enough search volume and localized sales support.
+- Cover all EU countries from launch, but do not divide budget equally. Use the
+  three market tiers in `eu27-targets.csv` so the strongest current markets retain
+  enough daily traffic while every EU country remains eligible.
+- Match each ad to the corresponding localized website route. From September 2026,
+  Google Search increasingly prioritizes the language of the ad and landing page
+  against the query language, so English-only EU coverage is no longer the preferred
+  structure. Ireland and Malta can use English; multilingual countries should have
+  separate language ad groups where volume permits.
 
 ## Campaign structure
 
@@ -25,6 +31,8 @@ from a Google Ads account.
 | EU Search - Low Voltage Kits - EN | Caster Battery Enclosure, 6U Rack Battery Enclosure, 48V LiFePO4 Enclosure | Purchase or successful quote form |
 | EU Search - High Voltage BMS - EN | High Voltage BMS, BCU and BMU, 100A and 200A BMS | Purchase or successful quote form |
 
+These two English campaigns are the fallback layer. Duplicate their validated
+structure into localized ad groups using the locale mapping in `eu27-targets.csv`.
 The detailed keyword, negative-keyword, and responsive-ad drafts are in the CSV
 files in this directory.
 
@@ -72,9 +80,12 @@ utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&ut
 
 ## Launch controls
 
-- Confirm daily budget and target countries before publishing.
+- Confirm daily budget before publishing. EU-27 targeting is already confirmed.
 - Use a campaign-level budget split of roughly 60% low voltage and 40% high
   voltage for the first test, then reallocate by qualified lead cost.
+- Within each product line, begin with 60% for Tier 1 markets, 30% for Tier 2,
+  and 10% for Tier 3. This keeps full EU coverage without starving the countries
+  that already show relevant organic demand.
 - Review search terms at least twice a week during the first month.
 - Judge performance by qualified inquiries, purchases, and gross margin rather
   than clicks alone.

@@ -4,6 +4,16 @@ Prepared on 2026-09-21 for the low-voltage enclosure kits and the High Voltage K
 This pack prepares the website and campaign structure. It does not create or spend
 from a Google Ads account.
 
+## Approved test budget
+
+- Test period: 30 consecutive days.
+- Daily account budget: EUR 100.
+- Maximum planned media spend: EUR 3,000.
+- Initial product-line split: EUR 60/day for low-voltage kits and EUR 40/day for
+  high-voltage BMS hardware.
+- Campaigns must remain paused until the owner confirms the displayed product
+  prices and explicitly approves activation.
+
 ## Recommended EU-wide launch
 
 - Run two separate Search campaigns: low-voltage kits and high-voltage BMS.

@@ -7,10 +7,13 @@ from a Google Ads account.
 ## Approved test budget
 
 - Test period: 30 consecutive days.
-- Daily account budget: EUR 100.
-- Maximum planned media spend: EUR 3,000.
-- Initial product-line split: EUR 60/day for low-voltage kits and EUR 40/day for
-  high-voltage BMS hardware.
+- Maximum planned media spend: CNY 3,000 for the complete 30-day test.
+- Preferred setup: use fixed campaign total budgets of CNY 1,800 for low-voltage
+  kits and CNY 1,200 for high-voltage BMS hardware.
+- Fallback only when campaign total budgets are unavailable: set combined average
+  daily budgets no higher than CNY 98.68. Use CNY 59.21/day for low voltage and
+  CNY 39.47/day for high voltage so the 30.4-day monthly charging limits remain
+  below CNY 3,000.
 - Campaigns must remain paused until the owner confirms the displayed product
   prices and explicitly approves activation.
 
@@ -25,9 +28,10 @@ from a Google Ads account.
 - Turn off the Display Network and Search Partners during the initial test.
 - Use location targeting based on physical presence, not people merely interested
   in the target countries.
-- Cover all EU countries from launch, but do not divide budget equally. Use the
-  three market tiers in `eu27-targets.csv` so the strongest current markets retain
-  enough daily traffic while every EU country remains eligible.
+- Cover all EU countries from launch in the two product-line campaigns. With the
+  approved CNY 3,000 total budget, do not split the market tiers into separate
+  micro-campaigns. Use the tiers for reporting and later reallocation while every
+  EU country remains eligible.
 - Match each ad to the corresponding localized website route. From September 2026,
   Google Search increasingly prioritizes the language of the ad and landing page
   against the query language, so English-only EU coverage is no longer the preferred
@@ -90,12 +94,11 @@ utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&ut
 
 ## Launch controls
 
-- Confirm daily budget before publishing. EU-27 targeting is already confirmed.
-- Use a campaign-level budget split of roughly 60% low voltage and 40% high
-  voltage for the first test, then reallocate by qualified lead cost.
-- Within each product line, begin with 60% for Tier 1 markets, 30% for Tier 2,
-  and 10% for Tier 3. This keeps full EU coverage without starving the countries
-  that already show relevant organic demand.
+- EU-27 targeting and the CNY 3,000 total budget are confirmed.
+- Use a 60% low-voltage and 40% high-voltage total-budget split for the first
+  test, then reallocate only after reviewing qualified lead cost.
+- Do not fragment this budget into country-specific campaigns. Compare the three
+  market tiers in location reports and prioritize winners in the next test cycle.
 - Review search terms at least twice a week during the first month.
 - Judge performance by qualified inquiries, purchases, and gross margin rather
   than clicks alone.

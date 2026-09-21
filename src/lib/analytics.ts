@@ -2,6 +2,10 @@ import { SALE_COUPON_NAME, SALE_MULTIPLIER } from '@/lib/commerce'
 
 type AnalyticsParams = Record<string, unknown>
 
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID?.trim()
+const GOOGLE_ADS_LEAD_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_LEAD_CONVERSION_LABEL?.trim()
+const GOOGLE_ADS_PURCHASE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_CONVERSION_LABEL?.trim()
+
 type StoredCartItem = {
   slug: string
   name: string
@@ -17,7 +21,9 @@ declare global {
       (command: 'event', eventName: string, params?: AnalyticsParams): void
       (command: 'js', date: Date): void
       (command: 'config', targetId: string, params?: AnalyticsParams): void
+      (command: 'consent', action: 'default' | 'update', params: AnalyticsParams): void
     }
+    jkessGoogleConsentInitialized?: boolean
   }
 }
 
@@ -99,12 +105,46 @@ function normalizeEvent(eventName: string, params: AnalyticsParams = {}) {
   return params
 }
 
+function adsDestination(label: string | undefined) {
+  if (!GOOGLE_ADS_ID || !label) return null
+  return `${GOOGLE_ADS_ID}/${label}`
+}
+
+function trackGoogleAdsConversion(eventName: string, params: AnalyticsParams) {
+  if (!window.gtag) return
+
+  if (eventName === 'generate_lead') {
+    const sendTo = adsDestination(GOOGLE_ADS_LEAD_LABEL)
+    if (!sendTo) return
+
+    window.gtag('event', 'conversion', {
+      send_to: sendTo,
+      currency: params.currency || 'USD',
+      ...(typeof params.value === 'number' ? { value: params.value } : {}),
+    })
+    return
+  }
+
+  if (eventName === 'purchase') {
+    const sendTo = adsDestination(GOOGLE_ADS_PURCHASE_LABEL)
+    if (!sendTo) return
+
+    window.gtag('event', 'conversion', {
+      send_to: sendTo,
+      currency: params.currency || 'USD',
+      value: priceNumber(params.value),
+      transaction_id: params.transaction_id,
+    })
+  }
+}
+
 export function trackEvent(eventName: string, params?: AnalyticsParams) {
   if (typeof window === 'undefined') return
   const normalized = normalizeEvent(eventName, params)
   window.dataLayer = window.dataLayer || []
   window.dataLayer.push({ event: eventName, ...normalized })
   window.gtag?.('event', eventName, normalized)
+  trackGoogleAdsConversion(eventName, normalized)
 
   if (eventName === 'contact_form_submit') {
     window.gtag?.('event', 'generate_lead', {

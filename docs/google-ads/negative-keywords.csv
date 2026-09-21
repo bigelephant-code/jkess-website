@@ -1,0 +1,32 @@
+Scope,Campaign,Negative keyword,Match type,Reason
+Shared,All,free,Phrase,Low purchase intent
+Shared,All,manual,Phrase,Support or documentation intent
+Shared,All,pdf,Phrase,Documentation intent
+Shared,All,download,Phrase,Documentation intent
+Shared,All,schematic,Phrase,Engineering information intent
+Shared,All,circuit diagram,Phrase,Engineering information intent
+Shared,All,wiring diagram,Phrase,Engineering information intent
+Shared,All,definition,Phrase,Informational intent
+Shared,All,meaning,Phrase,Informational intent
+Shared,All,what is,Phrase,Informational intent
+Shared,All,jobs,Phrase,Employment intent
+Shared,All,career,Phrase,Employment intent
+Shared,All,salary,Phrase,Employment intent
+Shared,All,used,Phrase,Second-hand intent
+Shared,All,second hand,Phrase,Second-hand intent
+Shared,All,repair,Phrase,Repair intent
+Shared,All,reset,Phrase,Support intent
+Shared,All,apk,Phrase,Software intent
+Shared,All,github,Phrase,Developer intent
+Shared,All,battery cell,Phrase,Cells are not sold with these kits
+Shared,All,280ah cell,Phrase,Cells are not sold with these kits
+Shared,All,314ah cell,Phrase,Cells are not sold with these kits
+Campaign,EU Search - Low Voltage Kits - EN,high voltage,Phrase,Route to high-voltage campaign
+Campaign,EU Search - Low Voltage Kits - EN,server rack,Phrase,IT enclosure intent
+Campaign,EU Search - Low Voltage Kits - EN,network cabinet,Phrase,IT enclosure intent
+Campaign,EU Search - High Voltage BMS - EN,low voltage,Phrase,Route to low-voltage campaign
+Campaign,EU Search - High Voltage BMS - EN,ebike,Phrase,Wrong application
+Campaign,EU Search - High Voltage BMS - EN,scooter,Phrase,Wrong application
+Campaign,EU Search - High Voltage BMS - EN,motorcycle,Phrase,Wrong application
+Campaign,EU Search - High Voltage BMS - EN,phone,Phrase,Wrong application
+Campaign,EU Search - High Voltage BMS - EN,laptop,Phrase,Wrong application

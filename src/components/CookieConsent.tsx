@@ -63,25 +63,55 @@ function subscribeToClientReady() {
   return () => undefined
 }
 
-function loadGoogleAnalytics(gaId: string) {
-  if (!gaId || typeof window === 'undefined') return
-  if (document.querySelector(`script[data-jkess-ga="${gaId}"]`)) return
+function initializeGoogleConsent() {
+  if (typeof window === 'undefined') return
+
+  window.dataLayer = window.dataLayer || []
+  window.gtag = window.gtag || function gtag(...args: unknown[]) {
+    window.dataLayer?.push(args)
+  }
+
+  if (window.jkessGoogleConsentInitialized) return
+  window.jkessGoogleConsentInitialized = true
+  window.gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    wait_for_update: 500,
+  })
+}
+
+function updateGoogleConsent(choice: ConsentChoice) {
+  initializeGoogleConsent()
+  const status = choice === 'accepted' ? 'granted' : 'denied'
+  window.gtag?.('consent', 'update', {
+    analytics_storage: status,
+    ad_storage: status,
+    ad_user_data: status,
+    ad_personalization: status,
+  })
+}
+
+function loadGoogleTag(gaId: string, adsId: string) {
+  if ((!gaId && !adsId) || typeof window === 'undefined') return
+  initializeGoogleConsent()
+
+  const existingScript = document.querySelector('script[data-jkess-google-tag]')
+  if (existingScript) return
 
   const script = document.createElement('script')
   script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`
-  script.dataset.jkessGa = gaId
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId || adsId)}`
+  script.dataset.jkessGoogleTag = gaId || adsId
   document.head.appendChild(script)
 
-  window.dataLayer = window.dataLayer || []
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args)
-  }
-  window.gtag('js', new Date())
-  window.gtag('config', gaId, { anonymize_ip: true })
+  window.gtag?.('js', new Date())
+  if (gaId) window.gtag?.('config', gaId, { anonymize_ip: true })
+  if (adsId) window.gtag?.('config', adsId)
 }
 
-export default function CookieConsent({ gaId }: { gaId: string }) {
+export default function CookieConsent({ gaId, adsId }: { gaId: string; adsId: string }) {
   const { lang, t } = useI18n()
   const bannerRef = useRef<HTMLDivElement>(null)
   const isClientReady = useSyncExternalStore(subscribeToClientReady, () => true, () => false)
@@ -91,8 +121,11 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
   const effectiveChoice = choice || storedChoice
 
   useEffect(() => {
-    if (effectiveChoice === 'accepted') loadGoogleAnalytics(gaId)
-  }, [effectiveChoice, gaId])
+    initializeGoogleConsent()
+    if (!effectiveChoice) return
+    updateGoogleConsent(effectiveChoice)
+    if (effectiveChoice === 'accepted') loadGoogleTag(gaId, adsId)
+  }, [effectiveChoice, gaId, adsId])
 
   const saveChoice = (nextChoice: ConsentChoice, event?: SyntheticEvent<HTMLButtonElement>) => {
     event?.preventDefault()
@@ -102,16 +135,17 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
     setDismissed(true)
     setChoice(nextChoice)
     persistConsent(nextChoice)
+    updateGoogleConsent(nextChoice)
     if (nextChoice === 'accepted') {
       try {
-        loadGoogleAnalytics(gaId)
+        loadGoogleTag(gaId, adsId)
       } catch {
         // Consent dismissal must not depend on analytics script loading.
       }
     }
   }
 
-  if (!isClientReady || dismissed || effectiveChoice || !gaId) return null
+  if (!isClientReady || dismissed || effectiveChoice || (!gaId && !adsId)) return null
 
   return (
     <div ref={bannerRef} className="pointer-events-auto fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-[2147483647] mx-auto max-h-[calc(100dvh-1.5rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-gray-950/95 p-4 text-white shadow-2xl shadow-black/40 backdrop-blur md:bottom-5 md:p-5">

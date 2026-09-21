@@ -11,6 +11,7 @@ import type { LangCode } from '@/i18n/config'
 import { messageOverrides } from '@/i18n/message-overrides'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-EKD19QGSMC'
+const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || ''
 
 async function getMessages(locale: LangCode): Promise<Record<string, string>> {
   let messages: Record<string, string>
@@ -46,7 +47,7 @@ export default async function LangLayout(props: {
         <CartProvider>
           <NavbarMegaMenuV2 />
           <NavbarDockEffect />
-          <CookieConsent gaId={GA_ID} />
+          <CookieConsent gaId={GA_ID} adsId={GOOGLE_ADS_ID} />
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>
           <Footer />

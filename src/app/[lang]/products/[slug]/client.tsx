@@ -99,12 +99,14 @@ export function ProductDetailClient({
   relatedProducts,
   useCases,
   seoContent,
+  purchaseNoticeText,
 }: {
   product: Product
   lang: string
   relatedProducts: Product[]
   useCases: ProductUseCases
   seoContent: ProductSeoContent
+  purchaseNoticeText?: string | null
 }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(0)
@@ -344,6 +346,11 @@ export function ProductDetailClient({
                   <p className="mt-3 text-xs leading-5 text-green-300/80">
                     {promoPriceNote}
                   </p>
+                  {purchaseNoticeText && (
+                    <p className="mt-2 text-xs font-medium leading-5 text-gray-300">
+                      {purchaseNoticeText}
+                    </p>
+                  )}
                   <p className="mt-2 text-xs leading-5 text-gray-400">
                     {t(
                       'product.shippingRuleDetail',

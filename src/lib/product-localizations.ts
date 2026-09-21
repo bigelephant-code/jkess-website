@@ -495,6 +495,121 @@ function concisePurchaseNotice(product: Product, lang: string): LocalizedPurchas
   return labels[lang] ?? null
 }
 
+export function getLocalizedProductExclusionLabel(product: Product, lang: string): string | null {
+  if (!['battery-kit', '6u-battery-kit', 'high-voltage-kit'].includes(product.slug)) return null
+
+  const highVoltage = product.slug === 'high-voltage-kit'
+  const labels: Record<string, { lowVoltage: string; highVoltage: string }> = {
+    en: {
+      lowVoltage: 'Battery cells are not included.',
+      highVoltage: 'Battery cells, modules, and complete battery packs are not included.',
+    },
+    de: {
+      lowVoltage: 'Batteriezellen sind nicht enthalten.',
+      highVoltage: 'Batteriezellen, Module und komplette Batteriepacks sind nicht enthalten.',
+    },
+    fr: {
+      lowVoltage: 'Les cellules de batterie ne sont pas incluses.',
+      highVoltage: 'Les cellules, modules et packs batterie complets ne sont pas inclus.',
+    },
+    es: {
+      lowVoltage: 'Las celdas de batería no están incluidas.',
+      highVoltage: 'Las celdas, los módulos y los paquetes de batería completos no están incluidos.',
+    },
+    it: {
+      lowVoltage: 'Le celle batteria non sono incluse.',
+      highVoltage: 'Celle, moduli e pacchi batteria completi non sono inclusi.',
+    },
+    nl: {
+      lowVoltage: 'Batterijcellen zijn niet inbegrepen.',
+      highVoltage: 'Batterijcellen, modules en complete batterijpakketten zijn niet inbegrepen.',
+    },
+    pt: {
+      lowVoltage: 'As células da bateria não estão incluídas.',
+      highVoltage: 'Células, módulos e conjuntos completos de bateria não estão incluídos.',
+    },
+    sv: {
+      lowVoltage: 'Battericeller ingår inte.',
+      highVoltage: 'Battericeller, moduler och kompletta batteripaket ingår inte.',
+    },
+    da: {
+      lowVoltage: 'Battericeller medfølger ikke.',
+      highVoltage: 'Battericeller, moduler og komplette batteripakker medfølger ikke.',
+    },
+    fi: {
+      lowVoltage: 'Akkukennot eivät sisälly toimitukseen.',
+      highVoltage: 'Akkukennot, moduulit ja täydelliset akkupaketit eivät sisälly toimitukseen.',
+    },
+    pl: {
+      lowVoltage: 'Ogniwa baterii nie są zawarte.',
+      highVoltage: 'Ogniwa, moduły i kompletne pakiety baterii nie są zawarte.',
+    },
+    cs: {
+      lowVoltage: 'Bateriové články nejsou součástí dodávky.',
+      highVoltage: 'Bateriové články, moduly a kompletní bateriové sady nejsou součástí dodávky.',
+    },
+    sk: {
+      lowVoltage: 'Batériové články nie sú súčasťou dodávky.',
+      highVoltage: 'Batériové články, moduly a kompletné batériové zostavy nie sú súčasťou dodávky.',
+    },
+    hu: {
+      lowVoltage: 'Az akkumulátorcellák nem tartoznak a csomaghoz.',
+      highVoltage: 'Az akkumulátorcellák, modulok és komplett akkumulátorcsomagok nem tartoznak a csomaghoz.',
+    },
+    ro: {
+      lowVoltage: 'Celulele bateriei nu sunt incluse.',
+      highVoltage: 'Celulele, modulele și pachetele complete de baterii nu sunt incluse.',
+    },
+    bg: {
+      lowVoltage: 'Батерийните клетки не са включени.',
+      highVoltage: 'Батерийните клетки, модулите и пълните батерийни пакети не са включени.',
+    },
+    el: {
+      lowVoltage: 'Οι κυψέλες μπαταρίας δεν περιλαμβάνονται.',
+      highVoltage: 'Οι κυψέλες, οι μονάδες και τα πλήρη πακέτα μπαταριών δεν περιλαμβάνονται.',
+    },
+    hr: {
+      lowVoltage: 'Baterijske ćelije nisu uključene.',
+      highVoltage: 'Baterijske ćelije, moduli i kompletni baterijski paketi nisu uključeni.',
+    },
+    sl: {
+      lowVoltage: 'Baterijske celice niso vključene.',
+      highVoltage: 'Baterijske celice, moduli in celotni baterijski sklopi niso vključeni.',
+    },
+    lt: {
+      lowVoltage: 'Akumuliatoriaus elementai neįtraukti.',
+      highVoltage: 'Akumuliatoriaus elementai, moduliai ir pilni baterijų paketai neįtraukti.',
+    },
+    lv: {
+      lowVoltage: 'Akumulatora šūnas nav iekļautas.',
+      highVoltage: 'Akumulatora šūnas, moduļi un pilni akumulatoru bloki nav iekļauti.',
+    },
+    et: {
+      lowVoltage: 'Akuelemendid ei kuulu komplekti.',
+      highVoltage: 'Akuelemendid, moodulid ja terviklikud akupakid ei kuulu komplekti.',
+    },
+    ru: {
+      lowVoltage: 'Аккумуляторные ячейки не входят в комплект.',
+      highVoltage: 'Аккумуляторные ячейки, модули и полные батарейные блоки не входят в комплект.',
+    },
+    uk: {
+      lowVoltage: 'Акумуляторні комірки не входять до комплекту.',
+      highVoltage: 'Акумуляторні комірки, модулі та повні батарейні блоки не входять до комплекту.',
+    },
+    fa: {
+      lowVoltage: 'سلول‌های باتری همراه محصول نیستند.',
+      highVoltage: 'سلول‌ها، ماژول‌ها و بسته‌های کامل باتری همراه محصول نیستند.',
+    },
+    tr: {
+      lowVoltage: 'Batarya hücreleri dahil değildir.',
+      highVoltage: 'Batarya hücreleri, modülleri ve komple batarya paketleri dahil değildir.',
+    },
+  }
+
+  const localized = labels[lang] ?? labels.en
+  return highVoltage ? localized.highVoltage : localized.lowVoltage
+}
+
 export function getLocalizedProductPageContent(
   product: Product,
   lang: string

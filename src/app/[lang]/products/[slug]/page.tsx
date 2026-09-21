@@ -11,7 +11,10 @@ import {
 import { INITIAL_INVENTORY, isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { getInventorySnapshot } from '@/lib/order-store'
 import { productVariantCommerce, schemaAvailability } from '@/lib/commerce'
-import { getLocalizedProductPageContent } from '@/lib/product-localizations'
+import {
+  getLocalizedProductExclusionLabel,
+  getLocalizedProductPageContent,
+} from '@/lib/product-localizations'
 import {
   canonicalSeoPath,
   isSeoLocaleIndexable,
@@ -478,8 +481,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
   }
 
   const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
-  const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
-  const visiblePurchaseNotice = sourceProduct.slug === 'high-voltage-kit' ? null : purchaseNotice
+  const purchaseNoticeText = getLocalizedProductExclusionLabel(sourceProduct, lang)
   const relatedProducts = isReviewedLocalizedProductRoute(sourceProduct, lang)
     ? []
     : getRelatedProducts(sourceProduct)
@@ -490,38 +492,14 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: await productJsonLd(sourceProduct, lang) }}
       />
-      <div className="relative bg-black">
-        {visiblePurchaseNotice && (
-          <div className="absolute inset-x-0 top-24 z-30">
-            <div className="mx-auto max-w-7xl px-4 md:px-6">
-              <div className="rounded-2xl border border-amber-300/40 bg-amber-300/10 px-5 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.28)] backdrop-blur-md md:px-6">
-                <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
-                  <div className="shrink-0">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-300">
-                      {lang === 'de'
-                        ? 'Wichtiger Kaufhinweis'
-                        : lang === 'fr'
-                          ? 'Information importante avant l’achat'
-                          : 'Important purchase notice'}
-                    </p>
-                    <h2 className="mt-1 text-lg font-bold text-white">{visiblePurchaseNotice.title}</h2>
-                  </div>
-                  <p className="text-sm leading-6 text-amber-50/80">{visiblePurchaseNotice.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className={visiblePurchaseNotice ? 'pt-32' : ''}>
-          <ProductDetailClient
-            product={localizedContent.product}
-            lang={lang}
-            relatedProducts={relatedProducts}
-            useCases={localizedContent.useCases}
-            seoContent={localizedContent.seoContent}
-          />
-        </div>
-      </div>
+      <ProductDetailClient
+        product={localizedContent.product}
+        lang={lang}
+        relatedProducts={relatedProducts}
+        useCases={localizedContent.useCases}
+        seoContent={localizedContent.seoContent}
+        purchaseNoticeText={purchaseNoticeText}
+      />
     </>
   )
 }

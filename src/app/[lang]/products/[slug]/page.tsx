@@ -479,6 +479,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
 
   const localizedContent = getLocalizedProductPageContent(sourceProduct, lang)
   const purchaseNotice = localizedContent.purchaseNotice ?? getPurchaseNotice(sourceProduct)
+  const visiblePurchaseNotice = sourceProduct.slug === 'high-voltage-kit' ? null : purchaseNotice
   const relatedProducts = isReviewedLocalizedProductRoute(sourceProduct, lang)
     ? []
     : getRelatedProducts(sourceProduct)
@@ -490,7 +491,7 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
         dangerouslySetInnerHTML={{ __html: await productJsonLd(sourceProduct, lang) }}
       />
       <div className="relative bg-black">
-        {purchaseNotice && (
+        {visiblePurchaseNotice && (
           <div className="absolute inset-x-0 top-24 z-30">
             <div className="mx-auto max-w-7xl px-4 md:px-6">
               <div className="rounded-2xl border border-amber-300/40 bg-amber-300/10 px-5 py-4 shadow-[0_12px_40px_rgba(0,0,0,0.28)] backdrop-blur-md md:px-6">
@@ -503,15 +504,15 @@ export default async function ProductPage(props: { params: Promise<{ lang: strin
                           ? 'Information importante avant l’achat'
                           : 'Important purchase notice'}
                     </p>
-                    <h2 className="mt-1 text-lg font-bold text-white">{purchaseNotice.title}</h2>
+                    <h2 className="mt-1 text-lg font-bold text-white">{visiblePurchaseNotice.title}</h2>
                   </div>
-                  <p className="text-sm leading-6 text-amber-50/80">{purchaseNotice.description}</p>
+                  <p className="text-sm leading-6 text-amber-50/80">{visiblePurchaseNotice.description}</p>
                 </div>
               </div>
             </div>
           </div>
         )}
-        <div className={purchaseNotice ? 'pt-32' : ''}>
+        <div className={visiblePurchaseNotice ? 'pt-32' : ''}>
           <ProductDetailClient
             product={localizedContent.product}
             lang={lang}

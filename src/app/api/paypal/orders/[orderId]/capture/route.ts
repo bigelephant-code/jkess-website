@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { syncVerifiedPayment } from '@/lib/order-hub'
 import {
   assertPayPalOrderMatchesCheckout,
   CheckoutValidationError,
@@ -54,6 +55,7 @@ export async function POST(request: Request, context: RouteContext) {
       orderNumber: checkout.orderNumber,
       expectedTotalCents: checkout.totalCents,
     })
+    await syncVerifiedPayment(verified.order).catch(() => console.error('Shared order sync deferred for reconciliation.'))
 
     return NextResponse.json({
       id: verified.paypalOrderId,

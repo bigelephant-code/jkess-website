@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { syncStoredOrder } from '@/lib/order-hub'
 import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
 import {
   acquireWebhookLock,
@@ -212,6 +213,7 @@ export async function POST(request: Request) {
     }
 
     await savePaidOrder(record)
+    await syncStoredOrder(record)
     const inventory = await decrementInventoryForPaidOrder(orderNumber, items)
     if (inventory.processed) {
       console.info('Inventory deducted for paid order:', orderNumber, inventory.remaining)

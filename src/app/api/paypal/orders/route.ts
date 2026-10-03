@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { fileCheckoutDraft, OrderHubSyncError } from '@/lib/order-hub'
 import {
   buildPayPalOrderPayload,
   CheckoutValidationError,
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
       buildPayPalOrderPayload(checkout),
       `create-${checkout.orderNumber}`
     )
+    await fileCheckoutDraft(checkout, paypalOrder)
 
     return NextResponse.json({
       id: paypalOrder.id,
@@ -36,6 +38,7 @@ export async function POST(request: Request) {
       total: moneyFromCents(checkout.totalCents),
     })
   } catch (error) {
+    if (error instanceof OrderHubSyncError) return NextResponse.json({ error: error.message }, { status: 503 })
     if (error instanceof SyntaxError || error instanceof CheckoutValidationError) {
       return NextResponse.json(
         { error: error instanceof Error ? error.message : 'Checkout request is invalid.' },

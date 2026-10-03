@@ -263,3 +263,25 @@ export async function getStoredOrder(orderNumber: string) {
     return null
   }
 }
+
+export async function saveOrderHubDraft(id: string, payload: Record<string, unknown>) {
+  await redisPipeline([['SET', `jkess:hub:${id}`, JSON.stringify(payload)], ['ZADD', 'jkess:hub:pending', Date.now(), id]])
+}
+
+export async function removeOrderHubDraft(id: string) {
+  await redisPipeline([['DEL', `jkess:hub:${id}`], ['ZREM', 'jkess:hub:pending', id]])
+}
+
+export async function getOrderHubDrafts() {
+  const ids = await redisCommand<string[]>(['ZRANGE', 'jkess:hub:pending', 0, 19])
+  if (!ids.length) return []
+  const values = await redisCommand<Array<string | null>>(['MGET', ...ids.map(id => `jkess:hub:${id}`)])
+  return values.filter((value): value is string => !!value).map(value => JSON.parse(value) as Record<string, unknown> & { orderNumber: string; paypalOrderId: string })
+}
+
+export async function listStoredPaidOrders(offset: number, count: number) {
+  const ids = await redisCommand<string[]>(['ZRANGE', key.paidOrders, offset, offset + count - 1])
+  if (!ids.length) return []
+  const values = await redisCommand<Array<string | null>>(['MGET', ...ids.map(key.order)])
+  return values.filter((value): value is string => !!value).map(value => JSON.parse(value) as StoredOrderRecord)
+}

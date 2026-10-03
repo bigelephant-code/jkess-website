@@ -78,7 +78,7 @@ export async function reconcileHubOrders(offset: number) {
         const verified = await verifyCompletedPayPalOrder({ paypalOrderId: draft.paypalOrderId, orderNumber: draft.orderNumber, expectedTotalCents: Math.round(Number(draft.usdTotal) * 100) })
         await syncVerifiedPayment(verified.order); synced++
       } else { await saveOrderHubDraft(draft.paypalOrderId, draft); pending++ }
-    } catch { failed++ }
+    } catch { await saveOrderHubDraft(draft.paypalOrderId, draft); failed++ }
   }
   const records = await listStoredPaidOrders(offset, 20)
   for (const record of records) { try { await syncStoredOrder(record); synced++ } catch { failed++ } }

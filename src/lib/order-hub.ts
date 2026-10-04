@@ -1,11 +1,11 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import type { ValidatedCheckout } from './paypal-checkout'
 import type { PayPalOrderDetails } from './paypal-server'
-import { getPayPalOrder, verifyCompletedPayPalOrder } from './paypal-server'
+import { getPayPalOrder, PayPalVerificationError, verifyCompletedPayPalOrder } from './paypal-server'
 import { getOrderHubDrafts, removeOrderHubDraft, listStoredPaidOrders, saveOrderHubDraft, type StoredOrderRecord } from './order-store'
 
 export class OrderHubSyncError extends Error {
-  constructor(public status = 503) { super('The shared order system is temporarily unavailable.'); this.name = 'OrderHubSyncError' }
+  constructor(public status = 503, public reason = '') { super('The shared order system is temporarily unavailable.'); this.name = 'OrderHubSyncError' }
 }
 
 export type HubPayload = Record<string, unknown> & { orderNumber: string; paypalOrderId: string }
@@ -17,6 +17,7 @@ export async function syncOrderToHub(payload: HubPayload) {
   if (secret.length < 32 || url !== 'https://www.jkbms.net/api/integrations/jkess/orders') throw new OrderHubSyncError()
   const raw = JSON.stringify({ ...payload, version: 1, source: 'jkesstech.com' })
   let status = 503
+  let reason = ''
   for (let attempt = 0; attempt < 3; attempt++) {
     const timestamp = String(Date.now())
     const signature = createHmac('sha256', secret).update(`${timestamp}.${raw}`).digest('hex')
@@ -27,11 +28,14 @@ export async function syncOrderToHub(payload: HubPayload) {
         const result = await response.json()
         if (result.ok === true && result.orderNumber === payload.orderNumber) return true
         status = 502
+      } else {
+        const result = await response.json().catch(() => null)
+        reason = typeof result?.error === 'string' ? result.error.slice(0, 200) : ''
       }
       if (status < 500 && status !== 408 && status !== 429) break
     } catch { status = 503 }
   }
-  throw new OrderHubSyncError(status)
+  throw new OrderHubSyncError(status, reason)
 }
 
 export function checkoutHubPayload(checkout: ValidatedCheckout, order: PayPalOrderDetails): HubPayload {
@@ -70,6 +74,15 @@ export async function syncStoredOrder(record: StoredOrderRecord) {
 
 export async function reconcileHubOrders(offset: number) {
   let pending = 0, synced = 0, failed = 0
+  const failures: Array<{ type: 'draft' | 'historical'; code: string }> = []
+  const failureCode = (error: unknown) => {
+    if (error instanceof OrderHubSyncError) return `hub_http_${error.status}${error.reason ? ': ' + error.reason : ''}`
+    if (error instanceof PayPalVerificationError) {
+      const known = ['PayPal order ID mismatch.', 'PayPal payment is not completed.', 'PayPal invoice reference mismatch.', 'PayPal amount or currency mismatch.']
+      return known.includes(error.message) ? error.message : `paypal_api_${error.message.match(/\b[45]\d\d\b/)?.[0] || 'verification_failed'}`
+    }
+    return 'storage_or_validation_failed'
+  }
   const drafts = await getOrderHubDrafts()
   for (const draft of drafts) {
     try {
@@ -78,9 +91,9 @@ export async function reconcileHubOrders(offset: number) {
         const verified = await verifyCompletedPayPalOrder({ paypalOrderId: draft.paypalOrderId, orderNumber: draft.orderNumber, expectedTotalCents: Math.round(Number(draft.usdTotal) * 100) })
         await syncVerifiedPayment(verified.order); synced++
       } else { await saveOrderHubDraft(draft.paypalOrderId, draft); pending++ }
-    } catch { await saveOrderHubDraft(draft.paypalOrderId, draft); failed++ }
+    } catch (error) { await saveOrderHubDraft(draft.paypalOrderId, draft); failures.push({ type: 'draft', code: failureCode(error) }); failed++ }
   }
   const records = await listStoredPaidOrders(offset, 20)
-  for (const record of records) { try { await syncStoredOrder(record); synced++ } catch { failed++ } }
-  return { synced, pending, failed, nextOffset: records.length === 20 ? offset + 20 : 0 }
+  for (const record of records) { try { await syncStoredOrder(record); synced++ } catch (error) { failures.push({ type: 'historical', code: failureCode(error) }); failed++ } }
+  return { synced, pending, failed, failures, nextOffset: records.length === 20 ? offset + 20 : 0 }
 }

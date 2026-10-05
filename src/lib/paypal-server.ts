@@ -213,6 +213,7 @@ export async function verifyCompletedPayPalOrder(input: {
   paypalOrderId: string
   orderNumber: string
   expectedTotalCents: number
+  expectedCurrency?: string
 }) {
   const order = await getPayPalOrder(input.paypalOrderId)
   const purchaseUnit = order.purchase_units?.[0]
@@ -232,7 +233,7 @@ export async function verifyCompletedPayPalOrder(input: {
   if (reference !== input.orderNumber) {
     throw new PayPalVerificationError('PayPal invoice reference mismatch.')
   }
-  if (currency !== 'USD' || paidCents !== input.expectedTotalCents) {
+  if (currency !== (input.expectedCurrency || 'USD') || paidCents !== input.expectedTotalCents) {
     throw new PayPalVerificationError('PayPal amount or currency mismatch.')
   }
 

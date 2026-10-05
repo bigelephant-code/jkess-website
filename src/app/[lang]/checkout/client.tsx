@@ -9,11 +9,13 @@ import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { trackEvent } from '@/lib/analytics'
+import { formatCurrency } from '@/lib/commerce'
 import {
   directCheckoutCountryGroups,
   FLAT_RATE_SHIPPING_USD,
   getShippingAmount,
   getShippingCountryName,
+  getCurrency,
   getShippingTier,
   isDirectCheckoutCountry,
   OTHER_COUNTRY_CODE,
@@ -63,7 +65,7 @@ export default function CheckoutPage() {
   const { items, clearCart, inventoryLoaded, refreshInventory } = useCart()
   const [invoiceNumber] = useState(() => createInvoiceNumber())
   const paypalRef = useRef<HTMLDivElement>(null)
-  const scriptLoaded = useRef(false)
+  const scriptLoaded = useRef<string | false>(false)
 
   const [submitted, setSubmitted] = useState(false)
   const [paypalOrderId, setPaypalOrderId] = useState<string | null>(null)
@@ -104,6 +106,7 @@ export default function CheckoutPage() {
   const shippingAmount = shippingAmountNumber.toFixed(2)
   const orderTotal = orderTotalNumber.toFixed(2)
   const shippingCountry = getShippingCountryName(formData.countryCode)
+  const currencyCode = getCurrency(formData.countryCode)
   const canCheckout = isDirectCheckoutCountry(formData.countryCode)
   const flatRateShippingMessage = t(
     'checkout.flatRateShipping',
@@ -132,14 +135,20 @@ export default function CheckoutPage() {
   const formComplete = contactComplete && acceptedPolicies && inventoryLoaded && canCheckout
 
   useEffect(() => {
-    if (!formComplete || scriptLoaded.current || !PAYPAL_CLIENT_ID) return
+    if (!formComplete || scriptLoaded.current === currencyCode || !PAYPAL_CLIENT_ID) return
 
     if (window.paypal) {
       window.setTimeout(() => setSdkReady(true), 0)
       return
     }
 
-    scriptLoaded.current = true
+    
+    if (scriptLoaded.current && scriptLoaded.current !== currencyCode) {
+      window.location.reload()
+      return
+    }
+    scriptLoaded.current = currencyCode
+
 
     const preconnect = document.createElement('link')
     preconnect.rel = 'preconnect'
@@ -149,7 +158,7 @@ export default function CheckoutPage() {
 
     const scriptParams = new URLSearchParams({
       'client-id': PAYPAL_CLIENT_ID,
-      currency: 'USD',
+      currency: currencyCode,
       intent: 'capture',
       components: 'buttons,funding-eligibility',
       // iDEAL, Bancontact, EPS and Przelewy24 are disabled by default in the
@@ -252,7 +261,7 @@ export default function CheckoutPage() {
           shippingAmount,
           shippingTier,
           shippingCountry,
-          currency: 'USD',
+          currency: currencyCode,
           items,
           customer: formData,
           policyVersion: POLICY_VERSION,
@@ -276,7 +285,7 @@ export default function CheckoutPage() {
           value: orderTotalNumber,
           shipping: shippingAmountNumber,
           shipping_country: shippingCountry,
-          currency: 'USD',
+          currency: currencyCode,
           items: items.length,
         })
 
@@ -438,7 +447,7 @@ export default function CheckoutPage() {
                         setFormData({ ...formData, countryCode })
                         const amount = getShippingAmount(countryCode)
                         trackEvent('add_shipping_info', {
-                          currency: 'USD',
+                          currency: currencyCode,
                           value: amount,
                           shipping_tier: getShippingTier(countryCode),
                           destination_country: getShippingCountryName(countryCode),
@@ -530,7 +539,7 @@ export default function CheckoutPage() {
                       <span className="text-gray-600">
                         {t('checkout.productSubtotal', 'Product subtotal')}
                       </span>
-                      <span className="font-semibold text-gray-900">${productSubtotal}</span>
+                      <span className="font-semibold text-gray-900">{formatCurrency(productSubtotalNumber, currencyCode)}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">{t('checkout.shipping', 'Shipping')}</span>
@@ -538,7 +547,7 @@ export default function CheckoutPage() {
                         {shippingTier === 'eu-free'
                           ? t('checkout.free', 'FREE')
                           : shippingTier === 'flat-150'
-                            ? `$${shippingAmount}`
+                            ? formatCurrency(shippingAmountNumber, currencyCode)
                             : shippingTier === 'quote-only'
                               ? t('checkout.quoteRequired', 'Quote required')
                               : t('checkout.selectCountry', 'Select country')}
@@ -548,7 +557,7 @@ export default function CheckoutPage() {
                       <span className="font-semibold text-gray-900">
                         {t('checkout.orderTotal', 'Order total')}
                       </span>
-                      <span className="text-xl font-bold text-green-600">${orderTotal}</span>
+                      <span className="text-xl font-bold text-green-600">{formatCurrency(orderTotalNumber, currencyCode)}</span>
                     </div>
                   </div>
                   <p className="mb-5 mt-3 text-xs leading-5 text-gray-500">
@@ -643,7 +652,7 @@ export default function CheckoutPage() {
                       <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4 text-center">
                         <p className="text-sm text-yellow-700 font-medium mb-2">{t('checkout.paypalUnavailable')}</p>
                         <p className="text-xs text-gray-500 mb-4">{t('checkout.paypalDesc')}</p>
-                        <a href={`mailto:${SALES_EMAIL}`} onClick={() => trackEvent('checkout_contact_to_pay', { value: orderTotalNumber, currency: 'USD' })} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
+                        <a href={`mailto:${SALES_EMAIL}`} onClick={() => trackEvent('checkout_contact_to_pay', { value: orderTotalNumber, currency: currencyCode })} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-xl text-sm transition-all">
                           <ExternalLink size={16} /> {t('checkout.contactToPay')}
                         </a>
                       </div>

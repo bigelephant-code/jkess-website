@@ -110,3 +110,9 @@ export function isDirectCheckoutCountry(countryCode: string) {
   const tier = getShippingTier(countryCode)
   return tier === 'eu-free' || tier === 'flat-150'
 }
+
+export function getCurrency(countryCode: string) {
+  if (!countryCode) return 'USD'
+  return euCodes.has(countryCode) ? 'EUR' : 'USD'
+}
+

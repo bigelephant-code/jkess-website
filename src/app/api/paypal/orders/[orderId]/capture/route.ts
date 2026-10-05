@@ -1,3 +1,4 @@
+import { getCurrency } from '@/lib/shipping-zones'
 import { NextResponse } from 'next/server'
 import { syncVerifiedPayment } from '@/lib/order-hub'
 import {
@@ -54,6 +55,7 @@ export async function POST(request: Request, context: RouteContext) {
       paypalOrderId: orderId,
       orderNumber: checkout.orderNumber,
       expectedTotalCents: checkout.totalCents,
+      expectedCurrency: getCurrency(checkout.customer.countryCode),
     })
     await syncVerifiedPayment(verified.order).catch(() => console.error('Shared order sync deferred for reconciliation.'))
 

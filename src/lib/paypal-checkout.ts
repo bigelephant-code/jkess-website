@@ -5,6 +5,7 @@ import {
   getShippingCountryName,
   getShippingTier,
   isDirectCheckoutCountry,
+  getCurrency,
 } from '@/lib/shipping-zones'
 
 const MAX_ITEMS = 25
@@ -160,6 +161,7 @@ export function moneyFromCents(cents: number) {
 }
 
 export function buildPayPalOrderPayload(checkout: ValidatedCheckout) {
+  const currency = getCurrency(checkout.customer.countryCode)
   const contactReference = compactReference(
     `Name:${checkout.customer.name} | Email:${checkout.customer.email} | Phone:${checkout.customer.phone} | Company:${checkout.customer.company || '-'}`
   )
@@ -186,22 +188,22 @@ export function buildPayPalOrderPayload(checkout: ValidatedCheckout) {
           quantity: String(item.quantity),
           category: 'PHYSICAL_GOODS',
           unit_amount: {
-            currency_code: 'USD',
+            currency_code: currency,
             value: moneyFromCents(item.unitPriceCents),
           },
         })),
         amount: {
-          currency_code: 'USD',
+          currency_code: currency,
           value: moneyFromCents(checkout.totalCents),
           breakdown: {
             item_total: {
-              currency_code: 'USD',
+              currency_code: currency,
               value: moneyFromCents(checkout.productSubtotalCents),
             },
             ...(checkout.shippingCents > 0
               ? {
                   shipping: {
-                    currency_code: 'USD',
+                    currency_code: currency,
                     value: moneyFromCents(checkout.shippingCents),
                   },
                 }
@@ -217,6 +219,7 @@ export function assertPayPalOrderMatchesCheckout(
   order: PayPalOrderDetails,
   checkout: ValidatedCheckout
 ) {
+  const expectedCurrency = getCurrency(checkout.customer.countryCode)
   const purchaseUnit = order.purchase_units?.[0]
   const reference = purchaseUnit?.invoice_id || purchaseUnit?.reference_id
   const currency = purchaseUnit?.amount?.currency_code
@@ -227,7 +230,7 @@ export function assertPayPalOrderMatchesCheckout(
   if (reference !== checkout.orderNumber) {
     throw new CheckoutValidationError('PayPal returned a different order reference.')
   }
-  if (currency !== 'USD' || totalCents !== checkout.totalCents) {
+  if (currency !== expectedCurrency || totalCents !== checkout.totalCents) {
     throw new CheckoutValidationError('PayPal returned a different order total.')
   }
   // Bank-redirect methods (iDEAL, Bancontact, EPS, Przelewy24) settle without a
@@ -251,7 +254,7 @@ export function assertPayPalOrderMatchesCheckout(
     if (
       !paypalItem ||
       Number(paypalItem.quantity) !== checkoutItem.quantity ||
-      paypalItem.unit_amount?.currency_code !== 'USD' ||
+      paypalItem.unit_amount?.currency_code !== expectedCurrency ||
       amountToCents(paypalItem.unit_amount?.value) !== checkoutItem.unitPriceCents
     ) {
       throw new CheckoutValidationError('PayPal returned different order items.')

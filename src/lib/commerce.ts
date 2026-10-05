@@ -15,9 +15,13 @@ export function regularPriceFromSalePrice(salePrice: number) {
 }
 
 export function formatUsd(value: number) {
-  return value.toLocaleString('en-US', {
+  return formatCurrency(value, 'USD')
+}
+
+export function formatCurrency(value: number, currency: 'USD' | 'EUR' = 'USD') {
+  return value.toLocaleString(currency === 'EUR' ? 'de-DE' : 'en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })

@@ -34,7 +34,8 @@ export function productIndexableSeoLocales(slug: string) {
 export function localizedSeoPath(lang: string, path: string) {
   const validLang = isValidLocale(lang) ? lang : defaultLocale
   const normalizedPath = path === '/' ? '/' : path.startsWith('/') ? path : `/${path}`
-  return `${validLang === defaultLocale ? '' : `/${validLang}`}${normalizedPath}`
+  if (validLang === defaultLocale) return normalizedPath
+  return `/${validLang}${normalizedPath === '/' ? '' : normalizedPath}`
 }
 
 export function pageLanguageAlternates(

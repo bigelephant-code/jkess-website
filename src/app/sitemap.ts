@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next'
-import { defaultLocale } from '@/i18n/config'
 import { products } from '@/lib/products'
 import { nonBrandLandingPages } from '@/lib/non-brand-pages'
 import { specificationLandingPages } from '@/lib/specification-pages'
@@ -37,6 +36,11 @@ const staticPaths = [
 const siteLastModified = new Date('2026-07-01')
 const staticPageLastModified: Record<string, Date> = {
   '/authorized-distributors': new Date('2026-07-29'),
+}
+const productPageLastModified: Record<string, Date> = {
+  'battery-kit': new Date('2026-09-21'),
+  '6u-battery-kit': new Date('2026-09-21'),
+  'high-voltage-kit': new Date('2026-09-21'),
 }
 // Landing pages whose title/description were revised after siteLastModified.
 // Without this the sitemap would still advertise the older shared date and give
@@ -104,10 +108,6 @@ const staticImages: Record<string, string[]> = {
   '/eu-compliance': ['/images/company-building.webp'],
 }
 
-function localizedPath(locale: string, path: string) {
-  return `${locale === defaultLocale ? '' : `/${locale}`}${path || '/'}`
-}
-
 function sitemapPath(path: string) {
   return path || '/'
 }
@@ -147,7 +147,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     for (const locale of indexableLocales) {
       entries.push({
-        url: absoluteUrl(localizedPath(locale, path)),
+        url: absoluteUrl(localizedSeoPath(locale, sitemapPath(path))),
         lastModified: staticPageLastModified[path] || siteLastModified,
         changeFrequency: staticChangeFrequency(path),
         priority: staticPriority(path),
@@ -167,7 +167,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of indexableLocales) {
       entries.push({
         url: absoluteUrl(localizedSeoPath(locale, productPath)),
-        lastModified: siteLastModified,
+        lastModified: productPageLastModified[product.slug] || siteLastModified,
         changeFrequency: 'weekly',
         priority: product.type === 'shop' ? 0.9 : 0.85,
         images: product.images.slice(0, 3).map((image) => absoluteUrl(image)),

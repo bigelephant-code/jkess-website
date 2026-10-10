@@ -47,6 +47,12 @@ export function proxy(request: NextRequest) {
   const pathSegments = pathname.split('/').filter(Boolean)
   const firstSegment = pathSegments[0]?.toLowerCase()
 
+  if (firstSegment === defaultLocale) {
+    const redirectUrl = new URL(request.nextUrl)
+    redirectUrl.pathname = pathname.slice(pathSegments[0].length + 1) || '/'
+    return setLocaleResponseHeaders(NextResponse.redirect(redirectUrl, 308), defaultLocale)
+  }
+
   if (firstSegment && isValidLocale(firstSegment)) {
     const response = NextResponse.next({
       request: {

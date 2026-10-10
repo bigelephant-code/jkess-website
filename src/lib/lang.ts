@@ -6,7 +6,7 @@ export function localizedPath(lang: LangCode, path: string): string {
   const p = path.startsWith('/') ? path : `/${path}`
   // For the default locale, don't prefix (domain.com/about instead of domain.com/en/about)
   if (lang === defaultLocale) return p
-  return `/${lang}${p}`
+  return `/${lang}${p === '/' ? '' : p}`
 }
 
 /** Get alternate language links for SEO (hreflang) */

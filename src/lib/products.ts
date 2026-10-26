@@ -39,7 +39,7 @@ export interface Product {
   specs: ProductSpec[]
   images: string[]
   type: 'shop' | 'inquiry'
-  variants?: { label: string; price?: string }[]
+  variants?: { label: string; price?: string; pricePending?: boolean; description?: string }[]
   detailImages?: string[]
 }
 
@@ -1010,6 +1010,7 @@ const productCatalog: Product[] = [
     variants: [
       { label: 'Enclosure + LCD + BMS', price: '$400.00' },
       { label: 'Enclosure Only', price: '$300.00' },
+      { label: 'CCS Version', pricePending: true, description: 'Kit + LCD + BMS + CCS' },
     ],
     detailImages: [
       '/images/battery-kit-detail/1.webp',
@@ -1245,6 +1246,7 @@ const productCatalog: Product[] = [
     variants: [
       { label: 'Enclosure + LCD + BMS', price: '$380.00' },
       { label: 'Enclosure Only', price: '$280.00' },
+      { label: 'CCS Version', pricePending: true, description: 'Kit + LCD + BMS + CCS' },
     ],
   },
 ]

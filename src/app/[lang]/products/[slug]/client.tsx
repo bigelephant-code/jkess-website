@@ -23,6 +23,7 @@ import { isManagedInventorySlug } from '@/lib/inventory-catalog'
 import { useCart } from '@/context/CartContext'
 import { useI18n } from '@/i18n/client'
 import { trackEvent } from '@/lib/analytics'
+import { getProductVariantCopy } from '@/lib/product-variant-copy'
 import {
   SALE_DISCOUNT_PERCENT,
   formatUsd,
@@ -117,16 +118,19 @@ export function ProductDetailClient({
 
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
-  const quoteHref = `${prefix}/shipping-quote?product=${encodeURIComponent(product.slug)}`
+  const selectedOption = product.variants?.[selectedVariant]
+  const pricePending = selectedOption?.pricePending === true
+  const variantCopy = getProductVariantCopy(lang)
+  const quoteHref = `${prefix}/shipping-quote?product=${encodeURIComponent(product.slug)}${pricePending ? `&variant=${encodeURIComponent(selectedOption.label)}` : ''}`
   const mediaCopy = mediaCopyByLanguage[lang as keyof typeof mediaCopyByLanguage] ?? mediaCopyByLanguage.en
   const faqs = (product as ProductWithLocalizedFaqs).localizedFaqs ?? getProductFaqs(product)
   const currentPrice = product.variants?.[selectedVariant]?.price
-  const currentCommerce = productVariantCommerce(product)[selectedVariant] || null
+  const currentCommerce = productVariantCommerce(product).find((variant) => variant.index === selectedVariant) || null
   const managedStock = isManagedInventorySlug(product.slug) ? inventory[product.slug] : null
   const productQuantityInCart = items
     .filter((item) => item.slug === product.slug)
     .reduce((sum, item) => sum + item.quantity, 0)
-  const availableToAdd = managedStock === null
+  const availableToAdd = pricePending || managedStock === null
     ? null
     : Math.max(0, managedStock - productQuantityInCart)
   const selectedQuantity = availableToAdd === null
@@ -195,7 +199,7 @@ export function ProductDetailClient({
   const buyingGuides = getProductBuyingGuideLinks(product, lang)
 
   const handleAddToCart = () => {
-    if (soldOut || noMoreAvailable) return
+    if (pricePending || !currentCommerce || soldOut || noMoreAvailable) return
     const variant = product.variants?.[selectedVariant]
     const allowedQuantity = availableToAdd === null ? selectedQuantity : Math.min(selectedQuantity, availableToAdd)
     if (allowedQuantity <= 0) return
@@ -221,7 +225,7 @@ export function ProductDetailClient({
   }
 
   const handleBuyNow = () => {
-    if (soldOut || noMoreAvailable) return
+    if (pricePending || !currentCommerce || soldOut || noMoreAvailable) return
     trackEvent('buy_now_click', {
       item_id: product.slug,
       item_name: product.name,
@@ -244,7 +248,9 @@ export function ProductDetailClient({
     window.location.href = quoteHref
   }
 
-  const stockLabel = !isShop
+  const stockLabel = pricePending
+    ? variantCopy.pricePending
+    : !isShop
     ? t('product.customOrder', 'Custom Order')
     : !inventoryLoaded
       ? t('product.checkingStock', 'Checking stock…')
@@ -328,10 +334,10 @@ export function ProductDetailClient({
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-1 mb-2">{product.name}</h1>
               <p className="text-sm text-gray-500 mb-4">{product.tagline}</p>
 
-              {isShop && currentPrice && (
+              {isShop && (currentPrice || pricePending) && (
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-5">
                   <div className="flex flex-wrap items-end gap-x-3 gap-y-2">
-                    <span className="text-3xl md:text-4xl font-bold text-green-400">{currentPrice}</span>
+                    <span className={`${pricePending ? 'text-xl md:text-2xl' : 'text-3xl md:text-4xl'} font-bold text-green-400`}>{pricePending ? variantCopy.pricePending : currentPrice}</span>
                     {currentCommerce && (
                       <>
                         <span className="pb-1 text-sm text-gray-400 line-through">
@@ -343,20 +349,23 @@ export function ProductDetailClient({
                       </>
                     )}
                   </div>
-                  <p className="mt-3 text-xs leading-5 text-green-300/80">
+                  {!pricePending && <p className="mt-3 text-xs leading-5 text-green-300/80">
                     {promoPriceNote}
-                  </p>
+                  </p>}
+                  {selectedOption?.description && (
+                    <p className="mt-3 text-sm font-medium text-white">{pricePending ? variantCopy.ccsIncludes : selectedOption.description}</p>
+                  )}
                   {purchaseNoticeText && (
                     <p className="mt-2 text-xs font-medium leading-5 text-gray-300">
                       {purchaseNoticeText}
                     </p>
                   )}
-                  <p className="mt-2 text-xs leading-5 text-gray-400">
+                  {!pricePending && <p className="mt-2 text-xs leading-5 text-gray-400">
                     {t(
                       'product.shippingRuleDetail',
                       'EU delivery addresses include free standard shipping. Supported non-EU direct checkout destinations add $150 per order. Other countries require a shipping quote before online payment. Import duties, taxes, customs clearance fees, and brokerage charges are not included unless expressly stated.'
                     )}
-                  </p>
+                  </p>}
                   <Link
                     href={quoteHref}
                     className="mt-2 inline-flex text-xs font-semibold text-amber-200 underline decoration-amber-200/40 underline-offset-4 hover:text-amber-100"
@@ -366,7 +375,7 @@ export function ProductDetailClient({
                       'Request a destination shipping quote before payment'
                     )}
                   </Link>
-                  {managedStock !== null && (
+                  {!pricePending && managedStock !== null && (
                     <p className="mt-2 text-xs leading-5 text-gray-400">
                       {t(
                         'product.sharedInventoryNote',
@@ -397,7 +406,7 @@ export function ProductDetailClient({
                         }`}
                       >
                         {variant.label}
-                        <span className="ml-1.5 text-xs opacity-60">{variant.price}</span>
+                        <span className="ml-1.5 text-xs opacity-60">{variant.pricePending ? variantCopy.pricePending : variant.price}</span>
                       </button>
                     ))}
                   </div>
@@ -416,7 +425,7 @@ export function ProductDetailClient({
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label={t('product.decreaseQuantity', 'Decrease quantity')}
-                    disabled={selectedQuantity <= 1 || soldOut}
+                    disabled={selectedQuantity <= 1 || (!pricePending && soldOut)}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <Minus size={16} />
@@ -426,7 +435,7 @@ export function ProductDetailClient({
                     type="button"
                     onClick={() => setQuantity((current) => availableToAdd === null ? current + 1 : Math.min(current + 1, Math.max(1, availableToAdd)))}
                     aria-label={t('product.increaseQuantity', 'Increase quantity')}
-                    disabled={soldOut || noMoreAvailable || (availableToAdd !== null && selectedQuantity >= availableToAdd)}
+                    disabled={!pricePending && (soldOut || noMoreAvailable || (availableToAdd !== null && selectedQuantity >= availableToAdd))}
                     className="px-4 py-2.5 text-gray-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     <Plus size={16} />
@@ -435,7 +444,7 @@ export function ProductDetailClient({
               </div>
 
               <div className="space-y-3 mb-4">
-                {isShop ? (
+                {isShop && !pricePending ? (
                   <>
                     <div className="grid grid-cols-2 gap-3">
                       <button

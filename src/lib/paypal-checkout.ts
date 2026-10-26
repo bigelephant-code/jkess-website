@@ -117,6 +117,7 @@ export function validateCheckoutPayload(value: unknown): ValidatedCheckout {
       !product ||
       product.type !== 'shop' ||
       !variant ||
+      variant.pricePending ||
       !Number.isInteger(quantity) ||
       quantity < 1 ||
       quantity > MAX_QUANTITY ||

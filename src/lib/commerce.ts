@@ -28,11 +28,12 @@ export function formatCurrency(value: number, currency: 'USD' | 'EUR' = 'USD') {
 }
 
 export function productVariantCommerce(product: Product) {
-  return (product.variants || []).map((variant, index) => {
-    const salePrice = parseUsdPrice(variant.price) || 0
+  return (product.variants || []).flatMap((variant, index) => {
+    const salePrice = parseUsdPrice(variant.price)
+    if (variant.pricePending || salePrice === null) return []
     const regularPrice = regularPriceFromSalePrice(salePrice)
 
-    return {
+    return [{
       index,
       label: variant.label,
       sku: `${product.slug}-${index + 1}`,
@@ -40,7 +41,7 @@ export function productVariantCommerce(product: Product) {
       regularPrice,
       discountAmount: Number((regularPrice - salePrice).toFixed(2)),
       discountPercent: SALE_DISCOUNT_PERCENT,
-    }
+    }]
   })
 }
 

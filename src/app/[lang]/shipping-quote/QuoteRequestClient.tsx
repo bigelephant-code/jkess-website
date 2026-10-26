@@ -35,9 +35,11 @@ const initialSelections = Object.fromEntries(
 export default function QuoteRequestClient({
   lang,
   initialProductSlug,
+  initialVariant,
 }: {
   lang: string
   initialProductSlug?: string
+  initialVariant?: string
 }) {
   const ui = getLocalizedUiCopy(lang)
   const guide = getLocalizedGuide(lang)
@@ -51,6 +53,8 @@ export default function QuoteRequestClient({
       [initialProductSlug]: {
         ...initialSelections[initialProductSlug],
         selected: true,
+        option: products.find((product) => product.slug === initialProductSlug)
+          ?.variants?.find((variant) => variant.label === initialVariant)?.label || '',
       },
     }
   })

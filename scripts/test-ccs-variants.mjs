@@ -31,7 +31,7 @@ const { getLocalizedProductPageContent } = load('src/lib/product-localizations.t
 const customer = { name: 'Test Buyer', email: 'test@example.com', phone: '+49123456789', countryCode: 'DE', address: 'Test address' }
 const payload = (slug, variant) => ({ orderNumber: 'JKESS-CCS-TEST123', customer, items: [{ slug, variant, quantity: 1 }] })
 
-for (const [slug, prices] of [['battery-kit', [400, 300]], ['6u-battery-kit', [380, 280, 599]]]) {
+for (const [slug, prices] of [['battery-kit', [400, 300]], ['6u-battery-kit', [499, 280, 599]]]) {
   const product = products.find((entry) => entry.slug === slug)
   const ccs = product.variants.find((variant) => variant.label === 'CCS Version')
   assert.equal(product.variants.length, 3)

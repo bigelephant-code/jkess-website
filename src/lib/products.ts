@@ -1245,7 +1245,7 @@ const productCatalog: Product[] = [
     ],
     type: 'shop',
     variants: [
-      { label: 'Enclosure + LCD + BMS', price: '$380.00' },
+      { label: 'Enclosure + LCD + BMS', price: '$499.00' },
       { label: 'Enclosure Only', price: '$280.00' },
       { label: 'CCS Version', price: '$599.00', description: 'Kit + LCD + BMS + CCS', detailImages: Array.from({ length: 10 }, (_, index) => `/images/6u-ccs-detail/${index + 1}.webp`) },
     ],

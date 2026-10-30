@@ -119,6 +119,7 @@ export function ProductDetailClient({
   const isShop = product.type === 'shop'
   const prefix = lang === 'en' ? '' : '/' + lang
   const selectedOption = product.variants?.[selectedVariant]
+  const detailImages = selectedOption?.detailImages ?? product.detailImages
   const pricePending = selectedOption?.pricePending === true
   const variantCopy = getProductVariantCopy(lang)
   const quoteHref = `${prefix}/shipping-quote?product=${encodeURIComponent(product.slug)}${pricePending ? `&variant=${encodeURIComponent(selectedOption.label)}` : ''}`
@@ -353,7 +354,7 @@ export function ProductDetailClient({
                     {promoPriceNote}
                   </p>}
                   {selectedOption?.description && (
-                    <p className="mt-3 text-sm font-medium text-white">{pricePending ? variantCopy.ccsIncludes : selectedOption.description}</p>
+                    <p className="mt-3 text-sm font-medium text-white">{selectedOption.label === 'CCS Version' ? variantCopy.ccsIncludes : selectedOption.description}</p>
                   )}
                   {purchaseNoticeText && (
                     <p className="mt-2 text-xs font-medium leading-5 text-gray-300">
@@ -620,11 +621,11 @@ export function ProductDetailClient({
               </div>
             )}
 
-            {product.detailImages && product.detailImages.length > 0 && (
+            {detailImages && detailImages.length > 0 && (
               <div>
                 <h3 className="text-gray-900 font-semibold mb-4">{t('product.productGallery', 'Product Gallery')}</h3>
                 <div className="flex flex-col">
-                  {product.detailImages.map((image, index) => (
+                  {detailImages.map((image, index) => (
                     <div key={image} className="w-full">
                       <Image
                         src={image}

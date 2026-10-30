@@ -39,7 +39,7 @@ export interface Product {
   specs: ProductSpec[]
   images: string[]
   type: 'shop' | 'inquiry'
-  variants?: { label: string; price?: string; pricePending?: boolean; description?: string }[]
+  variants?: { label: string; price?: string; pricePending?: boolean; description?: string; detailImages?: string[] }[]
   detailImages?: string[]
 }
 
@@ -1177,11 +1177,12 @@ const productCatalog: Product[] = [
     categoryLabel: '6U Rack Battery Enclosure Kit',
     tagline: '6U rack-mount LiFePO4 enclosure kit with optional BMS and LCD',
     description:
-      'The JKESS 6U Battery Kit (JKLU015) is a 19-inch rack-mount enclosure and assembly hardware kit for building a 51.2V LiFePO4 battery module. The supported 15kWh capacity applies after compatible cells are installed. Choose either the enclosure-only package or the package with the specified BMS and 4.3-inch LCD. Battery cells are not included.',
+      'The JKESS 6U Battery Kit (JKLU015) is a 19-inch rack-mount enclosure and assembly hardware kit for building a 51.2V LiFePO4 battery module. The supported 15kWh capacity applies after compatible cells are installed. Choose the enclosure-only, LCD and BMS, or CCS version. Battery cells are not included.',
     included: [
       '6U sheet-metal enclosure for standard 19-inch rack installation',
       'Internal mechanical and connection hardware supplied with the selected package',
-      '4.3-inch LCD and BMS only when the Enclosure + LCD + BMS option is selected',
+      '4.3-inch LCD and BMS when the Enclosure + LCD + BMS or CCS version is selected',
+      'CCS integrated busbar only when the CCS version is selected',
       'Standard packing list and applicable product documentation',
     ],
     notIncluded: [
@@ -1206,7 +1207,7 @@ const productCatalog: Product[] = [
       { key: 'Supported Assembled Capacity', value: '15kWh after compatible cells are installed' },
       { key: 'Battery Cells Included', value: 'No' },
       { key: 'Nominal Voltage', value: '51.2V assembled configuration' },
-      { key: 'Package Options', value: 'Enclosure Only / Enclosure + LCD + BMS' },
+      { key: 'Package Options', value: 'Enclosure Only / Enclosure + LCD + BMS / CCS Version' },
       { key: 'Form Factor', value: '6U rack-mount, 19-inch' },
       { key: 'Cell Chemistry', value: 'LiFePO4 compatible' },
       { key: 'Communication', value: 'CAN 2.0 / RS485 with compatible BMS option' },
@@ -1246,7 +1247,7 @@ const productCatalog: Product[] = [
     variants: [
       { label: 'Enclosure + LCD + BMS', price: '$380.00' },
       { label: 'Enclosure Only', price: '$280.00' },
-      { label: 'CCS Version', pricePending: true, description: 'Kit + LCD + BMS + CCS' },
+      { label: 'CCS Version', price: '$599.00', description: 'Kit + LCD + BMS + CCS', detailImages: Array.from({ length: 10 }, (_, index) => `/images/6u-ccs-detail/${index + 1}.webp`) },
     ],
   },
 ]

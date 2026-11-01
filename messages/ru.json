@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Курс обмена недоступен.",
+  "checkout.fxRetry": "Повторить запрос курса",
   "nav.home": "Главная",
   "nav.shop": "Магазин",
   "nav.products": "Продукция",

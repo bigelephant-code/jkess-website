@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Döviz kuru kullanılamıyor.",
+  "checkout.fxRetry": "Döviz kurunu yeniden dene",
   "nav.home": "Ana Sayfa",
   "nav.shop": "Mağaza",
   "nav.products": "Ürünler",

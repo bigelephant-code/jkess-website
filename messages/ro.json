@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Cursul de schimb nu este disponibil.",
+  "checkout.fxRetry": "Reîncearcă obținerea cursului",
   "nav.home": "Acasă",
   "nav.shop": "Magazin",
   "nav.products": "Produse",

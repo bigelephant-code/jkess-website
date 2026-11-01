@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "A taxa de câmbio está indisponível.",
+  "checkout.fxRetry": "Tentar obter a taxa novamente",
   "nav.home": "Início",
   "nav.shop": "Loja",
   "nav.products": "Produtos",

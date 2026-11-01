@@ -37,7 +37,17 @@ export type PayPalPurchaseUnit = {
   invoice_id?: string
   custom_id?: string
   description?: string
-  amount?: PayPalMoney
+  amount?: PayPalMoney & {
+    breakdown?: {
+      item_total?: PayPalMoney
+      shipping?: PayPalMoney
+      tax_total?: PayPalMoney
+      discount?: PayPalMoney
+      shipping_discount?: PayPalMoney
+      handling?: PayPalMoney
+      insurance?: PayPalMoney
+    }
+  }
   items?: PayPalOrderItem[]
   shipping?: {
     name?: {
@@ -143,6 +153,28 @@ export async function getPayPalOrder(paypalOrderId: string) {
   }
 
   return body
+}
+
+async function getPayPalPaymentResource<T>(kind: 'refunds' | 'captures', id: string) {
+  if (!/^[A-Z0-9]{1,120}$/i.test(id)) throw new PayPalVerificationError('Invalid PayPal resource reference.')
+  const accessToken = await getPayPalAccessToken()
+  const response = await fetch(`${paypalBaseUrl()}/v2/payments/${kind}/${encodeURIComponent(id)}`, {
+    headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    cache: 'no-store',
+  })
+  const body: unknown = await response.json().catch(() => null)
+  if (!response.ok || !body || typeof body !== 'object' || Array.isArray(body)) {
+    throw new PayPalVerificationError(`PayPal ${kind} lookup failed with status ${response.status}.`)
+  }
+  return body as T
+}
+
+export async function getPayPalRefund(id: string) {
+  return getPayPalPaymentResource<import('./paypal-refund-validation').RefundDetails>('refunds', id)
+}
+
+export async function getPayPalCapture(id: string) {
+  return getPayPalPaymentResource<import('./paypal-refund-validation').CaptureDetails>('captures', id)
 }
 
 async function paypalOrdersRequest(

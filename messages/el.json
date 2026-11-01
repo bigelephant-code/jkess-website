@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Η συναλλαγματική ισοτιμία δεν είναι διαθέσιμη.",
+  "checkout.fxRetry": "Δοκιμάστε ξανά",
   "nav.home": "Αρχική",
   "nav.shop": "Κατάστημα",
   "nav.products": "Προϊόντα",

@@ -1,6 +1,8 @@
 import { getCurrency } from '@/lib/shipping-zones'
 import { NextResponse } from 'next/server'
 import { syncVerifiedPayment } from '@/lib/order-hub'
+import { getOrderCheckoutFxQuote } from '@/lib/order-store'
+import { assertCheckoutFxQuote } from '@/lib/checkout-fx-quote'
 import {
   assertPayPalOrderMatchesCheckout,
   CheckoutValidationError,
@@ -36,7 +38,17 @@ export async function POST(request: Request, context: RouteContext) {
       return NextResponse.json({ error: 'PayPal order ID is invalid.' }, { status: 400 })
     }
 
-    const checkout = validateCheckoutPayload(await request.json())
+    const body: unknown = await request.json()
+    const baseCheckout = validateCheckoutPayload(body)
+    let checkout = baseCheckout
+    if (process.env.CHECKOUT_FX_ENABLED === 'true' && getCurrency(baseCheckout.customer.countryCode) === 'EUR') {
+      const quote = await getOrderCheckoutFxQuote(orderId)
+      if (!quote) throw new CheckoutValidationError('The order exchange quote is missing.')
+      try { assertCheckoutFxQuote(quote, baseCheckout, Date.now(), false) } catch {
+        throw new CheckoutValidationError('The order does not match its exchange quote.')
+      }
+      checkout = validateCheckoutPayload(body, quote.rateMicros)
+    }
     const pendingOrder = await getPayPalOrder(orderId)
     if (pendingOrder.id !== orderId) {
       throw new CheckoutValidationError('PayPal returned a different order ID.')

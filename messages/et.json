@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Vahetuskurss pole saadaval.",
+  "checkout.fxRetry": "Proovi vahetuskurssi uuesti",
   "nav.home": "Avaleht",
   "nav.shop": "Pood",
   "nav.products": "Tooted",

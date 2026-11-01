@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Směnný kurz není k dispozici.",
+  "checkout.fxRetry": "Zkusit kurz znovu",
   "nav.home": "Domů",
   "nav.shop": "Obchod",
   "nav.products": "Produkty",

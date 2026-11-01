@@ -403,7 +403,7 @@ export const policyPages: Record<PolicySlug, PolicyPage> = {
       {
         heading: 'Service providers and disclosures',
         paragraphs: [
-          'JKESS may share information with service providers that support the transaction and website, including PayPal for payments, Vercel for hosting, Upstash for order records, Resend for transactional email, Google Analytics for website measurement, carriers and logistics providers for delivery, and professional advisers or authorities where legally required.',
+          'JKESS may share information with service providers that support the transaction and website, including PayPal for payments, Vercel for hosting, Upstash for order records, Resend for transactional email, Google Analytics for website measurement, GoAffPro and Refersion for affiliate attribution when enabled and consented, carriers and logistics providers for delivery, and professional advisers or authorities where legally required.',
           'Service providers receive information only for the relevant service and are expected to protect it under their own contractual and legal obligations.',
         ],
       },
@@ -417,6 +417,7 @@ export const policyPages: Record<PolicySlug, PolicyPage> = {
         heading: 'Cookies and analytics',
         paragraphs: [
           'The website may use essential browser storage, security technologies, and analytics tools to operate the cart, maintain website functions, understand visits, and measure checkout events. Browser settings and privacy tools may allow customers to restrict certain cookies or analytics, although some website functions may then be unavailable.',
+          'When affiliate tracking is enabled, it is optional and separate from analytics. With your consent, a referral may be stored in your browser for up to 90 days, and an eligible order and referral may be reported to GoAffPro or Refersion to calculate partner commission. The platform may receive a transaction identifier, item information, order value and currency. You can decline or withdraw affiliate tracking using the affiliate settings in the website footer. Transaction records may be retained for accounting, security and other applicable obligations.',
         ],
       },
       {

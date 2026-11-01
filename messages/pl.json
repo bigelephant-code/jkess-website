@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Kurs wymiany jest niedostępny.",
+  "checkout.fxRetry": "Ponów pobieranie kursu",
   "nav.home": "Strona główna",
   "nav.shop": "Sklep",
   "nav.products": "Produkty",

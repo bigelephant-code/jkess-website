@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Az árfolyam nem érhető el.",
+  "checkout.fxRetry": "Árfolyam újrapróbálása",
   "nav.home": "Kezdőlap",
   "nav.shop": "Webáruház",
   "nav.products": "Termékek",

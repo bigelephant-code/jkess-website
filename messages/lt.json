@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Valiutos kursas nepasiekiamas.",
+  "checkout.fxRetry": "Bandyti gauti kursą dar kartą",
   "nav.home": "Pagrindinis",
   "nav.shop": "Parduotuvė",
   "nav.products": "Produktai",

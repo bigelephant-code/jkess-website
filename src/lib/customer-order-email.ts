@@ -1,4 +1,5 @@
 import type { StoredOrderRecord } from '@/lib/order-store'
+import { formatOrderMoney } from './order-money'
 
 function escapeHtml(value: unknown) {
   return String(value ?? '')
@@ -7,11 +8,6 @@ function escapeHtml(value: unknown) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
-}
-
-function money(value: string) {
-  const amount = Number.parseFloat(value)
-  return Number.isFinite(amount) ? amount.toFixed(2) : value
 }
 
 function shippingAddress(order: StoredOrderRecord) {
@@ -43,6 +39,7 @@ export async function sendCustomerOrderConfirmation(order: StoredOrderRecord) {
 
   const rows = order.items
     .map((item) => {
+      if (item.currency && item.currency !== order.currency) throw new Error('Order item currency mismatch.')
       const lineTotal = Number.parseFloat(item.unitAmount) * item.quantity
       return `
         <tr>
@@ -51,7 +48,7 @@ export async function sendCustomerOrderConfirmation(order: StoredOrderRecord) {
             ${item.sku ? `<br><small style="color:#6b7280;">${escapeHtml(item.sku)}</small>` : ''}
           </td>
           <td style="padding:12px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.quantity}</td>
-          <td style="padding:12px;border-bottom:1px solid #e5e7eb;text-align:right;">$${Number.isFinite(lineTotal) ? lineTotal.toFixed(2) : '-'}</td>
+          <td style="padding:12px;border-bottom:1px solid #e5e7eb;text-align:right;">${escapeHtml(formatOrderMoney(lineTotal, order.currency))}</td>
         </tr>`
     })
     .join('')
@@ -64,7 +61,7 @@ export async function sendCustomerOrderConfirmation(order: StoredOrderRecord) {
       <div style="margin:20px 0;padding:16px;border:1px solid #d1d5db;border-radius:12px;background:#f9fafb;">
         <p style="margin:0 0 8px;"><strong>JKESS order number:</strong> ${escapeHtml(order.orderNumber)}</p>
         <p style="margin:0 0 8px;"><strong>PayPal order ID:</strong> ${escapeHtml(order.paypalOrderId)}</p>
-        <p style="margin:0;"><strong>Payment total:</strong> $${escapeHtml(money(order.amount))} ${escapeHtml(order.currency)}</p>
+        <p style="margin:0;"><strong>Payment total:</strong> ${escapeHtml(formatOrderMoney(Number.parseFloat(order.amount), order.currency))}</p>
       </div>
 
       <h2 style="font-size:18px;margin-top:28px;">Order summary</h2>

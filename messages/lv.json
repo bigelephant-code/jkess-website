@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Valūtas kurss nav pieejams.",
+  "checkout.fxRetry": "Mēģināt iegūt kursu vēlreiz",
   "nav.home": "Sākums",
   "nav.shop": "Veikals",
   "nav.products": "Produkti",

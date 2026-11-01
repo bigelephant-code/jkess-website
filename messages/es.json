@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "El tipo de cambio no está disponible.",
+  "checkout.fxRetry": "Volver a consultar el tipo de cambio",
   "nav.home": "Inicio",
   "nav.shop": "Tienda",
   "nav.products": "Productos",

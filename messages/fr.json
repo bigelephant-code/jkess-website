@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Le taux de change est indisponible.",
+  "checkout.fxRetry": "Réessayer le taux de change",
   "nav.home": "Accueil",
   "nav.shop": "Boutique",
   "nav.products": "Produits",

@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Valuuttakurssi ei ole saatavilla.",
+  "checkout.fxRetry": "Yritä hakea valuuttakurssi uudelleen",
   "nav.home": "Koti",
   "nav.shop": "Kauppa",
   "nav.products": "Tuotteet",

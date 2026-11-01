@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { getLocalizedGuide, localizedNavItem } from '@/lib/localized-ui'
+import { AffiliateSettingsButton } from '@/components/AffiliateConsent'
 
 const footerGroups = [
   {
@@ -46,7 +47,7 @@ const policyLinks = [
   ['Privacy', '/privacy-policy'],
 ] as const
 
-export default function Footer() {
+export default function Footer({ affiliateEnabled = false }: { affiliateEnabled?: boolean }) {
   const { lang, t } = useI18n()
   const guide = getLocalizedGuide(lang)
   const localizedFooterGroupTitle = (title: string) => {
@@ -93,6 +94,7 @@ export default function Footer() {
               {localizedPolicyLabel(label)}
             </Link>
           ))}
+          {affiliateEnabled && <AffiliateSettingsButton />}
         </nav>
 
         <div className="flex flex-col items-center justify-center gap-x-6 gap-y-2 sm:flex-row">

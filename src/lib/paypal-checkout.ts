@@ -1,5 +1,6 @@
 import { getProductBySlug } from '@/lib/products'
 import { amountToCents, type PayPalOrderDetails } from '@/lib/paypal-server'
+import { convertUsdPrices } from '@/lib/exchange-rate'
 import {
   getShippingAmount,
   getShippingCountryName,
@@ -24,6 +25,7 @@ export type ValidatedCheckoutItem = {
   variant: string
   quantity: number
   unitPriceCents: number
+  usdUnitPriceCents: number
   lineTotalCents: number
   sku: string
 }
@@ -43,6 +45,9 @@ export type ValidatedCheckout = {
   productSubtotalCents: number
   shippingCents: number
   totalCents: number
+  usdProductSubtotalCents: number
+  usdShippingCents: number
+  usdTotalCents: number
   shippingCountry: string
   shippingTier: string
 }
@@ -63,7 +68,7 @@ function priceToCents(value: string | undefined) {
   return Number.isSafeInteger(cents) && cents > 0 ? cents : null
 }
 
-export function validateCheckoutPayload(value: unknown): ValidatedCheckout {
+export function validateCheckoutPayload(value: unknown, eurRateMicros?: number): ValidatedCheckout {
   const body = value && typeof value === 'object' ? (value as Record<string, unknown>) : {}
   const rawCustomer = body.customer && typeof body.customer === 'object'
     ? (body.customer as Record<string, unknown>)
@@ -132,13 +137,26 @@ export function validateCheckoutPayload(value: unknown): ValidatedCheckout {
       variant: variant.label,
       quantity,
       unitPriceCents,
+      usdUnitPriceCents: unitPriceCents,
       lineTotalCents: unitPriceCents * quantity,
       sku: compactReference(`${slug}-${variant.label}`),
     }
   })
 
-  const productSubtotalCents = items.reduce((sum, item) => sum + item.lineTotalCents, 0)
-  const shippingCents = Math.round(getShippingAmount(customer.countryCode) * 100)
+  const usdProductSubtotalCents = items.reduce((sum, item) => sum + item.lineTotalCents, 0)
+  const usdShippingCents = Math.round(getShippingAmount(customer.countryCode) * 100)
+  const usdTotalCents = usdProductSubtotalCents + usdShippingCents
+  let productSubtotalCents = usdProductSubtotalCents
+  let shippingCents = usdShippingCents
+  if (getCurrency(customer.countryCode) === 'EUR' && eurRateMicros !== undefined) {
+    const converted = convertUsdPrices(items, usdShippingCents, eurRateMicros)
+    items.forEach((item, index) => {
+      item.unitPriceCents = converted.unitPricesCents[index]
+      item.lineTotalCents = item.unitPriceCents * item.quantity
+    })
+    productSubtotalCents = converted.subtotalCents
+    shippingCents = converted.shippingCents
+  }
   const totalCents = productSubtotalCents + shippingCents
 
   if (!Number.isSafeInteger(totalCents) || totalCents <= 0) {
@@ -152,6 +170,9 @@ export function validateCheckoutPayload(value: unknown): ValidatedCheckout {
     productSubtotalCents,
     shippingCents,
     totalCents,
+    usdProductSubtotalCents,
+    usdShippingCents,
+    usdTotalCents,
     shippingCountry: getShippingCountryName(customer.countryCode),
     shippingTier: getShippingTier(customer.countryCode),
   }

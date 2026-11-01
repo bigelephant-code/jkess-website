@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Der Wechselkurs ist nicht verfügbar.",
+  "checkout.fxRetry": "Wechselkurs erneut laden",
   "nav.home": "Startseite",
   "nav.shop": "Shop",
   "nav.products": "Produkte",

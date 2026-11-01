@@ -4,6 +4,8 @@ import NavbarDockEffect from '@/components/NavbarDockEffect'
 import Footer from '@/components/Footer'
 import EcommerceAnalyticsTracker from '@/components/EcommerceAnalyticsTracker'
 import CookieConsent from '@/components/CookieConsent'
+import AffiliateLinkTracker from '@/components/AffiliateLinkTracker'
+import { Suspense } from 'react'
 import { CartProvider } from '@/context/CartContext'
 import { I18nProvider } from '@/i18n/client'
 import { locales, isValidLocale, defaultLocale, localeMap } from '@/i18n/config'
@@ -48,9 +50,12 @@ export default async function LangLayout(props: {
           <NavbarMegaMenuV2 />
           <NavbarDockEffect />
           <CookieConsent gaId={GA_ID} adsId={GOOGLE_ADS_ID} />
+          {process.env.NEXT_PUBLIC_AFFILIATE_TRACKING_ENABLED === 'true' && (
+            <Suspense fallback={null}><AffiliateLinkTracker refersionPublicKey={process.env.REFERSION_PUBLIC_KEY || ''} /></Suspense>
+          )}
           <EcommerceAnalyticsTracker />
           <main className="flex-1">{props.children}</main>
-          <Footer />
+          <Footer affiliateEnabled={process.env.NEXT_PUBLIC_AFFILIATE_TRACKING_ENABLED === 'true'} />
         </CartProvider>
       </I18nProvider>
     </>

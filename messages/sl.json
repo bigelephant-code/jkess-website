@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Menjalni tečaj ni na voljo.",
+  "checkout.fxRetry": "Ponovno pridobi tečaj",
   "nav.home": "Domov",
   "nav.shop": "Trgovina",
   "nav.products": "Izdelki",

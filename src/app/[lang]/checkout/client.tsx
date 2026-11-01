@@ -3,12 +3,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, CheckCircle, ExternalLink, Loader2, Lock } from 'lucide-react'
+import { ArrowLeft, CheckCircle, ExternalLink, Loader2, Lock, RefreshCw } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import { Reveal } from '@/components/ScrollReveal'
 import { useI18n } from '@/i18n/client'
 import { localizedPath } from '@/lib/lang'
 import { trackEvent } from '@/lib/analytics'
+import { readAffiliateSource } from '@/lib/affiliate-link-source'
+import { readAffiliateConsent } from '@/lib/affiliate-consent'
+import { rememberAffiliateWithdrawal, withdrawPendingAffiliates, type AffiliateWithdrawal } from '@/lib/affiliate-withdrawal'
+import { sendRefersionCheckout } from '@/lib/refersion-browser'
 import { formatCurrency } from '@/lib/commerce'
 import {
   directCheckoutCountryGroups,
@@ -24,6 +28,19 @@ import {
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''
 const SALES_EMAIL = 'zhou@jkess.com'
 const POLICY_VERSION = '2026-06-29'
+const FX_CHECKOUT_ENABLED = process.env.NEXT_PUBLIC_CHECKOUT_FX_ENABLED === 'true'
+
+type CheckoutFxQuote = {
+  requestKey: string
+  generation: number
+  id: string
+  expiresAt: number
+  unitPricesCents: number[]
+  subtotalCents: number
+  shippingCents: number
+  totalCents: number
+  currency: 'EUR'
+}
 
 type PayPalButtons = {
   isEligible: () => boolean
@@ -73,6 +90,9 @@ export default function CheckoutPage() {
   const [sdkError, setSdkError] = useState(!PAYPAL_CLIENT_ID)
   const [paymentError, setPaymentError] = useState('')
   const [acceptedPolicies, setAcceptedPolicies] = useState(false)
+  const [fxQuote, setFxQuote] = useState<CheckoutFxQuote | null>(null)
+  const [fxError, setFxError] = useState(false)
+  const [fxRefresh, setFxRefresh] = useState(0)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -95,18 +115,26 @@ export default function CheckoutPage() {
     void refreshInventory()
   }, [refreshInventory])
 
-  const productSubtotalNumber = items.reduce(
+  const usdProductSubtotalNumber = items.reduce(
     (sum, item) => sum + priceNumber(item.price) * item.quantity,
     0
   )
   const shippingTier = getShippingTier(formData.countryCode)
-  const shippingAmountNumber = getShippingAmount(formData.countryCode)
-  const orderTotalNumber = productSubtotalNumber + shippingAmountNumber
+  const currencyCode = getCurrency(formData.countryCode)
+  const needsFxQuote = FX_CHECKOUT_ENABLED && currencyCode === 'EUR'
+  const quoteRequestKey = JSON.stringify({
+    orderNumber: invoiceNumber,
+    countryCode: formData.countryCode,
+    items: items.map((item) => ({ slug: item.slug, variant: item.variant, quantity: item.quantity })),
+  })
+  const activeFxQuote = needsFxQuote && fxQuote?.requestKey === quoteRequestKey && fxQuote.generation === fxRefresh ? fxQuote : null
+  const productSubtotalNumber = activeFxQuote ? activeFxQuote.subtotalCents / 100 : usdProductSubtotalNumber
+  const shippingAmountNumber = activeFxQuote ? activeFxQuote.shippingCents / 100 : getShippingAmount(formData.countryCode)
+  const orderTotalNumber = activeFxQuote ? activeFxQuote.totalCents / 100 : productSubtotalNumber + shippingAmountNumber
   const productSubtotal = productSubtotalNumber.toFixed(2)
   const shippingAmount = shippingAmountNumber.toFixed(2)
   const orderTotal = orderTotalNumber.toFixed(2)
   const shippingCountry = getShippingCountryName(formData.countryCode)
-  const currencyCode = getCurrency(formData.countryCode)
   const canCheckout = isDirectCheckoutCountry(formData.countryCode)
   const flatRateShippingMessage = t(
     'checkout.flatRateShipping',
@@ -132,19 +160,51 @@ export default function CheckoutPage() {
     formData.countryCode &&
     formData.address.trim()
   )
-  const formComplete = contactComplete && acceptedPolicies && inventoryLoaded && canCheckout
+  const canQuote = inventoryLoaded && canCheckout && items.length > 0
+  const formComplete = contactComplete && canQuote && acceptedPolicies && (!needsFxQuote || !!activeFxQuote)
+
+  useEffect(() => {
+    if (!needsFxQuote || !canQuote) return
+    const controller = new AbortController()
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch('/api/checkout/fx-quote', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: quoteRequestKey, signal: controller.signal,
+        })
+        const result = await response.json()
+        if (!response.ok || typeof result.id !== 'string' || result.currency !== 'EUR' ||
+            !Number.isSafeInteger(result.expiresAt) || result.expiresAt <= Date.now() ||
+            !Number.isSafeInteger(result.subtotalCents) || !Number.isSafeInteger(result.shippingCents) ||
+            !Number.isSafeInteger(result.totalCents) || !Array.isArray(result.unitPricesCents) ||
+            result.unitPricesCents.length !== JSON.parse(quoteRequestKey).items.length ||
+            !result.unitPricesCents.every((price: unknown) => Number.isSafeInteger(price))) {
+          throw new Error('Invalid exchange quote')
+        }
+        setFxQuote({ ...result, requestKey: quoteRequestKey, generation: fxRefresh })
+        setFxError(false)
+      } catch {
+        if (!controller.signal.aborted) setFxError(true)
+      }
+    }, 400)
+    return () => { window.clearTimeout(timer); controller.abort() }
+  }, [needsFxQuote, canQuote, quoteRequestKey, fxRefresh])
+
+  useEffect(() => {
+    if (!activeFxQuote) return
+    const timeout = window.setTimeout(() => setFxRefresh((value) => value + 1), Math.max(0, activeFxQuote.expiresAt - Date.now()))
+    return () => window.clearTimeout(timeout)
+  }, [activeFxQuote])
 
   useEffect(() => {
     if (!formComplete || scriptLoaded.current === currencyCode || !PAYPAL_CLIENT_ID) return
 
-    if (window.paypal) {
-      window.setTimeout(() => setSdkReady(true), 0)
-      return
-    }
-
-    
     if (scriptLoaded.current && scriptLoaded.current !== currencyCode) {
       window.location.reload()
+      return
+    }
+    if (window.paypal) {
+      window.setTimeout(() => setSdkReady(true), 0)
       return
     }
     scriptLoaded.current = currencyCode
@@ -187,7 +247,7 @@ export default function CheckoutPage() {
     }, 15000)
 
     return () => window.clearTimeout(timeout)
-  }, [formComplete])
+  }, [formComplete, currencyCode])
 
   useEffect(() => {
     if (!sdkReady || submitted || !paypalRef.current || !window.paypal || sdkError) return
@@ -213,19 +273,44 @@ export default function CheckoutPage() {
       style: { layout: 'vertical', shape: 'rect', height: 48 },
       createOrder: async () => {
         setPaymentError('')
+        let affiliateSource = null
+        if (process.env.NEXT_PUBLIC_AFFILIATE_TRACKING_ENABLED === 'true') {
+          try { affiliateSource = readAffiliateSource(window.localStorage, Date.now()) } catch { /* Optional tracking is unavailable. */ }
+        }
         const response = await fetch('/api/paypal/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(checkoutPayload),
+          body: JSON.stringify({ ...checkoutPayload, affiliateSource, fxQuoteId: activeFxQuote?.id }),
         })
         const result = (await response.json().catch(() => null)) as
-          | { id?: string; error?: string }
+          | { id?: string; error?: string; affiliateCartId?: string; affiliateWithdrawal?: AffiliateWithdrawal }
           | null
 
         if (!response.ok || !result?.id) {
           throw new Error(result?.error || 'Unable to create the PayPal order.')
         }
 
+        if (affiliateSource) {
+          if (!result.affiliateWithdrawal) throw new Error('Unable to prepare affiliate privacy settings. Please retry checkout.')
+          try { rememberAffiliateWithdrawal(window.localStorage, result.affiliateWithdrawal) } catch {
+            await fetch('/api/affiliate/withdraw', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(result.affiliateWithdrawal) }).catch(() => undefined)
+            throw new Error('Unable to prepare affiliate privacy settings. Please retry checkout.')
+          }
+          if (readAffiliateConsent(window.localStorage) !== 'accepted') {
+            await withdrawPendingAffiliates(window.localStorage)
+            throw new Error('Affiliate tracking choice changed. Please retry checkout.')
+          }
+        }
+        if (result.affiliateCartId && affiliateSource?.provider === 'refersion') {
+          try {
+            await Promise.race([
+              sendRefersionCheckout(result.affiliateCartId),
+              new Promise<boolean>((resolve) => window.setTimeout(() => resolve(false), 4000)),
+            ])
+          } catch {
+            // A tracking failure must not prevent the customer from paying.
+          }
+        }
         return result.id
       },
       onApprove: async (data: { orderID: string }) => {
@@ -361,6 +446,8 @@ export default function CheckoutPage() {
     items,
     clearCart,
     t,
+    activeFxQuote,
+    currencyCode,
   ])
 
   if (items.length === 0 && !submitted) {
@@ -517,7 +604,7 @@ export default function CheckoutPage() {
                     {t('checkout.orderLabel', 'Order')}: {invoiceNumber}
                   </p>
                   <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
-                    {items.map((item) => (
+                    {items.map((item, index) => (
                       <div key={`${item.slug}-${item.variant}`} className="flex gap-3">
                         <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
                           <Image src={item.image || '/placeholder.svg'} alt={item.name} fill className="object-contain p-1" sizes="56px" quality={70} />
@@ -527,7 +614,7 @@ export default function CheckoutPage() {
                           <p className="text-xs text-gray-500">{item.variant}</p>
                           <div className="flex items-center justify-between mt-1">
                             <span className="text-xs text-gray-400">x{item.quantity}</span>
-                            <span className="text-sm text-green-600 font-medium">{item.price}</span>
+                            <span className="text-sm text-green-600 font-medium">{activeFxQuote ? formatCurrency(activeFxQuote.unitPricesCents[index] / 100, 'EUR') : item.price}</span>
                           </div>
                         </div>
                       </div>
@@ -539,7 +626,7 @@ export default function CheckoutPage() {
                       <span className="text-gray-600">
                         {t('checkout.productSubtotal', 'Product subtotal')}
                       </span>
-                      <span className="font-semibold text-gray-900">{formatCurrency(productSubtotalNumber, currencyCode)}</span>
+                      <span className="font-semibold text-gray-900">{needsFxQuote && !activeFxQuote ? '—' : formatCurrency(productSubtotalNumber, currencyCode)}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-gray-600">{t('checkout.shipping', 'Shipping')}</span>
@@ -557,12 +644,19 @@ export default function CheckoutPage() {
                       <span className="font-semibold text-gray-900">
                         {t('checkout.orderTotal', 'Order total')}
                       </span>
-                      <span className="text-xl font-bold text-green-600">{formatCurrency(orderTotalNumber, currencyCode)}</span>
+                      <span className="text-xl font-bold text-green-600">{needsFxQuote && !activeFxQuote ? '—' : formatCurrency(orderTotalNumber, currencyCode)}</span>
                     </div>
                   </div>
                   <p className="mb-5 mt-3 text-xs leading-5 text-gray-500">
                     {shippingSummaryMessage}
                   </p>
+                  {needsFxQuote && <div className="mb-3 text-xs text-gray-500">
+                    {fxError && !activeFxQuote && <div className="mb-2 flex items-center gap-2" role="status">
+                      <span>{t('checkout.fxUnavailable', 'Exchange rate unavailable.')}</span>
+                      <button type="button" onClick={() => setFxRefresh((value) => value + 1)} title={t('checkout.fxRetry', 'Retry exchange rate')} aria-label={t('checkout.fxRetry', 'Retry exchange rate')} className="rounded p-1 text-green-700 hover:bg-green-50"><RefreshCw size={16} /></button>
+                    </div>}
+                    <a href="https://frankfurter.dev/" target="_blank" rel="noreferrer">Exchange rate data: Frankfurter</a>
+                  </div>}
 
                   <label className="mb-5 flex cursor-pointer items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
                     <input

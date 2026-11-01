@@ -3,6 +3,8 @@ import type { ValidatedCheckout } from './paypal-checkout'
 import type { PayPalOrderDetails } from './paypal-server'
 import { getPayPalOrder, PayPalVerificationError, verifyCompletedPayPalOrder } from './paypal-server'
 import { getOrderHubDrafts, removeOrderHubDraft, listStoredPaidOrders, saveOrderHubDraft, type StoredOrderRecord } from './order-store'
+import { sandboxUsesProductionHub } from './checkout-environment'
+import { getCurrency, isSupportedPaymentCurrency } from './shipping-zones'
 
 export class OrderHubSyncError extends Error {
   constructor(public status = 503, public reason = '') { super('The shared order system is temporarily unavailable.'); this.name = 'OrderHubSyncError' }
@@ -13,6 +15,9 @@ export type HubPayload = Record<string, unknown> & { orderNumber: string; paypal
 export async function syncOrderToHub(payload: HubPayload) {
   const url = process.env.JKBMS_ORDER_HUB_URL || ''
   const secret = process.env.JKBMS_ORDER_HUB_SECRET || ''
+  if (sandboxUsesProductionHub(process.env.PAYPAL_ENVIRONMENT || process.env.PAYPAL_ENV, url)) {
+    throw new OrderHubSyncError(503, 'sandbox_production_hub_blocked')
+  }
   if (!url && !secret && process.env.JKBMS_ORDER_HUB_REQUIRED !== 'true') return false
   if (secret.length < 32 || url !== 'https://www.jkbms.net/api/integrations/jkess/orders') throw new OrderHubSyncError()
   const raw = JSON.stringify({ ...payload, version: 1, source: 'jkesstech.com' })
@@ -40,7 +45,7 @@ export async function syncOrderToHub(payload: HubPayload) {
 
 export function checkoutHubPayload(checkout: ValidatedCheckout, order: PayPalOrderDetails): HubPayload {
   const total = checkout.totalCents / 100, subtotal = checkout.productSubtotalCents / 100, shipping = checkout.shippingCents / 100
-  return { orderNumber: checkout.orderNumber, paypalOrderId: order.id || '', event: 'created', paypalStatus: order.status || 'CREATED', paymentSource: 'paypal', paymentCurrency: 'USD', paymentTotal: total, paymentSubtotal: subtotal, paymentShipping: shipping, usdTotal: total, usdSubtotal: subtotal, usdShipping: shipping, customer: { ...checkout.customer, country: checkout.shippingCountry }, shippingCountry: checkout.shippingCountry, items: checkout.items.map(item => ({ slug: item.slug, name: item.name, variant: item.variant, quantity: item.quantity, price: item.unitPriceCents / 100 })), policyVersion: '', policiesAcceptedAt: '', createdAt: order.create_time || new Date().toISOString(), serverVerified: false }
+  return { orderNumber: checkout.orderNumber, paypalOrderId: order.id || '', event: 'created', paypalStatus: order.status || 'CREATED', paymentSource: 'paypal', paymentCurrency: getCurrency(checkout.customer.countryCode), paymentTotal: total, paymentSubtotal: subtotal, paymentShipping: shipping, usdTotal: checkout.usdTotalCents / 100, usdSubtotal: checkout.usdProductSubtotalCents / 100, usdShipping: checkout.usdShippingCents / 100, customer: { ...checkout.customer, country: checkout.shippingCountry }, shippingCountry: checkout.shippingCountry, items: checkout.items.map(item => ({ slug: item.slug, name: item.name, variant: item.variant, quantity: item.quantity, price: item.usdUnitPriceCents / 100 })), policyVersion: '', policiesAcceptedAt: '', createdAt: order.create_time || new Date().toISOString(), serverVerified: false }
 }
 
 export async function fileCheckoutDraft(checkout: ValidatedCheckout, order: PayPalOrderDetails) {
@@ -51,8 +56,8 @@ export async function fileCheckoutDraft(checkout: ValidatedCheckout, order: PayP
 export async function syncVerifiedPayment(order: PayPalOrderDetails) {
   const unit = order.purchase_units?.[0]
   const capture = unit?.payments?.captures?.find(entry => entry.status === 'COMPLETED')
-  if (order.status !== 'COMPLETED' || !capture?.id || capture.amount?.currency_code !== 'USD') throw new OrderHubSyncError(409)
-  const synced = await syncOrderToHub({ event: 'payment', orderNumber: unit?.invoice_id || unit?.reference_id || '', paypalOrderId: order.id || '', paypalCaptureId: capture.id, paypalStatus: 'COMPLETED', paymentCurrency: 'USD', paymentTotal: Number(capture.amount.value), serverVerified: true, paidAt: capture.create_time || order.update_time || new Date().toISOString() })
+  if (order.status !== 'COMPLETED' || !capture?.id || !isSupportedPaymentCurrency(capture.amount?.currency_code)) throw new OrderHubSyncError(409)
+  const synced = await syncOrderToHub({ event: 'payment', orderNumber: unit?.invoice_id || unit?.reference_id || '', paypalOrderId: order.id || '', paypalCaptureId: capture.id, paypalStatus: 'COMPLETED', paymentCurrency: capture.amount.currency_code, paymentTotal: Number(capture.amount.value), serverVerified: true, paidAt: capture.create_time || order.update_time || new Date().toISOString() })
   if (synced) await removeOrderHubDraft(order.id || '')
 }
 
@@ -64,8 +69,11 @@ export function verifyReconcileRequest(request: Request, raw: string) {
 }
 
 export async function syncStoredOrder(record: StoredOrderRecord) {
-  const verified = await verifyCompletedPayPalOrder({ paypalOrderId: record.paypalOrderId, orderNumber: record.orderNumber, expectedTotalCents: Math.round(Number(record.amount) * 100) })
+  if (!isSupportedPaymentCurrency(record.currency)) throw new OrderHubSyncError(409, 'unsupported_record_currency')
+  const verified = await verifyCompletedPayPalOrder({ paypalOrderId: record.paypalOrderId, orderNumber: record.orderNumber, expectedTotalCents: Math.round(Number(record.amount) * 100), expectedCurrency: record.currency })
   try { await syncVerifiedPayment(verified.order); return } catch (error) { if (!(error instanceof OrderHubSyncError) || error.status !== 404) throw error }
+  // Without a draft, the original USD reference amount of an EUR order is unknown.
+  if (record.currency !== 'USD') throw new OrderHubSyncError(409, 'eur_draft_missing')
   const unit = verified.order.purchase_units?.[0]
   const subtotal = Math.round(record.items.reduce((sum, item) => sum + Number(item.unitAmount) * item.quantity, 0) * 100) / 100
   const total = Number(record.amount), shipping = Math.round((total - subtotal) * 100) / 100
@@ -88,7 +96,8 @@ export async function reconcileHubOrders(offset: number) {
     try {
       const order = await getPayPalOrder(draft.paypalOrderId)
       if (order.status === 'COMPLETED') {
-        const verified = await verifyCompletedPayPalOrder({ paypalOrderId: draft.paypalOrderId, orderNumber: draft.orderNumber, expectedTotalCents: Math.round(Number(draft.usdTotal) * 100) })
+        if (!isSupportedPaymentCurrency(draft.paymentCurrency)) throw new OrderHubSyncError(409, 'unsupported_draft_currency')
+        const verified = await verifyCompletedPayPalOrder({ paypalOrderId: draft.paypalOrderId, orderNumber: draft.orderNumber, expectedTotalCents: Math.round(Number(draft.paymentTotal) * 100), expectedCurrency: draft.paymentCurrency })
         await syncVerifiedPayment(verified.order); synced++
       } else { await saveOrderHubDraft(draft.paypalOrderId, draft); pending++ }
     } catch (error) { await saveOrderHubDraft(draft.paypalOrderId, draft); failures.push({ type: 'draft', code: failureCode(error) }); failed++ }

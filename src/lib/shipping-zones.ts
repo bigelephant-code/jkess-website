@@ -116,3 +116,7 @@ export function getCurrency(countryCode: string) {
   return euCodes.has(countryCode) ? 'EUR' : 'USD'
 }
 
+export function isSupportedPaymentCurrency(currency: unknown): currency is 'USD' | 'EUR' {
+  return currency === 'USD' || currency === 'EUR'
+}
+

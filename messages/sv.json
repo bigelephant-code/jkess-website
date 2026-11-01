@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Valutakursen är inte tillgänglig.",
+  "checkout.fxRetry": "Försök hämta valutakursen igen",
   "nav.home": "Hem",
   "nav.shop": "Butik",
   "nav.products": "Produkter",

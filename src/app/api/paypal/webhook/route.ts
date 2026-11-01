@@ -1,24 +1,46 @@
-import { NextResponse } from 'next/server'
+import { after, NextResponse } from 'next/server'
 import { syncStoredOrder } from '@/lib/order-hub'
 import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
 import {
   acquireWebhookLock,
   decrementInventoryForPaidOrder,
+  enqueueAffiliatePaidOrder,
+  getAffiliateAttribution,
   getStoredOrder,
+  getStoredOrderByCapture,
   markWebhookProcessed,
+  queueVerifiedRefund,
   releaseWebhookLock,
+  saveRefundedOrderReference,
   savePaidOrder,
   webhookWasProcessed,
   type StoredOrderItem,
   type StoredOrderRecord,
 } from '@/lib/order-store'
-import { amountToCents, getPayPalOrder } from '@/lib/paypal-server'
+import { amountToCents, getPayPalCapture, getPayPalOrder, getPayPalRefund } from '@/lib/paypal-server'
+import { refundedOrderReference, refundCaptureId, validateRefundForOrder } from '@/lib/paypal-refund-validation'
 import { verifyPayPalWebhookSignature } from '@/lib/paypal-webhook'
+import { isSupportedPaymentCurrency } from '@/lib/shipping-zones'
+import { runSandboxAffiliateBatch, sandboxAffiliateAutoEnabled } from '@/lib/affiliate-sandbox-automatic'
+import { productionAffiliateWorkerEnabled, runProductionAffiliateBatch } from '@/lib/affiliate-production-worker'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const MAX_WEBHOOK_BYTES = 256 * 1024
+
+function scheduleAffiliateBatch() {
+  if (sandboxAffiliateAutoEnabled()) {
+    after(async () => {
+      try { await runSandboxAffiliateBatch() } catch { console.error('Sandbox affiliate batch needs review') }
+    })
+  }
+  if (productionAffiliateWorkerEnabled()) {
+    after(async () => {
+      try { await runProductionAffiliateBatch() } catch { console.error('Production affiliate batch needs review') }
+    })
+  }
+}
 
 type CaptureCompletedEvent = {
   id?: string
@@ -115,11 +137,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Webhook event is incomplete.' }, { status: 400 })
   }
 
-  if (eventType !== 'PAYMENT.CAPTURE.COMPLETED') {
+  const isRefundEvent = eventType === 'PAYMENT.CAPTURE.REFUNDED' && process.env.AFFILIATE_REFUND_EVENTS_ENABLED === 'true'
+  if (eventType !== 'PAYMENT.CAPTURE.COMPLETED' && !isRefundEvent) {
     return NextResponse.json({ received: true, ignored: true })
   }
 
   if (await webhookWasProcessed(eventId)) {
+    scheduleAffiliateBatch()
     return NextResponse.json({ received: true, duplicate: true })
   }
 
@@ -129,6 +153,30 @@ export async function POST(request: Request) {
   }
 
   try {
+    if (isRefundEvent) {
+      const refundId = clean(event.resource?.id, 160)
+      const refund = await getPayPalRefund(refundId)
+      const captureId = refundCaptureId(refund)
+      if (!captureId) throw new Error('Refund capture reference is missing.')
+      const [capture, stored] = await Promise.all([getPayPalCapture(captureId), getStoredOrderByCapture(captureId)])
+      const existing = stored
+      if (!existing) {
+        const orderId = capture.supplementary_data?.related_ids?.order_id
+        if (!orderId) throw new Error('Refund order reference is missing.')
+        const reference = refundedOrderReference(capture, await getPayPalOrder(orderId))
+        const decision = validateRefundForOrder({ eventRefundId: refundId, refund, capture, order: reference })
+        await saveRefundedOrderReference(reference)
+        const queued = await queueVerifiedRefund({ refundId, captureId, orderNumber: reference.orderNumber, action: decision.action })
+        scheduleAffiliateBatch()
+        await markWebhookProcessed(eventId)
+        return NextResponse.json({ received: true, refundQueued: true, orderRequiresReview: true, duplicate: queued.duplicate })
+      }
+      const decision = validateRefundForOrder({ eventRefundId: refundId, refund, capture, order: existing })
+      const queued = await queueVerifiedRefund({ refundId, captureId, orderNumber: existing.orderNumber, action: decision.action })
+      scheduleAffiliateBatch()
+      await markWebhookProcessed(eventId)
+      return NextResponse.json({ received: true, refundQueued: true, duplicate: queued.duplicate })
+    }
     const paypalOrderId = clean(event.resource?.supplementary_data?.related_ids?.order_id, 160)
     const paypalCaptureId = clean(event.resource?.id, 160)
     const eventAmount = clean(event.resource?.amount?.value, 40)
@@ -137,13 +185,25 @@ export async function POST(request: Request) {
     if (
       !paypalOrderId ||
       !paypalCaptureId ||
-      event.resource?.status?.toUpperCase() !== 'COMPLETED'
+      !['COMPLETED', 'REFUNDED', 'PARTIALLY_REFUNDED'].includes(event.resource?.status?.toUpperCase() || '')
     ) {
       throw new Error('Capture webhook references are incomplete.')
     }
 
     const order = await getPayPalOrder(paypalOrderId)
     const purchaseUnit = order.purchase_units?.[0]
+    const currentCapture = purchaseUnit?.payments?.captures?.find((entry) => entry.id === paypalCaptureId)
+    if (['REFUNDED', 'PARTIALLY_REFUNDED'].includes(currentCapture?.status?.toUpperCase() || '')) {
+      const captureDetails = await getPayPalCapture(paypalCaptureId)
+      const reference = refundedOrderReference(captureDetails, order)
+      if (reference.paypalOrderId !== paypalOrderId || reference.paypalCaptureId !== paypalCaptureId ||
+          reference.currency !== eventCurrency || amountToCents(reference.amount) !== amountToCents(eventAmount)) {
+        throw new Error('Refunded capture does not match the webhook.')
+      }
+      await saveRefundedOrderReference(reference)
+      await markWebhookProcessed(eventId)
+      return NextResponse.json({ received: true, orderRequiresReview: true })
+    }
     const capture = purchaseUnit?.payments?.captures?.find(
       (entry) => entry.id === paypalCaptureId && entry.status?.toUpperCase() === 'COMPLETED'
     )
@@ -155,12 +215,13 @@ export async function POST(request: Request) {
       !orderNumber ||
       order.id !== paypalOrderId ||
       order.status?.toUpperCase() !== 'COMPLETED' ||
+      event.resource?.status?.toUpperCase() !== 'COMPLETED' ||
       !capture
     ) {
       throw new Error('PayPal order verification failed.')
     }
     if (
-      currency !== 'USD' ||
+      !isSupportedPaymentCurrency(currency) ||
       eventCurrency !== currency ||
       amountToCents(eventAmount) !== amountToCents(amount)
     ) {
@@ -213,6 +274,13 @@ export async function POST(request: Request) {
     }
 
     await savePaidOrder(record)
+    if (process.env.AFFILIATE_INTEGRATION_ENABLED === 'true') {
+      const attribution = await getAffiliateAttribution(paypalOrderId)
+      if (attribution) {
+        await enqueueAffiliatePaidOrder({ orderNumber, paypalOrderId, captureId: paypalCaptureId, provider: attribution.source.provider })
+        scheduleAffiliateBatch()
+      }
+    }
     await syncStoredOrder(record)
     const inventory = await decrementInventoryForPaidOrder(orderNumber, items)
     if (inventory.processed) {

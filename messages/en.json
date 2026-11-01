@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Exchange rate unavailable.",
+  "checkout.fxRetry": "Retry exchange rate",
   "nav.home": "Home",
   "nav.shop": "Shop",
   "nav.products": "Products",

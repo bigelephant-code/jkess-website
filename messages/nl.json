@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "De wisselkoers is niet beschikbaar.",
+  "checkout.fxRetry": "Wisselkoers opnieuw ophalen",
   "nav.home": "Home",
   "nav.shop": "Winkel",
   "nav.products": "Producten",

@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Il tasso di cambio non è disponibile.",
+  "checkout.fxRetry": "Riprova il tasso di cambio",
   "nav.home": "Home",
   "nav.shop": "Negozio",
   "nav.products": "Prodotti",

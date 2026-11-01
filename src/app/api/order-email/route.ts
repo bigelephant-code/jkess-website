@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { deliverPaidOrderEmails } from '@/lib/order-email-delivery'
-import { getStoredOrder, savePaidOrder, type StoredOrderRecord } from '@/lib/order-store'
-import { validateCheckoutPayload } from '@/lib/paypal-checkout'
+import { getOrderCheckoutFxQuote, getStoredOrder, savePaidOrder, type StoredOrderRecord } from '@/lib/order-store'
+import { assertPayPalOrderMatchesCheckout, validateCheckoutPayload } from '@/lib/paypal-checkout'
 import { verifyCompletedPayPalOrder } from '@/lib/paypal-server'
+import { assertCheckoutFxQuote } from '@/lib/checkout-fx-quote'
+import { getCurrency } from '@/lib/shipping-zones'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -24,11 +26,20 @@ export async function POST(request: Request) {
     if (!paypalOrderId) {
       return NextResponse.json({ error: 'Order references are required.' }, { status: 400 })
     }
-    const checkout = validateCheckoutPayload({
+    const input = {
       orderNumber,
       customer: customerRaw,
       items: rawItems,
-    })
+    }
+    const baseCheckout = validateCheckoutPayload(input)
+    const currency = getCurrency(baseCheckout.customer.countryCode)
+    let checkout = baseCheckout
+    if (process.env.CHECKOUT_FX_ENABLED === 'true' && currency === 'EUR') {
+      const quote = await getOrderCheckoutFxQuote(paypalOrderId)
+      if (!quote) throw new Error('The order exchange quote is missing.')
+      assertCheckoutFxQuote(quote, baseCheckout, Date.now(), false)
+      checkout = validateCheckoutPayload(input, quote.rateMicros)
+    }
     const customer = {
       name: checkout.customer.name,
       email: checkout.customer.email,
@@ -43,7 +54,9 @@ export async function POST(request: Request) {
       paypalOrderId,
       orderNumber,
       expectedTotalCents,
+      expectedCurrency: currency,
     })
+    assertPayPalOrderMatchesCheckout(verified.order, checkout)
     const purchaseUnit = verified.order.purchase_units?.[0]
     const paypalAddress = purchaseUnit?.shipping?.address
     const paypalCountryCode = clean(paypalAddress?.country_code, 8).toUpperCase()
@@ -66,7 +79,7 @@ export async function POST(request: Request) {
       paypalEventId: existing?.paypalEventId || '',
       status: 'COMPLETED',
       amount: (expectedTotalCents / 100).toFixed(2),
-      currency: 'USD',
+      currency,
       payerEmail: verified.payerEmail.toLowerCase(),
       payerName,
       customer,
@@ -83,7 +96,7 @@ export async function POST(request: Request) {
         sku: item.sku,
         quantity: item.quantity,
         unitAmount: (item.unitPriceCents / 100).toFixed(2),
-        currency: 'USD',
+        currency,
       })),
       paypalCustomId: clean(purchaseUnit?.custom_id, 500),
       paypalDescription: clean(purchaseUnit?.description, 500),

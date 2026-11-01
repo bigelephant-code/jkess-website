@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Tečaj nije dostupan.",
+  "checkout.fxRetry": "Ponovno učitaj tečaj",
   "nav.home": "Početna",
   "nav.shop": "Trgovina",
   "nav.products": "Proizvodi",

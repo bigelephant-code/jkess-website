@@ -22,6 +22,7 @@ function toInternalEmail(order: StoredOrderRecord) {
     paypalOrderId: order.paypalOrderId,
     paypalCaptureId: order.paypalCaptureId,
     payerEmail: order.payerEmail,
+    currency: order.currency,
     customer: order.customer,
     items: order.items.map((item) => {
       const unitAmount = Number.parseFloat(item.unitAmount)

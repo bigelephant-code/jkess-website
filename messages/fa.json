@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "نرخ ارز در دسترس نیست.",
+  "checkout.fxRetry": "تلاش دوباره برای دریافت نرخ ارز",
   "nav.home": "خانه",
   "nav.shop": "فروشگاه",
   "nav.products": "محصولات",

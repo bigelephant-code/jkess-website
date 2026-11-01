@@ -10,6 +10,7 @@ type PaidOrderEmail = {
   paypalOrderId: string
   paypalCaptureId: string
   payerEmail: string
+  currency: string
   customer: {
     name: string
     email: string
@@ -44,7 +45,7 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
         <tr>
           <td style="padding:10px;border-bottom:1px solid #e5e7eb;">${escapeHtml(item.name)}<br><small>${escapeHtml(item.variant)}</small></td>
           <td style="padding:10px;border-bottom:1px solid #e5e7eb;text-align:center;">${item.quantity}</td>
-          <td style="padding:10px;border-bottom:1px solid #e5e7eb;text-align:right;">$${item.lineTotal.toFixed(2)}</td>
+          <td style="padding:10px;border-bottom:1px solid #e5e7eb;text-align:right;">${escapeHtml(formatOrderMoney(item.lineTotal, order.currency))}</td>
         </tr>`
     )
     .join('')
@@ -65,7 +66,7 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
       <p><strong>Delivery address:</strong><br>${escapeHtml(order.customer.address).replace(/\n/g, '<br>')}</p>
       <p><strong>Notes:</strong><br>${escapeHtml(order.customer.notes || '-').replace(/\n/g, '<br>')}</p>
       <table style="width:100%;border-collapse:collapse;margin:20px 0;"><tbody>${rows}</tbody></table>
-      <p style="font-size:18px;"><strong>Verified catalog total: $${order.total.toFixed(2)} USD</strong></p>
+      <p style="font-size:18px;"><strong>Verified payment total: ${escapeHtml(formatOrderMoney(order.total, order.currency))}</strong></p>
     </div>`
 
   const response = await fetch('https://api.resend.com/emails', {
@@ -88,3 +89,4 @@ export async function sendPaidOrderEmail(order: PaidOrderEmail) {
     throw new Error(`Resend failed with status ${response.status}.`)
   }
 }
+import { formatOrderMoney } from './order-money'

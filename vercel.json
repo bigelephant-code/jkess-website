@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/affiliate/worker",
+      "schedule": "0 3 * * *"
+    }
+  ]
+}

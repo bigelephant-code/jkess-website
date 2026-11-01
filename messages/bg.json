@@ -1,4 +1,6 @@
 {
+  "checkout.fxUnavailable": "Валутният курс не е наличен.",
+  "checkout.fxRetry": "Опитайте отново",
   "nav.home": "Начало",
   "nav.shop": "Магазин",
   "nav.products": "Продукти",

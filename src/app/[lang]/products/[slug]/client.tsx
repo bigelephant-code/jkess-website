@@ -286,8 +286,8 @@ export function ProductDetailClient({
             <span className="text-white">{product.name}</span>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6 mb-4">
-            <div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
+            <div className="min-w-0">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d0d]">
                 <Image
                   src={product.images[selectedImage] || '/placeholder.svg'}
@@ -330,7 +330,7 @@ export function ProductDetailClient({
               )}
             </div>
 
-            <div>
+            <div className="min-w-0">
               <span className="text-xs uppercase tracking-widest text-green-400 font-semibold">{product.categoryLabel}</span>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-1 mb-2">{product.name}</h1>
               <p className="text-sm text-gray-500 mb-4">{product.tagline}</p>
@@ -523,6 +523,33 @@ export function ProductDetailClient({
         </div>
       </section>
 
+      {detailImages && detailImages.length > 0 && (
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-6 bg-green-500 rounded-full" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{t('product.productGallery', 'Product Gallery')}</h2>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8">
+              <div className="flex flex-col">
+                {detailImages.map((image, index) => (
+                  <div key={image} className="w-full">
+                    <Image
+                      src={image}
+                      alt={fillMediaLabel(mediaCopy.detailImage, { name: product.name, index: index + 1 })}
+                      width={1400}
+                      height={900}
+                      className="w-full h-auto block"
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center gap-3 mb-8">
@@ -621,25 +648,6 @@ export function ProductDetailClient({
               </div>
             )}
 
-            {detailImages && detailImages.length > 0 && (
-              <div>
-                <h3 className="text-gray-900 font-semibold mb-4">{t('product.productGallery', 'Product Gallery')}</h3>
-                <div className="flex flex-col">
-                  {detailImages.map((image, index) => (
-                    <div key={image} className="w-full">
-                      <Image
-                        src={image}
-                        alt={fillMediaLabel(mediaCopy.detailImage, { name: product.name, index: index + 1 })}
-                        width={1400}
-                        height={900}
-                        className="w-full h-auto block"
-                        loading={index < 2 ? 'eager' : 'lazy'}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>

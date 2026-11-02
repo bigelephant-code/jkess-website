@@ -27,11 +27,12 @@ const batteryKitGerman = {
     categoryLabel: 'Batteriegehäuse-Bausatz mit Rollen',
     tagline: 'Mobiler LiFePO4-Batteriegehäuse-Bausatz mit optionalem BMS und LCD',
     description:
-      'Der JKESS Batteriebausatz mit Rollen ist ein robustes Gehäuse- und Montageset zum Aufbau eines mobilen 51,2-V-LiFePO4-Speichers. Er unterstützt Zellen mit 280 Ah bis 320 Ah und ermöglicht nach dem Einbau kompatibler Zellen Speicherkonfigurationen mit 15 kWh oder 16 kWh. Zur Auswahl stehen das reine Gehäusepaket oder das Paket mit dem angegebenen BMS und LCD. Batteriezellen sind nicht enthalten.',
+      'Der JKESS Batteriebausatz mit Rollen ist ein robustes Gehäuse- und Montageset zum Aufbau eines mobilen 51,2-V-LiFePO4-Speichers. Er unterstützt Zellen mit 280 Ah bis 320 Ah und ermöglicht nach dem Einbau kompatibler Zellen Speicherkonfigurationen mit 15 kWh oder 16 kWh. Zur Auswahl stehen das reine Gehäuse, das Paket mit LCD und BMS oder die CCS-Version. Batteriezellen sind nicht enthalten.',
     included: [
       'Robustes Blechgehäuse mit Rollenunterbau',
       'Interne mechanische Teile und Verbindungskomponenten entsprechend dem gewählten Paket',
-      'LCD-Anzeige und BMS nur bei Auswahl der Option Gehäuse + LCD + BMS',
+      'LCD-Anzeige und BMS bei Auswahl der Option Gehäuse + LCD + BMS oder der CCS-Version',
+      'Integrierte CCS-Sammelschiene nur bei Auswahl der CCS-Version',
       'Standard-Packliste und zutreffende Produktdokumentation',
     ],
     notIncluded: [
@@ -54,7 +55,7 @@ const batteryKitGerman = {
       { key: 'Produkttyp', value: 'Batteriegehäuse- und Montagehardware-Bausatz' },
       { key: 'Unterstützte montierte Kapazität', value: '15 kWh / 16 kWh nach Einbau kompatibler Zellen' },
       { key: 'Batteriezellen enthalten', value: 'Nein' },
-      { key: 'Paketoptionen', value: 'Nur Gehäuse / Gehäuse + LCD + BMS' },
+      { key: 'Paketoptionen', value: 'Nur Gehäuse / Gehäuse + LCD + BMS / CCS-Version' },
       { key: 'Kompatible Zellen', value: '280 Ah bis 320 Ah LFP (LiFePO4)' },
       { key: 'Gehäuse', value: 'Blechgehäuse, Ausführung nach IP54' },
       { key: 'Abmessungen', value: '835 × 400 × 280 mm' },
@@ -103,7 +104,7 @@ const batteryKitGerman = {
     {
       question: 'Was ist in den einzelnen Batteriebausatz-Optionen enthalten?',
       answer:
-        'Die Option Nur Gehäuse umfasst das Gehäuse, den Rollenunterbau und die zugehörige Montagehardware. Die Option Gehäuse + LCD + BMS enthält zusätzlich die angegebene Anzeige- und BMS-Hardware. Für den exakten Lieferumfang gilt die endgültige Packliste.',
+        'Die Option Nur Gehäuse umfasst das Gehäuse, den Rollenunterbau und die zugehörige Montagehardware. Gehäuse + LCD + BMS enthält zusätzlich Anzeige und BMS; die CCS-Version ergänzt eine integrierte CCS-Sammelschiene. Für den exakten Lieferumfang gilt die endgültige Packliste.',
     },
     {
       question: 'Für welche Anwendungen ist der Batteriebausatz mit Rollen geeignet?',
@@ -128,11 +129,12 @@ const batteryKitFrench = {
     categoryLabel: 'Kit de boîtier de batterie sur roulettes',
     tagline: 'Kit de boîtier LiFePO4 mobile avec BMS et écran LCD en option',
     description:
-      'Le kit batterie JKESS sur roulettes est un ensemble robuste de boîtier et de matériel d’assemblage destiné à la construction d’un système de stockage LiFePO4 mobile de 51,2 V. Il prend en charge des cellules de 280 Ah à 320 Ah et permet d’obtenir, après installation de cellules compatibles, des configurations assemblées de 15 kWh ou 16 kWh. Vous pouvez choisir le boîtier seul ou l’ensemble comprenant le BMS et l’écran LCD spécifiés. Les cellules de batterie ne sont pas incluses.',
+      'Le kit batterie JKESS sur roulettes est un ensemble robuste de boîtier et de matériel d’assemblage destiné à la construction d’un système de stockage LiFePO4 mobile de 51,2 V. Il prend en charge des cellules de 280 Ah à 320 Ah et permet d’obtenir, après installation de cellules compatibles, des configurations assemblées de 15 kWh ou 16 kWh. Choisissez le boîtier seul, le kit avec LCD et BMS ou la version CCS. Les cellules de batterie ne sont pas incluses.',
     included: [
       'Boîtier robuste en tôle avec base à roulettes',
       'Éléments mécaniques internes et matériel de connexion fournis selon l’option sélectionnée',
-      'Écran LCD et BMS uniquement avec l’option Boîtier + LCD + BMS',
+      'Écran LCD et BMS avec l’option Boîtier + LCD + BMS ou la version CCS',
+      'Jeu de barres CCS intégré uniquement avec la version CCS',
       'Liste de colisage standard et documentation produit applicable',
     ],
     notIncluded: [
@@ -155,7 +157,7 @@ const batteryKitFrench = {
       { key: 'Type de produit', value: 'Kit de boîtier de batterie et de matériel d’assemblage' },
       { key: 'Capacité assemblée prise en charge', value: '15 kWh / 16 kWh après installation de cellules compatibles' },
       { key: 'Cellules de batterie incluses', value: 'Non' },
-      { key: 'Options du kit', value: 'Boîtier seul / Boîtier + LCD + BMS' },
+      { key: 'Options du kit', value: 'Boîtier seul / Boîtier + LCD + BMS / Version CCS' },
       { key: 'Cellules compatibles', value: 'LFP (LiFePO4) de 280 Ah à 320 Ah' },
       { key: 'Boîtier', value: 'Tôle, conception selon IP54' },
       { key: 'Dimensions', value: '835 × 400 × 280 mm' },
@@ -204,7 +206,7 @@ const batteryKitFrench = {
     {
       question: 'Que comprend chaque option du kit batterie ?',
       answer:
-        'L’option Boîtier seul comprend le boîtier, la base à roulettes et le matériel d’assemblage associé. L’option Boîtier + LCD + BMS ajoute l’écran et le matériel BMS spécifiés. La liste de colisage finale définit le contenu exact livré.',
+        'L’option Boîtier seul comprend le boîtier, la base à roulettes et le matériel d’assemblage associé. Boîtier + LCD + BMS ajoute l’écran et le BMS ; la version CCS ajoute un jeu de barres CCS intégré. La liste de colisage finale définit le contenu exact livré.',
     },
     {
       question: 'Dans quels projets utilise-t-on généralement ce kit sur roulettes ?',

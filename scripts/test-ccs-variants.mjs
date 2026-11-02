@@ -31,38 +31,33 @@ const { getLocalizedProductPageContent } = load('src/lib/product-localizations.t
 const customer = { name: 'Test Buyer', email: 'test@example.com', phone: '+49123456789', countryCode: 'DE', address: 'Test address' }
 const payload = (slug, variant) => ({ orderNumber: 'JKESS-CCS-TEST123', customer, items: [{ slug, variant, quantity: 1 }] })
 
-for (const [slug, prices] of [['battery-kit', [400, 300]], ['6u-battery-kit', [499, 280, 599]]]) {
+for (const [slug, prices, imageCount] of [['battery-kit', [400, 300, 599], 11], ['6u-battery-kit', [499, 280, 599], 10]]) {
   const product = products.find((entry) => entry.slug === slug)
   const ccs = product.variants.find((variant) => variant.label === 'CCS Version')
   assert.equal(product.variants.length, 3)
-  const pending = slug === 'battery-kit'
-  assert.equal(ccs.pricePending === true, pending)
+  assert.notEqual(ccs.pricePending, true)
   assert.equal(ccs.description, 'Kit + LCD + BMS + CCS')
-  assert.equal(ccs.price, pending ? undefined : '$599.00')
+  assert.equal(ccs.price, '$599.00')
   assert.deepEqual(productVariantCommerce(product).map((variant) => variant.salePrice), prices)
   assert.deepEqual(productVariantCommerce(product).map((variant) => variant.sku), prices.map((_, index) => `${slug}-${index + 1}`))
-  if (pending) assert.throws(() => validateCheckoutPayload(payload(slug, ccs.label)), CheckoutValidationError)
-  else {
-    assert.equal(validateCheckoutPayload(payload(slug, ccs.label)).items[0].unitPriceCents, 59900)
-    assert.equal(ccs.detailImages.length, 10)
-    for (const image of ccs.detailImages) assert.ok(fs.existsSync(path.join(root, 'public', image)))
-  }
+  assert.equal(validateCheckoutPayload(payload(slug, ccs.label)).items[0].unitPriceCents, 59900)
+  assert.equal(ccs.detailImages.length, imageCount)
+  for (const image of ccs.detailImages) assert.ok(fs.existsSync(path.join(root, 'public', image)))
   const oldVariant = product.variants[0]
   assert.equal(validateCheckoutPayload(payload(slug, oldVariant.label)).items[0].unitPriceCents, prices[0] * 100)
-  // Even an accidentally populated price must not enable a pending variant.
-  if (pending) {
-    ccs.price = '$1.00'
-    assert.equal(productVariantCommerce(product).length, 2)
-    assert.throws(() => validateCheckoutPayload(payload(slug, ccs.label)), CheckoutValidationError)
-    delete ccs.price
-  }
+  // A pending variant must remain unavailable even if it has a price.
+  ccs.pricePending = true
+  assert.equal(productVariantCommerce(product).length, 2)
+  assert.throws(() => validateCheckoutPayload(payload(slug, ccs.label)), CheckoutValidationError)
+  delete ccs.pricePending
   for (const { code } of locales) {
     const localized = getLocalizedProductPageContent(product, code).product
-    assert.equal(localized.variants.find((variant) => variant.label === ccs.label).pricePending === true, pending)
+    assert.equal(localized.variants.find((variant) => variant.label === ccs.label).price, '$599.00')
+    assert.equal(localized.variants.find((variant) => variant.label === ccs.label).detailImages.length, imageCount)
     const copy = getProductVariantCopy(code)
     assert.ok(copy.pricePending)
     assert.ok(copy.ccsIncludes.endsWith(' + LCD + BMS + CCS'))
   }
 }
 assert.equal(productVariantCommerce(products.find((product) => product.slug === 'high-voltage-kit')).length, 4)
-console.log('PASS: 6U CCS price and images, 26 locales, server checkout, and pending caster CCS exclusion.')
+console.log('PASS: caster and 6U CCS prices and images, 26 locales, server checkout, and pending variant exclusion.')

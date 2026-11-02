@@ -827,7 +827,7 @@ export function getProductFaqs(product: Product): ProductFaq[] {
       },
       {
         question: 'What is included in each Battery Kit option?',
-        answer: 'Enclosure Only supplies the enclosure hardware and caster base. Enclosure + LCD + BMS also includes the specified display and BMS hardware. Refer to the final packing list for the exact accessories supplied.',
+        answer: 'Enclosure Only supplies the enclosure hardware and caster base. Enclosure + LCD + BMS also includes the specified display and BMS hardware. The CCS Version adds the CCS integrated busbar. Refer to the final packing list for the exact accessories supplied.',
       },
       {
         question: 'Where is the caster battery kit typically used?',
@@ -962,11 +962,12 @@ const productCatalog: Product[] = [
     categoryLabel: 'Caster Battery Enclosure Kit',
     tagline: 'Movable LiFePO4 battery enclosure kit with optional BMS and LCD',
     description:
-      'The JKESS Roller Battery Kit is a heavy-duty enclosure and assembly hardware kit for building a movable 51.2V LiFePO4 storage battery. It supports 280Ah to 320Ah cells and 15kWh or 16kWh assembled configurations after compatible cells are installed. Choose either the enclosure-only package or the package with the specified BMS and LCD. Battery cells are not included.',
+      'The JKESS Roller Battery Kit is a heavy-duty enclosure and assembly hardware kit for building a movable 51.2V LiFePO4 storage battery. It supports 280Ah to 320Ah cells and 15kWh or 16kWh assembled configurations after compatible cells are installed. Choose the enclosure-only, LCD and BMS, or CCS version. Battery cells are not included.',
     included: [
       'Heavy-duty sheet-metal enclosure with caster base',
       'Internal mechanical and connection hardware supplied with the selected package',
-      'LCD display and BMS only when the Enclosure + LCD + BMS option is selected',
+      'LCD display and BMS when the Enclosure + LCD + BMS or CCS version is selected',
+      'CCS integrated busbar only when the CCS version is selected',
       'Standard packing list and applicable product documentation',
     ],
     notIncluded: [
@@ -989,7 +990,7 @@ const productCatalog: Product[] = [
       { key: 'Product Type', value: 'Battery enclosure and assembly hardware kit' },
       { key: 'Supported Assembled Capacity', value: '15kWh / 16kWh after compatible cells are installed' },
       { key: 'Battery Cells Included', value: 'No' },
-      { key: 'Package Options', value: 'Enclosure Only / Enclosure + LCD + BMS' },
+      { key: 'Package Options', value: 'Enclosure Only / Enclosure + LCD + BMS / CCS Version' },
       { key: 'Compatible Cells', value: '280Ah ~ 320Ah LFP (LiFePO4)' },
       { key: 'Enclosure', value: 'Sheet-metal, IP54-rated design' },
       { key: 'Dimensions', value: '835 × 400 × 280 mm' },
@@ -1010,7 +1011,7 @@ const productCatalog: Product[] = [
     variants: [
       { label: 'Enclosure + LCD + BMS', price: '$400.00' },
       { label: 'Enclosure Only', price: '$300.00' },
-      { label: 'CCS Version', pricePending: true, description: 'Kit + LCD + BMS + CCS' },
+      { label: 'CCS Version', price: '$599.00', description: 'Kit + LCD + BMS + CCS', detailImages: Array.from({ length: 11 }, (_, index) => `/images/caster-ccs-detail/${index + 1}.webp`) },
     ],
     detailImages: [
       '/images/battery-kit-detail/1.webp',

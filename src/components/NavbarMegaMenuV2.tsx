@@ -20,7 +20,7 @@ const languageGroups = [
   ['nav.languageGroup.cisMiddleEast', 'CIS & Middle East', ['ru', 'uk', 'fa', 'tr']],
 ] as const satisfies ReadonlyArray<readonly [string, string, readonly LangCode[]]>
 
-const MENU_CLOSE_DELAY_MS = 140
+const MENU_CLOSE_DELAY_MS = 300
 
 export default function NavbarMegaMenuV2() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
@@ -112,7 +112,9 @@ export default function NavbarMegaMenuV2() {
   return (
     <nav
       ref={navRef}
-      onMouseLeave={() => { closeMenu(); setLanguageOpen(false) }}
+      onMouseEnter={cancelMenuClose}
+      onMouseLeave={() => { scheduleMenuClose(); setLanguageOpen(false) }}
+      onKeyDown={(event) => { if (event.key === 'Escape') { closeMenu(); setLanguageOpen(false) } }}
       style={{ transform: `translateX(-50%) translateY(${visible ? '0' : '-120px'})` }}
       className="fixed left-1/2 top-2 z-50 w-[97%] max-w-[1580px] rounded-[17px] border border-white/[0.07] bg-black/70 shadow-2xl shadow-black/30 backdrop-blur-xl transition-transform duration-500"
     >
@@ -155,9 +157,8 @@ export default function NavbarMegaMenuV2() {
               key={group.key}
               type="button"
               onMouseEnter={() => openMenu(group.key)}
-              onMouseLeave={scheduleMenuClose}
               onFocus={() => openMenu(group.key)}
-              onClick={() => setActiveMenu(activeMenu === group.key ? null : group.key)}
+              onClick={() => openMenu(group.key)}
               aria-expanded={activeMenu === group.key}
               className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-sm font-semibold transition last:pr-1 xl:px-3 xl:last:pr-1 xl:text-lg ${activeMenu === group.key ? 'bg-white/10 text-green-400' : 'text-white hover:bg-white/10 hover:text-green-400'}`}
             >
@@ -204,9 +205,9 @@ export default function NavbarMegaMenuV2() {
             key={activeGroup.key}
             onMouseEnter={() => openMenu(activeGroup.key)}
             onMouseLeave={scheduleMenuClose}
-            className="absolute left-1/2 top-[calc(100%+8px)] hidden w-[min(94vw,1180px)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#090909]/[0.98] shadow-2xl shadow-black/60 backdrop-blur-2xl lg:block"
+            className="absolute left-0 top-full hidden w-full pt-2 lg:block"
           >
-            <div className="grid lg:grid-cols-[300px_1fr]">
+            <div className="mx-auto grid w-[min(94vw,1180px)] overflow-hidden rounded-2xl border border-white/10 bg-[#090909]/[0.98] shadow-2xl shadow-black/60 backdrop-blur-2xl lg:grid-cols-[300px_1fr]">
               <div className="border-r border-white/10 bg-gradient-to-br from-green-500/15 via-white/[0.03] to-transparent p-7">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-400">{groupLabel(activeGroup.key, activeGroup.label)}</p>
                 <h2 className="mt-3 text-2xl font-bold text-white">{ui.explore} {groupLabel(activeGroup.key, activeGroup.label)}</h2>

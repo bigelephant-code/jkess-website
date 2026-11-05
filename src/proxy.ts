@@ -23,6 +23,10 @@ function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname.startsWith(p))
 }
 
+// Manual PDFs and datasheets are static files under /downloads/, while
+// /downloads itself is the browsable page and must keep going through routing.
+const STATIC_DOWNLOAD = /^\/downloads\/.+\.[a-z0-9]+$/i
+
 function requestHeadersWithLocale(request: NextRequest, locale: string) {
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set(REQUEST_LOCALE_HEADER, locale)
@@ -40,7 +44,7 @@ function setLocaleResponseHeaders(
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (isPublicPath(pathname)) {
+  if (isPublicPath(pathname) || STATIC_DOWNLOAD.test(pathname)) {
     return NextResponse.next()
   }
 
